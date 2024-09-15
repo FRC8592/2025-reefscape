@@ -9,9 +9,8 @@ import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import org.opencv.features2d.FlannBasedMatcher;
 
-import com.NewtonSwerve.DriveController;
-import com.NewtonSwerve.Gyro.NewtonPigeon2;
-import com.ctre.phoenix.sensors.Pigeon2;
+
+import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -56,7 +55,7 @@ public class Robot extends LoggedRobot {
     private AutonomousSelector autoSelect;
 
     //Subsystem and hardware objects
-    private NewtonPigeon2 pigeon;
+    private Pigeon2 pigeon;
     private Swerve swerve;
     private Shooter shooter;
     private Intake intake;
@@ -134,8 +133,9 @@ public class Robot extends LoggedRobot {
         operatorController = new XboxController(CONTROLLERS.OPERATOR_PORT);
         autoSelect = new AutonomousSelector();
 
-        pigeon = new NewtonPigeon2(new Pigeon2(CAN.PIGEON_CAN_ID));
-        swerve = new Swerve(pigeon);
+        pigeon = new Pigeon2(CAN.PIGEON_CAN_ID);
+        //To replace the below line with new swerve library
+        //swerve = new Swerve(pigeon);
 
         power = new Power();
         leds = new NeoPixelLED();

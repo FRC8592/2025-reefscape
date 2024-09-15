@@ -1,14 +1,8 @@
 package frc.robot;
 
-import com.NewtonSwerve.NewtonSwerve;
-import com.NewtonSwerve.SwerveModule;
+
 // import com.NewtonSwerve.Gyro.NewtonPigeon2;
-import com.NewtonSwerve.Gyro.Gyro;
-import com.NewtonSwerve.Gyro.NewtonPigeon;
-import com.NewtonSwerve.Mk4.Mk4ModuleConfiguration;
-import com.NewtonSwerve.Mk4.Mk4SwerveModuleHelper;
-import com.NewtonSwerve.Mk4.Mk4iSwerveModuleHelper;
-import com.ctre.phoenix.sensors.Pigeon2;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import frc.robot.Constants.*;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
