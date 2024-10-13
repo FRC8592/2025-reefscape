@@ -36,22 +36,30 @@ public class RobotContainer {
 
   private void configureBindings() {
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
-                                                                                           // negative Y (forward)
-            .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
-        ));
+      drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
+                                                                                          // negative Y (forward)
+          .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+          .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+
+      )
+    );
 
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+
     joystick.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+
 
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
+    //toggle slowmode with button hold
+    joystick.rightBumper().whileTrue(slowModeCommand());
+
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
     }
+
     drivetrain.registerTelemetry(logger::telemeterize);
   }
 
@@ -62,4 +70,24 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
   }
+
+  //slowmode command to toggle 
+  public Command slowModeCommand() {
+    return Commands.startEnd(
+
+      //start command
+      () -> {
+        MaxSpeed = (TunerConstants.kSpeedAt12VoltsMps/2);
+      },
+
+      //end command
+      () -> {
+        MaxSpeed = TunerConstants.kSpeedAt12VoltsMps;
+      }
+      
+    );
+  }
+
+
+
 }
