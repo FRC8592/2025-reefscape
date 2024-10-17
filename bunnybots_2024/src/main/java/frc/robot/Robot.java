@@ -4,23 +4,38 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.ClawIntake;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
   private RobotContainer m_robotContainer;
+  private ClawIntake intake = new ClawIntake();
+  private XboxController xbox = new XboxController(1);
 
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
+    SmartDashboard.putNumber("Intake Power", 0.2);
   }
 
   @Override
   public void robotPeriodic() {
-    CommandScheduler.getInstance().run(); 
+    CommandScheduler.getInstance().run();
+    if (xbox.getAButton()) {
+      intake.setPercentOutput(SmartDashboard.getNumber("Intake Power", 0.2));
+    } 
+    else if (xbox.getBButton()) {
+      intake.setPercentOutput(-SmartDashboard.getNumber("Intake Power", 0.2));
+    }
+    else {
+      intake.setPercentOutput(0);z
+    }
   }
 
   @Override
