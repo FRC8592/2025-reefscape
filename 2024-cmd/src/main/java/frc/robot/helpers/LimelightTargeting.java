@@ -259,8 +259,6 @@ public class LimelightTargeting {
             driveToSpeed = 0.0;
 
         SmartDashboard.putNumber("Drive-to velocity", driveToSpeed);
-        Logger.recordOutput(NOTELOCK.LOG_PATH+"Drive-to Velocity", driveToSpeed);
-        Logger.recordOutput(NOTELOCK.LOG_PATH+"RotateSpeed", rotateSpeed);
         return new ChassisSpeeds(driveToSpeed, 0, rotateSpeed);
     }
 

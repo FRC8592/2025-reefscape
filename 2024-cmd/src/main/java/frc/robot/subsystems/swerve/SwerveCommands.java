@@ -166,8 +166,6 @@ public class SwerveCommands extends SubsystemCommands{
             translationYSupplier,
             () -> swerve.snapToAngle(swerve.getYaw().plus(angleSupplier.get())),
             driveMode
-        ).alongWith(
-            Commands.run(() -> Logger.recordOutput(SHOOTER.LOG_PATH+"OffsetSupplierValue", angleSupplier.get().getDegrees()))
         );
     }
 

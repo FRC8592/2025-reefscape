@@ -11,13 +11,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants.*;
-import frc.robot.helpers.RangeTable.RangeEntry;
-import frc.robot.subsystems.elevator.Elevator;
-import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.leds.LEDs;
-import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.swerve.Swerve;
-import frc.robot.helpers.*;
 import edu.wpi.first.util.WPISerializable;
 
 /**
@@ -56,11 +50,7 @@ public final class Suppliers {
     }
 
     private static Swerve swerve = Swerve.getInstance();
-    private static Intake intake = Intake.getInstance();
-    private static Elevator elevator = Elevator.getInstance();
-    private static Shooter shooter = Shooter.getInstance();
-    private static LEDs leds = LEDs.getInstance();
-    private static PoseVision poseVision = PoseVision.getInstance();
+    // TODO: Add more subsystems here
 
     /**
      * {@code getAsBoolean()} returns {@code true} when the robot it running on the red side and
@@ -73,60 +63,6 @@ public final class Suppliers {
     );
 
     /**
-     * {@code get()} returns the most up-to-date range table entry that will get a shot into the
-     * speaker.
-     */
-    // NOTE: We don't use any special logger supplier here because all the data we need are logged
-    // elsewhere and it'd be too much of a pain to make it work.
-    public static final Supplier<RangeEntry> bestRangeEntry = (
-        () -> RangeTable.get(poseVision.distanceToAprilTag(APRILTAG_VISION.SPEAKER_AIM_TAGS))
-    );
-
-    /**
-     * {@code getAsDouble()} returns the current left-right offset from the speaker
-     */
-    public static final DoubleSupplier offsetFromSpeakerTag = new LoggedDoubleSupplier(
-        () -> poseVision.offsetFromAprilTag(APRILTAG_VISION.SPEAKER_AIM_TAGS),
-        "OffsetFromSpeakerTag"
-    );
-
-    /**
-     * {@code getAsDouble()} returns the output of PoseVision's PID loop to find the
-     * speaker tag. If there's no visible tag, returns a negative value (for searching)
-     */
-    public static final DoubleSupplier aimToSpeakerPidLoopNegativeSearch = new LoggedDoubleSupplier(
-        () -> poseVision.visual_servo(0, 3, APRILTAG_VISION.SPEAKER_AIM_TAGS, -1.5),
-        "AimToSpeakerPIDLoopNegativeSearch"
-    );
-
-    /**
-     * {@code getAsDouble()} returns the output of PoseVision's PID loop to find the
-     * speaker tag. If there's no visible tag, returns a positive value (for searching)
-     */
-    public static final DoubleSupplier aimToSpeakerPidLoopPositiveSearch = new LoggedDoubleSupplier(
-        () -> poseVision.visual_servo(0, 3, APRILTAG_VISION.SPEAKER_AIM_TAGS, 1.5),
-        "AimToSpeakerPIDLoopPositiveSearch"
-    );
-
-    /**
-     * {@code getAsBoolean} returns whether the robot has a note (as determined by
-     * the middle beam-break)
-     */
-    public static final BooleanSupplier robotHasNote = new LoggedBooleanSupplier(
-        () -> shooter.isMiddleBeamBreakTripped(),
-        "RobotHasNote"
-    );
-
-    /**
-     * {@code getAsBoolean} returns whether the robot is within tolerance of being
-     * left-right locked to the center speaker tag
-     */
-    public static final BooleanSupplier leftRightSpeakerLocked = new LoggedBooleanSupplier(
-        () -> offsetFromSpeakerTag.getAsDouble() < APRILTAG_VISION.X_ROT_LOCK_TOLERANCE,
-        "LeftRightSpeakerLocked"
-    );
-
-    /**
      * {@code get()} returns the direction the gyroscope should believe it's facing
      * when the front of the robot is aimed away from the driver station.
      */
@@ -135,12 +71,5 @@ public final class Suppliers {
         "CurrentGyroscopeRotationOffset"
     );
 
-    /**
-     * {@code get()} returns the rotational offset from the currently visible speaker
-     * tag, or 0 if there is no tag.
-     */
-    public static final Supplier<Rotation2d> rotationalSpeakerOffset = new LoggedWPILibSupplier<Rotation2d>(
-        () -> Rotation2d.fromRadians(poseVision.rotationalOffsetFromAprilTag(APRILTAG_VISION.SPEAKER_AIM_TAGS)),
-        "RotationalSpeakerOffset"
-    );
+    //TODO: Add more useful suppliers here
 }

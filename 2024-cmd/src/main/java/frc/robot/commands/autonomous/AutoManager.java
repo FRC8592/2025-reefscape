@@ -12,12 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Robot;
 import frc.robot.Suppliers;
-import frc.robot.commands.autonomous.autons.*;
 import frc.robot.commands.proxies.*;
-import frc.robot.subsystems.elevator.Elevator;
-import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.leds.LEDs;
-import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.swerve.Swerve;
 
 /**
@@ -26,10 +21,7 @@ import frc.robot.subsystems.swerve.Swerve;
  */
 public final class AutoManager {
     private static Swerve swerve = Swerve.getInstance();
-    private static Intake intake = Intake.getInstance();
-    private static Elevator elevator = Elevator.getInstance();
-    private static Shooter shooter = Shooter.getInstance();
-    private static LEDs leds = LEDs.getInstance();
+    //TODO: Add more subsystems here
 
     private static SendableChooser<AutoCommand> autoChooser;
     private static ArrayList<AutoCommand> autoCommands = new ArrayList<>();
@@ -45,9 +37,8 @@ public final class AutoManager {
     public static void prepare(){
         autoCommands = new ArrayList<>();
 
-        autoCommands.add(new PreloadThreeWingNoteAuto());
-        autoCommands.add(new Testing5Note());
-        autoCommands.add(new SystemsCheckAuto());
+        // autoCommands.add(new ExampleAuto());
+        // TODO: Add autos here
 
 
         autoChooser = new SendableChooser<>();
@@ -94,11 +85,8 @@ public final class AutoManager {
      */
     private static Command getAutonomousInitCommand(){
         return new ParallelCommandGroup(
-            swerve.commands.autonomousInitCommand(),
-            intake.commands.autonomousInitCommand(),
-            elevator.commands.autonomousInitCommand(),
-            shooter.commands.autonomousInitCommand(),
-            leds.commands.autonomousInitCommand()
+            swerve.commands.autonomousInitCommand()
+            // TODO: Add more subsystems' autonomous init commands here
         );
     }
 
