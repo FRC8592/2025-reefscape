@@ -16,7 +16,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
   private ClawIntake intake = new ClawIntake();
-  private XboxController xbox = new XboxController(1);
+  private XboxController xbox = new XboxController(0);
 
   @Override
   public void robotInit() {
@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
       intake.setPercentOutput(-SmartDashboard.getNumber("Intake Power", 0.2));
     }
     else {
-      intake.setPercentOutput(0);z
+      intake.setPercentOutput(0);
     }
   }
 
