@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Suppliers;
 import frc.robot.commands.proxies.*;
 import frc.robot.helpers.RangeTable;
@@ -26,10 +25,8 @@ public class FollowPathAndScoreCommand extends NewtonCommand{
             ( // This group of commands runs a path-follow command while intaking, then primes for however
               // much longer the path takes to finish (or doesn't prime at all if the intake takes longer
               // than the path).
-                swerve.commands.followPathCommand(trajectory, Suppliers.robotRunningOnRed).alongWith(
-                    new IntakeCommand().withTimeout(intakeTimeout).asProxy() // Proxy for the "!intake.currentlyCommanded()" below
-                ).deadlineWith(
-                    new WaitUntilCommand(() -> !intake.currentlyCommanded()).andThen(
+                swerve.commands.followPathCommand(trajectory, Suppliers.robotRunningOnRed).deadlineWith(
+                    new IntakeCommand().withTimeout(intakeTimeout).andThen(
                         new TimingSimulatedCommand(
                             new PrimeCommand(RangeTable.get(primeDistance), () -> 0).onlyIf(Suppliers.robotHasNote), 2
                         )
@@ -42,7 +39,7 @@ public class FollowPathAndScoreCommand extends NewtonCommand{
                         Suppliers.leftRightSpeakerLocked
                     ).deadlineWith(
                         // This snapToCommand aims the robot at the speaker
-                        swerve.commands.snapToCommand(() -> 0, () -> 0, Suppliers.rotationalSpeakerOffset, DriveModes.FIELD_RELATIVE)
+                        swerve.commands.rawDriveCommand(() -> 0, () -> 0, Suppliers.aimToSpeakerPidLoopNegativeSearch, DriveModes.FIELD_RELATIVE)
                     )
                 ).onlyIf(Suppliers.robotHasNote) // <-- This disables the optional vision prime/aim and the shot if there isn't a note,
                                                  // which saves a significant amount of time
