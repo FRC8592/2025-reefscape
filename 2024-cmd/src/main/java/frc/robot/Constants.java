@@ -14,9 +14,10 @@ public final class Constants {
         public static final double INTAKE_MOTOR_kI = 0.0;
         public static final double INTAKE_MOTOR_kD = 0.0;
         public static final double INTAKE_MOTOR_kFF = 0.0;
+        public static final double INTAKE_VELOCITY = 2000;
+        public static final double OUTAKE_VELOCITY = -2000;
 
-        public static final int LEFT_SLOT_ID = 0;
-        public static final int RIGHT_SLOT_ID = 0;
+        public static final int SLOT_ID = 0;
 
 
 
@@ -60,6 +61,9 @@ public final class Constants {
         public static final int SWERVE_WHITE_BACK_RIGHT_DRIVE_CAN_ID = 0;
         public static final int SWERVE_WHITE_BACK_RIGHT_STEER_CAN_ID = 0;
         public static final int SWERVE_WHITE_BACK_RIGHT_ENCODER_CAN_ID = 0;
+
+        public static final int INTAKE_TOP_CAN_ID = 0;
+        public static final int INTAKE_BOTTOM_CAN_ID = 0;
 
         public static final int PIGEON_CAN_ID = 0;
 

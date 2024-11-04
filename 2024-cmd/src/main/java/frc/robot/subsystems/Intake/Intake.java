@@ -6,6 +6,7 @@ import frc.robot.helpers.SparkFlexControl;
 import frc.robot.subsystems.NewtonSubsystem;
 import frc.robot.Constants;
 import frc.robot.Constants.INTAKE;
+import frc.robot.Constants.CAN;
 
 public class Intake extends NewtonSubsystem {
 
@@ -26,37 +27,38 @@ public class Intake extends NewtonSubsystem {
 
      public IntakeCommands commands = new IntakeCommands(this);
 
-     private SparkFlexControl rightMotor;
-     private SparkFlexControl leftMotor; 
+     private SparkFlexControl topMotor;
+     private SparkFlexControl bottomMotor; 
 
      // Used for logging
      private double targetIntakeVelocity = 0;
 
      private Intake() {
-        rightMotor = new SparkFlexControl(0, true);
-        leftMotor = new SparkFlexControl(0, true);
+        topMotor = new SparkFlexControl(CAN.INTAKE_TOP_CAN_ID, true);
+        bottomMotor = new SparkFlexControl(CAN.INTAKE_BOTTOM_CAN_ID, true);
 
-        rightMotor.setPIDF(INTAKE.INTAKE_MOTOR_kP, INTAKE.INTAKE_MOTOR_kI, INTAKE.INTAKE_MOTOR_kD, INTAKE.INTAKE_MOTOR_kFF, INTAKE.LEFT_SLOT_ID);
-        leftMotor.setPIDF(INTAKE.INTAKE_MOTOR_kP, INTAKE.INTAKE_MOTOR_kI, INTAKE.INTAKE_MOTOR_kD, INTAKE.INTAKE_MOTOR_kFF, INTAKE.RIGHT_SLOT_ID);
+        topMotor.setPIDF(INTAKE.INTAKE_MOTOR_kP, INTAKE.INTAKE_MOTOR_kI, INTAKE.INTAKE_MOTOR_kD, INTAKE.INTAKE_MOTOR_kFF, INTAKE.SLOT_ID);
+        bottomMotor.setPIDF(INTAKE.INTAKE_MOTOR_kP, INTAKE.INTAKE_MOTOR_kI, INTAKE.INTAKE_MOTOR_kD, INTAKE.INTAKE_MOTOR_kFF, INTAKE.SLOT_ID);
 
-        rightMotor.setCurrentLimit(0, 0);
-        leftMotor.setCurrentLimit(0, 0);
+        topMotor.setCurrentLimit(0, 0);
+        bottomMotor.setCurrentLimit(0, 0);
 
      }
-
+     @Override
      public void periodic() {
-        Logger.recordOutput(null, null);
-        Logger.recordOutput(null, null);
+      //   Logger.recordOutput("", 0.0);
+      //   Logger.recordOutput("", 0.0);
      }
 
+     @Override
      public void simulationPeriodic() {
         // This method is something Martin wrote
      }
 
      protected void setIntakeVelocity(double velocity) {
         targetIntakeVelocity = velocity;
-        rightMotor.setVelocity(velocity);
-        leftMotor.setVelocity(velocity);
+        topMotor.setVelocity(velocity);
+        bottomMotor.setVelocity(velocity);
      }
 
      protected void stop() {
