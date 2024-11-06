@@ -5,6 +5,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.CONTROLLERS;
+import frc.robot.subsystems.intake.IntakeCommands;
 
 public final class Controls {
     private static final CommandXboxController driverController = new CommandXboxController(
@@ -35,6 +36,11 @@ public final class Controls {
     protected static Trigger snapBack = new Trigger(() -> false);
     protected static Trigger snapLeft = new Trigger(() -> false);
     protected static Trigger snapRight = new Trigger(() -> false);
+    
+    protected static Trigger intake = new Trigger(() -> false);
+    protected static Trigger score = new Trigger(() -> false);
+
+    protected static Trigger stow = new Trigger(() -> false);
 
     /**
      * Change the variables in the Controls class to match the specified
@@ -57,6 +63,11 @@ public final class Controls {
                 snapBack = new Trigger(() -> false);
                 snapLeft = new Trigger(() -> false);
                 snapRight = new Trigger(() -> false);
+
+                intake = new Trigger(() -> false);
+                score = new Trigger(() -> false);
+
+                stow = new Trigger(() -> false);
                 break;
 
             case MAIN_TELEOP:
@@ -64,8 +75,13 @@ public final class Controls {
                 driveTranslateY = () -> -driverController.getLeftY();
                 driveRotate = () -> -driverController.getRightX();
 
+                intake = driverController.leftTrigger(0.2);
+                score = driverController.rightTrigger(0.2);
+
+                stow = driverController.leftBumper();
+
                 slowMode = driverController.rightBumper();
-                robotRelative = driverController.leftBumper();
+                robotRelative = driverController.a();
                 zeroGryoscope = driverController.back();
 
                 snapForward = driverController.pov(0);

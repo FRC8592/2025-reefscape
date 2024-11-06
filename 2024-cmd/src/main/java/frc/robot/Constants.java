@@ -7,9 +7,6 @@ public final class Constants {
         public static final String LOG_FOLDER = "CustomLogs";
     }
     public final class INTAKE {
-        public static final int RIGHT_INTAKE_MOTOR_CAN_ID = 0;
-        public static final int LEFT_INTAKE_MOTOR_CAN_ID = 0;
-
         public static final double INTAKE_MOTOR_kP = 0.0;
         public static final double INTAKE_MOTOR_kI = 0.0;
         public static final double INTAKE_MOTOR_kD = 0.0;
@@ -19,9 +16,14 @@ public final class Constants {
 
         public static final int SLOT_ID = 0;
 
-
-
     }
+
+    public final class PIVOT {
+        public static final double PIVOT_DROP_DEGREES = 0;
+        public static final double PIVOT_RAISE_DEGREES = 90;
+        public static final double PIVOT_GEAR_RATIO = 1;
+    }
+
     public final class CONVERSIONS {
         public static final double METERS_SECOND_TO_TICKS_TALONFX = ((2048 * 6.75 * 60) / (200 * Math.PI * 0.0508));
 
@@ -65,15 +67,18 @@ public final class Constants {
         public static final int INTAKE_TOP_CAN_ID = 0;
         public static final int INTAKE_BOTTOM_CAN_ID = 0;
 
+        public static final int PIVOT_MOTOR_CAN_ID = 0;
+
         public static final int PIGEON_CAN_ID = 0;
 
-        public static final int PDH_CAN_ID = 1;
+        public static final int PDH_CAN_ID = 0;
     }
 
     public final class POWER {
         public static final int SWERVE_MAX_VOLTAGE = 12;
         public static final int SWERVE_DRIVE_CURRENT_LIMIT = 80;
         public static final int SWERVE_STEER_CURRENT_LIMIT = 40;
+        //TO DO add current limits for intake and pivot
     }
 
     public final class SWERVE {

@@ -296,6 +296,9 @@ public class Swerve extends NewtonSubsystem {
      * Get the current position of the swerve as judged by odometry.
      */
     public Pose2d getCurrentPosition() {
+        if (Robot.isSimulation()) {
+            return Robot.FIELD.getRobotPose();
+        }
         return swerve.getCurrentOdometryPosition();
     }
 

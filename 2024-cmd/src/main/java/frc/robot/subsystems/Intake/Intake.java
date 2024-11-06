@@ -1,12 +1,8 @@
-package frc.robot.subsystems.Intake;
-
-import org.littletonrobotics.junction.Logger;
+package frc.robot.subsystems.intake;
 
 import frc.robot.helpers.SparkFlexControl;
 import frc.robot.subsystems.NewtonSubsystem;
-import frc.robot.Constants;
-import frc.robot.Constants.INTAKE;
-import frc.robot.Constants.CAN;
+import frc.robot.Constants.*;
 
 public class Intake extends NewtonSubsystem {
 
@@ -43,6 +39,7 @@ public class Intake extends NewtonSubsystem {
         topMotor.setCurrentLimit(0, 0);
         bottomMotor.setCurrentLimit(0, 0);
 
+        bottomMotor.setInverted();
      }
      @Override
      public void periodic() {

@@ -1,26 +1,29 @@
-package frc.robot.subsystems.Intake;
+package frc.robot.subsystems.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
+import frc.robot.Constants.*;
 import frc.robot.subsystems.SubsystemCommands;
 
 public class IntakeCommands extends SubsystemCommands {
     private Intake intake;
 
-    public IntakeCommands(Intake intakeBucket) {
-        intake = intakeBucket;
+    public IntakeCommands(Intake intake) {
+        this.intake = intake;;
     }
 
-    public Command intakeCommand() {
-        return intake.run(() -> {
-            intake.setIntakeVelocity(Constants.INTAKE.INTAKE_VELOCITY);
+    public Command runIntakeCommand() {
+        return intake.runEnd(() -> {
+            intake.setIntakeVelocity(INTAKE.INTAKE_VELOCITY);
+        },() -> {
+            intake.stop();
         });
     }
 
-    public Command outtakeCommand(){
-        return intake.run(() -> {
-            // Add outaking code here
-            intake.setIntakeVelocity(Constants.INTAKE.OUTAKE_VELOCITY);
+    public Command runOuttakeCommand(){
+        return intake.runEnd(() -> {
+            intake.setIntakeVelocity(INTAKE.OUTAKE_VELOCITY);
+        },() -> {
+            intake.stop();
         });
     }
 

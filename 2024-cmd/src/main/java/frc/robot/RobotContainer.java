@@ -6,18 +6,20 @@ package frc.robot;
 
 import frc.robot.Controls.ControlSets;
 import frc.robot.commands.autonomous.*;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.pivot.Pivot;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 
 public class RobotContainer {
     // The robot's subsystems
     private final Swerve swerve;
+    private final Intake intake;
+    private final Pivot pivot;
     //TODO: Add more subsystems here
 
     // Helpers
@@ -29,6 +31,8 @@ public class RobotContainer {
      */
     public RobotContainer() {
         swerve = Swerve.instantiate();
+        intake = Intake.instantiate();
+        pivot = Pivot.instantiate();
         // TODO: Add more subsystems and instantiatable helpers here
 
         configureBindings(ControlSets.MAIN_TELEOP);
@@ -93,6 +97,15 @@ public class RobotContainer {
         Controls.snapRight.whileTrue(
             swerve.commands.snapToCommand(Controls.driveTranslateX, Controls.driveTranslateY, Rotation2d.fromDegrees(90), DriveModes.AUTOMATIC)
             .withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
+        );
+        Controls.intake.whileTrue(
+            intake.commands.runIntakeCommand().alongWith(pivot.commands.dropPivotCommand())
+        );
+        Controls.score.whileTrue(
+            intake.commands.runOuttakeCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf)
+        );
+        Controls.stow.onTrue(
+            pivot.commands.raisePivotCommand().alongWith(intake.commands.stopCommand())
         );
 
         // TODO: Add more bindings from controls to commands here
