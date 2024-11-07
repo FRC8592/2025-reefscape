@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix6.hardware.*;
 import com.ctre.phoenix6.controls.*;
+import edu.wpi.first.wpilibj.XboxController;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -22,7 +23,10 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
 private TalonFX Coolestmotor;
+//
 private VoltageOut Coolestmotorvolts = new VoltageOut(0);
+//
+private XboxController gamepad = new XboxController(0);
 
 
   /**
@@ -48,7 +52,13 @@ private VoltageOut Coolestmotorvolts = new VoltageOut(0);
   @Override
   public void robotPeriodic() {
 
-  Coolestmotor.setControl(Coolestmotorvolts.withOutput(6));
+double motorspeedcontroller = gamepad.getRightY();
+double motormaxspeed = Coolestmotor.getSupplyVoltage().getValueAsDouble();
+SmartDashboard.putNumber("motorspeedcontroller", motorspeedcontroller);
+SmartDashboard.putNumber("motormaxspeed", motormaxspeed);
+
+
+  Coolestmotor.setControl(Coolestmotorvolts.withOutput(motormaxspeed*motorspeedcontroller));
   }
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
