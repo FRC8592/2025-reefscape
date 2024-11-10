@@ -26,6 +26,7 @@ public class Robot extends TimedRobot {
   private TalonFX testMotor;
   private VoltageOut testMotorVoltage = new  VoltageOut(0);
 
+  private TestMotors drive;
   private XboxController gamepad = new XboxController(0);
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -33,11 +34,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
     testMotor = new TalonFX(Constants.TEST_MOTOR_CAN_ID);
+
+    drive = new TestMotors();
   }
 
   /**
@@ -79,7 +83,7 @@ public class Robot extends TimedRobot {
         // Put default auto code here
         break;
     }
-  }
+  }  
 
   /** This function is called once when teleop is enabled. */
   @Override
@@ -89,12 +93,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
    
-    double commandedVelocity  = gamepad.getRightY();
-    SmartDashboard.putNumber("jockstick value", commandedVelocity);
-    
-    double motorVoltage = testMotor.getSupplyVoltage().getValueAsDouble();
-    testMotor.setControl(testMotorVoltage.withOutput(motorVoltage*commandedVelocity));
-    SmartDashboard.putNumber("MotorV", motorVoltage);
+    double percentPower  = gamepad.getRightY();
+    drive.setPercentMotorOutput(percentPower);
+    SmartDashboard.putNumber("Joystick Value", percentPower);
 
   }
 
