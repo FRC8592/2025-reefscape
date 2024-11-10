@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix6.hardware.*;
 import com.ctre.phoenix6.controls.*;
+import edu.wpi.first.wpilibj.XboxController;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -24,6 +25,7 @@ public class Robot extends TimedRobot {
 
   private TalonFX testMotor;
   private VoltageOut testMotorVoltage = new VoltageOut(0);
+  private XboxController gamepad = new XboxController(0);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -47,7 +49,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    testMotor.setControl(testMotorVoltage.withOutput(9));
+    
   }
 
   /**
@@ -83,11 +85,22 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+
+
+  }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    double commandedVelocity = gamepad.getRightY();
+    double motorVoltage = testMotor.getSupplyVoltage().getValueAsDouble();
+
+    SmartDashboard.putNumber("Joystick Value", commandedVelocity);
+    SmartDashboard.putNumber("Motor Voltage", motorVoltage);
+    
+    testMotor.setControl(testMotorVoltage.withOutput(commandedVelocity * motorVoltage));
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override
