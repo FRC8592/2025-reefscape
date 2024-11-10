@@ -97,6 +97,7 @@ public class Robot extends TimedRobot {
     VoltageOut testMotorVoltage = new VoltageOut(0);
     double commandedVelocity = gamepad.getRightY();
     double motorVoltage = testMotor.getSupplyVoltage().getValueAsDouble();
+    
     SmartDashboard.putNumber("Joystick Value", commandedVelocity);
     SmartDashboard.putNumber("Motor V", motorVoltage);
 
