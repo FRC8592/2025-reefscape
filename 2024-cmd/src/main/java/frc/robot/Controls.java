@@ -5,7 +5,6 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.CONTROLLERS;
-import frc.robot.subsystems.intake.IntakeCommands;
 
 public final class Controls {
     private static final CommandXboxController driverController = new CommandXboxController(
