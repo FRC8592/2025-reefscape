@@ -7,8 +7,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.ctre.phoenix6.hardware.*;
-import com.ctre.phoenix6.controls.*;
 import edu.wpi.first.wpilibj.XboxController;
 
 /**
@@ -23,9 +21,9 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  private TalonFX testMotor;
-  private VoltageOut testMotorVoltage = new VoltageOut(0);
   private XboxController gamepad = new XboxController(0);
+
+  private TestMotor motor = new TestMotor();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -37,7 +35,6 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    testMotor = new TalonFX(Constants.TEST_MOTOR_CAN_ID);
   }
 
   /**
@@ -93,13 +90,10 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    double commandedVelocity = gamepad.getRightY();
-    double motorVoltage = testMotor.getSupplyVoltage().getValueAsDouble();
+    double percentPower = gamepad.getRightY();
+    motor.setMotorOutput(percentPower);
 
-    SmartDashboard.putNumber("Joystick Value", commandedVelocity);
-    SmartDashboard.putNumber("Motor Voltage", motorVoltage);
-    
-    testMotor.setControl(testMotorVoltage.withOutput(commandedVelocity * motorVoltage));
+    SmartDashboard.putNumber("Joystick Value: ", percentPower);
   }
 
   /** This function is called once when the robot is disabled. */
