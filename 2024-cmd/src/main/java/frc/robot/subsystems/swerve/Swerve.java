@@ -221,7 +221,7 @@ public class Swerve extends NewtonSubsystem {
         });
 
         swerveSysID = new SysID(swerve.getModule(0).getDriveMotor(), swerve.getModule(1).getDriveMotor(), swerve.getModule(2).getDriveMotor(), swerve.getModule(3).getDriveMotor(), "swerveMotors", this);
-        swerveRoutine = swerveSysID.createRoutineSwerve(3);
+        swerveRoutine = swerveSysID.createRoutineSwerve(3); //Timeout in seconds, to edit simply change this number.
     }
 
     public SysIdRoutine getSwerveRoutine(){

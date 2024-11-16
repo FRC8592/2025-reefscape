@@ -556,7 +556,7 @@ public class SwerveCommands extends SubsystemCommands{
         .andThen(sysIdDynamic(Direction.kForward))
         .andThen(new WaitCommand(2))
         .andThen(sysIdDynamic(Direction.kReverse))
-        .andThen(swerve.runOnce(()->{swerve.pauseThread();}));
+        .andThen(swerve.runOnce(()->{swerve.runThread();}));
     }
   }
 }
