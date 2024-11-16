@@ -217,4 +217,12 @@ public class CTRESwerve extends SwerveDrivetrain{
     public void registerTelemetry(TriConsumer<SwerveDriveState, SwerveDriveKinematics, SwerveModule[]> telemetryFunction){
         registerTelemetry((swerveDriveState) -> telemetryFunction.accept(swerveDriveState, this.m_kinematics, this.Modules));
     }
+
+    public void pauseThread(){
+        this.m_odometryThread.stop();
+    }
+
+    public void runThread(){
+        this.m_odometryThread.start();
+    }
 }

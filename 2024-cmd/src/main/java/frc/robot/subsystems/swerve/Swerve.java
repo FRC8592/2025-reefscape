@@ -20,6 +20,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -67,6 +70,9 @@ public class Swerve extends NewtonSubsystem {
     private SmoothingFilter smoothingFilter;
 
     private CTRESwerve swerve;
+
+    private SysID swerveSysID;
+    private SysIdRoutine swerveRoutine;
 
     private Swerve() {
         smoothingFilter = new SmoothingFilter(
@@ -213,6 +219,13 @@ public class Swerve extends NewtonSubsystem {
             // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackRight/SteerTargetAngle", modules[3].getTargetState().angle);
             // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackRight/SteerReadVelocityRPM", modules[3].getSteerMotor().getVelocity().getValueAsDouble());
         });
+
+        swerveSysID = new SysID(swerve.getModule(0).getDriveMotor(), swerve.getModule(1).getDriveMotor(), swerve.getModule(2).getDriveMotor(), swerve.getModule(3).getDriveMotor(), "swerveMotors", this);
+        swerveRoutine = swerveSysID.createRoutineSwerve(3);
+    }
+
+    public SysIdRoutine getSwerveRoutine(){
+        return swerveRoutine;
     }
 
     public void periodic() {
@@ -402,5 +415,13 @@ public class Swerve extends NewtonSubsystem {
         }
 
         return currentSpeeds;
+    }
+
+    public void pauseThread(){
+        swerve.pauseThread();
+    }
+
+    public void runThread(){
+        swerve.runThread();
     }
 }
