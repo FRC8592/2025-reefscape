@@ -107,6 +107,9 @@ public class RobotContainer {
         Controls.stow.onTrue(
             pivot.commands.raisePivotCommand().alongWith(intake.commands.stopCommand())
         );
+        Controls.swerveSysID.onTrue(
+            swerve.commands.sysIdTests()
+        );
 
         // TODO: Add more bindings from controls to commands here
     }

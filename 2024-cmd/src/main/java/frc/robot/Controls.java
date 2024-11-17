@@ -41,6 +41,8 @@ public final class Controls {
 
     protected static Trigger stow = new Trigger(() -> false);
 
+    protected static Trigger swerveSysID = new Trigger(() -> false);
+
     /**
      * Change the variables in the Controls class to match the specified
      * control set. Note that this doesn't edit or remove bindings.
@@ -67,6 +69,8 @@ public final class Controls {
                 score = new Trigger(() -> false);
 
                 stow = new Trigger(() -> false);
+
+                swerveSysID = new Trigger(() -> false);
                 break;
 
             case MAIN_TELEOP:
@@ -87,6 +91,8 @@ public final class Controls {
                 snapBack = driverController.pov(180);
                 snapLeft = driverController.pov(90);
                 snapRight = driverController.pov(270);
+
+                swerveSysID = driverController.x();
                 break;
         }
     }

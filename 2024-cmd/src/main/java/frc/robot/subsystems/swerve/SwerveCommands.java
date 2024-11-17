@@ -204,6 +204,46 @@ public class SwerveCommands extends SubsystemCommands{
     }
 
     /**
+     * Allows for a Quasistatic test to be run on the swerve for SysID
+     * 
+     * @param direction which direction the quasistatic test is being run in
+     * @return the command
+     */
+    private Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+        
+        return swerve.getSwerveRoutine().quasistatic(direction);
+    }
+
+    /**
+     * Allows for a dynamic test to be run on the swerve for SysID
+     * 
+     * @param direction which direction the dynamic test is being run in
+     * @return the command
+     */
+    private Command sysIdDynamic(SysIdRoutine.Direction direction) {
+        
+        return swerve.getSwerveRoutine().dynamic(direction);
+    }
+
+    /**
+     * Runs the swerve SysID tests in the correct order and correct direction to collect data for SysID. 
+     * To do this, the odometry thread needs to be stopped and then started again at the end of the tests.
+     * 
+     * @return the command
+     */
+    public Command sysIdTests(){
+        return swerve.runOnce(()->{swerve.pauseThread();})
+        .andThen(sysIdQuasistatic(Direction.kForward))
+        .andThen(new WaitCommand(2))
+        .andThen(sysIdQuasistatic(Direction.kReverse))
+        .andThen(new WaitCommand(2))
+        .andThen(sysIdDynamic(Direction.kForward))
+        .andThen(new WaitCommand(2))
+        .andThen(sysIdDynamic(Direction.kReverse))
+        .andThen(swerve.runOnce(()->{swerve.runThread();}));
+    }
+
+    /**
      * Command to enable or disable robot-relative control for all inputs that are processed for
      * human comfort
      *
@@ -535,28 +575,5 @@ public class SwerveCommands extends SubsystemCommands{
                 -state.curvatureRadPerMeter
             );
         }
-
-    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-        
-        return swerve.getSwerveRoutine().quasistatic(direction);
-    }
-
-    public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-        
-        return swerve.getSwerveRoutine().dynamic(direction);
-    }
-    
-
-    public Command sysIdTests(){
-        return swerve.runOnce(()->{swerve.pauseThread();})
-        .andThen(sysIdQuasistatic(Direction.kForward))
-        .andThen(new WaitCommand(2))
-        .andThen(sysIdQuasistatic(Direction.kReverse))
-        .andThen(new WaitCommand(2))
-        .andThen(sysIdDynamic(Direction.kForward))
-        .andThen(new WaitCommand(2))
-        .andThen(sysIdDynamic(Direction.kReverse))
-        .andThen(swerve.runOnce(()->{swerve.runThread();}));
-    }
   }
 }
