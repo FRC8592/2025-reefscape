@@ -49,12 +49,23 @@ public class RobotContainer {
         )
       )
     );
+    // The B button on gamepad 0 will set the motor to 50% power
+    // Trigger halfPower = new JoystickButton(driveController.getHID(), XboxController.Button.kB.value);
+    // halfPower.onTrue.run(() -> driveTrain.setMotorPercentOutput(0.5));
+    driveController.b().onTrue(
+      driveTrain.run(
+        () -> driveTrain.setMotorPercentOutput(0.5)
+      )
+    );
+
+    
+
   }
     
 
 
   /**
-   * Use thisto pass the autonomous command to the main {@link Robot} class.
+   * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */

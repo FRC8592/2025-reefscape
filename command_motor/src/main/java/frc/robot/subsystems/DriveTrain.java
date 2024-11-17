@@ -19,11 +19,11 @@ public class DriveTrain extends SubsystemBase {
   VoltageOut desiredMotorVoltage = new VoltageOut(0);
 
   public DriveTrain() {
-    //Setting factory defaults for the motor
+    //Setting factory defaults for the motorz
     TalonFXConfiguration factoryConfigs = new TalonFXConfiguration();
 
     //Initializing the test motor
-    testMotor = new TalonFX(Constants.MAIN_MOTOR_CAN_ID);
+    TalonFX testMotor = new TalonFX(Constants.MAIN_MOTOR_CAN_ID);
     testMotor.getConfigurator().apply(factoryConfigs);
   }
 
@@ -37,7 +37,7 @@ public class DriveTrain extends SubsystemBase {
 
   /**
    * Set the motor percent output
-   * @param percentPower
+   * @param percentPower This parameter is for the power inputted into the motor in percentage from -1 to 1
    */
   public void setMotorPercentOutput(double percentPower) {
     testMotor.setControl(desiredMotorVoltage.withOutput(percentPower * getMaxMotorVoltage()));
