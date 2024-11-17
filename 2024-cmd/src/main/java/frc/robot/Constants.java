@@ -6,22 +6,6 @@ public final class Constants {
     public final class SHARED {
         public static final String LOG_FOLDER = "CustomLogs";
     }
-    public final class INTAKE {
-        public static final int RIGHT_INTAKE_MOTOR_CAN_ID = 0;
-        public static final int LEFT_INTAKE_MOTOR_CAN_ID = 0;
-
-        public static final double INTAKE_MOTOR_kP = 0.0;
-        public static final double INTAKE_MOTOR_kI = 0.0;
-        public static final double INTAKE_MOTOR_kD = 0.0;
-        public static final double INTAKE_MOTOR_kFF = 0.0;
-        public static final double INTAKE_VELOCITY = 2000;
-        public static final double OUTAKE_VELOCITY = -2000;
-
-        public static final int SLOT_ID = 0;
-
-
-
-    }
     public final class CONVERSIONS {
         public static final double METERS_SECOND_TO_TICKS_TALONFX = ((2048 * 6.75 * 60) / (200 * Math.PI * 0.0508));
 
@@ -61,9 +45,6 @@ public final class Constants {
         public static final int SWERVE_WHITE_BACK_RIGHT_DRIVE_CAN_ID = 0;
         public static final int SWERVE_WHITE_BACK_RIGHT_STEER_CAN_ID = 0;
         public static final int SWERVE_WHITE_BACK_RIGHT_ENCODER_CAN_ID = 0;
-
-        public static final int INTAKE_TOP_CAN_ID = 0;
-        public static final int INTAKE_BOTTOM_CAN_ID = 0;
 
         public static final int PIGEON_CAN_ID = 0;
 
