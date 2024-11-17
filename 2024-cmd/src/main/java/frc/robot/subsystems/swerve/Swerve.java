@@ -94,6 +94,7 @@ public class Swerve extends NewtonSubsystem {
             new SwerveDrivetrainConstants()
             .withPigeon2Id(CAN.PIGEON_CAN_ID)
             .withPigeon2Configs(new Pigeon2Configuration())
+            .withCANbusName("*")
         );
 
         // This configuration object will apply to all of the swerve's drive motors
@@ -171,7 +172,7 @@ public class Swerve extends NewtonSubsystem {
             CAN.SWERVE_WHITE_BACK_RIGHT_STEER_CAN_ID,
             CAN.SWERVE_WHITE_BACK_RIGHT_DRIVE_CAN_ID,
             CAN.SWERVE_WHITE_BACK_RIGHT_ENCODER_CAN_ID,
-            SWERVE.WHITE_BACK_RIGHT_STEER_OFFSET,
+        SWERVE.WHITE_BACK_RIGHT_STEER_OFFSET,
             Units.inchesToMeters(SWERVE.WHITE_BACK_RIGHT_X_POSITION),
             Units.inchesToMeters(SWERVE.WHITE_BACK_RIGHT_Y_POSITION),
             SWERVE.INVERT_RIGHT_SIDE
