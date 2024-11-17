@@ -15,45 +15,24 @@ import com.ctre.phoenix6.hardware.*;
 
 public class Name extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-   TalonFX Commandedmotor = new TalonFX(Constants.TestMotorCanId);
-  public Name() {
-
- TalonFXConfiguration TFXconfig = new TalonFXConfiguration();
- Commandedmotor.getConfigurator().apply(TFXconfig);
+  TalonFX Commandedmotor = new TalonFX(Constants.TEST_MOTOR_CAN_ID);
+  private VoltageOut commandedMotorVolts = new VoltageOut(0);
   
-  }
-   public double maxmotorvolts = Commandedmotor.getSupplyVoltage().getValueAsDouble();
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-  public Command exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-        });
+  public Name() {
+  
+    TalonFXConfiguration TFXconfig = new TalonFXConfiguration();
+    Commandedmotor.getConfigurator().apply(TFXconfig);
+
   }
 
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
-  public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
-    return false;
+/**
+ * Sets output of motor to outputPercent
+ * @param outputPercent a value from -1 to 1  
+ */
+  public void setMotorOutput (double outputPercent){
+    double maxmotorvolts = Commandedmotor.getSupplyVoltage().getValueAsDouble();
+    Commandedmotor.setControl(commandedMotorVolts.withOutput(maxmotorvolts * outputPercent));   
+
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
-
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
-  }
 }
