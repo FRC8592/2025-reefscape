@@ -132,7 +132,7 @@ public class SysID {
         
         MutableMeasure<Distance> distance = mutable(Meters.of(0));
         
-        return distance.mut_replace(testMotor.getPosition(), Meters);
+        return distance.mut_replace(position, Meters);
         
     }
 
@@ -222,11 +222,11 @@ public class SysID {
     }
 
     /**
-     * Logs the 4 swerve motors to make code more readable in the routine
+     * Logs the 4 swerve motors in the linear test to make code more readable in the routine
      * 
      * @param log a SysIdRoutineLog object made to put everything in its own log
      */
-    private void logSwerveMotors(SysIdRoutineLog log){
+    private void logLinearSwerveMotors(SysIdRoutineLog log){
         log.motor("frontLeftMotor")
             .voltage(getVoltageAsWpiUnit(swerveMotors[0].getMotorVoltage().getValueAsDouble()))
             .linearPosition(getLinearPositionAsWpiUnit(swerveMotors[0].getPosition().getValueAsDouble()))
@@ -246,6 +246,33 @@ public class SysID {
             .voltage(getVoltageAsWpiUnit(swerveMotors[3].getMotorVoltage().getValueAsDouble()))
             .linearPosition(getLinearPositionAsWpiUnit(swerveMotors[3].getPosition().getValueAsDouble()))
             .linearVelocity(getLinearVelocityAsWpiUnit(swerveMotors[3].getVelocity().getValueAsDouble()));
+    }
+
+    /**
+     * Logs the 4 swerve motors in the linear test to make code more readable in the routine
+     * 
+     * @param log a SysIdRoutineLog object made to put everything in its own log
+     */
+    private void logAngularSwerveMotors(SysIdRoutineLog log){
+        log.motor("frontLeftMotor")
+            .voltage(getVoltageAsWpiUnit(swerveMotors[0].getMotorVoltage().getValueAsDouble()))
+            .angularPosition(getAngularPositionAsWpiUnit(swerveMotors[0].getPosition().getValueAsDouble()))
+            .angularVelocity(getAngularVelocityAsWpiUnit(swerveMotors[0].getVelocity().getValueAsDouble()));
+
+        log.motor("frontRightMotor")
+            .voltage(getVoltageAsWpiUnit(swerveMotors[1].getMotorVoltage().getValueAsDouble()))
+            .angularPosition(getAngularPositionAsWpiUnit(swerveMotors[1].getPosition().getValueAsDouble()))
+            .angularVelocity(getAngularVelocityAsWpiUnit(swerveMotors[1].getVelocity().getValueAsDouble()));
+
+        log.motor("backLeftMotor")
+            .voltage(getVoltageAsWpiUnit(swerveMotors[2].getMotorVoltage().getValueAsDouble()))
+            .angularPosition(getAngularPositionAsWpiUnit(swerveMotors[2].getPosition().getValueAsDouble()))
+            .angularVelocity(getAngularVelocityAsWpiUnit(swerveMotors[2].getVelocity().getValueAsDouble()));
+
+        log.motor("backRightMotor")
+            .voltage(getVoltageAsWpiUnit(swerveMotors[3].getMotorVoltage().getValueAsDouble()))
+            .angularPosition(getAngularPositionAsWpiUnit(swerveMotors[3].getPosition().getValueAsDouble()))
+            .angularVelocity(getAngularVelocityAsWpiUnit(swerveMotors[3].getVelocity().getValueAsDouble()));
     }
 
     /**
@@ -347,7 +374,7 @@ public class SysID {
      * 
      * @return a SysIDRoutine for those motors.
      */
-    public SysIdRoutine createSwerveRoutine(int timeout){
+    public SysIdRoutine createLinearSwerveRoutine(double timeout){
 
         MutableMeasure<Time> time = mutable(Seconds.of(timeout)); 
 
@@ -358,7 +385,32 @@ public class SysID {
                     runSwerveMotorsAtVoltage(voltage);
                 }, 
                 (log)->{
-                    logSwerveMotors(log);
+                    logLinearSwerveMotors(log);
+                }, subsystemBase
+            )
+        );
+
+        return routine;
+
+    }
+
+    /**
+     * Creates a SysIDRoutine for the swerve PID with a timeout to prevent the robot causing accidents.
+     * 
+     * @return a SysIDRoutine for those motors.
+     */
+    public SysIdRoutine createAngularSwerveRoutine(double timeout){
+
+        MutableMeasure<Time> time = mutable(Seconds.of(timeout)); 
+
+        SysIdRoutine routine = new SysIdRoutine(
+            new SysIdRoutine.Config(null, null, time),
+            new SysIdRoutine.Mechanism(
+                (voltage) -> {
+                    runSwerveMotorsAtVoltage(voltage);
+                }, 
+                (log)->{
+                    logAngularSwerveMotors(log);
                 }, subsystemBase
             )
         );

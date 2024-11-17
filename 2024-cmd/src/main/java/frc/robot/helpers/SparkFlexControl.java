@@ -112,6 +112,13 @@ public class SparkFlexControl {
     }
 
     /**
+     * Returns the motor's voltage in volts
+     */
+    public double getVoltage(){
+        return motor.getBusVoltage();
+    }
+
+    /**
      * Invert the motor (positional setpoints, velocity setpoints,
      * the direction power mode drives it, etc)
      */
@@ -124,13 +131,6 @@ public class SparkFlexControl {
      */
     public double getTicks(){
         return motorEncoder.getPosition()*4096;
-    }
-
-    /**
-     * Returns the motor's voltage in volts
-     */
-    public double getVoltage(){
-        return motor.getBusVoltage();
     }
 
     /**

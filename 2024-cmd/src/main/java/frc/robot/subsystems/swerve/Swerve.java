@@ -71,8 +71,10 @@ public class Swerve extends NewtonSubsystem {
 
     private CTRESwerve swerve;
 
-    private SysID swerveSysID;
-    private SysIdRoutine swerveRoutine;
+    private SysID swerveLinearSysID;
+    private SysID swerveAngularSysID;
+    private SysIdRoutine linearSwerveRoutine;
+    private SysIdRoutine angularSwerveRoutine;
 
     private Swerve() {
         smoothingFilter = new SmoothingFilter(
@@ -100,6 +102,7 @@ public class Swerve extends NewtonSubsystem {
             new SwerveDrivetrainConstants()
             .withPigeon2Id(CAN.PIGEON_CAN_ID)
             .withPigeon2Configs(new Pigeon2Configuration())
+            .withCANbusName("*")
         );
 
         // This configuration object will apply to all of the swerve's drive motors
@@ -177,7 +180,7 @@ public class Swerve extends NewtonSubsystem {
             CAN.SWERVE_WHITE_BACK_RIGHT_STEER_CAN_ID,
             CAN.SWERVE_WHITE_BACK_RIGHT_DRIVE_CAN_ID,
             CAN.SWERVE_WHITE_BACK_RIGHT_ENCODER_CAN_ID,
-            SWERVE.WHITE_BACK_RIGHT_STEER_OFFSET,
+        SWERVE.WHITE_BACK_RIGHT_STEER_OFFSET,
             Units.inchesToMeters(SWERVE.WHITE_BACK_RIGHT_X_POSITION),
             Units.inchesToMeters(SWERVE.WHITE_BACK_RIGHT_Y_POSITION),
             SWERVE.INVERT_RIGHT_SIDE
@@ -220,12 +223,18 @@ public class Swerve extends NewtonSubsystem {
             // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackRight/SteerReadVelocityRPM", modules[3].getSteerMotor().getVelocity().getValueAsDouble());
         });
 
-        swerveSysID = new SysID(swerve.getModule(0).getDriveMotor(), swerve.getModule(1).getDriveMotor(), swerve.getModule(2).getDriveMotor(), swerve.getModule(3).getDriveMotor(), "swerveMotors", this);
-        swerveRoutine = swerveSysID.createSwerveRoutine(3); //Timeout in seconds, to edit simply change this number.
+        swerveLinearSysID = new SysID(swerve.getModule(0).getDriveMotor(), swerve.getModule(1).getDriveMotor(), swerve.getModule(2).getDriveMotor(), swerve.getModule(3).getDriveMotor(), "swerveMotors", this);
+        linearSwerveRoutine = swerveLinearSysID.createLinearSwerveRoutine(2.5); //Timeout in seconds, to edit simply change this number.
+        swerveAngularSysID = new SysID(swerve.getModule(0).getSteerMotor(), swerve.getModule(1).getSteerMotor(), swerve.getModule(2).getSteerMotor(), swerve.getModule(3).getSteerMotor(), "swerveMotors", this);
+        angularSwerveRoutine = swerveAngularSysID.createAngularSwerveRoutine(2.5); //Timeout in seconds, to edit simply change this number.
     }
 
-    public SysIdRoutine getSwerveRoutine(){
-        return swerveRoutine;
+    public SysIdRoutine getLinearSwerveRoutine(){
+        return linearSwerveRoutine;
+    }
+
+    public SysIdRoutine getAngularSwerveRoutine(){
+        return angularSwerveRoutine;
     }
 
     public void periodic() {

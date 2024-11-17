@@ -6,24 +6,6 @@ public final class Constants {
     public final class SHARED {
         public static final String LOG_FOLDER = "CustomLogs";
     }
-    public final class INTAKE {
-        public static final double INTAKE_MOTOR_kP = 0.0;
-        public static final double INTAKE_MOTOR_kI = 0.0;
-        public static final double INTAKE_MOTOR_kD = 0.0;
-        public static final double INTAKE_MOTOR_kFF = 0.0;
-        public static final double INTAKE_VELOCITY = 2000;
-        public static final double OUTAKE_VELOCITY = -2000;
-
-        public static final int SLOT_ID = 0;
-
-    }
-
-    public final class PIVOT {
-        public static final double PIVOT_DROP_DEGREES = 0;
-        public static final double PIVOT_RAISE_DEGREES = 90;
-        public static final double PIVOT_GEAR_RATIO = 1;
-    }
-
     public final class CONVERSIONS {
         public static final double METERS_SECOND_TO_TICKS_TALONFX = ((2048 * 6.75 * 60) / (200 * Math.PI * 0.0508));
 
@@ -48,28 +30,23 @@ public final class Constants {
     }
 
     public final class CAN {
-        public static final int SWERVE_BLACK_FRONT_LEFT_DRIVE_CAN_ID = 0;
-        public static final int SWERVE_BLACK_FRONT_LEFT_STEER_CAN_ID = 0;
-        public static final int SWERVE_BLACK_FRONT_LEFT_ENCODER_CAN_ID = 0;
+        public static final int SWERVE_BLACK_FRONT_LEFT_DRIVE_CAN_ID = 17;
+        public static final int SWERVE_BLACK_FRONT_LEFT_STEER_CAN_ID = 9;
+        public static final int SWERVE_BLACK_FRONT_LEFT_ENCODER_CAN_ID = 13;
 
-        public static final int SWERVE_ORANGE_FRONT_RIGHT_DRIVE_CAN_ID = 0;
-        public static final int SWERVE_ORANGE_FRONT_RIGHT_STEER_CAN_ID = 0;
-        public static final int SWERVE_ORANGE_FRONT_RIGHT_ENCODER_CAN_ID = 0;
+        public static final int SWERVE_ORANGE_FRONT_RIGHT_DRIVE_CAN_ID = 7;
+        public static final int SWERVE_ORANGE_FRONT_RIGHT_STEER_CAN_ID = 8;
+        public static final int SWERVE_ORANGE_FRONT_RIGHT_ENCODER_CAN_ID = 12;
 
-        public static final int SWERVE_TEAL_BACK_LEFT_DRIVE_CAN_ID = 0;
-        public static final int SWERVE_TEAL_BACK_LEFT_STEER_CAN_ID = 0;
-        public static final int SWERVE_TEAL_BACK_LEFT_ENCODER_CAN_ID = 0;
+        public static final int SWERVE_TEAL_BACK_LEFT_DRIVE_CAN_ID = 18;
+        public static final int SWERVE_TEAL_BACK_LEFT_STEER_CAN_ID = 4;
+        public static final int SWERVE_TEAL_BACK_LEFT_ENCODER_CAN_ID = 10;
 
-        public static final int SWERVE_WHITE_BACK_RIGHT_DRIVE_CAN_ID = 0;
-        public static final int SWERVE_WHITE_BACK_RIGHT_STEER_CAN_ID = 0;
-        public static final int SWERVE_WHITE_BACK_RIGHT_ENCODER_CAN_ID = 0;
+        public static final int SWERVE_WHITE_BACK_RIGHT_DRIVE_CAN_ID = 5;
+        public static final int SWERVE_WHITE_BACK_RIGHT_STEER_CAN_ID = 6;
+        public static final int SWERVE_WHITE_BACK_RIGHT_ENCODER_CAN_ID = 11;
 
-        public static final int INTAKE_TOP_CAN_ID = 0;
-        public static final int INTAKE_BOTTOM_CAN_ID = 0;
-
-        public static final int PIVOT_MOTOR_CAN_ID = 0;
-
-        public static final int PIGEON_CAN_ID = 0;
+        public static final int PIGEON_CAN_ID = 20;
 
         public static final int PDH_CAN_ID = 0;
     }
@@ -84,7 +61,6 @@ public final class Constants {
     public final class SWERVE {
         public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Swerve/";
 
-        //TODO: Double check that these PID constants still work
         public static final double STEER_P = 100;
         public static final double STEER_I = 0;
         public static final double STEER_D = 0.2;
@@ -92,12 +68,12 @@ public final class Constants {
         public static final double STEER_V = 1.5;
         public static final double STEER_A = 0;
 
-        public static final double DRIVE_P = 3;
+        public static final double DRIVE_P = 0.081581;
         public static final double DRIVE_I = 0;
         public static final double DRIVE_D = 0;
-        public static final double DRIVE_S = 0;
-        public static final double DRIVE_V = 0;
-        public static final double DRIVE_A = 0;
+        public static final double DRIVE_S = 0.18933;
+        public static final double DRIVE_V = 0.11781;
+        public static final double DRIVE_A = 0.0073724;
 
         //TODO: Double check that these PID constants still work
         public static final double SNAP_TO_kP = 3.7;
@@ -144,10 +120,10 @@ public final class Constants {
         // public static final double WHITE_BACK_RIGHT_STEER_OFFSET = -0.4853515625;
 
         //TODO: Set these
-        public static final double BLACK_FRONT_LEFT_STEER_OFFSET = 0;
-        public static final double ORANGE_FRONT_RIGHT_STEER_OFFSET = 0;
-        public static final double TEAL_BACK_LEFT_STEER_OFFSET = 0;
-        public static final double WHITE_BACK_RIGHT_STEER_OFFSET = 0;
+        public static final double BLACK_FRONT_LEFT_STEER_OFFSET = 0.062255859375;
+        public static final double ORANGE_FRONT_RIGHT_STEER_OFFSET = -0.37890625;
+        public static final double TEAL_BACK_LEFT_STEER_OFFSET = -0.0029296875;
+        public static final double WHITE_BACK_RIGHT_STEER_OFFSET = -0.293701171875;
 
         public static final boolean BLACK_FRONT_LEFT_STEER_INVERT = true;
         public static final boolean ORANGE_FRONT_RIGHT_STEER_INVERT = true;
@@ -156,20 +132,20 @@ public final class Constants {
 
 
         //TODO: Set these
-        public static final double BLACK_FRONT_LEFT_X_POSITION = 0;
-        public static final double BLACK_FRONT_LEFT_Y_POSITION = 0;
+        public static final double BLACK_FRONT_LEFT_X_POSITION = 8.375;
+        public static final double BLACK_FRONT_LEFT_Y_POSITION = 8.375;
 
         //TODO: Set these
-        public static final double ORANGE_FRONT_RIGHT_X_POSITION = 0;
-        public static final double ORANGE_FRONT_RIGHT_Y_POSITION = 0;
+        public static final double ORANGE_FRONT_RIGHT_X_POSITION = 8.375;
+        public static final double ORANGE_FRONT_RIGHT_Y_POSITION = -8.375;
 
         //TODO: Set these
-        public static final double TEAL_BACK_LEFT_X_POSITION = 0;
-        public static final double TEAL_BACK_LEFT_Y_POSITION = 0;
+        public static final double TEAL_BACK_LEFT_X_POSITION = -8.375;
+        public static final double TEAL_BACK_LEFT_Y_POSITION = 8.375;
 
         //TODO: Set these
-        public static final double WHITE_BACK_RIGHT_X_POSITION = 0;
-        public static final double WHITE_BACK_RIGHT_Y_POSITION = 0;
+        public static final double WHITE_BACK_RIGHT_X_POSITION = -8.375;
+        public static final double WHITE_BACK_RIGHT_Y_POSITION = -8.375;
 
         //TODO: Double check that these still work
         public static final double PATH_FOLLOW_TRANSLATE_kP = 6d;

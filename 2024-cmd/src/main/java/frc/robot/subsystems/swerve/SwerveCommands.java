@@ -209,9 +209,9 @@ public class SwerveCommands extends SubsystemCommands{
      * @param direction which direction the quasistatic test is being run in
      * @return the command
      */
-    private Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    private Command sysIdLinearQuasistatic(SysIdRoutine.Direction direction) {
         
-        return swerve.getSwerveRoutine().quasistatic(direction);
+        return swerve.getLinearSwerveRoutine().quasistatic(direction);
     }
 
     /**
@@ -220,9 +220,31 @@ public class SwerveCommands extends SubsystemCommands{
      * @param direction which direction the dynamic test is being run in
      * @return the command
      */
-    private Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    private Command sysIdLinearDynamic(SysIdRoutine.Direction direction) {
         
-        return swerve.getSwerveRoutine().dynamic(direction);
+        return swerve.getLinearSwerveRoutine().dynamic(direction);
+    }
+
+    /**
+     * Allows for a Quasistatic test to be run on the swerve for SysID
+     * 
+     * @param direction which direction the quasistatic test is being run in
+     * @return the command
+     */
+    private Command sysIdAngularQuasistatic(SysIdRoutine.Direction direction) {
+        
+        return swerve.getAngularSwerveRoutine().quasistatic(direction);
+    }
+
+    /**
+     * Allows for a dynamic test to be run on the swerve for SysID
+     * 
+     * @param direction which direction the dynamic test is being run in
+     * @return the command
+     */
+    private Command sysIdAngularDynamic(SysIdRoutine.Direction direction) {
+        
+        return swerve.getAngularSwerveRoutine().dynamic(direction);
     }
 
     /**
@@ -231,15 +253,33 @@ public class SwerveCommands extends SubsystemCommands{
      * 
      * @return the command
      */
-    public Command sysIdTests(){
+    public Command sysIdTestsLinear(){
         return swerve.runOnce(()->{swerve.pauseThread();})
-        .andThen(sysIdQuasistatic(Direction.kForward))
+        .andThen(sysIdLinearQuasistatic(Direction.kForward))
         .andThen(new WaitCommand(2))
-        .andThen(sysIdQuasistatic(Direction.kReverse))
+        .andThen(sysIdLinearQuasistatic(Direction.kReverse))
         .andThen(new WaitCommand(2))
-        .andThen(sysIdDynamic(Direction.kForward))
+        .andThen(sysIdLinearDynamic(Direction.kForward))
         .andThen(new WaitCommand(2))
-        .andThen(sysIdDynamic(Direction.kReverse))
+        .andThen(sysIdLinearDynamic(Direction.kReverse))
+        .andThen(swerve.runOnce(()->{swerve.runThread();}));
+    }
+
+    /**
+     * Runs the swerve SysID tests in the correct order and correct direction to collect data for SysID. 
+     * To do this, the odometry thread needs to be stopped and then started again at the end of the tests.
+     * 
+     * @return the command
+     */
+    public Command sysIdTestsAngular(){
+        return swerve.runOnce(()->{swerve.pauseThread();})
+        .andThen(sysIdAngularQuasistatic(Direction.kForward))
+        .andThen(new WaitCommand(2))
+        .andThen(sysIdAngularQuasistatic(Direction.kReverse))
+        .andThen(new WaitCommand(2))
+        .andThen(sysIdAngularDynamic(Direction.kForward))
+        .andThen(new WaitCommand(2))
+        .andThen(sysIdAngularDynamic(Direction.kReverse))
         .andThen(swerve.runOnce(()->{swerve.runThread();}));
     }
 
