@@ -43,21 +43,43 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    driveTrain.setDefaultCommand(
-      driveTrain.run(
-        () -> driveTrain.setMotorPercentOutput(driveController.getRightY()
-        )
-      )
-    );
+    // driveTrain.setDefaultCommand(
+    //   driveTrain.run(
+    //     () -> driveTrain.setMotorPercentOutput(driveController.getRightY()
+    //     )
+    //   )
+    // );
     // The B button on gamepad 0 will set the motor to 50% power
     // Trigger halfPower = new JoystickButton(driveController.getHID(), XboxController.Button.kB.value);
     // halfPower.onTrue.run(() -> driveTrain.setMotorPercentOutput(0.5));
-    driveController.b().onTrue(
-      driveTrain.run(
-        () -> driveTrain.setMotorPercentOutput(0.5)
+    driveController.b().whileTrue(
+      driveTrain.startEnd(
+        () -> driveTrain.setMotorPercentOutput(0.5),
+        () -> driveTrain.setMotorPercentOutput(0)
       )
     );
 
+    //Pressing y starts a chain of event
+    driveController.y().onTrue(
+      //First starting at 10% power
+      driveTrain.runOnce(
+        () -> driveTrain.setMotorPercentOutput(0.1)
+      ).andThen(
+        //Waiting 3 seconds
+        Commands.waitSeconds(3),
+        //Then setting the power to 50% 
+        driveTrain.runOnce(
+          () -> driveTrain.setMotorPercentOutput(0.5)
+        )
+      ).andThen(
+        //Waiting 3 seconds
+        Commands.waitSeconds(3), 
+        //Finally setting the power to 0
+        driveTrain.runOnce(
+          () -> driveTrain.setMotorPercentOutput(0)
+        )
+      )
+    );
     
 
   }
