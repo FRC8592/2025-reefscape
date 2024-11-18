@@ -60,27 +60,33 @@ public class RobotContainer {
     );
 
     //Pressing y starts a chain of event
+    // driveController.y().onTrue(
+    //   //First starting at 10% power
+    //   driveTrain.runOnce(
+    //     () -> driveTrain.setMotorPercentOutput(0.1)
+    //   ).andThen(
+    //     //Waiting 3 seconds
+    //     Commands.waitSeconds(3),
+    //     //Then setting the power to 50% 
+    //     driveTrain.runOnce(
+    //       () -> driveTrain.setMotorPercentOutput(0.5)
+    //     )
+    //   ).andThen(
+    //     //Waiting 3 seconds
+    //     Commands.waitSeconds(3), 
+    //     //Finally setting the power to 0
+    //     driveTrain.runOnce(
+    //       () -> driveTrain.setMotorPercentOutput(0)
+    //     )
+    //   )
+    // );
     driveController.y().onTrue(
-      //First starting at 10% power
-      driveTrain.runOnce(
-        () -> driveTrain.setMotorPercentOutput(0.1)
-      ).andThen(
-        //Waiting 3 seconds
-        Commands.waitSeconds(3),
-        //Then setting the power to 50% 
-        driveTrain.runOnce(
-          () -> driveTrain.setMotorPercentOutput(0.5)
-        )
-      ).andThen(
-        //Waiting 3 seconds
-        Commands.waitSeconds(3), 
-        //Finally setting the power to 0
-        driveTrain.runOnce(
-          () -> driveTrain.setMotorPercentOutput(0)
-        )
+      Commands.sequence(
+        driveTrain.run(() -> driveTrain.setMotorPercentOutput(0.1)).withTimeout(3),
+        driveTrain.run(() -> driveTrain.setMotorPercentOutput(0.5)).withTimeout(3),
+        driveTrain.run(() -> driveTrain.setMotorPercentOutput(0.0))
       )
     );
-    
 
   }
     
