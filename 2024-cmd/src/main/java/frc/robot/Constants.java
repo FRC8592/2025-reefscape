@@ -56,7 +56,13 @@ public final class Constants {
         public static final int SWERVE_DRIVE_CURRENT_LIMIT = 80;
         public static final int SWERVE_STEER_CURRENT_LIMIT = 40;
     }
-
+    public final class PIVOT {
+        public static final int GROUND_DEGREES = 0;
+        // TODO: Set these to correct values
+        public static final int REST_DEGREES = 0;
+        public static final int SCORE_HIGH_DEGREES = 0;
+        public static final int HP_LOAD_DEGREES = 0;
+    }
     public final class SWERVE {
         public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Swerve/";
 
