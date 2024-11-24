@@ -8,7 +8,8 @@ public class StowCommand extends NewtonCommand{
     public StowCommand(Intake intake){
         super(
             pivot.commands.setPivotPositionCommand(Positions.REST).alongWith(
-                intake.intakeCommand(),intake.stopCommand()            )
+                intake.stopCommand()
+            )
         );
     }
 }
