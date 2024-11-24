@@ -5,7 +5,13 @@
 package frc.robot;
 
 import frc.robot.Controls.ControlSets;
+import frc.robot.commands.GroundIntakeCommand;
+import frc.robot.commands.OuttakeCommand;
+import frc.robot.commands.ScoreLowCommand;
+import frc.robot.commands.StowCommand;
 import frc.robot.commands.autonomous.*;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.pivot.Pivot;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 
@@ -18,6 +24,8 @@ import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 public class RobotContainer {
     // The robot's subsystems
     private final Swerve swerve;
+    private final Intake intake;
+    private final Pivot pivot;
     //TODO: Add more subsystems here
 
     // Helpers
@@ -29,6 +37,8 @@ public class RobotContainer {
      */
     public RobotContainer() {
         swerve = Swerve.instantiate();
+        intake = new Intake();
+        pivot = Pivot.instantiate();
         // TODO: Add more subsystems and instantiatable helpers here
 
         configureBindings(ControlSets.MAIN_TELEOP);
@@ -94,7 +104,22 @@ public class RobotContainer {
             swerve.commands.snapToCommand(Controls.driveTranslateX, Controls.driveTranslateY, Rotation2d.fromDegrees(90), DriveModes.AUTOMATIC)
             .withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         );
-
+        Controls.testIntake.whileTrue(
+            new GroundIntakeCommand(intake)
+        ).onFalse(
+            new StowCommand(intake)
+        );
+        Controls.testOuttake.whileTrue(
+            new OuttakeCommand(intake)
+        ).onFalse(
+            new StowCommand(intake)
+        );
+        Controls.testScore.whileTrue(
+            new ScoreLowCommand(intake)
+        ).onFalse(
+            new StowCommand(intake)
+        );
+        
         // TODO: Add more bindings from controls to commands here
     }
 

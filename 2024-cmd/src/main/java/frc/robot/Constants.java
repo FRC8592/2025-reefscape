@@ -30,6 +30,9 @@ public final class Constants {
     }
 
     public final class CAN {
+        public static final int INTAKE_TOP_MOTOR_CAN_ID = 23;
+        public static final int INTAKE_BOTTOM_MOTOR_CAN_ID = 31;
+        
         public static final int SWERVE_BLACK_FRONT_LEFT_DRIVE_CAN_ID = 17;
         public static final int SWERVE_BLACK_FRONT_LEFT_STEER_CAN_ID = 9;
         public static final int SWERVE_BLACK_FRONT_LEFT_ENCODER_CAN_ID = 13;
@@ -63,6 +66,19 @@ public final class Constants {
         public static final int SCORE_HIGH_DEGREES = 0;
         public static final int HP_LOAD_DEGREES = 0;
     }
+    
+    public final class INTAKE {
+        public static final int TOP_MOTOR_INTAKE_SPEED = 1500;
+        public static final int BOTTOM_MOTOR_INTAKE_SPEED = 1500;
+        
+        public static final int TOP_MOTOR_SCORE_SPEED = -3000;
+        public static final int BOTTOM_MOTOR_SCORE_SPEED = -3000;
+        
+        public static final int TOP_MOTOR_OUTTAKE_SPEED = -1500;
+        public static final int BOTTOM_MOTOR_OUTTAKE_SPEED = -1500;
+    }
+
+    
     public final class SWERVE {
         public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Swerve/";
 

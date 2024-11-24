@@ -35,6 +35,10 @@ public final class Controls {
     protected static Trigger snapBack = new Trigger(() -> false);
     protected static Trigger snapLeft = new Trigger(() -> false);
     protected static Trigger snapRight = new Trigger(() -> false);
+    
+    protected static Trigger testIntake = new Trigger(() -> false);
+    protected static Trigger testOuttake = new Trigger(() -> false);
+    protected static Trigger testScore = new Trigger(() -> false);
 
     /**
      * Change the variables in the Controls class to match the specified
@@ -57,6 +61,10 @@ public final class Controls {
                 snapBack = new Trigger(() -> false);
                 snapLeft = new Trigger(() -> false);
                 snapRight = new Trigger(() -> false);
+                
+                testIntake = new Trigger(() -> false);
+                testOuttake = new Trigger(() -> false);
+                testScore = new Trigger(() -> false);
                 break;
 
             case MAIN_TELEOP:
@@ -72,6 +80,10 @@ public final class Controls {
                 snapBack = driverController.pov(180);
                 snapLeft = driverController.pov(90);
                 snapRight = driverController.pov(270);
+                
+                testIntake = driverController.leftTrigger(0.1);
+                testOuttake = driverController.rightTrigger(0.1);
+                testScore = driverController.a();
                 break;
         }
     }

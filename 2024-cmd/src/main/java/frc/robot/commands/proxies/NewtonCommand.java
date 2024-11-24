@@ -9,7 +9,6 @@ import frc.robot.subsystems.pivot.Pivot;
 import frc.robot.subsystems.swerve.Swerve;
 
 public abstract class NewtonCommand extends WrapperCommand {
-    protected static Intake intake = Intake.getInstance();
     protected static Pivot pivot = Pivot.getInstance();
     protected static Swerve swerve = Swerve.getInstance();
     //TODO: Add more subsystems here
