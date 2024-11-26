@@ -3,9 +3,6 @@
     "Addressable LEDs": {
       "0": {
         "columns": 1
-      },
-      "window": {
-        "visible": true
       }
     },
     "Other Devices": {
@@ -17,6 +14,7 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Autonomous Config/SendableChooser[0]": "String Chooser",
       "/SmartDashboard/Auto Chooser": "String Chooser",
       "/SmartDashboard/Field": "Field2d"
     },
