@@ -14,14 +14,21 @@ import frc.robot.Robot;
 import frc.robot.Suppliers;
 import frc.robot.commands.proxies.*;
 import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.*;
 
 /**
  * General class for autonomous management (loading autos, sending the chooser, getting the
  * user-selected auto command, etc).
  */
 public final class AutoManager {
-    private static Swerve swerve = Swerve.getInstance();
-    //TODO: Add more subsystems here
+    private static Swerve swerve;
+    private static Intake intake;
+    private static Pivot pivot;
+    public static void addSubsystems(Swerve swerve, Intake intake, Pivot pivot){
+        AutoManager.swerve = swerve;
+        AutoManager.intake = intake;
+        AutoManager.pivot = pivot;
+    }
 
     private static SendableChooser<AutoCommand> autoChooser;
     private static ArrayList<AutoCommand> autoCommands = new ArrayList<>();
@@ -71,7 +78,9 @@ public final class AutoManager {
         }
         else{ // If we do have a starting pose, reset the odometry to that first
             return getAutonomousInitCommand().andThen(
-                swerve.commands.setOdometryPoseCommand(autoCommand.startPose, Suppliers.robotRunningOnRed)
+                swerve.runOnce(() -> swerve.resetPose(
+                    autoCommand.startPose, Suppliers.robotRunningOnRed.getAsBoolean()
+                ))
             ).andThen(
                 new MultiComposableCommand(autoCommand)
             );
@@ -85,8 +94,11 @@ public final class AutoManager {
      */
     private static Command getAutonomousInitCommand(){
         return new ParallelCommandGroup(
-            swerve.commands.autonomousInitCommand()
-            // TODO: Add more subsystems' autonomous init commands here
+            swerve.runOnce(() -> {
+                swerve.stop();
+                swerve.resetHeading();
+            })
+            // TODO: Add any other commands that need to be run on autonomous init here
         );
     }
 

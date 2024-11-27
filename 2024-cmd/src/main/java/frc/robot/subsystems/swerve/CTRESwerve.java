@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import frc.robot.Robot;
 import frc.robot.Suppliers;
-import frc.robot.Constants.SWERVE;
+import frc.robot.Constants.*;
 
 public class CTRESwerve extends SwerveDrivetrain{
     private Notifier m_simNotifier = null;

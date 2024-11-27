@@ -18,34 +18,18 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackTy
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import org.littletonrobotics.junction.Logger;
 
 import frc.robot.*;
 import frc.robot.helpers.*;
-import frc.robot.subsystems.NewtonSubsystem;
 import frc.robot.Constants.*;
 
-public class Swerve extends NewtonSubsystem {
-    private static Swerve instance = null;
-    public static Swerve getInstance(){
-        if(instance == null){
-            throw new IllegalStateException("The Swerve subsystem must be instantiated before attempting to use it");
-        }
-        return instance;
-    }
-    public static Swerve instantiate(){
-        if(instance != null){
-            throw new IllegalStateException("The Swerve subsystem can't be instantiated twice");
-        }
-        instance = new Swerve();
-        return instance;
-    }
-
-    public SwerveCommands commands = new SwerveCommands(this);
-
+public class Swerve extends SubsystemBase {
     /**
      * Small enum to control whether to drive robot- or field-
      * relative for {@link Swerve#drive(ChassisSpeeds, DriveModes)}
@@ -68,7 +52,7 @@ public class Swerve extends NewtonSubsystem {
 
     private CTRESwerve swerve;
 
-    private Swerve() {
+    public Swerve() {
         smoothingFilter = new SmoothingFilter(
             SWERVE.TRANSLATION_SMOOTHING_AMOUNT,
             SWERVE.TRANSLATION_SMOOTHING_AMOUNT,
@@ -228,7 +212,7 @@ public class Swerve extends NewtonSubsystem {
     /**
      * Stop the swerve (feed zeros for all target velocities)
      */
-    protected void stop(){
+    public void stop(){
         drive(new ChassisSpeeds());
     }
 
@@ -237,7 +221,7 @@ public class Swerve extends NewtonSubsystem {
      *
      * @param speeds the speeds to run the drivetrain at
      */
-    protected void drive(ChassisSpeeds speeds){
+    public void drive(ChassisSpeeds speeds){
         swerve.drive(speeds, false);
     }
 
@@ -246,7 +230,7 @@ public class Swerve extends NewtonSubsystem {
      *
      * @param speeds the speeds to run the drivetrain at
      */
-    protected void drive(ChassisSpeeds speeds, DriveModes mode){
+    public void drive(ChassisSpeeds speeds, DriveModes mode){
         swerve.drive(
             speeds,
             switch(mode){
@@ -265,7 +249,7 @@ public class Swerve extends NewtonSubsystem {
      *
      * @param slowMode whether to slow the drivetrain
      */
-    protected void setSlowMode(boolean slowMode){
+    public void setSlowMode(boolean slowMode){
         this.isSlowMode = slowMode;
     }
 
@@ -275,14 +259,14 @@ public class Swerve extends NewtonSubsystem {
      *
      * @param robotRelative whether to run the drivetrain robot-relative
      */
-    protected void setRobotRelative(boolean robotRelative){
+    public void setRobotRelative(boolean robotRelative){
         this.robotRelative = robotRelative;
     }
 
     /**
      * Define whatever direction the robot is facing as forward
      */
-    protected void resetHeading(){
+    public void resetHeading(){
         swerve.resetHeading();
     }
 
@@ -314,7 +298,7 @@ public class Swerve extends NewtonSubsystem {
      *
      * @param pose the pose to set the robot's known position to.
      */
-    protected void resetPose(Pose2d pose) {
+    public void resetPose(Pose2d pose) {
         swerve.setKnownOdometryPose(pose);
         Logger.recordOutput(
             SWERVE.LOG_PATH+"Console", (
@@ -329,13 +313,28 @@ public class Swerve extends NewtonSubsystem {
         );
     }
 
+    public void resetPose(Pose2d pose, boolean flip) {
+        if(flip){
+            Pose2d flipped = new Pose2d(
+                new Translation2d(
+                    MEASUREMENTS.FIELD_LENGTH_METERS-pose.getX(),
+                    pose.getY()
+                ),
+                pose.getRotation()
+            );
+            swerve.setKnownOdometryPose(flipped);
+            return;
+        }
+        swerve.setKnownOdometryPose(pose);
+    }
+
     /**
      * Use PID to snap the robot to a rotational setpoint
      *
      * @param setpoint the setpoint to snap to
      * @return the rotational velocity setpoint as a Rotation2d
      */
-    protected double snapToAngle(Rotation2d setpoint) {
+    public double snapToAngle(Rotation2d setpoint) {
         double currYaw = Math.toRadians(getYaw().getDegrees()%360);
         double errorAngle = setpoint.getRadians() - currYaw;
 
@@ -363,7 +362,7 @@ public class Swerve extends NewtonSubsystem {
      *
      * @return a ChassisSpeeds ready to be sent to the swerve.
      */
-    protected ChassisSpeeds processJoystickInputs(double rawX, double rawY, double rawRot){
+    public ChassisSpeeds processJoystickInputs(double rawX, double rawY, double rawRot){
         double driveTranslateY = (
             rawY >= 0
             ? (Math.pow(rawY, SWERVE.JOYSTICK_EXPONENT))

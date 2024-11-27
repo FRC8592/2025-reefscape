@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants.*;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.swerve.Swerve;
 import edu.wpi.first.util.WPISerializable;
 
@@ -49,8 +50,15 @@ public final class Suppliers {
         public int getAsInt(){int d = supplier.getAsInt(); Logger.recordOutput(name, d); return d;}
     }
 
-    private static Swerve swerve = Swerve.getInstance();
-    // TODO: Add more subsystems here
+    private static Swerve swerve;
+    private static Intake intake;
+    private static Pivot pivot;
+
+    public static void addSubsystems(Swerve swerve, Intake intake, Pivot pivot){
+        Suppliers.swerve = swerve;
+        Suppliers.intake = intake;
+        Suppliers.pivot = pivot;
+    }
 
     /**
      * {@code getAsBoolean()} returns {@code true} when the robot it running on the red side and

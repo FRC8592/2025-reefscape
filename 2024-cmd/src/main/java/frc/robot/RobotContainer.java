@@ -4,24 +4,33 @@
 
 package frc.robot;
 
-import frc.robot.Controls.ControlSets;
-import frc.robot.commands.GroundIntakeCommand;
-import frc.robot.commands.OuttakeCommand;
-import frc.robot.commands.ScoreLowCommand;
-import frc.robot.commands.StowCommand;
+import frc.robot.Constants.*;
+import static frc.robot.commands.NewtonCommands.*;
+
+import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
-import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.pivot.Pivot;
+import frc.robot.commands.largecommands.LargeCommand;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Pivot;
+import frc.robot.subsystems.Pivot.Positions;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
+    private static final CommandXboxController driverController = new CommandXboxController(
+        CONTROLLERS.DRIVER_PORT
+    );
+    private static final CommandXboxController operatorController = new CommandXboxController(
+        CONTROLLERS.OPERATOR_PORT
+    );
+
     // The robot's subsystems
     private final Swerve swerve;
     private final Intake intake;
@@ -36,12 +45,13 @@ public class RobotContainer {
      * up button bindings, and prepares for autonomous.
      */
     public RobotContainer() {
-        swerve = Swerve.instantiate();
+        swerve = new Swerve();
         intake = new Intake();
-        pivot = Pivot.instantiate();
+        pivot = new Pivot();
         // TODO: Add more subsystems and instantiatable helpers here
 
-        configureBindings(ControlSets.MAIN_TELEOP);
+        passSubsystems();
+        configureBindings();
         configureDefaults();
 
 
@@ -49,13 +59,28 @@ public class RobotContainer {
     }
 
     /**
+     * Pass subsystems everywhere they're needed
+     */
+    private void passSubsystems(){
+        AutoManager.addSubsystems(swerve, intake, pivot);
+        AutoCommand.addSubsystems(swerve, intake, pivot);
+        LargeCommand.addSubsystems(swerve, intake, pivot);
+        NewtonCommands.addSubsystems(swerve, intake, pivot);
+        Suppliers.addSubsystems(swerve, intake, pivot);
+    }
+
+    /**
      * Configure default commands for the subsystems
      */
     private void configureDefaults(){
         // Set the swerve's default command to drive with joysticks
-        setDefaultCommand(swerve, swerve.commands.driveCommand(
-            Controls.driveTranslateX, Controls.driveTranslateY, Controls.driveRotate, DriveModes.AUTOMATIC
-        ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        setDefaultCommand(swerve, swerve.run(() -> {
+            swerve.drive(swerve.processJoystickInputs(
+                -driverController.getLeftX(),
+                -driverController.getLeftY(),
+                -driverController.getRightX()
+            ), DriveModes.AUTOMATIC);
+        }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         //TODO: Set more subsystems' default commands here
     }
@@ -65,61 +90,92 @@ public class RobotContainer {
 
     /**
      * Configure all button bindings
-     *
-     * @param controlSet the set of controls to use
      */
-    private void configureBindings(ControlSets controlSet) {
-        CommandScheduler.getInstance().getDefaultButtonLoop().clear();
-        Controls.applyControlSet(controlSet);
+    private void configureBindings() {
+        driverController.rightBumper().onTrue(
+            // The Commands.runOnce (instead of swerve.runOnce) is a special case here
+            // to allow this to run while other swerve commands (the default driving
+            // command, for example) run. This is usually a horrible idea and shouldn't
+            // be used outside of special cases like this.
 
-        Controls.slowMode.onTrue(
-            swerve.commands.slowModeCommand(true) // Enable slow mode
+            // The .ignoringDisable makes sure slow mode won't get stuck on or off if
+            // the robot is disabled.
+            Commands.runOnce(() -> swerve.setSlowMode(true)).ignoringDisable(true)
         ).onFalse(
-            swerve.commands.slowModeCommand(false) // Disable slow mode
-        );
-
-        Controls.zeroGryoscope.onTrue(
-            swerve.commands.resetHeadingCommand()
-        );
-
-        Controls.robotRelative.onTrue(
-            swerve.commands.robotRelativeCommand(true) // Enable robot-oriented driving
-        ).onFalse(
-            swerve.commands.robotRelativeCommand(false) // Disable robot-oriented driving
+            Commands.runOnce(() -> swerve.setSlowMode(false)).ignoringDisable(true)
         );
 
-        Controls.snapForward.whileTrue(
-            swerve.commands.snapToCommand(Controls.driveTranslateX, Controls.driveTranslateY, Rotation2d.fromDegrees(0), DriveModes.AUTOMATIC)
-            .withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
+        driverController.back().onTrue(
+            // Similar comment on Commands.runOnce as slow mode above
+            Commands.runOnce(() -> swerve.resetHeading())
         );
-        Controls.snapBack.whileTrue(
-            swerve.commands.snapToCommand(Controls.driveTranslateX, Controls.driveTranslateY, Rotation2d.fromDegrees(180), DriveModes.AUTOMATIC)
-            .withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
-        );
-        Controls.snapLeft.whileTrue(
-            swerve.commands.snapToCommand(Controls.driveTranslateX, Controls.driveTranslateY, Rotation2d.fromDegrees(270), DriveModes.AUTOMATIC)
-            .withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
-        );
-        Controls.snapRight.whileTrue(
-            swerve.commands.snapToCommand(Controls.driveTranslateX, Controls.driveTranslateY, Rotation2d.fromDegrees(90), DriveModes.AUTOMATIC)
-            .withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
-        );
-        Controls.testIntake.whileTrue(
-            new GroundIntakeCommand(intake)
+
+        driverController.leftBumper().onTrue(
+            // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
+            Commands.runOnce(() -> swerve.setRobotRelative(true)).ignoringDisable(true)
         ).onFalse(
-            new StowCommand(intake)
+            Commands.runOnce(() -> swerve.setRobotRelative(true)).ignoringDisable(true)
         );
-        Controls.testOuttake.whileTrue(
-            new OuttakeCommand(intake)
+
+        driverController.pov(0).whileTrue(
+            swerveSnapToCommand(
+                Rotation2d.fromDegrees(0),
+                () -> -driverController.getLeftX(),
+                () -> -driverController.getLeftY()
+            )
+        );
+
+        driverController.pov(180).whileTrue(
+            swerveSnapToCommand(
+                Rotation2d.fromDegrees(180),
+                () -> -driverController.getLeftX(),
+                () -> -driverController.getLeftY()
+            )
+        );
+
+        driverController.pov(90).whileTrue(
+            swerveSnapToCommand(
+                Rotation2d.fromDegrees(270),
+                () -> -driverController.getLeftX(),
+                () -> -driverController.getLeftY()
+            )
+        );
+
+        driverController.pov(270).whileTrue(
+            swerveSnapToCommand(
+                Rotation2d.fromDegrees(90),
+                () -> -driverController.getLeftX(),
+                () -> -driverController.getLeftY()
+            )
+        );
+
+        driverController.leftTrigger(0.1).whileTrue(
+            setPivotPositionCommand(Positions.GROUND).andThen(
+                intake.intakeCommand()
+            ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         ).onFalse(
-            new StowCommand(intake)
+            stowCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf)
         );
-        Controls.testScore.whileTrue(
-            new ScoreLowCommand(intake)
+
+        driverController.rightTrigger(0.1).whileTrue(
+            intake.run(() -> {
+                intake.runTopMotor(INTAKE.TOP_MOTOR_OUTTAKE_SPEED);
+                intake.runBottomMotor(INTAKE.BOTTOM_MOTOR_OUTTAKE_SPEED);
+            }).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         ).onFalse(
-            new StowCommand(intake)
+            stowCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf)
         );
-        
+
+        driverController.a().whileTrue(
+            setPivotPositionCommand(Positions.GROUND).andThen(
+                intake.run(() -> {
+                    intake.runTopMotor(INTAKE.TOP_MOTOR_SCORE_SPEED);
+                    intake.runBottomMotor(INTAKE.BOTTOM_MOTOR_SCORE_SPEED);
+                })
+            ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
+        ).onFalse(
+            stowCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf)
+        );
         // TODO: Add more bindings from controls to commands here
     }
 
