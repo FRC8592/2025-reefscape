@@ -62,4 +62,11 @@ public final class NewtonCommands {
             intake.runOnce(() -> intake.stop())
         );
     }
+
+    public static Command runIntakeCommand(int topSpeed, int bottomSpeed){
+        return intake.run(() -> {
+            intake.runTopMotor(topSpeed);
+            intake.runBottomMotor(bottomSpeed);
+        });
+    }
 }

@@ -146,32 +146,28 @@ public class RobotContainer {
                 Rotation2d.fromDegrees(90),
                 () -> -driverController.getLeftX(),
                 () -> -driverController.getLeftY()
-            )
+            ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         );
 
         driverController.leftTrigger(0.1).whileTrue(
             setPivotPositionCommand(Positions.GROUND).andThen(
-                intake.intakeCommand()
+                runIntakeCommand(INTAKE.TOP_MOTOR_INTAKE_SPEED, INTAKE.BOTTOM_MOTOR_INTAKE_SPEED)
             ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         ).onFalse(
             stowCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf)
         );
 
         driverController.rightTrigger(0.1).whileTrue(
-            intake.run(() -> {
-                intake.runTopMotor(INTAKE.TOP_MOTOR_OUTTAKE_SPEED);
-                intake.runBottomMotor(INTAKE.BOTTOM_MOTOR_OUTTAKE_SPEED);
-            }).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
+            runIntakeCommand(
+                INTAKE.TOP_MOTOR_OUTTAKE_SPEED, INTAKE.BOTTOM_MOTOR_OUTTAKE_SPEED
+            ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         ).onFalse(
             stowCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf)
         );
 
         driverController.a().whileTrue(
             setPivotPositionCommand(Positions.GROUND).andThen(
-                intake.run(() -> {
-                    intake.runTopMotor(INTAKE.TOP_MOTOR_SCORE_SPEED);
-                    intake.runBottomMotor(INTAKE.BOTTOM_MOTOR_SCORE_SPEED);
-                })
+                runIntakeCommand(INTAKE.TOP_MOTOR_SCORE_SPEED, INTAKE.BOTTOM_MOTOR_SCORE_SPEED)
             ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         ).onFalse(
             stowCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf)
