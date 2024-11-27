@@ -9,7 +9,9 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -19,13 +21,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
-public class RobotContainer {
+public class RobotContainer { 
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = new DriveTrain();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController driveController =
-      new CommandXboxController(Constants.DRIVER_CONTROLLER_ID);
+  private final CommandXboxController driveController = new CommandXboxController(Constants.DRIVER_CONTROLLER_ID);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -43,19 +44,32 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+
+    //Control motor speed with the right controller stick as the defualt behavior
     driveTrain.setDefaultCommand(
       driveTrain.run(
-        () -> motor.setMotorVoltage(driverController.getRightY() * motor.getAvailableVoltage()), motor
+        () -> driveTrain.setMotorOutput(driveController.getRightY())
       )
     );
 
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+    //B button on Gamepad 0 sets motor to 50% power
+    //example
+    //Trigger halfPower = new JoystickButton(driveController.getHID(), XboxController.Button.kB.value);
+    driveController.b().whileTrue(
+      driveTrain.startEnd(
+        () -> driveTrain.setMotorOutput(0.5),
+        () -> driveTrain.setMotorOutput(0)
+        )
+      );
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    driveController.y().onTrue(
+      Commands.sequence(
+        driveTrain.run(() -> driveTrain.setMotorOutput(0.1)).withTimeout(3),
+        driveTrain.run(() -> driveTrain.setMotorOutput(0.5)).withTimeout(3),
+        driveTrain.runOnce(() -> driveTrain.setMotorOutput(0))
+      )
+    );
+    
   }
 
   /**
@@ -65,6 +79,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return Commands.none();
   }
 }

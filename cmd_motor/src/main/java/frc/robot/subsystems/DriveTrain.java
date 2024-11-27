@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -30,11 +31,12 @@ public class DriveTrain extends SubsystemBase {
   }
 
   /**
-   * sets the motor output 
-   * @param joystickValue negative -1 to 1 from joystick movement
+   * Sets the motor output using a percentage
+   * @param percentValue Percentage motor power ranging from -1 to 1 (-100% to 100%)
+   * @return 
    */
-  public void setMotorOutput(double joystickValue){
-    motor.setControl(motorVoltage.withOutput(getMaxMotorVoltage() * joystickValue));
+  public void setMotorOutput(double percentValue){
+    motor.setControl(motorVoltage.withOutput(getMaxMotorVoltage() * percentValue));
   }
 
 }
