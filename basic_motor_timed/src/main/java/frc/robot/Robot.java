@@ -7,8 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.ctre.phoenix6.hardware.*;
-import com.ctre.phoenix6.controls.*;
+import edu.wpi.first.wpilibj.XboxController;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -21,21 +20,19 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
-  private TalonFX testMotor = new TalonFX(Constants.TEST_MOTOR_CAN_ID);
-  VoltageOut testMotorVoltage = new VoltageOut(0);
-
+  private CarrotDrivetrain drive;
+  private XboxController gamepad = new XboxController(0);
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
+    drive = new CarrotDrivetrain();
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    testMotor = new TalonFX(Constants.TEST_MOTOR_CAN_ID);
   
   }
 
@@ -47,11 +44,7 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {
-    
-    testMotor.setControl(testMotorVoltage.withOutput(6));
-
-  }
+  public void robotPeriodic() { }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -90,7 +83,12 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    double percentPower = gamepad.getRightY();
+
+    drive.setPercentMotorOutput(percentPower);
+
+    }
 
   /** This function is called once when the robot is disabled. */
   @Override
