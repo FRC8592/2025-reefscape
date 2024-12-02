@@ -154,6 +154,7 @@ public class SparkFlexControl {
      * @param rotations the number of rotations to limit the motor to
      */
     public void setSoftLimit(SoftLimitDirection direction, double rotations){
+        motor.enableSoftLimit(direction, true);
         motor.setSoftLimit(direction, (float)rotations);
     }
 

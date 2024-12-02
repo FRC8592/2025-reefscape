@@ -173,7 +173,30 @@ public class RobotContainer {
             stowCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf)
         );
         // TODO: Add more bindings from controls to commands here
+
+        driverController.x().whileTrue(
+            pivot.run(
+                ()-> pivot.setMotorPower(0.4)
+            )
+        ).onFalse(
+            pivot.runOnce(
+                ()-> pivot.stop()
+            )
+        );
+
+        driverController.b().whileTrue(
+            pivot.run(
+                ()-> pivot.setMotorPower(-0.4)
+            )
+        ).onFalse(
+            pivot.runOnce(
+                ()-> pivot.stop()
+            )
+        );
+        
     }
+
+
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.

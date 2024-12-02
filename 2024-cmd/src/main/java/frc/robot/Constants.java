@@ -30,8 +30,10 @@ public final class Constants {
     }
 
     public final class CAN {
-        public static final int INTAKE_TOP_MOTOR_CAN_ID = 23;
+        public static final int PIVOT_MOTOR_CAN_ID = 30; //TODO Change these value to correct value
+        public static final int INTAKE_TOP_MOTOR_CAN_ID = 29;
         public static final int INTAKE_BOTTOM_MOTOR_CAN_ID = 31;
+        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 0;
         
         public static final int SWERVE_BLACK_FRONT_LEFT_DRIVE_CAN_ID = 17;
         public static final int SWERVE_BLACK_FRONT_LEFT_STEER_CAN_ID = 9;
@@ -65,6 +67,14 @@ public final class Constants {
         public static final int REST_DEGREES = 0;
         public static final int SCORE_HIGH_DEGREES = 0;
         public static final int HP_LOAD_DEGREES = 0;
+
+        public static final double PIVOT_GEAR_RATIO = 300d;
+        
+        public static final double PIVOT_kP = 0;
+        public static final double PIVOT_kI = 0; 
+        public static final double PIVOT_kD = 0;
+        public static final double PIVOT_kF = 0;
+ 
     }
     
     public final class INTAKE {
@@ -76,6 +86,7 @@ public final class Constants {
         
         public static final int TOP_MOTOR_OUTTAKE_SPEED = -1500;
         public static final int BOTTOM_MOTOR_OUTTAKE_SPEED = -1500;
+        
     }
 
     
