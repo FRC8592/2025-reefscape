@@ -64,7 +64,7 @@ public final class Constants {
     public final class PIVOT {
         public static final int GROUND_DEGREES = 0;
         // TODO: Set these to correct values
-        public static final int REST_DEGREES = 0;
+        public static final int STOW_DEGREES = 90;
         public static final int SCORE_HIGH_DEGREES = 0;
         public static final int HP_LOAD_DEGREES = 0;
 
@@ -74,7 +74,7 @@ public final class Constants {
         public static final double PIVOT_kI = 0; 
         public static final double PIVOT_kD = 0;
         public static final double PIVOT_kF = 0;
- 
+         
     }
     
     public final class INTAKE {

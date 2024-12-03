@@ -9,13 +9,11 @@ public class PreloadBucket2Auto extends AutoCommand {
     
     public PreloadBucket2Auto() {
         super(
-            
             new FollowPathCommand(getChoreoTrajectory("PreloadBucket2Path"), Suppliers.robotRunningOnRed)
             .andThen(Commands.waitSeconds(1))
             .andThen(
                 new FollowPathCommand(getChoreoTrajectory("PreloadBucket2Path2"), Suppliers.robotRunningOnRed)
             )
-
         );
         setStartStateFromChoreoTrajectory("PreloadBucket2Path");
     }
