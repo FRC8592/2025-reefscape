@@ -9,16 +9,16 @@ import frc.robot.helpers.SparkMaxControl;
 
 public class Intake extends SubsystemBase {
     //private TalonFX topMotor = new TalonFX(CAN.INTAKE_TOP_MOTOR_CAN_ID);
-    private SparkMaxControl topMotor = new SparkMaxControl(CAN.INTAKE_TOP_MOTOR_CAN_ID,true);
+    private SparkMaxControl topMotor = new SparkMaxControl(CAN.INTAKE_TOP_MOTOR_CAN_ID, false);
     // private TalonFX bottomMotor = new TalonFX(CAN.INTAKE_BOTTOM_MOTOR_CAN_ID);
-    private SparkFlexControl bottomMotor = new SparkFlexControl(CAN.INTAKE_BOTTOM_MOTOR_CAN_ID, true);
+    private SparkFlexControl bottomMotor = new SparkFlexControl(CAN.INTAKE_BOTTOM_MOTOR_CAN_ID, false);
 
     private DigitalInput beamBreak;
 
     public Intake() {
         // TalonFXConfiguration motorConfigs = new TalonFXConfiguration();
         // topMotor.getConfigurator().apply(motorConfigs);
-        beamBreak = new DigitalInput(CAN.INTAKE_BEAM_BREAK_DIGITAL_ID);
+        beamBreak = new DigitalInput(INTAKE.INTAKE_BEAM_BREAK_DIGITAL_ID);
         topMotor.setInverted();
     }
   

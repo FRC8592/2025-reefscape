@@ -33,7 +33,7 @@ public final class Constants {
         public static final int PIVOT_MOTOR_CAN_ID = 30; //TODO Change these value to correct value
         public static final int INTAKE_TOP_MOTOR_CAN_ID = 29;
         public static final int INTAKE_BOTTOM_MOTOR_CAN_ID = 31;
-        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 0;
+        
         
         public static final int SWERVE_BLACK_FRONT_LEFT_DRIVE_CAN_ID = 17;
         public static final int SWERVE_BLACK_FRONT_LEFT_STEER_CAN_ID = 9;
@@ -78,8 +78,8 @@ public final class Constants {
     }
     
     public final class INTAKE {
-        public static final int TOP_MOTOR_INTAKE_SPEED = 1500;
-        public static final int BOTTOM_MOTOR_INTAKE_SPEED = 1500;
+        public static final int TOP_MOTOR_INTAKE_SPEED = 3000;
+        public static final int BOTTOM_MOTOR_INTAKE_SPEED = 3000;
         
         public static final int TOP_MOTOR_SCORE_SPEED = -3000;
         public static final int BOTTOM_MOTOR_SCORE_SPEED = -3000;
@@ -87,6 +87,7 @@ public final class Constants {
         public static final int TOP_MOTOR_OUTTAKE_SPEED = -1500;
         public static final int BOTTOM_MOTOR_OUTTAKE_SPEED = -1500;
         
+        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 6;
     }
 
     
@@ -135,8 +136,8 @@ public final class Constants {
         //TODO: Tone these down appropriately as per BB rules
         public static final double TRANSLATE_POWER_FAST = 1.0;
         public static final double ROTATE_POWER_FAST = 0.75;
-        public static final double TRANSLATE_POWER_SLOW = 0.15;
-        public static final double ROTATE_POWER_SLOW = 0.15;
+        public static final double TRANSLATE_POWER_SLOW = 0.3;
+        public static final double ROTATE_POWER_SLOW = 0.3;
 
         public static final int TRANSLATION_SMOOTHING_AMOUNT = 3;
         public static final int ROTATION_SMOOTHING_AMOUNT = 1;
