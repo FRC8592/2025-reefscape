@@ -186,15 +186,15 @@ public final class Constants {
         public static final double PATH_FOLLOW_TRANSLATE_kD = 0d;
 
         //TODO: Double check that these still work
-        public static final double PATH_FOLLOW_ROTATE_kP = 3.7;
+        public static final double PATH_FOLLOW_ROTATE_kP = 6d;
         public static final double PATH_FOLLOW_ROTATE_kI = 0d;
         public static final double PATH_FOLLOW_ROTATE_kD = 0.1;
 
         public static final double PATH_FOLLOW_ROTATE_MAX_VELOCITY = 4 * Math.PI;
-        public static final double PATH_FOLLOW_ROTATE_MAX_ACCELLERATION = 2 * Math.PI;
+        public static final double PATH_FOLLOW_ROTATE_MAX_ACCELLERATION = 4 * Math.PI;
 
-        public static final double PATH_FOLLOW_POSITION_TOLERANCE = 0.1;
-        public static final double PATH_FOLLOW_VELOCITY_TOLERANCE = 0.1;
+        public static final double PATH_FOLLOW_POSITION_TOLERANCE = 0.01;
+        public static final double PATH_FOLLOW_VELOCITY_TOLERANCE = 0.01;
     }
 
     public final class ROBOT {
