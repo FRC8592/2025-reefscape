@@ -65,15 +65,17 @@ public final class Constants {
         public static final int GROUND_DEGREES = 0;
         // TODO: Set these to correct values
         public static final int STOW_DEGREES = 90;
-        public static final int SCORE_HIGH_DEGREES = 0;
-        public static final int HP_LOAD_DEGREES = 0;
+        public static final int SCORE_HIGH_DEGREES = 75;
+        public static final int SCORE_GRID_DEGREES = 20;
 
         public static final double PIVOT_GEAR_RATIO = 300d;
         
-        public static final double PIVOT_kP = 0;
+        public static final double PIVOT_kP = 2e-4;
         public static final double PIVOT_kI = 0; 
         public static final double PIVOT_kD = 0;
-        public static final double PIVOT_kF = 0;
+        public static final double PIVOT_kF = 1.5e-4;
+
+        public static final double INTAKE_ANGLE = 9.5;
          
     }
     
@@ -136,7 +138,7 @@ public final class Constants {
         //TODO: Tone these down appropriately as per BB rules
         public static final double TRANSLATE_POWER_FAST = 1.0;
         public static final double ROTATE_POWER_FAST = 0.75;
-        public static final double TRANSLATE_POWER_SLOW = 0.3;
+        public static final double TRANSLATE_POWER_SLOW = 0.4;
         public static final double ROTATE_POWER_SLOW = 0.3;
 
         public static final int TRANSLATION_SMOOTHING_AMOUNT = 3;

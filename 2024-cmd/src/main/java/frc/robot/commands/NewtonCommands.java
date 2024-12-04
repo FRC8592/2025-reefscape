@@ -50,7 +50,10 @@ public final class NewtonCommands {
      * @return Commands.none()
      */
     public static Command setPivotPositionCommand(Positions position){
-        return Commands.none();
+        //TODO: Need to replace the below line with the proper needed command
+        return pivot.run(() -> {
+            pivot.setPosition(position.degrees);
+        });
     }
 
     /**

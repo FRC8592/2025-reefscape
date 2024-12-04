@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 
@@ -12,7 +14,7 @@ public class Pivot extends SubsystemBase{
     public enum Positions {
         GROUND(PIVOT.GROUND_DEGREES),
         REST(PIVOT.STOW_DEGREES),
-        HP_LOAD(PIVOT.HP_LOAD_DEGREES),
+        SCORE_GRID(PIVOT.SCORE_GRID_DEGREES),
         SCORE_HIGH(PIVOT.SCORE_HIGH_DEGREES),;
 
         public int degrees = 0;
@@ -29,8 +31,8 @@ public class Pivot extends SubsystemBase{
         pivotMotor.setSoftLimit(SoftLimitDirection.kForward, 75.0);
         pivotMotor.setSoftLimit(SoftLimitDirection.kReverse, 1);
         
-        pivotMotor.setMaxVelocity(1000, 0);
-        pivotMotor.setMaxAcceleration(2000, 0);
+        pivotMotor.setMaxVelocity(5000, 0);
+        pivotMotor.setMaxAcceleration(7000, 0);
     }
 
     public void setMotorPower(double power) {
@@ -55,6 +57,14 @@ public class Pivot extends SubsystemBase{
         SmartDashboard.putNumber(
             "CurrentPivotDegrees",
             currentPivotDegrees
+        );
+        SmartDashboard.putNumber(
+            "Current Pivot Motor Speed",
+            pivotMotor.getVelocity()
+        );
+        Logger.recordOutput(
+            "Current Pivot Motor Speed", 
+            pivotMotor.getVelocity()
         );
         /*The below if statement checks if the current degrees 
         of the pivot is at least 90 degrees and sets the motor in brake mode so it doesn't fall*/

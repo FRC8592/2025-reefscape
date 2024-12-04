@@ -150,11 +150,14 @@ public class RobotContainer {
         );
 
         driverController.leftTrigger(0.1).whileTrue(
-            setPivotPositionCommand(Positions.GROUND).andThen(
+            // setPivotPositionCommand(Positions.GROUND).andThen(
                 runIntakeCommand(INTAKE.TOP_MOTOR_INTAKE_SPEED, INTAKE.BOTTOM_MOTOR_INTAKE_SPEED)
-            ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
+            //).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         ).onFalse(
-            stowCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf)
+            //stowCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf)
+            intake.runOnce(
+                () -> intake.stop()
+            )
         );
 
         driverController.rightTrigger(0.1).whileTrue(
@@ -193,6 +196,30 @@ public class RobotContainer {
                 ()-> pivot.stop()
             )
         );
+
+        // driverController.x().whileTrue(
+        //     setPivotPositionCommand(Positions.SCORE_GRID)
+        // ).onFalse(
+        //     pivot.runOnce(
+        //         () -> pivot.stop()
+        //     )
+        // );
+
+        // driverController.y().whileTrue(
+        //     setPivotPositionCommand(Positions.GROUND)
+        // ).onFalse(
+        //     pivot.runOnce(
+        //         () -> pivot.stop()
+        //     )
+        // );
+
+        // driverController.b().whileTrue(
+        //     setPivotPositionCommand(Positions.REST)
+        // ).onFalse(
+        //     pivot.runOnce(
+        //         () -> pivot.stop()
+        //     )
+        // );
         
     }
 
