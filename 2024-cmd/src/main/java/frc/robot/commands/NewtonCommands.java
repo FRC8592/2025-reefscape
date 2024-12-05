@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.Constants.PIVOT;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.Pivot.Positions;
 import frc.robot.subsystems.swerve.Swerve;
@@ -53,7 +54,9 @@ public final class NewtonCommands {
         //TODO: Need to replace the below line with the proper needed command
         return pivot.run(() -> {
             pivot.setPosition(position.degrees);
-        });
+        }).until(
+            () -> Math.abs(pivot.getDegrees() - position.degrees) <= PIVOT.PIVOT_TARGET_THRESHOLD_DEGREES 
+        );
     }
 
     /**
@@ -66,7 +69,7 @@ public final class NewtonCommands {
         );
     }
 
-    public static Command runIntakeCommand(int topSpeed, int bottomSpeed){
+    public static Command runIntakeCommand(double topSpeed, double bottomSpeed){
         return intake.run(() -> {
             intake.runTopMotor(topSpeed);
             intake.runBottomMotor(bottomSpeed);

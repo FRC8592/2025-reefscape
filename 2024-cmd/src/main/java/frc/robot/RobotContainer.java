@@ -10,6 +10,7 @@ import static frc.robot.commands.NewtonCommands.*;
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
+import frc.robot.commands.proxies.OverrideEverythingCommand;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Pivot.Positions;
@@ -82,7 +83,19 @@ public class RobotContainer {
             ), DriveModes.AUTOMATIC);
         }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-        //TODO: Set more subsystems' default commands here
+        //setting the intakes default command
+        setDefaultCommand(intake, intake.run(
+            () -> {
+                intake.runTopMotor(INTAKE.TOP_MOTOR_DEFAULT_SPEED);
+                intake.runBottomMotor(INTAKE.BOTTOM_MOTOR_DEFAULT_SPEED);
+            }
+        ));
+        //setting the pivot default
+        setDefaultCommand(pivot, pivot.run(
+            () -> pivot.setMotorPower(
+                -operatorController.getLeftY() * PIVOT.PIVOT_MANUAL_CONTROL_MAX_SPEED
+            )
+        ));
     }
 
 
@@ -92,6 +105,23 @@ public class RobotContainer {
      * Configure all button bindings
      */
     private void configureBindings() {
+        
+        // Driver controls:
+        // Translate is left stick
+        // Rotate is right stick
+        // Slow mode is right bumper
+        // Rezero is back
+        // Robot oriented is left bumper
+        // Snap to is d pad
+        
+        // Operator: 
+        // Intake is left trigger
+        // Outtake is left bumper
+        // Score is right trigger
+        // Stow is b button
+        // Score Grid position is x button
+        // Ground position is "a" button
+        // High score position is y button
         driverController.rightBumper().onTrue(
             // The Commands.runOnce (instead of swerve.runOnce) is a special case here
             // to allow this to run while other swerve commands (the default driving
@@ -149,78 +179,36 @@ public class RobotContainer {
             ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         );
 
-        driverController.leftTrigger(0.1).whileTrue(
-            // setPivotPositionCommand(Positions.GROUND).andThen(
-                runIntakeCommand(INTAKE.TOP_MOTOR_INTAKE_SPEED, INTAKE.BOTTOM_MOTOR_INTAKE_SPEED)
-            //).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
-        ).onFalse(
-            //stowCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf)
-            intake.runOnce(
-                () -> intake.stop()
-            )
+        operatorController.leftTrigger(0.1).whileTrue(
+            runIntakeCommand(INTAKE.TOP_MOTOR_INTAKE_SPEED, INTAKE.BOTTOM_MOTOR_INTAKE_SPEED)
         );
 
-        driverController.rightTrigger(0.1).whileTrue(
+        operatorController.rightTrigger(0.1).whileTrue(
+            runIntakeCommand(INTAKE.TOP_MOTOR_SCORE_SPEED, INTAKE.BOTTOM_MOTOR_SCORE_SPEED)
+        );
+
+        operatorController.leftBumper().whileTrue(
             runIntakeCommand(
                 INTAKE.TOP_MOTOR_OUTTAKE_SPEED, INTAKE.BOTTOM_MOTOR_OUTTAKE_SPEED
             ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
-        ).onFalse(
-            stowCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf)
         );
-
-        driverController.a().whileTrue(
-            setPivotPositionCommand(Positions.GROUND).andThen(
-                runIntakeCommand(INTAKE.TOP_MOTOR_SCORE_SPEED, INTAKE.BOTTOM_MOTOR_SCORE_SPEED)
-            ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
-        ).onFalse(
-            stowCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf)
-        );
-        // TODO: Add more bindings from controls to commands here
-
-        driverController.x().whileTrue(
-            pivot.run(
-                ()-> pivot.setMotorPower(0.4)
-            )
-        ).onFalse(
-            pivot.runOnce(
-                ()-> pivot.stop()
-            )
-        );
-
-        driverController.b().whileTrue(
-            pivot.run(
-                ()-> pivot.setMotorPower(-0.4)
-            )
-        ).onFalse(
-            pivot.runOnce(
-                ()-> pivot.stop()
-            )
-        );
-
-        // driverController.x().whileTrue(
-        //     setPivotPositionCommand(Positions.SCORE_GRID)
-        // ).onFalse(
-        //     pivot.runOnce(
-        //         () -> pivot.stop()
-        //     )
-        // );
-
-        // driverController.y().whileTrue(
-        //     setPivotPositionCommand(Positions.GROUND)
-        // ).onFalse(
-        //     pivot.runOnce(
-        //         () -> pivot.stop()
-        //     )
-        // );
-
-        // driverController.b().whileTrue(
-        //     setPivotPositionCommand(Positions.REST)
-        // ).onFalse(
-        //     pivot.runOnce(
-        //         () -> pivot.stop()
-        //     )
-        // );
         
+        operatorController.b().onTrue(
+            setPivotPositionCommand(Positions.REST).withInterruptBehavior(InterruptionBehavior.kCancelSelf)
+        );
+
+        operatorController.x().onTrue(
+            setPivotPositionCommand(Positions.SCORE_GRID).withInterruptBehavior(InterruptionBehavior.kCancelSelf)
+        );
+
+        operatorController.a().onTrue(
+            setPivotPositionCommand(Positions.GROUND).withInterruptBehavior(InterruptionBehavior.kCancelSelf)
+        );
+
+        operatorController.y().onTrue(
+            setPivotPositionCommand(Positions.SCORE_HIGH).withInterruptBehavior(InterruptionBehavior.kCancelSelf)
+        );
+
     }
 
 

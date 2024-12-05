@@ -26,13 +26,13 @@ public class Intake extends SubsystemBase {
         return !beamBreak.get();
     }
 
-    public void runTopMotor(int speedRPM) {
-        topMotor.setPercentOutput(speedRPM/6000d);
+    public void runTopMotor(double speedRPM) {
+        topMotor.setPercentOutput(speedRPM);
         //topMotor.setControl(voltage);
     }
 
-    public void runBottomMotor(int speedRPM) {
-        bottomMotor.setPercentOutput(speedRPM/6000d);
+    public void runBottomMotor(double speedRPM) {
+        bottomMotor.setPercentOutput(speedRPM);
     }
 
     public double getTopMotorVelocity() {

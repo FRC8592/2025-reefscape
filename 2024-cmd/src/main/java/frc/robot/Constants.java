@@ -66,7 +66,7 @@ public final class Constants {
         // TODO: Set these to correct values
         public static final int STOW_DEGREES = 90;
         public static final int SCORE_HIGH_DEGREES = 75;
-        public static final int SCORE_GRID_DEGREES = 20;
+        public static final int SCORE_GRID_DEGREES = 30;
 
         public static final double PIVOT_GEAR_RATIO = 300d;
         
@@ -76,20 +76,26 @@ public final class Constants {
         public static final double PIVOT_kF = 1.5e-4;
 
         public static final double INTAKE_ANGLE = 9.5;
+        public static final double PIVOT_TARGET_THRESHOLD_DEGREES = 2.0;
+
+        public static final double PIVOT_MANUAL_CONTROL_MAX_SPEED = 0.4;
          
     }
     
     public final class INTAKE {
-        public static final int TOP_MOTOR_INTAKE_SPEED = 3000;
-        public static final int BOTTOM_MOTOR_INTAKE_SPEED = 3000;
+        public static final double TOP_MOTOR_INTAKE_SPEED = 0.5;
+        public static final double BOTTOM_MOTOR_INTAKE_SPEED = 0.5;
         
-        public static final int TOP_MOTOR_SCORE_SPEED = -3000;
-        public static final int BOTTOM_MOTOR_SCORE_SPEED = -3000;
+        public static final double TOP_MOTOR_SCORE_SPEED = -0.5;
+        public static final double BOTTOM_MOTOR_SCORE_SPEED = -0.5;
         
-        public static final int TOP_MOTOR_OUTTAKE_SPEED = -1500;
-        public static final int BOTTOM_MOTOR_OUTTAKE_SPEED = -1500;
+        public static final double TOP_MOTOR_OUTTAKE_SPEED = -0.25;
+        public static final double BOTTOM_MOTOR_OUTTAKE_SPEED = -0.25;
         
-        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 6;
+        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 5;
+
+        public static final double TOP_MOTOR_DEFAULT_SPEED = 0.1;
+        public static final double BOTTOM_MOTOR_DEFAULT_SPEED = 0.1;
     }
 
     

@@ -43,6 +43,10 @@ public class Pivot extends SubsystemBase{
         pivotMotor.setPositionSmartMotion((pivotDegrees/360) * PIVOT.PIVOT_GEAR_RATIO);
     }
 
+    public double getDegrees(){
+        return (pivotMotor.getPosition()/PIVOT.PIVOT_GEAR_RATIO)*360;
+    }
+
     public void stop(){
         setMotorPower(0);
     }
