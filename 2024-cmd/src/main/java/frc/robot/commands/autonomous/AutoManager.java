@@ -45,7 +45,9 @@ public final class AutoManager {
     public static void prepare(){
         autoCommands = new ArrayList<>();
         // autoCommands.add(new TestAuto());
-        autoCommands.add(new PreloadBucket2Auto());
+        autoCommands.add(new Preload2BucketAuto());
+        autoCommands.add(new DumpBucketAuto());
+        autoCommands.add(new DumpAndMoveAuto());
 
         // autoCommands.add(new ExampleAuto());
         // TODO: Add autos here

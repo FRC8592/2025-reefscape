@@ -15,7 +15,8 @@ public class Pivot extends SubsystemBase{
         GROUND(PIVOT.GROUND_DEGREES),
         REST(PIVOT.STOW_DEGREES),
         SCORE_GRID(PIVOT.SCORE_GRID_DEGREES),
-        SCORE_HIGH(PIVOT.SCORE_HIGH_DEGREES),;
+        SCORE_HIGH(PIVOT.SCORE_HIGH_DEGREES),
+        KNOCK_BUCKET_OVER(PIVOT.KNOCK_BUCKET_OVER_DEGREES),;
 
         public int degrees = 0;
         Positions (int degrees){

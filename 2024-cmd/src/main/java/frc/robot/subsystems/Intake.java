@@ -5,11 +5,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
 import frc.robot.helpers.SparkFlexControl;
-import frc.robot.helpers.SparkMaxControl;
 
 public class Intake extends SubsystemBase {
     //private TalonFX topMotor = new TalonFX(CAN.INTAKE_TOP_MOTOR_CAN_ID);
-    private SparkMaxControl topMotor = new SparkMaxControl(CAN.INTAKE_TOP_MOTOR_CAN_ID, false);
+    private SparkFlexControl topMotor = new SparkFlexControl(CAN.INTAKE_TOP_MOTOR_CAN_ID, false);
     // private TalonFX bottomMotor = new TalonFX(CAN.INTAKE_BOTTOM_MOTOR_CAN_ID);
     private SparkFlexControl bottomMotor = new SparkFlexControl(CAN.INTAKE_BOTTOM_MOTOR_CAN_ID, false);
 
