@@ -48,6 +48,8 @@ public final class AutoManager {
         autoCommands.add(new Preload2BucketAuto());
         autoCommands.add(new DumpBucketAuto());
         autoCommands.add(new DumpAndMoveAuto());
+        autoCommands.add(new Preload2BucketAutoNoForceFeed());
+        autoCommands.add(new Preload3BucketAuto());
 
         // autoCommands.add(new ExampleAuto());
         // TODO: Add autos here

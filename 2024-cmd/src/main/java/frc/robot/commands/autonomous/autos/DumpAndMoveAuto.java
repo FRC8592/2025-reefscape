@@ -14,7 +14,7 @@ public class DumpAndMoveAuto extends AutoCommand {
     
     public DumpAndMoveAuto() {
         super(
-            NewtonCommands.setPivotPositionCommand(Pivot.Positions.SCORE_GRID).andThen(),
+            NewtonCommands.setPivotPositionCommand(Pivot.Positions.SCORE_GRID),
             NewtonCommands.runIntakeCommand(INTAKE.TOP_MOTOR_SCORE_SPEED, INTAKE.BOTTOM_MOTOR_SCORE_SPEED).withTimeout(.5),
             new FollowPathCommand(getChoreoTrajectory("Bucket1Intake"), Suppliers.robotRunningOnRed)
         );
