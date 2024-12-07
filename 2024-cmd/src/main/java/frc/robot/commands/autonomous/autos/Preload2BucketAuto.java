@@ -32,7 +32,7 @@ public class Preload2BucketAuto extends AutoCommand {
                         NewtonCommands.setPivotPositionCommand(Positions.GROUND)
                     ))
                 )
-            ).withTimeout(3),
+            ).withTimeout(2),
             NewtonCommands.setPivotPositionCommand(Positions.REST).withTimeout(1),
             new FollowPathCommand(getChoreoTrajectory("Bucket1IntakeReturn"), Suppliers.robotRunningOnRed).deadlineWith(
                 NewtonCommands.runIntakeCommand(INTAKE.TOP_MOTOR_DEFAULT_SPEED, INTAKE.BOTTOM_MOTOR_DEFAULT_SPEED),
