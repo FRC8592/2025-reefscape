@@ -16,34 +16,33 @@ public class Preload3BucketAuto extends AutoCommand {
     public Preload3BucketAuto() {
         super(
             new TimingSimulatedCommand(NewtonCommands.setPivotPositionCommand(Pivot.Positions.SCORE_GRID)),
-            NewtonCommands.runIntakeCommand(INTAKE.TOP_MOTOR_SCORE_SPEED, INTAKE.BOTTOM_MOTOR_SCORE_SPEED).withTimeout(.5),
+            NewtonCommands.runIntakeCommand(INTAKE.TOP_MOTOR_SLOW_SCORE_SPEED, INTAKE.BOTTOM_MOTOR_SLOW_SCORE_SPEED).withTimeout(.5),
             new FollowPathCommand(getChoreoTrajectory("Bucket1IntakeNoForceFeed"), Suppliers.robotRunningOnRed).deadlineWith(
-                new WaitCommand(1).andThen(
+                new WaitCommand(0.5).andThen(
                     new TimingSimulatedCommand(NewtonCommands.setPivotPositionCommand(Positions.GROUND)),
                     NewtonCommands.runIntakeCommand(INTAKE.TOP_MOTOR_INTAKE_SPEED, INTAKE.BOTTOM_MOTOR_INTAKE_SPEED)
                 )
             ),
-            new WaitCommand(1),
-            NewtonCommands.setPivotPositionCommand(Positions.REST).withTimeout(1),
+            NewtonCommands.setPivotPositionCommand(Positions.REST).withTimeout(0.5),
             new FollowPathCommand(getChoreoTrajectory("Bucket1IntakeReturnNoForceFeed"), Suppliers.robotRunningOnRed).deadlineWith(
                 NewtonCommands.runIntakeCommand(INTAKE.TOP_MOTOR_DEFAULT_SPEED, INTAKE.BOTTOM_MOTOR_DEFAULT_SPEED),
-                new TimingSimulatedCommand(NewtonCommands.setPivotPositionCommand(Positions.REST).withTimeout(1).andThen( 
+                new TimingSimulatedCommand(NewtonCommands.setPivotPositionCommand(Positions.REST).withTimeout(0.75).andThen( 
                     NewtonCommands.setPivotPositionCommand(Pivot.Positions.SCORE_GRID)
                 ))
             ),
-            NewtonCommands.runIntakeCommand(INTAKE.TOP_MOTOR_OUTTAKE_SPEED, INTAKE.BOTTOM_MOTOR_OUTTAKE_SPEED).withTimeout(1.5),
+            NewtonCommands.runIntakeCommand(INTAKE.TOP_MOTOR_SLOW_SCORE_SPEED, INTAKE.BOTTOM_MOTOR_SLOW_SCORE_SPEED).withTimeout(0.5),
             new FollowPathCommand(getChoreoTrajectory("Bucket2Intake"), Suppliers.robotRunningOnRed).deadlineWith(
-                new WaitCommand(0.75).andThen(
-                    new TimingSimulatedCommand(NewtonCommands.setPivotPositionCommand(Positions.KNOCK_BUCKET_OVER)),
+                new WaitCommand(0.5).andThen(
+                    new TimingSimulatedCommand(NewtonCommands.setPivotPositionCommand(Positions.GROUND)),
                     NewtonCommands.runIntakeCommand(INTAKE.TOP_MOTOR_INTAKE_SPEED, INTAKE.BOTTOM_MOTOR_INTAKE_SPEED)
                 )
             ),
             new FollowPathCommand(getChoreoTrajectory("Bucket2IntakeReturn"), Suppliers.robotRunningOnRed).deadlineWith(
-                new WaitCommand(1).andThen(
+                new WaitCommand(0.75).andThen(
                     new TimingSimulatedCommand(NewtonCommands.setPivotPositionCommand(Positions.SCORE_GRID))
                 )
             ),
-            NewtonCommands.runIntakeCommand(INTAKE.TOP_MOTOR_SCORE_SPEED, INTAKE.BOTTOM_MOTOR_SCORE_SPEED).withTimeout(2)
+            NewtonCommands.runIntakeCommand(INTAKE.TOP_MOTOR_SLOW_SCORE_SPEED, INTAKE.BOTTOM_MOTOR_SLOW_SCORE_SPEED).withTimeout(2)
         );
         setStartStateFromChoreoTrajectory("Bucket1Intake");
     }
