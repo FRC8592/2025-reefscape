@@ -66,7 +66,7 @@ public final class Suppliers {
      * inaccessible.
      */
     public static final LoggedBooleanSupplier robotRunningOnRed = new LoggedBooleanSupplier(
-        () -> DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red,
+        () -> DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue,
         "RobotRunningOnRed"
     );
 
@@ -75,7 +75,9 @@ public final class Suppliers {
      * when the front of the robot is aimed away from the driver station.
      */
     public static final Supplier<Rotation2d> currentGyroscopeRotationOffset = new LoggedWPILibSupplier<Rotation2d>(
-        () -> robotRunningOnRed.getAsBoolean() ? SWERVE.RED_PERSPECTIVE_ROTATION : SWERVE.BLUE_PERSPECTIVE_ROTATION,
+        () -> robotRunningOnRed.getAsBoolean() && !DriverStation.isAutonomous() 
+        ? SWERVE.RED_PERSPECTIVE_ROTATION
+        : SWERVE.BLUE_PERSPECTIVE_ROTATION,
         "CurrentGyroscopeRotationOffset"
     );
 

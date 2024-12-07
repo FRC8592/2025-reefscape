@@ -117,6 +117,7 @@ public class RobotContainer {
         // Operator: 
         // Intake is left trigger
         // Outtake is left bumper
+        // Slow Score is right bumper
         // Score is right trigger
         // Stow is b button
         // Score Grid position is x button
@@ -190,6 +191,12 @@ public class RobotContainer {
         operatorController.leftBumper().whileTrue(
             runIntakeCommand(
                 INTAKE.TOP_MOTOR_OUTTAKE_SPEED, INTAKE.BOTTOM_MOTOR_OUTTAKE_SPEED
+            ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
+        );
+
+         operatorController.rightBumper().whileTrue(
+            runIntakeCommand(
+                INTAKE.TOP_MOTOR_SLOW_SCORE_SPEED, INTAKE.BOTTOM_MOTOR_SLOW_SCORE_SPEED
             ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         );
         

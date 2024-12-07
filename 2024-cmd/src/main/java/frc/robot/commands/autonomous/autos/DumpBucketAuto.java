@@ -7,6 +7,7 @@ import frc.robot.Constants.INTAKE;
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.AutoCommand;
 import frc.robot.commands.largecommands.*;
+import frc.robot.commands.proxies.TimingSimulatedCommand;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Pivot.Positions;
 
@@ -14,7 +15,7 @@ public class DumpBucketAuto extends AutoCommand {
     
     public DumpBucketAuto() {
         super(
-            NewtonCommands.setPivotPositionCommand(Pivot.Positions.SCORE_GRID).andThen(),
+            new TimingSimulatedCommand(NewtonCommands.setPivotPositionCommand(Pivot.Positions.SCORE_GRID)),
             NewtonCommands.runIntakeCommand(INTAKE.TOP_MOTOR_SCORE_SPEED, INTAKE.BOTTOM_MOTOR_SCORE_SPEED).withTimeout(.5)
         );
     }

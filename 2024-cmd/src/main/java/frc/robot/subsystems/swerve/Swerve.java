@@ -206,7 +206,8 @@ public class Swerve extends SubsystemBase {
     }
 
     public void simulationPeriodic() {
-        Robot.FIELD.setRobotPose(getCurrentPosition());
+        Pose2d pose = getCurrentPosition();
+        Robot.FIELD.setRobotPose(pose==null?new Pose2d():pose);
     }
 
     /**
@@ -320,7 +321,7 @@ public class Swerve extends SubsystemBase {
                     MEASUREMENTS.FIELD_LENGTH_METERS-pose.getX(),
                     pose.getY()
                 ),
-                pose.getRotation()
+                Rotation2d.fromDegrees(180).minus(pose.getRotation())
             );
             swerve.setKnownOdometryPose(flipped);
             return;
