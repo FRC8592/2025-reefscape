@@ -187,7 +187,7 @@ public class RobotContainer {
         operatorController.rightTrigger(0.1).whileTrue(
             runIntakeCommand(INTAKE.TOP_MOTOR_SCORE_SPEED, INTAKE.BOTTOM_MOTOR_SCORE_SPEED)
         );
-
+ 
         operatorController.leftBumper().whileTrue(
             runIntakeCommand(
                 INTAKE.TOP_MOTOR_OUTTAKE_SPEED, INTAKE.BOTTOM_MOTOR_OUTTAKE_SPEED

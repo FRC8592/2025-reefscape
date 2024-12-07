@@ -148,7 +148,7 @@ public final class Constants {
         //TODO: Tone these down appropriately as per BB rules
         public static final double TRANSLATE_POWER_FAST = 1.0;
         public static final double ROTATE_POWER_FAST = 0.75;
-        public static final double TRANSLATE_POWER_SLOW = 0.4;
+        public static final double TRANSLATE_POWER_SLOW = 0.5;
         public static final double ROTATE_POWER_SLOW = 0.3;
 
         public static final int TRANSLATION_SMOOTHING_AMOUNT = 3;
