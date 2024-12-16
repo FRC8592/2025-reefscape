@@ -6,20 +6,27 @@ package frc.robot;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.inputs.LoggedPowerDistribution;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonPipelineResult;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.PIVOT;
-import frc.robot.subsystems.Pivot;
+import frc.robot.Constants.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -36,6 +43,17 @@ public class Robot extends LoggedRobot {
     private RobotContainer robotContainer;
 
     public static Field2d FIELD = new Field2d();
+
+    //Creating cameras
+    PhotonCamera forwardCamera = new PhotonCamera(VISION.FORWARD_CAMERA);
+    PhotonCamera backCamera = new PhotonCamera(VISION.BACK_CAMERA);
+
+    // The field from AprilTagFields will be different depending on the game.
+    AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+
+    // Construct PhotonPoseEstimators
+    PhotonPoseEstimator forwardPhotonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, forwardCamera, VISION.forwardTransform);
+    PhotonPoseEstimator backPhotonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, backCamera, VISION.backTransform);
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -61,6 +79,10 @@ public class Robot extends LoggedRobot {
             SmartDashboard.putData(FIELD);
         }
         robotContainer = new RobotContainer();
+
+        //setting camera pipelines for PhotonVision
+        forwardCamera.setPipelineIndex(VISION.APRILTAG_PIPELINE);
+        backCamera.setPipelineIndex(VISION.APRILTAG_PIPELINE);
     }
 
     /**
@@ -83,6 +105,24 @@ public class Robot extends LoggedRobot {
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
+
+        PhotonPipelineResult forwardResult = forwardCamera.getLatestResult();
+        boolean forwardHasTargets = forwardResult.hasTargets();
+        SmartDashboard.putBoolean("Forward Camera Has Target: ", forwardHasTargets);
+
+        PhotonPipelineResult backResult = backCamera.getLatestResult();
+        boolean backHasTargets = backResult.hasTargets();
+        SmartDashboard.putBoolean("Back Camera Has Target: ", backHasTargets);
+
+        Optional<EstimatedRobotPose> forwardPose = forwardPhotonPoseEstimator.update();
+        Optional<EstimatedRobotPose> backPose = backPhotonPoseEstimator.update();
+        if(forwardPose.isPresent()){
+            Logger.recordOutput("CustomLogs/forwardPose", forwardPose.get().estimatedPose);
+        }
+        if(backPose.isPresent()){
+            Logger.recordOutput("CutomLogs/backPose", backPose.get().estimatedPose);
+        }
+            
     }
 
     /** This function is called once each time the robot enters Disabled mode. */

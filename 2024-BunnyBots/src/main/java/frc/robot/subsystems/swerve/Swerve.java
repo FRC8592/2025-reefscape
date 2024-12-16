@@ -163,12 +163,13 @@ public class Swerve extends SubsystemBase {
         ).withSteerMotorInverted(SWERVE.WHITE_BACK_RIGHT_STEER_INVERT);
 
         swerve = new CTRESwerve(drivetrainConstants, commonSwerveConstants, frontLeft, frontRight, backLeft, backRight);
+        //swerve.addVisionMeasurement(getCurrentPosition(), 0, null);
 
         // This lambda is run every time the odometry is updated (100hz for classic CAN or 250hz for CAN FD)
         swerve.registerTelemetry((drivetrainState, kinematics, modules) -> {
             // Logger.recordOutput(SWERVE.LOG_PATH+"TargetSwerveStates", drivetrainState.ModuleTargets);
             // Logger.recordOutput(SWERVE.LOG_PATH+"ReadSwerveStates", drivetrainState.ModuleStates);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"OdometryPosition", drivetrainState.Pose);
+            Logger.recordOutput(SWERVE.LOG_PATH+"OdometryPosition", drivetrainState.Pose);
             // Logger.recordOutput(SWERVE.LOG_PATH+"ActualChassisSpeeds", drivetrainState.speeds);
             // Logger.recordOutput(SWERVE.LOG_PATH+"TargetChassisSpeeds", kinematics.toChassisSpeeds(
             //     modules[0].getTargetState(), modules[1].getTargetState(), modules[2].getTargetState(), modules[3].getTargetState()
