@@ -23,12 +23,8 @@ import frc.robot.subsystems.*;
  */
 public final class AutoManager {
     private static Swerve swerve;
-    private static Intake intake;
-    private static Pivot pivot;
-    public static void addSubsystems(Swerve swerve, Intake intake, Pivot pivot){
+    public static void addSubsystems(Swerve swerve){
         AutoManager.swerve = swerve;
-        AutoManager.intake = intake;
-        AutoManager.pivot = pivot;
     }
 
     private static SendableChooser<AutoCommand> autoChooser;
@@ -45,9 +41,6 @@ public final class AutoManager {
     public static void prepare(){
         autoCommands = new ArrayList<>();
         // autoCommands.add(new TestAuto());
-        autoCommands.add(new Preload2BucketAuto());
-        autoCommands.add(new DumpBucketAuto());
-        autoCommands.add(new DumpAndMoveAuto());
 
         // autoCommands.add(new ExampleAuto());
         // TODO: Add autos here

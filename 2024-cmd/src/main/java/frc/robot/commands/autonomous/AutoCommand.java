@@ -20,12 +20,8 @@ import frc.robot.subsystems.swerve.*;
  */
 public class AutoCommand extends WrapperCommand{
     protected static Swerve swerve;
-    protected static Intake intake;
-    protected static Pivot pivot;
-    public static void addSubsystems(Swerve swerve, Intake intake, Pivot pivot){
+    public static void addSubsystems(Swerve swerve){
         AutoCommand.swerve = swerve;
-        AutoCommand.intake = intake;
-        AutoCommand.pivot = pivot;
     }
 
     /**

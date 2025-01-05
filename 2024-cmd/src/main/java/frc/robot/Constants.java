@@ -29,12 +29,7 @@ public final class Constants {
         public static final int OPERATOR_PORT = 1;
     }
 
-    public final class CAN {
-        public static final int PIVOT_MOTOR_CAN_ID = 30; //TODO Change these value to correct value
-        public static final int INTAKE_TOP_MOTOR_CAN_ID = 29;
-        public static final int INTAKE_BOTTOM_MOTOR_CAN_ID = 31;
-        
-        
+    public final class CAN {        
         public static final int SWERVE_BLACK_FRONT_LEFT_DRIVE_CAN_ID = 17;
         public static final int SWERVE_BLACK_FRONT_LEFT_STEER_CAN_ID = 9;
         public static final int SWERVE_BLACK_FRONT_LEFT_ENCODER_CAN_ID = 13;
@@ -61,43 +56,8 @@ public final class Constants {
         public static final int SWERVE_DRIVE_CURRENT_LIMIT = 80;
         public static final int SWERVE_STEER_CURRENT_LIMIT = 40;
     }
-    public final class PIVOT {
-        public static final int GROUND_DEGREES = 0;
-        // TODO: Set these to correct values
-        public static final int KNOCK_BUCKET_OVER_DEGREES = 14;
-        public static final int STOW_DEGREES = 90;
-        public static final int SCORE_HIGH_DEGREES = 75;
-        public static final int SCORE_GRID_DEGREES = 30;
-
-        public static final double PIVOT_GEAR_RATIO = 300d;
-        
-        public static final double PIVOT_kP = 2e-4;
-        public static final double PIVOT_kI = 0; 
-        public static final double PIVOT_kD = 0;
-        public static final double PIVOT_kF = 1.5e-4;
-
-        public static final double INTAKE_ANGLE = 9.5;
-        public static final double PIVOT_TARGET_THRESHOLD_DEGREES = 2.0;
-
-        public static final double PIVOT_MANUAL_CONTROL_MAX_SPEED = 0.4;
-         
-    }
     
-    public final class INTAKE {
-        public static final double TOP_MOTOR_INTAKE_SPEED = 0.5;
-        public static final double BOTTOM_MOTOR_INTAKE_SPEED = 0.5;
-        
-        public static final double TOP_MOTOR_SCORE_SPEED = -0.5;
-        public static final double BOTTOM_MOTOR_SCORE_SPEED = -0.5;
-        
-        public static final double TOP_MOTOR_OUTTAKE_SPEED = -0.25;
-        public static final double BOTTOM_MOTOR_OUTTAKE_SPEED = -0.25;
-        
-        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 5;
-
-        public static final double TOP_MOTOR_DEFAULT_SPEED = 0.1;
-        public static final double BOTTOM_MOTOR_DEFAULT_SPEED = 0.1;
-    }
+    
 
     
     public final class SWERVE {

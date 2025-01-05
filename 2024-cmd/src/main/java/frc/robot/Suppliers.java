@@ -51,13 +51,10 @@ public final class Suppliers {
     }
 
     private static Swerve swerve;
-    private static Intake intake;
-    private static Pivot pivot;
 
-    public static void addSubsystems(Swerve swerve, Intake intake, Pivot pivot){
+
+    public static void addSubsystems(Swerve swerve){
         Suppliers.swerve = swerve;
-        Suppliers.intake = intake;
-        Suppliers.pivot = pivot;
     }
 
     /**
