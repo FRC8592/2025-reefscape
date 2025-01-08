@@ -12,10 +12,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Robot;
 import frc.robot.Suppliers;
-import frc.robot.commands.autonomous.autos.*;
 import frc.robot.commands.proxies.*;
 import frc.robot.subsystems.swerve.Swerve;
-import frc.robot.subsystems.*;
 
 /**
  * General class for autonomous management (loading autos, sending the chooser, getting the
@@ -23,12 +21,8 @@ import frc.robot.subsystems.*;
  */
 public final class AutoManager {
     private static Swerve swerve;
-    private static Intake intake;
-    private static Pivot pivot;
-    public static void addSubsystems(Swerve swerve, Intake intake, Pivot pivot){
+    public static void addSubsystems(Swerve swerve){
         AutoManager.swerve = swerve;
-        AutoManager.intake = intake;
-        AutoManager.pivot = pivot;
     }
 
     private static SendableChooser<AutoCommand> autoChooser;
@@ -45,14 +39,7 @@ public final class AutoManager {
     public static void prepare(){
         autoCommands = new ArrayList<>();
         // autoCommands.add(new TestAuto());
-        autoCommands.add(new Preload2BucketAuto());
-        autoCommands.add(new DumpBucketAuto());
-        autoCommands.add(new DumpAndMoveAuto());
-        autoCommands.add(new Preload2BucketAutoNoForceFeed());
-        autoCommands.add(new Preload3BucketAuto());
 
-        // autoCommands.add(new ExampleAuto());
-        // TODO: Add autos here
 
 
         autoChooser = new SendableChooser<>();

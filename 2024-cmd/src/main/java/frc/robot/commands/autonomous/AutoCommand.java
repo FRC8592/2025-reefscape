@@ -12,7 +12,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj2.command.*;
-import frc.robot.subsystems.*;
 import frc.robot.subsystems.swerve.*;
 
 /**
@@ -20,12 +19,8 @@ import frc.robot.subsystems.swerve.*;
  */
 public class AutoCommand extends WrapperCommand{
     protected static Swerve swerve;
-    protected static Intake intake;
-    protected static Pivot pivot;
-    public static void addSubsystems(Swerve swerve, Intake intake, Pivot pivot){
+    public static void addSubsystems(Swerve swerve){
         AutoCommand.swerve = swerve;
-        AutoCommand.intake = intake;
-        AutoCommand.pivot = pivot;
     }
 
     /**
