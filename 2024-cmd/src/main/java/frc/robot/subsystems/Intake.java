@@ -45,8 +45,23 @@ public class Intake extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putBoolean("Beam Break Tripped", isBeamBreakTripped());
 
-        SmartDashboard.putNumber("Outer Motor Intake Velocity", getouterMotorVelocity());
-        SmartDashboard.putNumber("Inner Motor Intake Velocity", getinnerMotorVelocity());
-        SmartDashboard.putNumber("Wrist Motor Intake Velocity", getwristMotorVelocity());
+        SmartDashboard.putNumber("Outer Motor Intake Velocity", getOuterMotorVelocity());
+        SmartDashboard.putNumber("Inner Motor Intake Velocity", getInnerMotorVelocity());
+        SmartDashboard.putNumber("Wrist Motor Intake Velocity", getWristMotorVelocity());
+    }
+
+    public double getOuterMotorVelocity()
+    {
+        return outerMotor.getVelocity();
+    }
+
+    public double getInnerMotorVelocity()
+    {
+        return innerMotor.getVelocity();
+    }
+
+    public double getWristMotorVelocity()
+    {
+        return wristMotor.getVelocity();
     }
 }
