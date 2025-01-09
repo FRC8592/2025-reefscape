@@ -7,10 +7,10 @@ import frc.robot.Constants.*;
 import frc.robot.helpers.SparkFlexControl;
 
 public class Intake extends SubsystemBase {
-    //private TalonFX topMotor = new TalonFX(CAN.INTAKE_TOP_MOTOR_CAN_ID);
-    private SparkFlexControl wristMotor = new SparkFlexControl(CAN.INTAKE_WRIST_MOTOR_CAN_ID);
-    // private TalonFX bottomMotor = new TalonFX(CAN.INTAKE_BOTTOM_MOTOR_CAN_ID);
-    private SparkFlexControl gripMotor = new SparkFlexControl();
+
+    private SparkFlexControl wristMotor = new SparkFlexControl(CAN.INTAKE_WRIST_MOTOR_CAN_ID, false);
+    private SparkFlexControl outerMotor = new SparkFlexControl(CAN.INTAKE_OUTER_MOTOR_CAN_ID,false);
+    private SparkFlexControl innerMotor = new SparkFlexControl(CAN.INTAKE_INNER_MOTOR_CAN_ID,false);
 
     private DigitalInput beamBreak;
 
@@ -18,21 +18,25 @@ public class Intake extends SubsystemBase {
         // TalonFXConfiguration motorConfigs = new TalonFXConfiguration();
         // topMotor.getConfigurator().apply(motorConfigs);
         beamBreak = new DigitalInput(INTAKE.INTAKE_BEAM_BREAK_DIGITAL_ID);
-        // topMotor.setInverted();
     }
   
-//     public boolean isBeamBreakTripped() {
-//     }
+    public boolean isBeamBreakTripped() {
+        return !beamBreak.get();
+    }
 
-    // public void stop() {
-    //     runTopMotor(0);
-    //     runBottomMotor(0);
-    // }
+    public void runInnerMotor(int velocity) {}
 
-//     public void periodic() {
-//         SmartDashboard.putBoolean("Beam Break Tripped", isBeamBreakTripped());
+    public void stop() {
+        runouterMotor(0);
+        runinnerMotor(0);
+        runwristMotor(0);
+    }
 
-//         SmartDashboard.putNumber("Top Motor Intake Velocity", getTopMotorVelocity());
-//         SmartDashboard.putNumber("Bottom Motor Intake Velocity", getBottomMotorVelocity());
-//     };
+    public void periodic() {
+        SmartDashboard.putBoolean("Beam Break Tripped", isBeamBreakTripped());
+
+        SmartDashboard.putNumber("Outer Motor Intake Velocity", getouterMotorVelocity());
+        SmartDashboard.putNumber("Inner Motor Intake Velocity", getinnerMotorVelocity());
+        SmartDashboard.putNumber("Wrist Motor Intake Velocity", getwristMotorVelocity());
+    }
 }
