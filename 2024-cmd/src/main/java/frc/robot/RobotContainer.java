@@ -32,6 +32,7 @@ public class RobotContainer {
 
     // The robot's subsystems
     private final Swerve swerve;
+    private final Intake intake;
     //TODO: Add more subsystems here
 
     // Helpers
@@ -43,6 +44,7 @@ public class RobotContainer {
      */
     public RobotContainer() {
         swerve = new Swerve();
+        intake = new Intake();
         // TODO: Add more subsystems and instantiatable helpers here
 
         passSubsystems();
@@ -60,7 +62,7 @@ public class RobotContainer {
         AutoManager.addSubsystems(swerve);
         AutoCommand.addSubsystems(swerve);
         LargeCommand.addSubsystems(swerve);
-        NewtonCommands.addSubsystems(swerve);
+        NewtonCommands.addSubsystems(swerve, intake);
         Suppliers.addSubsystems(swerve);
     }
 

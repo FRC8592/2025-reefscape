@@ -5,13 +5,17 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.INTAKE;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 
 public final class NewtonCommands {
     private static Swerve swerve;
-    public static void addSubsystems(Swerve swerve){
+    private static Intake intake;
+    public static void addSubsystems(Swerve swerve,Intake intake){
         NewtonCommands.swerve = swerve;
+        NewtonCommands.intake = intake;
 
     }
 
@@ -37,19 +41,15 @@ public final class NewtonCommands {
             swerve.drive(processed, DriveModes.AUTOMATIC);
         });
     }
-    /**
-     * Currently Commands.none(). Update this comment when the command is added.
-     *
-     * @param position
-     * @return Commands.none()
-     */
 
-    /**
-     * Command to stop the intake and stow the pivot to REST position
-     * @return the command
-     */
-
-    
+    public static Command intakeCommand(){
+        return intake.run(()-> {
+            intake.runInnerMotor(INTAKE.INNER_MOTOR_INTAKE_VELOCITY);
+            intake.runOuterMotor(INTAKE.OUTER_MOTOR_INTAKE_VELOCITY);
+        }).until(()-> {
+            return intake.isBeamBreakTripped();
+        });
     }
+}
 
 

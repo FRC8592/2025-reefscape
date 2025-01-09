@@ -85,22 +85,9 @@ public final class Constants {
     }
     
     public final class INTAKE {
-        public static final double TOP_MOTOR_INTAKE_SPEED = 0.5;  
-        public static final double BOTTOM_MOTOR_INTAKE_SPEED = 0.5;
-        
-        public static final double TOP_MOTOR_SCORE_SPEED = -0.5;
-        public static final double BOTTOM_MOTOR_SCORE_SPEED = -0.5; 
-
-        public static final double TOP_MOTOR_SLOW_SCORE_SPEED = -0.1;
-        public static final double BOTTOM_MOTOR_SLOW_SCORE_SPEED = -0.1;
-        
-        public static final double TOP_MOTOR_OUTTAKE_SPEED = -0.25;
-        public static final double BOTTOM_MOTOR_OUTTAKE_SPEED = -0.25;
-        
-        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 5;
-
-        public static final double TOP_MOTOR_DEFAULT_SPEED = 0.1;
-        public static final double BOTTOM_MOTOR_DEFAULT_SPEED = 0.1;
+        public static final double INNER_MOTOR_INTAKE_VELOCITY = 0; // TODO: Set the velocity 
+        public static final double OUTER_MOTOR_INTAKE_VELOCITY = 0;// TODO: Set the velocity 
+        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 0; // TODO: Set the ID  
     }
 
     
