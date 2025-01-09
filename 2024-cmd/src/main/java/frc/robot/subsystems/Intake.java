@@ -24,12 +24,22 @@ public class Intake extends SubsystemBase {
         return !beamBreak.get();
     }
 
-    public void runInnerMotor(int velocity) {}
+    public void runInnerMotor(double velocity) {
+        innerMotor.setVelocity(velocity);
+    }
+
+    public void runOuterMotor(double velocity) {
+        outerMotor.setVelocity(velocity);
+    }
+
+    public void runWristMotor(double velocity) {
+        wristMotor.setVelocity(velocity);
+    }
 
     public void stop() {
-        runouterMotor(0);
-        runinnerMotor(0);
-        runwristMotor(0);
+        runOuterMotor(0);
+        runInnerMotor(0);
+        runWristMotor(0);
     }
 
     public void periodic() {
