@@ -12,6 +12,7 @@ import frc.robot.subsystems.swerve.Swerve.DriveModes;
 
 public final class NewtonCommands {
     private static Swerve swerve;
+    private static Elevator elevator;
     public static void addSubsystems(Swerve swerve){
         NewtonCommands.swerve = swerve;
     }
@@ -38,6 +39,36 @@ public final class NewtonCommands {
             swerve.drive(processed, DriveModes.AUTOMATIC);
         });
     }
+
+    public static Command primeL1Command(){
+        return Commands.none();
+    }
+
+    public static Command primeL2Command(){
+        return Commands.none();
+    }
+
+    public static Command primeL3Command(){
+        return Commands.none();
+    }
+
+    public static Command primeL4Command(){
+        return Commands.none();
+    }
+
+    public static Command humanPlayerIntake(){
+        return Commands.none();
+    }
+
+    public static Command stowCommand(){
+        return Commands.none();
+    }
+
+    public static Command removeAlgaeCommand(){
+        return Commands.none();
+    }
+
+
     /**
      * Currently Commands.none(). Update this comment when the command is added.
      *
