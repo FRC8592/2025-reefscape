@@ -38,6 +38,8 @@ public class Swerve extends SubsystemBase {
     private boolean robotRelative;
 
     private SmoothingFilter smoothingFilter;
+    
+    private CTRESwerveWrapper swerve;
 
     public Swerve() {
         smoothingFilter = new SmoothingFilter(
@@ -49,6 +51,7 @@ public class Swerve extends SubsystemBase {
         snapToController = new PIDController(SWERVE.SNAP_TO_kP, SWERVE.SNAP_TO_kI, SWERVE.SNAP_TO_kD);
 
         // TODO: Any initialization code needed for the new swerve stuff
+        swerve = new CTRESwerveWrapper();
     }
 
     public void periodic() {
@@ -74,7 +77,7 @@ public class Swerve extends SubsystemBase {
      */
     public void drive(ChassisSpeeds speeds){
         // TODO: implement something that allows the commented code to work
-        // swerve.drive(speeds, false);
+        swerve.drive(speeds, false);
     }
 
     /**
@@ -84,17 +87,17 @@ public class Swerve extends SubsystemBase {
      */
     public void drive(ChassisSpeeds speeds, DriveModes mode){
         // TODO: implement something that allows the commented code to work
-        // swerve.drive(
-        //     speeds,
-        //     switch(mode){
-        //         case FIELD_RELATIVE:
-        //             yield true;
-        //         case AUTOMATIC:
-        //             yield !robotRelative;
-        //         case ROBOT_RELATIVE:
-        //             yield false;
-        //     }
-        // );
+         swerve.drive(
+             speeds,
+             switch(mode){
+                 case FIELD_RELATIVE:
+                     yield true;
+                 case AUTOMATIC:
+                     yield !robotRelative;
+                 case ROBOT_RELATIVE:
+                     yield false;
+             }
+         );
     }
 
     /**
@@ -121,7 +124,7 @@ public class Swerve extends SubsystemBase {
      */
     public void resetHeading(){
         // TODO: implement something that allows the commented code to work
-        // swerve.resetHeading();
+        swerve.resetHeading();
     }
 
     /**
@@ -129,8 +132,7 @@ public class Swerve extends SubsystemBase {
      */
     public Rotation2d getYaw() {
         // TODO: implement something that allows the commented code to work
-        // return swerve.getYaw();
-        return null;
+        return swerve.getYaw();
     }
 
     /**
@@ -138,19 +140,10 @@ public class Swerve extends SubsystemBase {
      */
     public Pose2d getCurrentPosition() {
         // TODO: implement something that allows the commented code to work
-        // return swerve.getCurrentOdometryPosition();
-        return null; // <- delete this line
+        return swerve.getCurrentOdometryPosition();
     }
 
-    /**
-     * Set the robot's known rotation.
-     *
-     * @param yaw the rotation to set as a Rotation2d
-     */
-    public void setGyroscopeRotation(Rotation2d yaw){
-        // TODO: implement something that allows the commented code to work
-        // swerve.setGyroscopeYaw(yaw);
-    }
+   
 
     /**
      * Reset the robot's known position.
@@ -159,7 +152,7 @@ public class Swerve extends SubsystemBase {
      */
     public void resetPose(Pose2d pose) {
         // TODO: implement something that allows the commented code to work
-        // swerve.setKnownOdometryPose(pose);
+        swerve.setKnownOdometryPose(pose);
         Logger.recordOutput(
             SWERVE.LOG_PATH+"Console", (
                 "Current pose reset to X: "+
@@ -183,10 +176,10 @@ public class Swerve extends SubsystemBase {
                 ),
                 Rotation2d.fromDegrees(180).minus(pose.getRotation())
             );
-            // swerve.setKnownOdometryPose(flipped);
+            swerve.setKnownOdometryPose(flipped);
             return;
         }
-        // swerve.setKnownOdometryPose(pose);
+        swerve.setKnownOdometryPose(pose);
     }
 
     /**
