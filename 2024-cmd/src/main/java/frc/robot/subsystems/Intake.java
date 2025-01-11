@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -11,6 +13,11 @@ public class Intake extends SubsystemBase {
     private SparkFlexControl wristMotor = new SparkFlexControl(CAN.INTAKE_WRIST_MOTOR_CAN_ID, false);
     private SparkFlexControl outerMotor = new SparkFlexControl(CAN.INTAKE_OUTER_MOTOR_CAN_ID,false);
     private SparkFlexControl innerMotor = new SparkFlexControl(CAN.INTAKE_INNER_MOTOR_CAN_ID,false);
+
+    private double innerMotorCommandedVelocity = 0;
+    private double outerMotorCommandedVelocity = 0;
+    private double wristMotorCommandedVelocity = 0;
+
 
     private DigitalInput beamBreak;
 
@@ -26,14 +33,19 @@ public class Intake extends SubsystemBase {
 
     public void runInnerMotor(double velocity) {
         innerMotor.setVelocity(velocity);
+        innerMotorCommandedVelocity = velocity;
     }
 
     public void runOuterMotor(double velocity) {
         outerMotor.setVelocity(velocity);
+        outerMotorCommandedVelocity = velocity;
+
     }
 
     public void runWristMotor(double velocity) {
         wristMotor.setVelocity(velocity);
+        wristMotorCommandedVelocity = velocity;
+
     }
 
     public void stop() {
@@ -48,6 +60,14 @@ public class Intake extends SubsystemBase {
         SmartDashboard.putNumber("Outer Motor Intake Velocity", getOuterMotorVelocity());
         SmartDashboard.putNumber("Inner Motor Intake Velocity", getInnerMotorVelocity());
         SmartDashboard.putNumber("Wrist Motor Intake Velocity", getWristMotorVelocity());
+
+        Logger.recordOutput(INTAKE.LOG_PATH+"OuterMotorVelocity", getOuterMotorVelocity());
+        Logger.recordOutput(INTAKE.LOG_PATH+"InnerMotorVelocity", getInnerMotorVelocity());
+        Logger.recordOutput(INTAKE.LOG_PATH+"WristMotorVelocity", getWristMotorVelocity());
+
+        Logger.recordOutput(INTAKE.LOG_PATH+"OuterMotorCommandedVelocity", outerMotorCommandedVelocity);
+        Logger.recordOutput(INTAKE.LOG_PATH+"InnerMotorCommandedVelocity", innerMotorCommandedVelocity);
+        Logger.recordOutput(INTAKE.LOG_PATH+"WristMotorCommandedVelocity", wristMotorCommandedVelocity);
     }
 
     public double getOuterMotorVelocity()
