@@ -33,7 +33,8 @@ public class Robot extends LoggedRobot {
     private Command autonomousCommand;
 
     private RobotContainer robotContainer;
-    PhotonCamera camera = new PhotonCamera("photonvision/Arducam_OV9281_D");
+
+    PhotonCamera camera = new PhotonCamera("Arducam_OV9782_D");
 
     public static Field2d FIELD = new Field2d();
 
@@ -136,6 +137,7 @@ public class Robot extends LoggedRobot {
          boolean targetVisible = false;
          double targetYaw = 0.0;
          var results = camera.getAllUnreadResults();
+         SmartDashboard.putBoolean("results empty", results.isEmpty());
          if (!results.isEmpty()) {
              // Camera processed a new frame since last
              // Get the last one in the list.
@@ -143,7 +145,7 @@ public class Robot extends LoggedRobot {
              if (result.hasTargets()) {
                  // At least one AprilTag was seen by the camera
                  for (var target : result.getTargets()) {
-                     if (target.getFiducialId() == 7) {
+                     if (target.getFiducialId() == 6) {
                          // Found Tag 7, record its information
                          targetYaw = target.getYaw();
                          targetVisible = true;
@@ -151,6 +153,7 @@ public class Robot extends LoggedRobot {
                  }
              }
          }
+         SmartDashboard.putBoolean("Vision Target Visible", targetVisible);
  
          // Auto-align when requested
         //  if (controller.getAButton() && targetVisible) {
@@ -164,7 +167,6 @@ public class Robot extends LoggedRobot {
         //  drivetrain.drive(forward, strafe, turn);
  
          // Put debug information to the dashboard
-         SmartDashboard.putBoolean("Vision Target Visible", targetVisible);
     }
 
     @Override
