@@ -55,6 +55,10 @@ public final class Constants {
 
         public static final int PDH_CAN_ID = 1;
     }
+    public final class VISION {
+        
+
+    }
 
     public final class POWER {
         public static final int SWERVE_MAX_VOLTAGE = 12;
