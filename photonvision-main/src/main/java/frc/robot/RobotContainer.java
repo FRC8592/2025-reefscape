@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.*;
+import frc.robot.subsystems.vision.Vision;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
@@ -19,6 +20,7 @@ public class RobotContainer {
     );
 
     // The robot's subsystems
+    Vision vision;
     //TODO: Add more subsystems here
 
     // Helpers
@@ -30,7 +32,7 @@ public class RobotContainer {
      */
     public RobotContainer() {
         // TODO: Add more subsystems and instantiatable helpers here
-
+        vision = new Vision();
         passSubsystems();
         configureBindings();
         configureDefaults();

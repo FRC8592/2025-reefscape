@@ -13,7 +13,12 @@ public class Vision implements Subsystem{
     }
 
     public void periodic(){
-        // Read in relevant data from the Camera
+        // Calculate drivetrain commands from Joystick values
+        //  double forward = -controller.getLeftY() * Constants.Swerve.kMaxLinearSpeed;
+        //  double strafe = -controller.getLeftX() * Constants.Swerve.kMaxLinearSpeed;
+        //  double turn = -controller.getRightX() * Constants.Swerve.kMaxAngularSpeed;
+ 
+         // Read in relevant data from the Camera
          boolean targetVisible = false;
          double targetYaw = 0.0;
          double targetPitch = 0.0;
@@ -49,6 +54,19 @@ public class Vision implements Subsystem{
          SmartDashboard.putNumber("Target X", bestCameraToTarget.getX());
          SmartDashboard.putNumber("Target Y", bestCameraToTarget.getY());
          SmartDashboard.putNumber("Target Z", bestCameraToTarget.getZ());
+ 
+         // Auto-align when requested
+        //  if (controller.getAButton() && targetVisible) {
+        //      // Driver wants auto-alignment to tag 7
+        //      // And, tag 7 is in sight, so we can turn toward it.
+        //      // Override the driver's turn command with an automatic one that turns toward the tag.
+        //      turn = -1.0 * targetYaw * VISION_TURN_kP * Constants.Swerve.kMaxAngularSpeed;
+        //  }
+ 
+        //  // Command drivetrain motors based on target speeds
+        //  drivetrain.drive(forward, strafe, turn);
+ 
+         // Put debug information to the dashboard
     }
 
 }
