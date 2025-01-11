@@ -41,7 +41,7 @@ public final class NewtonCommands {
             swerve.drive(processed, DriveModes.AUTOMATIC);
         });
     }
-    // intake commands for intake, outake, and 
+    // commandd for taking in coral
     public static Command intakeCommand(){
         return intake.run(()-> {
             intake.runInnerMotor(INTAKE.INNER_MOTOR_INTAKE_VELOCITY);
@@ -50,7 +50,7 @@ public final class NewtonCommands {
             return intake.isBeamBreakTripped();
         });
     }
-
+    // command for release coral for scoring
     public static Command outtakeCommand() {
         return intake.run(() -> {
             intake.runInnerMotor(INTAKE.INNER_MOTOR_OUTAKE_VELOCITY);

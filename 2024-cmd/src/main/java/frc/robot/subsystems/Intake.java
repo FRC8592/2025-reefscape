@@ -26,11 +26,12 @@ public class Intake extends SubsystemBase {
         // topMotor.getConfigurator().apply(motorConfigs);
         beamBreak = new DigitalInput(INTAKE.INTAKE_BEAM_BREAK_DIGITAL_ID);
     }
-  
+    // Method that checks if the beam break is tripped 
     public boolean isBeamBreakTripped() {
         return !beamBreak.get();
     }
-
+    
+    // Runs motors at specific velocities
     public void runInnerMotor(double velocity) {
         innerMotor.setVelocity(velocity);
         innerMotorCommandedVelocity = velocity;
@@ -47,7 +48,7 @@ public class Intake extends SubsystemBase {
         wristMotorCommandedVelocity = velocity;
 
     }
-
+    // stop all motors relating to intake
     public void stop() {
         runOuterMotor(0);
         runInnerMotor(0);
@@ -55,12 +56,18 @@ public class Intake extends SubsystemBase {
     }
 
     public void periodic() {
+
+        // Log velocities to smart dashboard
         SmartDashboard.putBoolean("Beam Break Tripped", isBeamBreakTripped());
 
         SmartDashboard.putNumber("Outer Motor Intake Velocity", getOuterMotorVelocity());
         SmartDashboard.putNumber("Inner Motor Intake Velocity", getInnerMotorVelocity());
         SmartDashboard.putNumber("Wrist Motor Intake Velocity", getWristMotorVelocity());
 
+        /* Log recorded velocities, commanded velocities, and difference between 
+            commanded and recorded velocity for the outer intake motor, inner intake motor, 
+            and wrist motor  
+        */
         Logger.recordOutput(INTAKE.LOG_PATH+"OuterMotorVelocity", getOuterMotorVelocity());
         Logger.recordOutput(INTAKE.LOG_PATH+"InnerMotorVelocity", getInnerMotorVelocity());
         Logger.recordOutput(INTAKE.LOG_PATH+"WristMotorVelocity", getWristMotorVelocity());
@@ -75,6 +82,7 @@ public class Intake extends SubsystemBase {
         
     }
 
+    // Methods that return motor velocities
     public double getOuterMotorVelocity()
     {
         return outerMotor.getVelocity();
