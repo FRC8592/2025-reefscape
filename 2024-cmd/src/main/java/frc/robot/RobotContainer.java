@@ -10,10 +10,6 @@ import static frc.robot.commands.NewtonCommands.*;
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
-import frc.robot.commands.proxies.OverrideEverythingCommand;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Pivot;
-import frc.robot.subsystems.Pivot.Positions;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 
@@ -34,8 +30,6 @@ public class RobotContainer {
 
     // The robot's subsystems
     private final Swerve swerve;
-    private final Intake intake;
-    private final Pivot pivot;
     //TODO: Add more subsystems here
 
     // Helpers
@@ -47,8 +41,6 @@ public class RobotContainer {
      */
     public RobotContainer() {
         swerve = new Swerve();
-        intake = new Intake();
-        pivot = new Pivot();
         // TODO: Add more subsystems and instantiatable helpers here
 
         passSubsystems();
@@ -63,11 +55,11 @@ public class RobotContainer {
      * Pass subsystems everywhere they're needed
      */
     private void passSubsystems(){
-        AutoManager.addSubsystems(swerve, intake, pivot);
-        AutoCommand.addSubsystems(swerve, intake, pivot);
-        LargeCommand.addSubsystems(swerve, intake, pivot);
-        NewtonCommands.addSubsystems(swerve, intake, pivot);
-        Suppliers.addSubsystems(swerve, intake, pivot);
+        AutoManager.addSubsystems(swerve);
+        AutoCommand.addSubsystems(swerve);
+        LargeCommand.addSubsystems(swerve);
+        NewtonCommands.addSubsystems(swerve);
+        Suppliers.addSubsystems(swerve);
     }
 
     /**
@@ -82,20 +74,6 @@ public class RobotContainer {
                 -driverController.getRightX()
             ), DriveModes.AUTOMATIC);
         }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
-        //setting the intakes default command
-        setDefaultCommand(intake, intake.run(
-            () -> {
-                intake.runTopMotor(INTAKE.TOP_MOTOR_DEFAULT_SPEED);
-                intake.runBottomMotor(INTAKE.BOTTOM_MOTOR_DEFAULT_SPEED);
-            }
-        ));
-        //setting the pivot default
-        setDefaultCommand(pivot, pivot.run(
-            () -> pivot.setMotorPower(
-                -operatorController.getLeftY() * PIVOT.PIVOT_MANUAL_CONTROL_MAX_SPEED
-            )
-        ));
     }
 
 
@@ -179,43 +157,6 @@ public class RobotContainer {
                 () -> -driverController.getLeftY()
             ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         );
-
-        operatorController.leftTrigger(0.1).whileTrue(
-            runIntakeCommand(INTAKE.TOP_MOTOR_INTAKE_SPEED, INTAKE.BOTTOM_MOTOR_INTAKE_SPEED)
-        );
-
-        operatorController.rightTrigger(0.1).whileTrue(
-            runIntakeCommand(INTAKE.TOP_MOTOR_SCORE_SPEED, INTAKE.BOTTOM_MOTOR_SCORE_SPEED)
-        );
- 
-        operatorController.leftBumper().whileTrue(
-            runIntakeCommand(
-                INTAKE.TOP_MOTOR_OUTTAKE_SPEED, INTAKE.BOTTOM_MOTOR_OUTTAKE_SPEED
-            ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
-        );
-
-         operatorController.rightBumper().whileTrue(
-            runIntakeCommand(
-                INTAKE.TOP_MOTOR_SLOW_SCORE_SPEED, INTAKE.BOTTOM_MOTOR_SLOW_SCORE_SPEED
-            ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
-        );
-        
-        operatorController.b().onTrue(
-            setPivotPositionCommand(Positions.REST).withInterruptBehavior(InterruptionBehavior.kCancelSelf)
-        );
-
-        operatorController.x().onTrue(
-            setPivotPositionCommand(Positions.SCORE_GRID).withInterruptBehavior(InterruptionBehavior.kCancelSelf)
-        );
-
-        operatorController.a().onTrue(
-            setPivotPositionCommand(Positions.GROUND).withInterruptBehavior(InterruptionBehavior.kCancelSelf)
-        );
-
-        operatorController.y().onTrue(
-            setPivotPositionCommand(Positions.SCORE_HIGH).withInterruptBehavior(InterruptionBehavior.kCancelSelf)
-        );
-
     }
 
 

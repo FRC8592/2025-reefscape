@@ -1,20 +1,23 @@
 package frc.robot.helpers;
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.SparkPIDController.AccelStrategy;
-
-import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkBase.SoftLimitDirection;
-
-import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.config.ClosedLoopConfig;
+import com.revrobotics.spark.config.SmartMotionConfig;
+import com.revrobotics.spark.config.SoftLimitConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 public class SparkMaxControl {
-    public CANSparkMax motor;
+    public SparkMax motor;
     public RelativeEncoder motorEncoder;
-    public SparkPIDController motorControl;
+    public SparkClosedLoopController motorControl;
+    private SparkMaxConfig motorConfig;
 
     /**
      * Create a Newton² controller for a NEO Vortex (with Spark Flex)
@@ -24,20 +27,19 @@ public class SparkMaxControl {
      * Otherwise, it brakes.
      */
     public SparkMaxControl(int motorCanID, boolean coastMode){
-        motor = new CANSparkMax(motorCanID, MotorType.kBrushless);
-        motor.restoreFactoryDefaults();
+        motor = new SparkMax(motorCanID, MotorType.kBrushless);
 
-        //Set update status to 20 Hz
-        motor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 50);
-
-        motorControl = motor.getPIDController();
+        motorConfig = new SparkMaxConfig();
+        
+        motorControl = motor.getClosedLoopController();
         motorEncoder = motor.getEncoder();
         if (coastMode){
-            motor.setIdleMode(IdleMode.kCoast);
+            motorConfig.idleMode(IdleMode.kCoast);
         }
         else{
-            motor.setIdleMode(IdleMode.kBrake);
+            motorConfig.idleMode(IdleMode.kCoast);
         }
+        this.apply(motorConfig);
         motor.set(0);
     }
 
@@ -47,7 +49,7 @@ public class SparkMaxControl {
      * @param RPM the velocity in RPM
      */
     public void setVelocity(double RPM){
-        motorControl.setReference(RPM, com.revrobotics.CANSparkBase.ControlType.kVelocity);
+        motorControl.setReference(RPM, ControlType.kVelocity);
     }
 
     /**
@@ -57,7 +59,7 @@ public class SparkMaxControl {
      * @param slotID the PID slot to use
      */
     public void setVelocity(double RPM, int slotID){
-        motorControl.setReference(RPM, com.revrobotics.CANSparkBase.ControlType.kVelocity, slotID);
+        motorControl.setReference(RPM, ControlType.kVelocity, getSlotOf(slotID));
     }
 
     /**
@@ -66,7 +68,7 @@ public class SparkMaxControl {
      * @param rotations the target position in motor rotations
      */
     public void setPosition(double rotations){
-        motorControl.setReference(rotations, com.revrobotics.CANSparkBase.ControlType.kPosition);
+        motorControl.setReference(rotations, ControlType.kPosition);
     }
 
     /**
@@ -87,14 +89,34 @@ public class SparkMaxControl {
         motor.set(0);
     }
 
+    /**
+     * Configure PID for the specified slot ID
+     *
+     * @param P
+     * @param I
+     * @param D
+     * @param FF
+     * @param slotID
+     */
     public void setPIDF(double P, double I, double D, double FF, int slotID){
-        motorControl =  motor.getPIDController();
-        motorControl.setP(P,slotID);
-        motorControl.setI(I, slotID);
-        motorControl.setD(D, slotID);
-        motorControl.setFF(FF, slotID);
-        motorControl.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal,slotID);
-        motorControl.setSmartMotionAllowedClosedLoopError(0.02, slotID); // NOTE: THIS TOLERANCE IS IMPORTANT!!!!
+        ClosedLoopConfig pidConfig = new ClosedLoopConfig().pidf(P, I, D, FF, getSlotOf(slotID));
+        motorConfig.apply(pidConfig);
+        this.apply(motorConfig);
+    }
+
+    /**
+     * Configure SmartMotion for the specified slot ID
+     */
+    public void configSmartMotion(double acceleration, double maxVelocity, int slotID){
+        ClosedLoopConfig pidConfig = motorConfig.closedLoop;
+        SmartMotionConfig smartMotionConfig = (
+            new SmartMotionConfig()
+            .maxAcceleration(acceleration, getSlotOf(slotID))
+            .maxVelocity(maxVelocity, getSlotOf(slotID))
+        );
+        pidConfig.apply(smartMotionConfig);
+        motorConfig.apply(pidConfig);
+        this.apply(motorConfig);
     }
 
     /**
@@ -131,8 +153,9 @@ public class SparkMaxControl {
      *
      * @param motorToFollow the motor for this one to follow
      */
-    public void setFollower(SparkFlexControl motorToFollow){
-        motor.follow(motorToFollow.motor);
+    public void setFollower(SparkMaxControl motorToFollow){
+        motorConfig.follow(motor);
+        this.apply(motorConfig);
     }
 
     /**
@@ -142,8 +165,9 @@ public class SparkMaxControl {
      * @param inverted whether to invert this motor's movements
      * relative to the motor it's following
      */
-    public void follow(SparkFlexControl sfc, boolean inverted) {
-        this.motor.follow(sfc.motor, inverted);
+    public void follow(SparkMaxControl sfc, boolean inverted) {
+        motorConfig.follow(motor, inverted);
+        this.apply(motorConfig);
     }
 
     /**
@@ -153,8 +177,18 @@ public class SparkMaxControl {
      * trigger the limit
      * @param rotations the number of rotations to limit the motor to
      */
-    public void setSoftLimit(SoftLimitDirection direction, double rotations){
-        motor.setSoftLimit(direction, (float)rotations);
+    public void setSoftLimit(boolean forward, double rotations){
+        SoftLimitConfig softLimitConfig = motorConfig.softLimit;
+        if(forward){
+            softLimitConfig.forwardSoftLimit(rotations);
+            softLimitConfig.forwardSoftLimitEnabled(true);
+        }
+        else{
+            softLimitConfig.reverseSoftLimit(rotations);
+            softLimitConfig.reverseSoftLimitEnabled(true);
+        }
+        motorConfig.apply(softLimitConfig);
+        this.apply(motorConfig);
     }
 
     /**
@@ -164,27 +198,7 @@ public class SparkMaxControl {
      * @param rotations the target position in rotations
      */
     public void setPositionSmartMotion(double rotations){
-        motorControl.setReference(rotations, ControlType.kSmartMotion, 0);
-    }
-
-    /**
-     * Set the maximum Smart Motion velocity.
-     *
-     * @param maxVelocity max velocity in RPM
-     * @param slotID the Smart Motion PID slot
-     */
-    public void setMaxVelocity(double maxVelocity, int slotID){
-        motorControl.setSmartMotionMaxVelocity(maxVelocity, slotID);
-    }
-
-    /**
-     * Set the maximum Smart Motion acceleration.
-     *
-     * @param maxVelocity max velocity in RPM/s
-     * @param slotID the Smart Motion PID slot
-     */
-    public void setMaxAcceleration(double maxAccel, int slotID){
-        motorControl.setSmartMotionMaxAccel(maxAccel, slotID);
+        motorControl.setReference(rotations, ControlType.kSmartMotion);
     }
 
     /**
@@ -195,6 +209,34 @@ public class SparkMaxControl {
      * motor's free speed)
      */
     public void setCurrentLimit(int stallLimit, int fullRPMLimit){
-        this.motor.setSmartCurrentLimit(stallLimit, fullRPMLimit);
+        this.motorConfig.smartCurrentLimit(stallLimit, fullRPMLimit);
+        this.apply(motorConfig);
+    }
+
+    /**
+     * @return a ClosedLoopSlot corresponding to the integer ID passed in
+     */
+    private ClosedLoopSlot getSlotOf(int id){
+        ClosedLoopSlot slot;
+        switch(id){
+            case 0:
+                slot = ClosedLoopSlot.kSlot0;
+                break;
+            case 1:
+                slot = ClosedLoopSlot.kSlot1;
+                break;
+            case 2:
+                slot = ClosedLoopSlot.kSlot2;
+                break;
+            case 3:
+                slot = ClosedLoopSlot.kSlot3;
+                break;
+            default:
+                throw new RuntimeException("The only available PID slots on the Spark Flex are 0, 1, 2, and 3.");
+        }
+        return slot;
+    }
+    private void apply(SparkMaxConfig config){
+        motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
     }
 }
