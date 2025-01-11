@@ -5,30 +5,41 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Elevator extends SubsystemBase{
-    private TalonFX elevatorMotor;
-    private TalonFX wristMotor;
+    private TalonFX leftElevatorMotor;
+    private TalonFX rightElevatorMotor;
+    private TalonFX pivotMotor;
     private double targetElevatorPos;
-    private double targetWristPos;
+    private double targetPivotPos;
 
     public Elevator(){
-        elevatorMotor = new TalonFX(0);
-        wristMotor = new TalonFX(0);
+        leftElevatorMotor = new TalonFX(0);
+        rightElevatorMotor = new TalonFX(0);
+        pivotMotor = new TalonFX(0);
     }
 
     public void setElevatorPos(double position){
         targetElevatorPos = position;
     }
 
-    public void setWristPos(double position){
-        targetWristPos = position;
+    public void setPivotPos(double position){
+        targetPivotPos = position;
     }
 
     public double getElevatorPos(){
         return 0;
     }
 
-    public double getWristPos(){
+    public double getPivotPos(){
         return 0;
+    }
+
+    public void stopElevator(){
+        leftElevatorMotor.stopMotor();
+        rightElevatorMotor.stopMotor();
+    }
+
+    public void stopPivot(){
+        pivotMotor.stopMotor();
     }
     
     public void periodic(){
