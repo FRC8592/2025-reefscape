@@ -45,18 +45,12 @@ public final class NewtonCommands {
     public static Command intakeCommand(){
         return intake.run(()-> {
             intake.runInnerMotor(INTAKE.INNER_MOTOR_INTAKE_VELOCITY);
-            intake.runOuterMotor(INTAKE.OUTER_MOTOR_INTAKE_VELOCITY);
-        }).until(()-> {
-            return intake.isBeamBreakTripped();
         });
     }
     // command for release coral for scoring
     public static Command outtakeCommand() {
         return intake.run(() -> {
             intake.runInnerMotor(INTAKE.INNER_MOTOR_OUTAKE_VELOCITY);
-            intake.runOuterMotor(INTAKE.OUTER_MOTOR_OUTAKE_VELOCITY);
-        }).until(() -> {
-            return !intake.isBeamBreakTripped();
         });
     }
 }

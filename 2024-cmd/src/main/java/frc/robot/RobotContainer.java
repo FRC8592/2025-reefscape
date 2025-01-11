@@ -162,6 +162,9 @@ public class RobotContainer {
                 () -> -driverController.getLeftY()
             ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         );
+
+        driverController.x().whileTrue(intakeCommand());
+        driverController.a().whileTrue(outtakeCommand());
     
     }
 
