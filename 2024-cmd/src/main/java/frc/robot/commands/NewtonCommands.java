@@ -41,13 +41,22 @@ public final class NewtonCommands {
             swerve.drive(processed, DriveModes.AUTOMATIC);
         });
     }
-
+    // intake commands for intake, outake, and 
     public static Command intakeCommand(){
         return intake.run(()-> {
             intake.runInnerMotor(INTAKE.INNER_MOTOR_INTAKE_VELOCITY);
             intake.runOuterMotor(INTAKE.OUTER_MOTOR_INTAKE_VELOCITY);
         }).until(()-> {
             return intake.isBeamBreakTripped();
+        });
+    }
+
+    public static Command outtakeCommand() {
+        return intake.run(() -> {
+            intake.runInnerMotor(INTAKE.INNER_MOTOR_OUTAKE_VELOCITY);
+            intake.runOuterMotor(INTAKE.OUTER_MOTOR_OUTAKE_VELOCITY);
+        }).until(() -> {
+            return !intake.isBeamBreakTripped();
         });
     }
 }
