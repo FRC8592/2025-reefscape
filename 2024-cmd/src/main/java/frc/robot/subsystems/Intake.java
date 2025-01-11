@@ -68,11 +68,11 @@ public class Intake extends SubsystemBase {
         Logger.recordOutput(INTAKE.LOG_PATH+"OuterMotorCommandedVelocity", outerMotorCommandedVelocity);
         Logger.recordOutput(INTAKE.LOG_PATH+"InnerMotorCommandedVelocity", innerMotorCommandedVelocity);
         Logger.recordOutput(INTAKE.LOG_PATH+"WristMotorCommandedVelocity", wristMotorCommandedVelocity);
-
-        Logger.recordOutput(INTAKE.LOG_PATH+"Outer Motor Commanded vs Recorded Velocity", outerMotorCommandedVelocity-getOuterMotorVelocity());
-        Logger.recordOutput(INTAKE.LOG_PATH+"Inner Motor Commanded vs Recorded Velocity", innerMotorCommandedVelocity-getInnerMotorVelocity());
-        Logger.recordOutput(INTAKE.LOG_PATH+"Wrist Motor Commanded vs Recorded Velocity", wristMotorCommandedVelocity-getWristMotorVelocity());
-
+        
+        Logger.recordOutput(INTAKE.LOG_PATH+"OuterCommanded - RecordedVelocity", outerMotorCommandedVelocity-getOuterMotorVelocity());
+        Logger.recordOutput(INTAKE.LOG_PATH+"InnerCommanded - RecordedVelocity", innerMotorCommandedVelocity-getInnerMotorVelocity());
+        Logger.recordOutput(INTAKE.LOG_PATH+"WristCommanded - RecordedVelocity", wristMotorCommandedVelocity-getWristMotorVelocity());
+        
     }
 
     public double getOuterMotorVelocity()
