@@ -11,6 +11,7 @@ import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
 import frc.robot.commands.proxies.OverrideEverythingCommand;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 
@@ -31,6 +32,7 @@ public class RobotContainer {
 
     // The robot's subsystems
     private final Swerve swerve;
+    private final Elevator elevator;
     //TODO: Add more subsystems here
 
     // Helpers
@@ -42,6 +44,7 @@ public class RobotContainer {
      */
     public RobotContainer() {
         swerve = new Swerve();
+        elevator = new Elevator();
         // TODO: Add more subsystems and instantiatable helpers here
 
         passSubsystems();
@@ -59,7 +62,7 @@ public class RobotContainer {
         AutoManager.addSubsystems(swerve);
         AutoCommand.addSubsystems(swerve);
         LargeCommand.addSubsystems(swerve);
-        NewtonCommands.addSubsystems(swerve);
+        NewtonCommands.addSubsystems(swerve, elevator);
         Suppliers.addSubsystems(swerve);
     }
 

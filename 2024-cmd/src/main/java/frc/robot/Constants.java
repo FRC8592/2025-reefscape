@@ -174,18 +174,22 @@ public final class Constants {
     }
 
     public class ELEVATOR{
-        public static final double L1_SCORE = 0.0;
-        public static final double L2_SCORE = 0.0;
-        public static final double L3_SCORE = 0.0;
-        public static final double L4_SCORE = 0.0;
+        public static final double L1_SCORE = -1.0;
+        public static final double L2_SCORE = -1.0;
+        public static final double L3_SCORE = -1.0;
+        public static final double L4_SCORE = -1.0;
 
-        public static final double L2_ALGAE_INTAKE = 0.0;
-        public static final double L3_ALGAE_INTAKE = 0.0;
+        public static final double L2_ALGAE_INTAKE = -1.0;
+        public static final double L3_ALGAE_INTAKE = -1.0;
 
-        public static final double GROUND_INTAKE = 0.0;
-        public static final double STOW = 0.0;
-        public static final double HUMAN_PLAYER_INTAKE = 0.0;
-        public static final double PROCESSOR = 0.0;
-        public static final double NET = 0.0;
+        public static final double GROUND_INTAKE = -1.0;
+        public static final double STOW = -1.0;
+        public static final double HUMAN_PLAYER_INTAKE = -1.0;
+        public static final double PROCESSOR = -1.0;
+        public static final double NET = -1.0;
+
+        public static final double ELEVATOR_GEARBOX_RATIO = -1.0;
+        public static final double ELEVATOR_SPROCKET_DIAMETER = -1.0;
+        public static final double ELEVATOR_GEAR_RATIO = ELEVATOR_GEARBOX_RATIO*ELEVATOR_SPROCKET_DIAMETER*Math.PI;
     }
 }
