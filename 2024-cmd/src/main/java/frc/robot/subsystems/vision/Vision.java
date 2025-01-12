@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase{
-    PhotonCamera camera = new PhotonCamera("Arducam_OV9782_C");
+    PhotonCamera camera = new PhotonCamera("Arducam_OV9782_E");
  
     public Vision(){
         SmartDashboard.putString("hi", "hi");
@@ -58,8 +58,6 @@ public class Vision extends SubsystemBase{
          SmartDashboard.putNumber("Target X", bestCameraToTarget.getX());
          SmartDashboard.putNumber("Target Y", bestCameraToTarget.getY());
          SmartDashboard.putNumber("Target Z", bestCameraToTarget.getZ());
-
-         SmartDashboard.putNumber("Current time", Timer.getFPGATimestamp());
  
          // Auto-align when requested
         //  if (controller.getAButton() && targetVisible) {
