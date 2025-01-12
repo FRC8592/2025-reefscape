@@ -5,13 +5,18 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.INTAKE;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 
 public final class NewtonCommands {
-    private static Swerve swerve;
-    public static void addSubsystems(Swerve swerve){
-        NewtonCommands.swerve = swerve;
+    // private static Swerve swerve;
+    private static Intake intake;
+    public static void addSubsystems(Intake intake){
+        // NewtonCommands.swerve = swerve;
+        NewtonCommands.intake = intake;
+
     }
 
     /**
@@ -25,15 +30,31 @@ public final class NewtonCommands {
      *
      * @return the command
      */
-    public static Command swerveSnapToCommand(Rotation2d angle, DoubleSupplier driveX, DoubleSupplier driveY){
-        return swerve.run(() -> {
-            ChassisSpeeds processed = swerve.processJoystickInputs(
-                driveX.getAsDouble(),
-                driveY.getAsDouble(),
-                0
-            );
-            processed.omegaRadiansPerSecond = swerve.snapToAngle(angle);
-            swerve.drive(processed, DriveModes.AUTOMATIC);
+    // public static Command swerveSnapToCommand(Rotation2d angle, DoubleSupplier driveX, DoubleSupplier driveY){
+    //     return swerve.run(() -> {
+    //         ChassisSpeeds processed = swerve.processJoystickInputs(
+    //             driveX.getAsDouble(),
+    //             driveY.getAsDouble(),
+    //             0
+    //         );
+    //         processed.omegaRadiansPerSecond = swerve.snapToAngle(angle);
+    //         swerve.drive(processed, DriveModes.AUTOMATIC);
+    //     });
+    // }
+    // commandd for taking in coral
+    public static Command intakeCommand(){
+        return intake.run(()-> {
+            intake.runInnerMotor(INTAKE.INNER_MOTOR_INTAKE_VELOCITY);
         });
     }
+    // command for release coral for scoring
+    public static Command outtakeCommand() {
+        return intake.run(() -> {
+            intake.runInnerMotor(INTAKE.INNER_MOTOR_OUTAKE_VELOCITY);
+        });
+    }
+
+
 }
+
+

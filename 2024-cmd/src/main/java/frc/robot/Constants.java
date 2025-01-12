@@ -30,9 +30,10 @@ public final class Constants {
     }
 
     public final class CAN {
-        public static final int PIVOT_MOTOR_CAN_ID = 30; //TODO Change these value to correct value
-        public static final int INTAKE_TOP_MOTOR_CAN_ID = 29;
-        public static final int INTAKE_BOTTOM_MOTOR_CAN_ID = 31;
+        // public static final int PIVOT_MOTOR_CAN_ID = 30; //TODO Figure out the CAN ID for the wrist and the grip motor
+        // public static final int INTAKE_WRIST_MOTOR_CAN_ID = -1; // TODO: Rename the These to match the motor class 
+        public static final int INTAKE_INNER_MOTOR_CAN_ID = 29;
+        // public static final int INTAKE_OUTER_MOTOR_CAN_ID = -1;
         
         
         public static final int SWERVE_BLACK_FRONT_LEFT_DRIVE_CAN_ID = 17;
@@ -84,22 +85,12 @@ public final class Constants {
     }
     
     public final class INTAKE {
-        public static final double TOP_MOTOR_INTAKE_SPEED = 0.5;
-        public static final double BOTTOM_MOTOR_INTAKE_SPEED = 0.5;
-        
-        public static final double TOP_MOTOR_SCORE_SPEED = -0.5;
-        public static final double BOTTOM_MOTOR_SCORE_SPEED = -0.5; 
-
-        public static final double TOP_MOTOR_SLOW_SCORE_SPEED = -0.1;
-        public static final double BOTTOM_MOTOR_SLOW_SCORE_SPEED = -0.1;
-        
-        public static final double TOP_MOTOR_OUTTAKE_SPEED = -0.25;
-        public static final double BOTTOM_MOTOR_OUTTAKE_SPEED = -0.25;
-        
-        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 5;
-
-        public static final double TOP_MOTOR_DEFAULT_SPEED = 0.1;
-        public static final double BOTTOM_MOTOR_DEFAULT_SPEED = 0.1;
+        public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Intake/";
+        public static final double INNER_MOTOR_INTAKE_VELOCITY = 2000; // TODO: Set the velocity 
+        public static final double OUTER_MOTOR_INTAKE_VELOCITY = 0;// TODO: Set the velocity 
+        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 0; // TODO: Set the ID  
+        public static final double INNER_MOTOR_OUTAKE_VELOCITY = -2000; // TODO: Set the velocity
+        public static final double OUTER_MOTOR_OUTAKE_VELOCITY = 0; // TODO: set the velociy
     }
 
     

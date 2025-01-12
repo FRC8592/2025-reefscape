@@ -10,6 +10,7 @@ import static frc.robot.commands.NewtonCommands.*;
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 
@@ -29,7 +30,8 @@ public class RobotContainer {
     );
 
     // The robot's subsystems
-    private final Swerve swerve;
+    // private final Swerve swerve;
+    private final Intake intake;
     //TODO: Add more subsystems here
 
     // Helpers
@@ -40,7 +42,8 @@ public class RobotContainer {
      * up button bindings, and prepares for autonomous.
      */
     public RobotContainer() {
-        swerve = new Swerve();
+        // swerve = new Swerve();
+        intake = new Intake();
         // TODO: Add more subsystems and instantiatable helpers here
 
         passSubsystems();
@@ -55,25 +58,29 @@ public class RobotContainer {
      * Pass subsystems everywhere they're needed
      */
     private void passSubsystems(){
-        AutoManager.addSubsystems(swerve);
-        AutoCommand.addSubsystems(swerve);
-        LargeCommand.addSubsystems(swerve);
-        NewtonCommands.addSubsystems(swerve);
-        Suppliers.addSubsystems(swerve);
+        // AutoManager.addSubsystems(swerve);
+        // AutoCommand.addSubsystems(swerve);
+        // LargeCommand.addSubsystems(swerve);
+        NewtonCommands.addSubsystems(intake);
+
+        // Suppliers.addSubsystems(swerve);
     }
 
     /**
      * Configure default commands for the subsystems
      */
     private void configureDefaults(){
+        setDefaultCommand(intake, intake.run(() -> {
+            intake.stop();
+        }));
         // Set the swerve's default command to drive with joysticks
-        setDefaultCommand(swerve, swerve.run(() -> {
-            swerve.drive(swerve.processJoystickInputs(
-                -driverController.getLeftX(),
-                -driverController.getLeftY(),
-                -driverController.getRightX()
-            ), DriveModes.AUTOMATIC);
-        }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        // setDefaultCommand(swerve, swerve.run(() -> {
+        //     swerve.drive(swerve.processJoystickInputs(
+        //         -driverController.getLeftX(),
+        //         -driverController.getLeftY(),
+        //         -driverController.getRightX()
+        //     ), DriveModes.AUTOMATIC);
+        // }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
     }
 
 
@@ -83,80 +90,9 @@ public class RobotContainer {
      * Configure all button bindings
      */
     private void configureBindings() {
+        driverController.a().whileTrue(intakeCommand());
+        driverController.x().whileTrue(outtakeCommand());
         
-        // Driver controls:
-        // Translate is left stick
-        // Rotate is right stick
-        // Slow mode is right bumper
-        // Rezero is back
-        // Robot oriented is left bumper
-        // Snap to is d pad
-        
-        // Operator: 
-        // Intake is left trigger
-        // Outtake is left bumper
-        // Slow Score is right bumper
-        // Score is right trigger
-        // Stow is b button
-        // Score Grid position is x button
-        // Ground position is "a" button
-        // High score position is y button
-        driverController.rightBumper().onTrue(
-            // The Commands.runOnce (instead of swerve.runOnce) is a special case here
-            // to allow this to run while other swerve commands (the default driving
-            // command, for example) run. This is usually a horrible idea and shouldn't
-            // be used outside of special cases like this.
-
-            // The .ignoringDisable makes sure slow mode won't get stuck on or off if
-            // the robot is disabled.
-            Commands.runOnce(() -> swerve.setSlowMode(true)).ignoringDisable(true)
-        ).onFalse(
-            Commands.runOnce(() -> swerve.setSlowMode(false)).ignoringDisable(true)
-        );
-
-        driverController.back().onTrue(
-            // Similar comment on Commands.runOnce as slow mode above
-            Commands.runOnce(() -> swerve.resetHeading())
-        );
-
-        driverController.leftBumper().onTrue(
-            // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
-            Commands.runOnce(() -> swerve.setRobotRelative(true)).ignoringDisable(true)
-        ).onFalse(
-            Commands.runOnce(() -> swerve.setRobotRelative(false)).ignoringDisable(true)
-        );
-
-        driverController.pov(0).whileTrue(
-            swerveSnapToCommand(
-                Rotation2d.fromDegrees(0),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getLeftY()
-            )
-        );
-
-        driverController.pov(180).whileTrue(
-            swerveSnapToCommand(
-                Rotation2d.fromDegrees(180),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getLeftY()
-            )
-        );
-
-        driverController.pov(90).whileTrue(
-            swerveSnapToCommand(
-                Rotation2d.fromDegrees(270),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getLeftY()
-            )
-        );
-
-        driverController.pov(270).whileTrue(
-            swerveSnapToCommand(
-                Rotation2d.fromDegrees(90),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getLeftY()
-            ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
-        );
     }
 
 

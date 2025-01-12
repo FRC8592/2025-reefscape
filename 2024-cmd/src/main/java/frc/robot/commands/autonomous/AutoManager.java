@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Robot;
 import frc.robot.Suppliers;
-import frc.robot.commands.autonomous.autos.TestAuto;
 import frc.robot.commands.proxies.*;
 import frc.robot.subsystems.swerve.Swerve;
 
@@ -41,7 +40,6 @@ public final class AutoManager {
         autoCommands = new ArrayList<>();
 
         // autoCommands.add(new ExampleAuto());
-        autoCommands.add(new TestAuto());
         // TODO: Add autos here
 
 
