@@ -16,6 +16,7 @@ import frc.robot.subsystems.swerve.Swerve.DriveModes;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
@@ -70,9 +71,9 @@ public class RobotContainer {
      * Configure default commands for the subsystems
      */
     private void configureDefaults(){
-        setDefaultCommand(intake, intake.run(() -> {
-            intake.stop();
-        }));
+        // setDefaultCommand(intake, intake.run(() -> {
+        //     intake.stop();
+        // }));
         // Set the swerve's default command to drive with joysticks
         // setDefaultCommand(swerve, swerve.run(() -> {
         //     swerve.drive(swerve.processJoystickInputs(
@@ -80,7 +81,7 @@ public class RobotContainer {
         //         -driverController.getLeftY(),
         //         -driverController.getRightX()
         //     ), DriveModes.AUTOMATIC);
-        // }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        // }).withInterruptBehavior(InterruptionBehavior.kCancelSelf))
     }
 
 
@@ -90,8 +91,20 @@ public class RobotContainer {
      * Configure all button bindings
      */
     private void configureBindings() {
-        driverController.a().whileTrue(intakeCommand());
-        driverController.x().whileTrue(outtakeCommand());
+        // driverController.a().whileTrue(
+        //     intake.run(() -> {
+        //         intake.runInnerMotor(driverController.getHID().getRightTriggerAxis() * -1.0);
+        //     })
+        // );
+        // driverController.x().whileTrue(
+        //     intake.run(() -> {
+        //         intake.runIntakeLiveInputCommand(driverController.getHID().getRightTriggerAxis());
+        //     })
+        // );
+
+        driverController.x().whileTrue(runIntakeLiveInputCommand());
+        driverController.a().whileTrue(runOuttakeLiveInputCommand());
+        
         
     }
 

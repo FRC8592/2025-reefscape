@@ -4,6 +4,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.INTAKE;
 import frc.robot.subsystems.Intake;
@@ -41,12 +42,19 @@ public final class NewtonCommands {
     //         swerve.drive(processed, DriveModes.AUTOMATIC);
     //     });
     // }
-    // commandd for taking in coral
+    // // commandd for taking in coral
     public static Command intakeCommand(){
         return intake.run(()-> {
             intake.runInnerMotor(INTAKE.INNER_MOTOR_INTAKE_VELOCITY);
         });
     }
+    /*
+     * Code for running the intake until beam break is tripped
+     * 
+     * .until(() -> {
+     *      return intake.isBeamBreakTripped();
+     * });
+     */
     // command for release coral for scoring
     public static Command outtakeCommand() {
         return intake.run(() -> {
@@ -55,6 +63,30 @@ public final class NewtonCommands {
     }
 
 
+
+    /*
+     * Code for running the intake until beam break is no longer tripped
+     * 
+     * .until(() -> {
+     *      return !intake.isBeamBreakTripped();
+     * });
+     */
+    public static Command runIntakeLiveInputCommand() {
+        return intake.run(() -> {   
+            double power = SmartDashboard.getNumber("Motor Velocity %", 0);
+            intake.setInnerMotorPercent(power);
+        }).finallyDo(() -> {
+            intake.stop();
+        });
+    }
+    public static Command runOuttakeLiveInputCommand() {
+        return intake.run(() -> {   
+            double power = SmartDashboard.getNumber("Motor Velocity %", 0);
+            intake.setInnerMotorPercent(-1.0*power);
+        }).finallyDo(() -> {
+            intake.stop();
+        });
+    }
 }
 
 

@@ -86,10 +86,10 @@ public final class Constants {
     
     public final class INTAKE {
         public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Intake/";
-        public static final double INNER_MOTOR_INTAKE_VELOCITY = 2000; // TODO: Set the velocity 
+        public static final double INNER_MOTOR_INTAKE_VELOCITY = 1200; // TODO: Set the velocity 
         public static final double OUTER_MOTOR_INTAKE_VELOCITY = 0;// TODO: Set the velocity 
         public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 0; // TODO: Set the ID  
-        public static final double INNER_MOTOR_OUTAKE_VELOCITY = -2000; // TODO: Set the velocity
+        public static final double INNER_MOTOR_OUTAKE_VELOCITY = -1200; // TODO: Set the velocity
         public static final double OUTER_MOTOR_OUTAKE_VELOCITY = 0; // TODO: set the velociy
     }
 

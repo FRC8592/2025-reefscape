@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
@@ -19,22 +20,28 @@ public class Intake extends SubsystemBase {
     // private double wristMotorCommandedVelocity = 0;
 
 
-    // private DigitalInput beamBreak;
+    private DigitalInput beamBreak;
 
     public Intake() {
         // TalonFXConfiguration motorConfigs = new TalonFXConfiguration();
         // topMotor.getConfigurator().apply(motorConfigs);
-        // beamBreak = new DigitalInput(INTAKE.INTAKE_BEAM_BREAK_DIGITAL_ID);
+        beamBreak = new DigitalInput(INTAKE.INTAKE_BEAM_BREAK_DIGITAL_ID);
+        SmartDashboard.putNumber("Motor Velocity %", 0);
     }
     // Method that checks if the beam break is tripped 
-    // public boolean isBeamBreakTripped() {
-    //     return !beamBreak.get();
-    // }
+    public boolean isBeamBreakTripped() {
+        return !beamBreak.get();
+    }
 
     // Runs motors at specific velocities
     public void runInnerMotor(double velocity) {
         innerMotor.setPercentOutput(velocity/6000.0);
         innerMotorCommandedVelocity = velocity;
+    }
+
+    public void setInnerMotorPercent(double percent){
+        innerMotor.setPercentOutput(percent/100.0d);
+
     }
 
     // public void runOuterMotor(double velocity) {
@@ -57,8 +64,11 @@ public class Intake extends SubsystemBase {
 
     public void periodic() {
 
-        // Log velocities to smart dashboard
-        // SmartDashboard.putBoolean("Beam Break Tripped", isBeamBreakTripped());
+
+        // SmartDashboard.putBoolean("Beam Break Tripped", beamBreak.get());
+
+        // // Log velocities to smart dashboard
+        // Logger.recordOutput(INTAKE.LOG_PATH+"Beam Break Tripped", isBeamBreakTripped());
 
         // SmartDashboard.putNumber("Outer Motor Intake Velocity", getOuterMotorVelocity());
         SmartDashboard.putNumber("Inner Motor Intake Velocity", getInnerMotorVelocity());
