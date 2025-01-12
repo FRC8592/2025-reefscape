@@ -9,14 +9,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase{
-    
     PhotonCamera camera = new PhotonCamera("Arducam_OV9782_E");
-
-    boolean targetVisible = false;
-    double targetYaw = 0.0;
-    double targetX = 0.0;
-    double targetY = 0.0;
-    double targetZ = 0.0;
  
     public Vision(){
         SmartDashboard.putString("hi", "hi");
@@ -30,21 +23,20 @@ public class Vision extends SubsystemBase{
         //  double turn = -controller.getRightX() * Constants.Swerve.kMaxAngularSpeed;
  
          // Read in relevant data from the Camera
-         
+         boolean targetVisible = false;
+         double targetYaw = 0.0;
          double targetPitch = 0.0;
          double targetArea = 0.0;
          double targetSkew = 0.0;
          int targetId = 0;
          Transform3d bestCameraToTarget = new Transform3d();
-         
          var results = camera.getAllUnreadResults();
          SmartDashboard.putBoolean("results empty", results.isEmpty());
          if (!results.isEmpty()) {
              // Camera processed a new frame since last
              // Get the last one in the list.
              var result = results.get(results.size() - 1);
-             targetVisible = result.hasTargets();
-             if (targetVisible) {
+             if (result.hasTargets()) {
                  // At least one AprilTag was seen by the camera
                  for (var target : result.getTargets()) {
                     targetYaw = target.getYaw();
@@ -53,9 +45,7 @@ public class Vision extends SubsystemBase{
                     targetSkew = target.getSkew();
                     targetId = target.getFiducialId();
                     bestCameraToTarget = target.getBestCameraToTarget();
-                    targetX = bestCameraToTarget.getX();
-                    targetY = bestCameraToTarget.getY();
-                    targetZ = bestCameraToTarget.getZ();
+                    targetVisible = true;
                  }
              }
          }
@@ -65,9 +55,9 @@ public class Vision extends SubsystemBase{
          SmartDashboard.putNumber("Target Area", targetArea);
          SmartDashboard.putNumber("Target Skew", targetSkew);
          SmartDashboard.putNumber("Target ID", targetId);
-         SmartDashboard.putNumber("Target X", targetX);
-         SmartDashboard.putNumber("Target Y", targetY);
-         SmartDashboard.putNumber("Target Z", targetZ);
+         SmartDashboard.putNumber("Target X", bestCameraToTarget.getX());
+         SmartDashboard.putNumber("Target Y", bestCameraToTarget.getY());
+         SmartDashboard.putNumber("Target Z", bestCameraToTarget.getZ());
  
          // Auto-align when requested
         //  if (controller.getAButton() && targetVisible) {
@@ -81,26 +71,6 @@ public class Vision extends SubsystemBase{
         //  drivetrain.drive(forward, strafe, turn);
  
          // Put debug information to the dashboard
-    }
-
-    public double getTargetX(){
-        return targetX;
-    }
-
-    public double getTargetY(){
-        return targetY;
-    }
-
-    public double getTargetZ(){
-        return targetZ;
-    }
-
-    public double getTargetYaw(){
-        return targetYaw;
-    }
-
-    public boolean getTargetVisible(){
-        return targetVisible;
     }
 
 }
