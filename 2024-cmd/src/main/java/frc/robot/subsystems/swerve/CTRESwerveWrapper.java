@@ -34,14 +34,14 @@ public class CTRESwerveWrapper {
 
     public void drive(ChassisSpeeds speeds, boolean driveRobotRelative) {
         if (driveRobotRelative) {
-            drivetrain.applyRequest(() ->
+            drivetrain.setControl(
                 robotRelative.withVelocityX(speeds.vxMetersPerSecond) 
                     .withVelocityY(speeds.vyMetersPerSecond) 
                     .withRotationalRate(speeds.omegaRadiansPerSecond) 
             );
         }
         else {
-        drivetrain.applyRequest(() ->
+        drivetrain.setControl(
             fieldRelative.withVelocityX(speeds.vxMetersPerSecond) // Drive forward with negative Y (forward)
                 .withVelocityY(speeds.vyMetersPerSecond) // Drive left with negative X (left)
                 .withRotationalRate(speeds.omegaRadiansPerSecond) // Drive counterclockwise with negative X (left)
@@ -63,5 +63,8 @@ public class CTRESwerveWrapper {
 
     public void setKnownOdometryPose(Pose2d currentPose) {        
         drivetrain.resetPose(currentPose);
+    }
+    public void periodic(){
+        drivetrain.periodic();
     }
 }

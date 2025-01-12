@@ -10,6 +10,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import org.littletonrobotics.junction.Logger;
@@ -56,6 +58,7 @@ public class Swerve extends SubsystemBase {
 
     public void periodic() {
         // TODO: Periodic logging
+        swerve.periodic();
     }
 
     public void simulationPeriodic() {
@@ -86,7 +89,7 @@ public class Swerve extends SubsystemBase {
      * @param speeds the speeds to run the drivetrain at
      */
     public void drive(ChassisSpeeds speeds, DriveModes mode){
-        // TODO: implement something that allows the commented code to work
+        // TODO: implement something that allows the commented code to work'
          swerve.drive(
              speeds,
              switch(mode){
