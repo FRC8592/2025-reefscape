@@ -3,12 +3,13 @@ package frc.robot.subsystems.vision;
 import org.photonvision.*;
 
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class Vision implements Subsystem{
     PhotonCamera camera = new PhotonCamera("Arducam_OV9782_C");
-
+ 
     public Vision(){
     }
 
@@ -54,6 +55,8 @@ public class Vision implements Subsystem{
          SmartDashboard.putNumber("Target X", bestCameraToTarget.getX());
          SmartDashboard.putNumber("Target Y", bestCameraToTarget.getY());
          SmartDashboard.putNumber("Target Z", bestCameraToTarget.getZ());
+
+         SmartDashboard.putNumber("Current time", Timer.getFPGATimestamp());
  
          // Auto-align when requested
         //  if (controller.getAButton() && targetVisible) {
