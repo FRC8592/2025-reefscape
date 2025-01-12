@@ -29,8 +29,8 @@ public class RobotContainer {
     );
 
     // The robot's subsystems
-    private final Swerve swerve;
-    private final Vision vision;
+    public final Swerve swerve;
+    public final Vision vision;
     //TODO: Add more subsystems here
 
     // Helpers
@@ -47,7 +47,7 @@ public class RobotContainer {
 
         passSubsystems();
         configureBindings();
-        configureDefaults();
+        //configureDefaults();
 
 
         AutoManager.prepare();

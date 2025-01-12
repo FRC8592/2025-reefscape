@@ -43,6 +43,8 @@ public class Swerve extends SubsystemBase {
     
     private CTRESwerveWrapper swerve;
 
+    public static final ChassisSpeeds speedZero = new ChassisSpeeds();
+
     public Swerve() {
         smoothingFilter = new SmoothingFilter(
             SWERVE.TRANSLATION_SMOOTHING_AMOUNT,
