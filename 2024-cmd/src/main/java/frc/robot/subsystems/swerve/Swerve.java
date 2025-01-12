@@ -9,9 +9,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import org.littletonrobotics.junction.Logger;
@@ -56,13 +53,19 @@ public class Swerve extends SubsystemBase {
         swerve = new CTRESwerveWrapper();
     }
 
+    @Override
     public void periodic() {
         // TODO: Periodic logging
+        Logger.recordOutput(SWERVE.LOG_PATH+"Current Pose", getCurrentPosition());
         swerve.periodic();
     }
 
     public void simulationPeriodic() {
-        Pose2d pose = getCurrentPosition();
+        // Pose2d pose = getCurrentPosition();
+        Pose2d pose = new Pose2d(
+            getCurrentPosition().getTranslation(),
+            getCurrentPosition().getRotation().times(Math.PI/180.0)
+        );
         Robot.FIELD.setRobotPose(pose==null?new Pose2d():pose);
     }
 
@@ -143,6 +146,9 @@ public class Swerve extends SubsystemBase {
      */
     public Pose2d getCurrentPosition() {
         // TODO: implement something that allows the commented code to work
+        // if (Robot.isSimulation()){
+        //    return Robot.FIELD.getRobotPose();
+        // }
         return swerve.getCurrentOdometryPosition();
     }
 

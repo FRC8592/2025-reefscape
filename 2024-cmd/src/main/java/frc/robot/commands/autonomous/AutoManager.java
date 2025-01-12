@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Robot;
 import frc.robot.Suppliers;
+import frc.robot.commands.autonomous.autos.LeftSideLeaveSLAuto;
+import frc.robot.commands.autonomous.autos.TwoCoralAuto;
 import frc.robot.commands.proxies.*;
 import frc.robot.subsystems.swerve.Swerve;
 
@@ -42,7 +44,8 @@ public final class AutoManager {
 
         // autoCommands.add(new ExampleAuto());
         // TODO: Add autos here
-
+        autoCommands.add(new LeftSideLeaveSLAuto());
+        autoCommands.add(new TwoCoralAuto());
 
         autoChooser = new SendableChooser<>();
         autoChooser.setDefaultOption("DEFAULT - No auto", new AutoCommand());
