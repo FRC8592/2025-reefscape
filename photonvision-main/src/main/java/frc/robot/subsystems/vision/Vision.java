@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class Vision implements Subsystem{
-    PhotonCamera camera = new PhotonCamera("Arducam_OV9782_D");
+    PhotonCamera camera = new PhotonCamera("Arducam_OV9782_C");
 
     public Vision(){
     }
