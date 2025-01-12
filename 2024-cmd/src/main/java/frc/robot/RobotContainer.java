@@ -10,8 +10,6 @@ import static frc.robot.commands.NewtonCommands.*;
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
-import frc.robot.commands.proxies.OverrideEverythingCommand;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 
@@ -32,7 +30,7 @@ public class RobotContainer {
 
     // The robot's subsystems
     private final Swerve swerve;
-    private final Intake intake;
+
     //TODO: Add more subsystems here
 
     // Helpers
@@ -44,7 +42,7 @@ public class RobotContainer {
      */
     public RobotContainer() {
         swerve = new Swerve();
-        intake = new Intake();
+
         // TODO: Add more subsystems and instantiatable helpers here
 
         passSubsystems();
@@ -62,7 +60,7 @@ public class RobotContainer {
         AutoManager.addSubsystems(swerve);
         AutoCommand.addSubsystems(swerve);
         LargeCommand.addSubsystems(swerve);
-        NewtonCommands.addSubsystems(swerve, intake);
+        NewtonCommands.addSubsystems(swerve);
         Suppliers.addSubsystems(swerve);
     }
 
@@ -77,8 +75,8 @@ public class RobotContainer {
                 -driverController.getLeftY(),
                 -driverController.getRightX()
             ), DriveModes.AUTOMATIC);
-        }).withInterruptBehavior(InterruptionBehavior.kCancelSelf)); 
 
+        }).withInterruptBehavior(InterruptionBehavior.kCancelSelf)); 
     }
 
 
@@ -162,7 +160,6 @@ public class RobotContainer {
                 () -> -driverController.getLeftY()
             ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         );
-    
     }
 
 

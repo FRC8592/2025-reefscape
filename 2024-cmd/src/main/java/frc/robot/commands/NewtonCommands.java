@@ -5,18 +5,13 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.INTAKE;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 
 public final class NewtonCommands {
     private static Swerve swerve;
-    private static Intake intake;
-    public static void addSubsystems(Swerve swerve,Intake intake){
+    public static void addSubsystems(Swerve swerve){
         NewtonCommands.swerve = swerve;
-        NewtonCommands.intake = intake;
-
     }
 
     /**
@@ -39,24 +34,6 @@ public final class NewtonCommands {
             );
             processed.omegaRadiansPerSecond = swerve.snapToAngle(angle);
             swerve.drive(processed, DriveModes.AUTOMATIC);
-        });
-    }
-    // intake commands for intake, outake, and 
-    public static Command intakeCommand(){
-        return intake.run(()-> {
-            intake.runInnerMotor(INTAKE.INNER_MOTOR_INTAKE_VELOCITY);
-            intake.runOuterMotor(INTAKE.OUTER_MOTOR_INTAKE_VELOCITY);
-        }).until(()-> {
-            return intake.isBeamBreakTripped();
-        });
-    }
-
-    public static Command outtakeCommand() {
-        return intake.run(() -> {
-            intake.runInnerMotor(INTAKE.INNER_MOTOR_OUTAKE_VELOCITY);
-            intake.runOuterMotor(INTAKE.OUTER_MOTOR_OUTAKE_VELOCITY);
-        }).until(() -> {
-            return !intake.isBeamBreakTripped();
         });
     }
 }
