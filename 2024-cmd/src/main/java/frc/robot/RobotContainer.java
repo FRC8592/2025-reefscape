@@ -104,6 +104,9 @@ public class RobotContainer {
 
         driverController.x().whileTrue(runIntakeLiveInputCommand());
         driverController.a().whileTrue(runOuttakeLiveInputCommand());
+        driverController.y().onTrue(intake.runOnce(() -> {
+            intake.stop();
+        }));
         
         
     }

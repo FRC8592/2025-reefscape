@@ -32,7 +32,7 @@ public final class Constants {
     public final class CAN {
         // public static final int PIVOT_MOTOR_CAN_ID = 30; //TODO Figure out the CAN ID for the wrist and the grip motor
         // public static final int INTAKE_WRIST_MOTOR_CAN_ID = -1; // TODO: Rename the These to match the motor class 
-        public static final int INTAKE_INNER_MOTOR_CAN_ID = 29;
+        public static final int INTAKE_INNER_MOTOR_CAN_ID = 31;
         // public static final int INTAKE_OUTER_MOTOR_CAN_ID = -1;
         
         

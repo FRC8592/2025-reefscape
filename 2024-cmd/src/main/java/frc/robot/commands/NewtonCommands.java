@@ -75,16 +75,12 @@ public final class NewtonCommands {
         return intake.run(() -> {   
             double power = SmartDashboard.getNumber("Motor Velocity %", 0);
             intake.setInnerMotorPercent(power);
-        }).finallyDo(() -> {
-            intake.stop();
         });
     }
     public static Command runOuttakeLiveInputCommand() {
         return intake.run(() -> {   
-            double power = SmartDashboard.getNumber("Motor Velocity %", 0);
+            double power = SmartDashboard.getNumber("Outtake Motor Velocity %", 0);
             intake.setInnerMotorPercent(-1.0*power);
-        }).finallyDo(() -> {
-            intake.stop();
         });
     }
 }

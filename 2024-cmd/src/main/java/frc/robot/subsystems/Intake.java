@@ -27,6 +27,8 @@ public class Intake extends SubsystemBase {
         // topMotor.getConfigurator().apply(motorConfigs);
         beamBreak = new DigitalInput(INTAKE.INTAKE_BEAM_BREAK_DIGITAL_ID);
         SmartDashboard.putNumber("Motor Velocity %", 0);
+        SmartDashboard.putNumber("Outtake Motor Velocity %", 0);
+
     }
     // Method that checks if the beam break is tripped 
     public boolean isBeamBreakTripped() {
