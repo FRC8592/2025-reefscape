@@ -61,6 +61,23 @@ public final class Constants {
         public static final int SWERVE_DRIVE_CURRENT_LIMIT = 80;
         public static final int SWERVE_STEER_CURRENT_LIMIT = 40;
     }
+
+    public final class CORAL_ALIGN {
+        public static final double X_KP = 1;
+        public static final double X_KI = 0;
+        public static final double X_KD = 0;
+
+        public static final double Y_KP = 1;
+        public static final double Y_KI = 0;
+        public static final double Y_KD = 0;
+
+        public static final double ROT_KP = 1;
+        public static final double ROT_KI = 0;
+        public static final double ROT_KD = 0;
+
+        public static final double X_OFFSET = 0.35;
+    }
+
     public final class PIVOT {
         public static final int GROUND_DEGREES = 0;
         // TODO: Set these to correct values

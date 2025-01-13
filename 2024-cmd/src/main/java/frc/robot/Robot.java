@@ -13,6 +13,7 @@ import org.littletonrobotics.junction.inputs.LoggedPowerDistribution;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
+import frc.robot.Constants.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -37,6 +39,8 @@ public class Robot extends LoggedRobot {
     private RobotContainer robotContainer;
 
     public static Field2d FIELD = new Field2d();
+
+    private PIDController xController = new PIDController(CORAL_ALIGN.X_KP, CORAL_ALIGN.X_KI, CORAL_ALIGN.X_KD);
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -127,31 +131,35 @@ public class Robot extends LoggedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        double xSpeed = 0d, ySpeed = 0d;
+        double xSpeed = 0d, ySpeed = 0d, rotSpeed = 0d;
 
         if(robotContainer.vision.getTargetVisible() == true){
-
-            //robot goes forward
-            if(robotContainer.vision.getTargetX() > 0.35){
-                ySpeed = -0.15;
-                //robotContainer.swerve.drive(xSpeed, DriveModes.ROBOT_RELATIVE);
-            } 
-            else {
-                ySpeed = 0;
-            }
+            ySpeed = xController.calculate(robotContainer.vision.getTargetX(), CORAL_ALIGN.X_OFFSET);
+            ySpeed = Math.min(0.6, ySpeed);
+            ySpeed = Math.max(-0.6, ySpeed);
 
             //robot goes side-to-side
-            if(robotContainer.vision.getTargetY() > 0.01){
+            if(robotContainer.vision.getTargetY() > 0.1){
                 xSpeed = -0.15;
             }
-            else if(robotContainer.vision.getTargetY() < -0.01){
+            else if(robotContainer.vision.getTargetY() < -0.1){
                 xSpeed = 0.15;
             }
             else {
                 xSpeed = 0;
             }
 
-            ChassisSpeeds speed = robotContainer.swerve.processJoystickInputs(xSpeed, ySpeed, 0);
+            if(robotContainer.vision.getTargetYaw() > 10){
+                rotSpeed = -0.15;
+            }
+            else if(robotContainer.vision.getTargetYaw() < -10){
+                rotSpeed = 0.15;
+            }
+            else {
+                rotSpeed = 0;
+            }
+
+            ChassisSpeeds speed = robotContainer.swerve.processJoystickInputs(0, ySpeed, 0);
             SmartDashboard.putString("ChassisSpeedJoystick", speed.toString());
             robotContainer.swerve.drive(speed);
 

@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase{
-    PhotonCamera camera = new PhotonCamera("Arducam_OV9782_B");
+    PhotonCamera camera = new PhotonCamera("Arducam_OV9782_E");
 
     boolean targetVisible = false;
     double targetYaw = 0.0;
@@ -90,6 +90,10 @@ public class Vision extends SubsystemBase{
 
     public double getTargetZ(){
         return targetZ;
+    }
+
+    public double getTargetYaw(){
+        return targetYaw;
     }
 
     public boolean getTargetVisible(){
