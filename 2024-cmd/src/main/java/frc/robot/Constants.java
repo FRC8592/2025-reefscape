@@ -154,7 +154,7 @@ public final class Constants {
         public static final int TRANSLATION_SMOOTHING_AMOUNT = 3;
         public static final int ROTATION_SMOOTHING_AMOUNT = 1;
 
-        public static final double JOYSTICK_EXPONENT = 2;
+        public static final double JOYSTICK_EXPONENT = 1.2;
 
         public static final Rotation2d BLUE_PERSPECTIVE_ROTATION = Rotation2d.fromDegrees(0);
         public static final Rotation2d RED_PERSPECTIVE_ROTATION = Rotation2d.fromDegrees(180);

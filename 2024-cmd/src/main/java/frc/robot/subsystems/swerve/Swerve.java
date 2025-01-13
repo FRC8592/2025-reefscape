@@ -43,6 +43,8 @@ public class Swerve extends SubsystemBase {
     
     private CTRESwerveWrapper swerve;
 
+    public static ChassisSpeeds speedZero = new ChassisSpeeds();
+
     public Swerve() {
         smoothingFilter = new SmoothingFilter(
             SWERVE.TRANSLATION_SMOOTHING_AMOUNT,
@@ -222,20 +224,20 @@ public class Swerve extends SubsystemBase {
     public ChassisSpeeds processJoystickInputs(double rawX, double rawY, double rawRot){
         double driveTranslateY = (
             rawY >= 0
-            ? (Math.pow(rawY, SWERVE.JOYSTICK_EXPONENT))
-            : -(Math.pow(rawY, SWERVE.JOYSTICK_EXPONENT))
+            ? (Math.pow(Math.abs(rawY), SWERVE.JOYSTICK_EXPONENT))
+            : -(Math.pow(Math.abs(rawY), SWERVE.JOYSTICK_EXPONENT))
         );
 
         double driveTranslateX = (
             rawX >= 0
-            ? (Math.pow(rawX, SWERVE.JOYSTICK_EXPONENT))
-            : -(Math.pow(rawX, SWERVE.JOYSTICK_EXPONENT))
+            ? (Math.pow(Math.abs(rawX), SWERVE.JOYSTICK_EXPONENT))
+            : -(Math.pow(Math.abs(rawX), SWERVE.JOYSTICK_EXPONENT))
         );
 
         double driveRotate = (
             rawRot >= 0
-            ? (Math.pow(rawRot, SWERVE.JOYSTICK_EXPONENT))
-            : -(Math.pow(rawRot, SWERVE.JOYSTICK_EXPONENT))
+            ? (Math.pow(Math.abs(rawRot), SWERVE.JOYSTICK_EXPONENT))
+            : -(Math.pow(Math.abs(rawRot), SWERVE.JOYSTICK_EXPONENT))
         );
 
         ChassisSpeeds currentSpeeds;

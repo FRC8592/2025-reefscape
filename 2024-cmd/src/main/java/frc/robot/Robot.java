@@ -13,11 +13,14 @@ import org.littletonrobotics.junction.inputs.LoggedPowerDistribution;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.swerve.Swerve.DriveModes;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -124,6 +127,40 @@ public class Robot extends LoggedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
+        double xSpeed = 0d, ySpeed = 0d;
+
+        if(robotContainer.vision.getTargetVisible() == true){
+
+            //robot goes forward
+            if(robotContainer.vision.getTargetX() > 0.35){
+                ySpeed = -0.15;
+                //robotContainer.swerve.drive(xSpeed, DriveModes.ROBOT_RELATIVE);
+            } 
+            else {
+                ySpeed = 0;
+            }
+
+            //robot goes side-to-side
+            if(robotContainer.vision.getTargetY() > 0.01){
+                xSpeed = -0.15;
+            }
+            else if(robotContainer.vision.getTargetY() < -0.01){
+                xSpeed = 0.15;
+            }
+            else {
+                xSpeed = 0;
+            }
+
+            ChassisSpeeds speed = robotContainer.swerve.processJoystickInputs(xSpeed, ySpeed, 0);
+            SmartDashboard.putString("ChassisSpeedJoystick", speed.toString());
+            robotContainer.swerve.drive(speed);
+
+        } else {
+            robotContainer.swerve.drive(Swerve.speedZero);
+        }
+
+        SmartDashboard.putNumber("Provided XSpeed", xSpeed);
+        SmartDashboard.putNumber("Provided YSpeed", ySpeed);
     }
 
     @Override
