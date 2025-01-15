@@ -4,23 +4,14 @@
 
 package frc.robot.subsystems.swerve;
 
-import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.configs.Pigeon2Configuration;
-import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import org.littletonrobotics.junction.Logger;
@@ -49,8 +40,8 @@ public class Swerve extends SubsystemBase {
     private boolean robotRelative;
 
     private SmoothingFilter smoothingFilter;
-
-    private CTRESwerve swerve;
+    
+    private CTRESwerveWrapper swerve;
 
     public Swerve() {
         smoothingFilter = new SmoothingFilter(
@@ -61,148 +52,13 @@ public class Swerve extends SubsystemBase {
 
         snapToController = new PIDController(SWERVE.SNAP_TO_kP, SWERVE.SNAP_TO_kI, SWERVE.SNAP_TO_kD);
 
-        // PID constants for the swerve's drive and steer controllers
-        Slot0Configs driveGains = (
-            new Slot0Configs()
-            .withKP(SWERVE.DRIVE_P).withKI(SWERVE.DRIVE_I).withKD(SWERVE.DRIVE_D)
-            .withKS(SWERVE.DRIVE_S).withKV(SWERVE.DRIVE_V).withKA(SWERVE.DRIVE_A)
-        );
-        Slot0Configs steerGains = (
-            new Slot0Configs()
-            .withKP(SWERVE.STEER_P).withKI(SWERVE.STEER_I).withKD(SWERVE.STEER_D)
-            .withKS(SWERVE.STEER_S).withKV(SWERVE.STEER_V).withKA(SWERVE.STEER_A)
-        );
-
-        // Drivetrain configuration that doesn't involve the modules
-        SwerveDrivetrainConstants drivetrainConstants = (
-            new SwerveDrivetrainConstants()
-            .withPigeon2Id(CAN.PIGEON_CAN_ID)
-            .withPigeon2Configs(new Pigeon2Configuration())
-            .withCANbusName("*")
-        );
-
-        // This configuration object will apply to all of the swerve's drive motors
-        TalonFXConfiguration driveMotorsConfig = (
-            new TalonFXConfiguration()
-            .withCurrentLimits(
-                new CurrentLimitsConfigs()
-                .withStatorCurrentLimitEnable(true)
-                .withStatorCurrentLimit(POWER.SWERVE_DRIVE_CURRENT_LIMIT)
-            )
-        );
-
-        // This configuration object will apply to all of the swerve's steer motors
-        TalonFXConfiguration steerMotorsConfig = (
-            new TalonFXConfiguration().withCurrentLimits(
-                new CurrentLimitsConfigs()
-                .withStatorCurrentLimit(POWER.SWERVE_STEER_CURRENT_LIMIT)
-                .withStatorCurrentLimitEnable(true)
-            )
-        );
-
-        // This configuration object will apply to all of the swerve's CANCoders
-        CANcoderConfiguration cancoderInitialConfigs = new CANcoderConfiguration();
-
-        // All swerve module configuration that isn't module-specific
-        SwerveModuleConstantsFactory commonSwerveConstants = new SwerveModuleConstantsFactory()
-                .withDriveMotorGearRatio(SWERVE.DRIVE_GEAR_RATIO)
-                .withSteerMotorGearRatio(SWERVE.STEER_GEAR_RATIO)
-                .withWheelRadius(SWERVE.WHEEL_RADIUS_INCHES)
-                .withSlipCurrent(SWERVE.CALCULATED_SLIP_CURRENT)
-                .withSteerMotorGains(steerGains)
-                .withDriveMotorGains(driveGains)
-                .withDriveMotorClosedLoopOutput(ClosedLoopOutputType.Voltage)
-                .withSteerMotorClosedLoopOutput(ClosedLoopOutputType.Voltage)
-                .withSpeedAt12VoltsMps(SWERVE.MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND)
-                .withDriveInertia(SWERVE.SIMULATED_DRIVE_INERTIA)
-                .withSteerInertia(SWERVE.SIMULATED_STEER_INERTIA)
-                .withDriveFrictionVoltage(SWERVE.DRIVE_FRICTION_VOLTAGE)
-                .withSteerFrictionVoltage(SWERVE.STEER_FRICTION_VOLTAGE)
-                .withFeedbackSource(SteerFeedbackType.RemoteCANcoder)
-                .withCouplingGearRatio(SWERVE.COUPLING_GEAR_RATIO)
-                .withDriveMotorInitialConfigs(driveMotorsConfig)
-                .withSteerMotorInitialConfigs(steerMotorsConfig)
-                .withCANcoderInitialConfigs(cancoderInitialConfigs);
-
-        // Generate swerve-module constant objects by combing the common constants with module-specific ones
-        SwerveModuleConstants frontLeft = commonSwerveConstants.createModuleConstants(
-            CAN.SWERVE_BLACK_FRONT_LEFT_STEER_CAN_ID,
-            CAN.SWERVE_BLACK_FRONT_LEFT_DRIVE_CAN_ID,
-            CAN.SWERVE_BLACK_FRONT_LEFT_ENCODER_CAN_ID,
-            SWERVE.BLACK_FRONT_LEFT_STEER_OFFSET,
-            Units.inchesToMeters(SWERVE.BLACK_FRONT_LEFT_X_POSITION),
-            Units.inchesToMeters(SWERVE.BLACK_FRONT_LEFT_Y_POSITION),
-            SWERVE.INVERT_LEFT_SIDE
-        ).withSteerMotorInverted(SWERVE.BLACK_FRONT_LEFT_STEER_INVERT);
-        SwerveModuleConstants frontRight = commonSwerveConstants.createModuleConstants(
-            CAN.SWERVE_ORANGE_FRONT_RIGHT_STEER_CAN_ID,
-            CAN.SWERVE_ORANGE_FRONT_RIGHT_DRIVE_CAN_ID,
-            CAN.SWERVE_ORANGE_FRONT_RIGHT_ENCODER_CAN_ID,
-            SWERVE.ORANGE_FRONT_RIGHT_STEER_OFFSET,
-            Units.inchesToMeters(SWERVE.ORANGE_FRONT_RIGHT_X_POSITION),
-            Units.inchesToMeters(SWERVE.ORANGE_FRONT_RIGHT_Y_POSITION),
-            SWERVE.INVERT_RIGHT_SIDE
-        ).withSteerMotorInverted(SWERVE.ORANGE_FRONT_RIGHT_STEER_INVERT);
-        SwerveModuleConstants backLeft = commonSwerveConstants.createModuleConstants(
-            CAN.SWERVE_TEAL_BACK_LEFT_STEER_CAN_ID,
-            CAN.SWERVE_TEAL_BACK_LEFT_DRIVE_CAN_ID,
-            CAN.SWERVE_TEAL_BACK_LEFT_ENCODER_CAN_ID,
-            SWERVE.TEAL_BACK_LEFT_STEER_OFFSET,
-            Units.inchesToMeters(SWERVE.TEAL_BACK_LEFT_X_POSITION),
-            Units.inchesToMeters(SWERVE.TEAL_BACK_LEFT_Y_POSITION),
-            SWERVE.INVERT_LEFT_SIDE
-        ).withSteerMotorInverted(SWERVE.TEAL_BACK_LEFT_STEER_INVERT);
-        SwerveModuleConstants backRight = commonSwerveConstants.createModuleConstants(
-            CAN.SWERVE_WHITE_BACK_RIGHT_STEER_CAN_ID,
-            CAN.SWERVE_WHITE_BACK_RIGHT_DRIVE_CAN_ID,
-            CAN.SWERVE_WHITE_BACK_RIGHT_ENCODER_CAN_ID,
-        SWERVE.WHITE_BACK_RIGHT_STEER_OFFSET,
-            Units.inchesToMeters(SWERVE.WHITE_BACK_RIGHT_X_POSITION),
-            Units.inchesToMeters(SWERVE.WHITE_BACK_RIGHT_Y_POSITION),
-            SWERVE.INVERT_RIGHT_SIDE
-        ).withSteerMotorInverted(SWERVE.WHITE_BACK_RIGHT_STEER_INVERT);
-
-        swerve = new CTRESwerve(drivetrainConstants, commonSwerveConstants, frontLeft, frontRight, backLeft, backRight);
-
-        // This lambda is run every time the odometry is updated (100hz for classic CAN or 250hz for CAN FD)
-        swerve.registerTelemetry((drivetrainState, kinematics, modules) -> {
-            // Logger.recordOutput(SWERVE.LOG_PATH+"TargetSwerveStates", drivetrainState.ModuleTargets);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"ReadSwerveStates", drivetrainState.ModuleStates);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"OdometryPosition", drivetrainState.Pose);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"ActualChassisSpeeds", drivetrainState.speeds);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"TargetChassisSpeeds", kinematics.toChassisSpeeds(
-            //     modules[0].getTargetState(), modules[1].getTargetState(), modules[2].getTargetState(), modules[3].getTargetState()
-            // ));
-
-            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontLeft/DriveReadVelocityMPS", modules[0].getCurrentState().speedMetersPerSecond);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontLeft/DriveTargetVelocityMPS", modules[0].getTargetState().speedMetersPerSecond);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontLeft/SteerReadAngle", modules[0].getCurrentState().angle);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontLeft/SteerTargetAngle", modules[0].getTargetState().angle);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontLeft/SteerReadVelocityRPM", modules[0].getSteerMotor().getVelocity().getValueAsDouble());
-
-            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontRight/DriveReadVelocityMPS", modules[1].getCurrentState().speedMetersPerSecond);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontRight/DriveTargetVelocityMPS", modules[1].getTargetState().speedMetersPerSecond);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontRight/SteerReadAngle", modules[1].getCurrentState().angle);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontRight/SteerTargetAngle", modules[1].getTargetState().angle);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontRight/SteerReadVelocityRPM", modules[1].getSteerMotor().getVelocity().getValueAsDouble());
-
-            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackLeft/DriveReadVelocityMPS", modules[2].getCurrentState().speedMetersPerSecond);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackLeft/DriveTargetVelocityMPS", modules[2].getTargetState().speedMetersPerSecond);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackLeft/SteerReadAngle", modules[2].getCurrentState().angle);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackLeft/SteerTargetAngle", modules[2].getTargetState().angle);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackLeft/SteerReadVelocityRPM", modules[2].getSteerMotor().getVelocity().getValueAsDouble());
-
-            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackRight/DriveReadVelocityMPS", modules[3].getCurrentState().speedMetersPerSecond);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackRight/DriveTargetVelocityMPS", modules[3].getTargetState().speedMetersPerSecond);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackRight/SteerReadAngle", modules[3].getCurrentState().angle);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackRight/SteerTargetAngle", modules[3].getTargetState().angle);
-            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackRight/SteerReadVelocityRPM", modules[3].getSteerMotor().getVelocity().getValueAsDouble());
-        });
+        // TODO: Any initialization code needed for the new swerve stuff
+        swerve = new CTRESwerveWrapper();
     }
 
     public void periodic() {
-        Logger.recordOutput(SWERVE.LOG_PATH+"Odometryvalid", swerve.odometryIsValid());
-        // swerve.periodic();
+        // TODO: Periodic logging
+        swerve.periodic();
     }
 
     public void simulationPeriodic() {
@@ -223,6 +79,7 @@ public class Swerve extends SubsystemBase {
      * @param speeds the speeds to run the drivetrain at
      */
     public void drive(ChassisSpeeds speeds){
+        // TODO: implement something that allows the commented code to work
         swerve.drive(speeds, false);
     }
 
@@ -232,17 +89,18 @@ public class Swerve extends SubsystemBase {
      * @param speeds the speeds to run the drivetrain at
      */
     public void drive(ChassisSpeeds speeds, DriveModes mode){
-        swerve.drive(
-            speeds,
-            switch(mode){
-                case FIELD_RELATIVE:
-                    yield true;
-                case AUTOMATIC:
-                    yield !robotRelative;
-                case ROBOT_RELATIVE:
-                    yield false;
-            }
-        );
+        // TODO: implement something that allows the commented code to work'
+         swerve.drive(
+             speeds,
+             switch(mode){
+                 case FIELD_RELATIVE:
+                     yield true;
+                 case AUTOMATIC:
+                     yield !robotRelative;
+                 case ROBOT_RELATIVE:
+                     yield false;
+             }
+         );
     }
 
     /**
@@ -268,6 +126,7 @@ public class Swerve extends SubsystemBase {
      * Define whatever direction the robot is facing as forward
      */
     public void resetHeading(){
+        // TODO: implement something that allows the commented code to work
         swerve.resetHeading();
     }
 
@@ -275,6 +134,7 @@ public class Swerve extends SubsystemBase {
      * Get the current robot yaw as a Rotation2d
      */
     public Rotation2d getYaw() {
+        // TODO: implement something that allows the commented code to work
         return swerve.getYaw();
     }
 
@@ -282,17 +142,11 @@ public class Swerve extends SubsystemBase {
      * Get the current position of the swerve as judged by odometry.
      */
     public Pose2d getCurrentPosition() {
+        // TODO: implement something that allows the commented code to work
         return swerve.getCurrentOdometryPosition();
     }
 
-    /**
-     * Set the robot's known rotation.
-     *
-     * @param yaw the rotation to set as a Rotation2d
-     */
-    public void setGyroscopeRotation(Rotation2d yaw){
-        swerve.setGyroscopeYaw(yaw);
-    }
+   
 
     /**
      * Reset the robot's known position.
@@ -300,6 +154,7 @@ public class Swerve extends SubsystemBase {
      * @param pose the pose to set the robot's known position to.
      */
     public void resetPose(Pose2d pose) {
+        // TODO: implement something that allows the commented code to work
         swerve.setKnownOdometryPose(pose);
         Logger.recordOutput(
             SWERVE.LOG_PATH+"Console", (
@@ -315,6 +170,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public void resetPose(Pose2d pose, boolean flip) {
+        // TODO: implement something that allows the commented code to work
         if(flip){
             Pose2d flipped = new Pose2d(
                 new Translation2d(

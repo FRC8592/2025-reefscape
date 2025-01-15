@@ -14,7 +14,7 @@ import frc.robot.commands.proxies.OverrideEverythingCommand;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
-
+import frc.robot.subsystems.vision.Vision;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -33,6 +33,7 @@ public class RobotContainer {
     // The robot's subsystems
     private final Swerve swerve;
     private final Elevator elevator;
+    private final Vision vision;
     //TODO: Add more subsystems here
 
     // Helpers
@@ -45,6 +46,7 @@ public class RobotContainer {
     public RobotContainer() {
         swerve = new Swerve();
         elevator = new Elevator();
+        vision = new Vision();
         // TODO: Add more subsystems and instantiatable helpers here
 
         passSubsystems();
