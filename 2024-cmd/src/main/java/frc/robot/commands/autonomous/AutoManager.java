@@ -40,7 +40,6 @@ public final class AutoManager {
         autoCommands = new ArrayList<>();
 
         // autoCommands.add(new ExampleAuto());
-        autoCommands.add(new TestAuto());
         // TODO: Add autos here
 
 
