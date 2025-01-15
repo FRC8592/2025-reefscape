@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants.*;
 import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.vision.Vision;
 import edu.wpi.first.util.WPISerializable;
 
 /**
@@ -50,9 +51,11 @@ public final class Suppliers {
     }
 
     private static Swerve swerve;
+    private static Vision vision;
 
-    public static void addSubsystems(Swerve swerve){
+    public static void addSubsystems(Swerve swerve, Vision vision){
         Suppliers.swerve = swerve;
+        Suppliers.vision = vision;
     }
 
     /**

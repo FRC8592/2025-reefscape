@@ -15,6 +15,7 @@ import frc.robot.Suppliers;
 import frc.robot.commands.autonomous.autos.TestAuto;
 import frc.robot.commands.proxies.*;
 import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.vision.Vision;
 
 /**
  * General class for autonomous management (loading autos, sending the chooser, getting the
@@ -22,8 +23,10 @@ import frc.robot.subsystems.swerve.Swerve;
  */
 public final class AutoManager {
     private static Swerve swerve;
-    public static void addSubsystems(Swerve swerve){
+    private static Vision vision;
+    public static void addSubsystems(Swerve swerve, Vision vision){
         AutoManager.swerve = swerve;
+        AutoManager.vision = vision;
     }
 
     private static SendableChooser<AutoCommand> autoChooser;

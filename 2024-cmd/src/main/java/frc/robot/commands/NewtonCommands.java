@@ -7,11 +7,15 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
+import frc.robot.subsystems.vision.Vision;
+import frc.robot.subsystems.vision.Vision.ReefBranches;
 
 public final class NewtonCommands {
     private static Swerve swerve;
-    public static void addSubsystems(Swerve swerve){
+    private static Vision vision;
+    public static void addSubsystems(Swerve swerve, Vision vision){
         NewtonCommands.swerve = swerve;
+        NewtonCommands.vision = vision;
     }
 
     /**
@@ -34,6 +38,16 @@ public final class NewtonCommands {
             );
             processed.omegaRadiansPerSecond = swerve.snapToAngle(angle);
             swerve.drive(processed, DriveModes.AUTOMATIC);
+
         });
     }
+
+    public static Command swerveDriveToTagCommand(ReefBranches targetBranch){
+        return swerve.run(()-> {
+            ChassisSpeeds speeds = new ChassisSpeeds();
+            swerve.drive(speeds, DriveModes.ROBOT_RELATIVE);
+        });
+    }
+
+
 }

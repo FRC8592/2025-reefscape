@@ -76,7 +76,7 @@ public class Swerve extends SubsystemBase {
     }
 
     /**
-     * Send a {@code ChassisSpeeds} to the drivetrain, robot-relative
+     * Send a {@code ChassisSpeeds} to the drivetrain, field-relative
      *
      * @param speeds the speeds to run the drivetrain at
      */

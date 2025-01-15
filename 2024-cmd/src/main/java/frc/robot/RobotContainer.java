@@ -57,11 +57,11 @@ public class RobotContainer {
      * Pass subsystems everywhere they're needed
      */
     private void passSubsystems(){
-        AutoManager.addSubsystems(swerve);
-        AutoCommand.addSubsystems(swerve);
-        LargeCommand.addSubsystems(swerve);
-        NewtonCommands.addSubsystems(swerve);
-        Suppliers.addSubsystems(swerve);
+        AutoManager.addSubsystems(swerve, vision);
+        AutoCommand.addSubsystems(swerve, vision);
+        LargeCommand.addSubsystems(swerve, vision);
+        NewtonCommands.addSubsystems(swerve, vision);
+        Suppliers.addSubsystems(swerve, vision);
     }
 
     /**

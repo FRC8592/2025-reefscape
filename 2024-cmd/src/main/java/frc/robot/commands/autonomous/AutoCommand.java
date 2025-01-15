@@ -11,14 +11,17 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.subsystems.swerve.*;
+import frc.robot.subsystems.vision.Vision;
 
 /**
  * Class to provide subsystems, convenient methods, and a constructor to autonomous commands
  */
 public class AutoCommand extends WrapperCommand{
     protected static Swerve swerve;
-    public static void addSubsystems(Swerve swerve){
+    protected static Vision vision;
+    public static void addSubsystems(Swerve swerve, Vision vision){
         AutoCommand.swerve = swerve;
+        AutoCommand.vision = vision;
     }
 
     /**
