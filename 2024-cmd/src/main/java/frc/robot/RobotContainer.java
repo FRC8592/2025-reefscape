@@ -19,6 +19,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class RobotContainer {
     private static final CommandXboxController driverController = new CommandXboxController(
@@ -34,6 +35,37 @@ public class RobotContainer {
     private final Vision vision;
     private final Intake intake;
     //TODO: Add more subsystems here
+
+    //TODO: Add all controls here
+    //Driver controls
+    private final Trigger INTAKE = driverController.leftTrigger();
+    private final Trigger SCORE = driverController.rightTrigger();
+    private final Trigger STOW = driverController.button(100);
+    private final Trigger PRIME = driverController.button(100);
+    private final Trigger ALIGN_TO_SCORE = driverController.button(100);
+
+    private final Trigger SLOW_MODE = driverController.rightBumper();
+    private final Trigger RESET_HEADING = driverController.back();
+    private final Trigger ROBOT_RELATIVE = driverController.leftBumper();
+    private final Trigger SNAP_NORTH = driverController.pov(0);
+    private final Trigger SNAP_SOUTH = driverController.pov(180);
+    private final Trigger SNAP_EAST = driverController.pov(90);
+    private final Trigger SNAP_WEST = driverController.pov(270);
+    
+
+    //Operator controls
+    private final Trigger PRIME_L1 = operatorController.button(1);
+    private final Trigger PRIME_L2 = operatorController.button(2);
+    private final Trigger PRIME_L3 = operatorController.button(3);
+    private final Trigger PRIME_L4 = operatorController.button(4);
+    private final Trigger PRIME_L2_ALGAE = operatorController.button(5);
+    private final Trigger PRIME_L3_ALGAE = operatorController.button(6);
+    private final Trigger PRIME_NET = operatorController.button(7);
+    private final Trigger PRIME_PROCESSOR = operatorController.button(8);
+    private final Trigger GROUND_INTAKE = operatorController.button(9);
+
+    
+
 
     // Helpers
     // TODO: Add instantiatable helpers here
@@ -52,7 +84,6 @@ public class RobotContainer {
         passSubsystems();
         configureBindings();
         configureDefaults();
-
 
         AutoManager.prepare();
     }
@@ -89,25 +120,9 @@ public class RobotContainer {
      * Configure all button bindings
      */
     private void configureBindings() {
-        
         // Driver controls:
-        // Translate is left stick
-        // Rotate is right stick
-        // Slow mode is right bumper
-        // Rezero is back
-        // Robot oriented is left bumper
-        // Snap to is d pad
-        
-        // Operator: 
-        // Intake is left trigger
-        // Outtake is left bumper
-        // Slow Score is right bumper
-        // Score is right trigger
-        // Stow is b button
-        // Score Grid position is x button
-        // Ground position is "a" button
-        // High score position is y button
-        driverController.rightBumper().onTrue(
+        // Operator:
+        SLOW_MODE.onTrue(
             // The Commands.runOnce (instead of swerve.runOnce) is a special case here
             // to allow this to run while other swerve commands (the default driving
             // command, for example) run. This is usually a horrible idea and shouldn't
@@ -120,19 +135,19 @@ public class RobotContainer {
             Commands.runOnce(() -> swerve.setSlowMode(false)).ignoringDisable(true)
         );
 
-        driverController.back().onTrue(
+        RESET_HEADING.onTrue(
             // Similar comment on Commands.runOnce as slow mode above
             Commands.runOnce(() -> swerve.resetHeading())
         );
 
-        driverController.leftBumper().onTrue(
+        ROBOT_RELATIVE.onTrue(
             // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
             Commands.runOnce(() -> swerve.setRobotRelative(true)).ignoringDisable(true)
         ).onFalse(
             Commands.runOnce(() -> swerve.setRobotRelative(false)).ignoringDisable(true)
         );
 
-        driverController.pov(0).whileTrue(
+        SNAP_NORTH.whileTrue(
             swerveSnapToCommand(
                 Rotation2d.fromDegrees(0),
                 () -> -driverController.getLeftX(),
@@ -140,7 +155,7 @@ public class RobotContainer {
             )
         );
 
-        driverController.pov(180).whileTrue(
+        SNAP_SOUTH.whileTrue(
             swerveSnapToCommand(
                 Rotation2d.fromDegrees(180),
                 () -> -driverController.getLeftX(),
@@ -148,7 +163,7 @@ public class RobotContainer {
             )
         );
 
-        driverController.pov(90).whileTrue(
+        SNAP_EAST.whileTrue(
             swerveSnapToCommand(
                 Rotation2d.fromDegrees(270),
                 () -> -driverController.getLeftX(),
@@ -156,7 +171,7 @@ public class RobotContainer {
             )
         );
 
-        driverController.pov(270).whileTrue(
+        SNAP_WEST.whileTrue(
             swerveSnapToCommand(
                 Rotation2d.fromDegrees(90),
                 () -> -driverController.getLeftX(),
@@ -164,8 +179,20 @@ public class RobotContainer {
             ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         );
 
-        driverController.x().whileTrue(intakeCommand());
-        driverController.a().whileTrue(outtakeCommand());
+        INTAKE.whileTrue(intakeCommand());
+        SCORE.whileTrue(outtakeCommand());
+
+        PRIME_L1.onTrue(NewtonCommands.primeL1Command());
+        PRIME_L2.onTrue(NewtonCommands.primeL2Command());
+        PRIME_L3.onTrue(NewtonCommands.primeL3Command());
+        PRIME_L4.onTrue(NewtonCommands.primeL4Command());
+        PRIME_L2_ALGAE.onTrue(NewtonCommands.primeL2AlgaeCommand());
+        PRIME_L3_ALGAE.onTrue(NewtonCommands.primeL3AlgaeCommand());
+        PRIME_NET.onTrue(NewtonCommands.primeNetCommand());
+        PRIME_PROCESSOR.onTrue(NewtonCommands.primeProcessorCommand());
+        GROUND_INTAKE.onTrue(NewtonCommands.groundIntakeCommand());
+        STOW.onTrue(NewtonCommands.stowCommand());
+        PRIME.onTrue(NewtonCommands.goToPrimePositionCommand());
     }
 
 

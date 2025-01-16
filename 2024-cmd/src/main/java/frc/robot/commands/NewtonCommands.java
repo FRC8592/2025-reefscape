@@ -45,7 +45,7 @@ public final class NewtonCommands {
             swerve.drive(processed, DriveModes.AUTOMATIC);
         });
     }
-    // commandd for taking in coral
+    // command for taking in coral
     public static Command intakeCommand(){
         return intake.run(()-> {
             intake.runInnerMotor(INTAKE.INNER_MOTOR_INTAKE_VELOCITY);
@@ -74,7 +74,7 @@ public final class NewtonCommands {
         return Commands.none();
     }
 
-    public static Command humanPlayerIntake(){
+    public static Command groundIntakeCommand(){
         return Commands.none();
     }
 
@@ -82,7 +82,23 @@ public final class NewtonCommands {
         return Commands.none();
     }
 
-    public static Command removeAlgaeCommand(){
+    public static Command primeL2AlgaeCommand(){
+        return Commands.none();
+    }
+
+    public static Command primeL3AlgaeCommand(){
+        return Commands.none();
+    }
+
+    public static Command goToPrimePositionCommand(){
+        return Commands.none();
+    }
+
+    public static Command primeProcessorCommand(){
+        return Commands.none();
+    }
+
+    public static Command primeNetCommand(){
         return Commands.none();
     }
 

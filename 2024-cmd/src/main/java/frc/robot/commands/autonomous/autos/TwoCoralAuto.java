@@ -1,7 +1,5 @@
 package frc.robot.commands.autonomous.autos;
 
-import java.util.function.Supplier;
-
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Suppliers;
 import frc.robot.commands.autonomous.AutoCommand;
