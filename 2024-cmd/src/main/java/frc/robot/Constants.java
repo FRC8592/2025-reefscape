@@ -23,7 +23,8 @@ public final class Constants {
     }
 
     public final class MEASUREMENTS {
-        public static final double FIELD_LENGTH_METERS = 16.5410515;
+        public static final double FIELD_LENGTH_METERS = 17.548;
+        public static final double FIELD_WIDTH_METERS = 8.052;
     }
 
     public final class CONTROLLERS {
