@@ -10,16 +10,13 @@ import static frc.robot.commands.NewtonCommands.*;
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
-import frc.robot.commands.proxies.OverrideEverythingCommand;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
-import frc.robot.subsystems.vision.Vision;
+import frc.robot.subsystems.Vision;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -67,7 +64,7 @@ public class RobotContainer {
         AutoManager.addSubsystems(swerve);
         AutoCommand.addSubsystems(swerve);
         LargeCommand.addSubsystems(swerve);
-        NewtonCommands.addSubsystems(swerve, elevator);
+        NewtonCommands.addSubsystems(swerve, elevator, intake);
         Suppliers.addSubsystems(swerve);
     }
 
@@ -169,7 +166,6 @@ public class RobotContainer {
 
         driverController.x().whileTrue(intakeCommand());
         driverController.a().whileTrue(outtakeCommand());
-    
     }
 
 

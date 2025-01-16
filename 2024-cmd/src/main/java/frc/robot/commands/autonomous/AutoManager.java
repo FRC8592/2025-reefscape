@@ -38,10 +38,8 @@ public final class AutoManager {
      */
     public static void prepare(){
         autoCommands = new ArrayList<>();
-
-
-
         autoChooser = new SendableChooser<>();
+        
         autoChooser.setDefaultOption("DEFAULT - No auto", new AutoCommand());
         for(AutoCommand c : autoCommands){
             autoChooser.addOption(

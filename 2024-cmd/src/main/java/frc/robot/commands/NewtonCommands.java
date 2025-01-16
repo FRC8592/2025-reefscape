@@ -15,12 +15,11 @@ import frc.robot.subsystems.swerve.Swerve.DriveModes;
 public final class NewtonCommands {
     private static Swerve swerve;
     private static Intake intake;
-    public static void addSubsystems(Swerve swerve,Intake intake){
     private static Elevator elevator;
-    public static void addSubsystems(Swerve swerve, Elevator elevator){
+    
+    public static void addSubsystems(Swerve swerve, Elevator elevator, Intake intake){
         NewtonCommands.swerve = swerve;
         NewtonCommands.intake = intake;
-
         NewtonCommands.elevator = elevator;
     }
 
