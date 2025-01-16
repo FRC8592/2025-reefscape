@@ -40,9 +40,9 @@ public class RobotContainer {
     //Driver controls
     private final Trigger INTAKE = driverController.leftTrigger();
     private final Trigger SCORE = driverController.rightTrigger();
+    private final Trigger ALIGN_TO_SCORE = driverController.leftBumper();
     private final Trigger STOW = driverController.button(100);
     private final Trigger PRIME = driverController.button(100);
-    private final Trigger ALIGN_TO_SCORE = driverController.button(100);
 
     private final Trigger SLOW_MODE = driverController.rightBumper();
     private final Trigger RESET_HEADING = driverController.back();
