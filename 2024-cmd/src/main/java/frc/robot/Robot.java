@@ -141,13 +141,13 @@ public class Robot extends LoggedRobot {
             ySpeed = Math.min(CORAL_ALIGN.SPEED_MAX, ySpeed);
             ySpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, ySpeed);
 
-            ySpeed = ySpeed * CORAL_ALIGN.SPEED_SCALE;
+            ySpeed = -ySpeed * CORAL_ALIGN.SPEED_SCALE;
 
             xSpeed = yController.calculate(robotContainer.vision.getTargetY(), CORAL_ALIGN.Y_OFFSET);
             xSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, xSpeed);
             xSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, xSpeed);
     
-            xSpeed = xSpeed * CORAL_ALIGN.SPEED_SCALE;
+            xSpeed = -xSpeed * CORAL_ALIGN.SPEED_SCALE;
     
             rotSpeed = rotController.calculate(robotContainer.vision.getTargetYaw(), CORAL_ALIGN.ROT_OFFSET);
             rotSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, rotSpeed);
@@ -157,7 +157,7 @@ public class Robot extends LoggedRobot {
 
             ChassisSpeeds speed = robotContainer.swerve.processJoystickInputs(xSpeed, ySpeed, rotSpeed);
             SmartDashboard.putString("ChassisSpeedJoystick", speed.toString());
-            robotContainer.swerve.drive(speed);
+            robotContainer.swerve.drive(speed, DriveModes.ROBOT_RELATIVE);
 
         } else {
             robotContainer.swerve.drive(Swerve.speedZero);
