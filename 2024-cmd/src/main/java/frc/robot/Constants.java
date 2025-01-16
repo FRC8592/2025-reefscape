@@ -32,6 +32,12 @@ public final class Constants {
     }
 
     public final class CAN {
+        public static final int PIVOT_MOTOR_CAN_ID = 30; //TODO Figure out the CAN ID for the wrist and the grip motor
+        public static final int INTAKE_WRIST_MOTOR_CAN_ID = -1; // TODO: Rename the These to match the motor class 
+        public static final int INTAKE_INNER_MOTOR_CAN_ID = -1;
+        public static final int INTAKE_OUTER_MOTOR_CAN_ID = -1;
+        
+        
         public static final int SWERVE_BLACK_FRONT_LEFT_DRIVE_CAN_ID = 17;
         public static final int SWERVE_BLACK_FRONT_LEFT_STEER_CAN_ID = 9;
         public static final int SWERVE_BLACK_FRONT_LEFT_ENCODER_CAN_ID = 13;
@@ -58,6 +64,16 @@ public final class Constants {
         public static final int SWERVE_DRIVE_CURRENT_LIMIT = 80;
         public static final int SWERVE_STEER_CURRENT_LIMIT = 40;
     }
+    
+    public final class INTAKE {
+        public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Intake/";
+        public static final double INNER_MOTOR_INTAKE_VELOCITY = 1000; // TODO: Set the velocity 
+        public static final double OUTER_MOTOR_INTAKE_VELOCITY = 0;// TODO: Set the velocity 
+        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 0; // TODO: Set the ID  
+        public static final double INNER_MOTOR_OUTAKE_VELOCITY = 1000; // TODO: Set the velocity
+        public static final double OUTER_MOTOR_OUTAKE_VELOCITY = 0; // TODO: set the velociy
+    }
+
     
     public final class SWERVE {
         public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Swerve/";

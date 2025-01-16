@@ -12,6 +12,7 @@ import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
 import frc.robot.commands.proxies.OverrideEverythingCommand;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 import frc.robot.subsystems.vision.Vision;
@@ -34,6 +35,7 @@ public class RobotContainer {
     private final Swerve swerve;
     private final Elevator elevator;
     private final Vision vision;
+    private final Intake intake;
     //TODO: Add more subsystems here
 
     // Helpers
@@ -47,6 +49,7 @@ public class RobotContainer {
         swerve = new Swerve();
         elevator = new Elevator();
         vision = new Vision();
+        intake = new Intake();
         // TODO: Add more subsystems and instantiatable helpers here
 
         passSubsystems();
@@ -164,6 +167,9 @@ public class RobotContainer {
             ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         );
 
+        driverController.x().whileTrue(intakeCommand());
+        driverController.a().whileTrue(outtakeCommand());
+    
     }
 
 

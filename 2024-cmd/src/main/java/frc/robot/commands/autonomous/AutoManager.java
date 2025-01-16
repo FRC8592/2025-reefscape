@@ -39,8 +39,6 @@ public final class AutoManager {
     public static void prepare(){
         autoCommands = new ArrayList<>();
 
-        // autoCommands.add(new ExampleAuto());
-        // TODO: Add autos here
 
 
         autoChooser = new SendableChooser<>();
