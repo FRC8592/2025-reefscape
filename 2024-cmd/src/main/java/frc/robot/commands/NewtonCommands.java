@@ -5,13 +5,18 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.INTAKE;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 
 public final class NewtonCommands {
     private static Swerve swerve;
-    public static void addSubsystems(Swerve swerve){
+    private static Intake intake; 
+
+    public static void addSubsystems(Swerve swerve,Intake intake){
         NewtonCommands.swerve = swerve;
+        NewtonCommands.intake = intake;
     }
 
     /**
@@ -35,5 +40,21 @@ public final class NewtonCommands {
             processed.omegaRadiansPerSecond = swerve.snapToAngle(angle);
             swerve.drive(processed, DriveModes.AUTOMATIC);
         });
+    } 
+
+    // command for taking in coral 
+    public static Command intakeCommand(){
+        return intake.run(() ->{
+            intake.runInnerMotor(INTAKE.INNER_MOTOR_INTAKE_VELOCITY);
+        });
+
     }
+
+    //command for the release of the coral for scoring 
+    public static Command outakeCommand(){
+        return intake.run(() ->{
+            intake.runInnerMotor(INTAKE.INNER_MOTOR_INTAKE_VELOCITY);
+        });
+    }
+
 }
