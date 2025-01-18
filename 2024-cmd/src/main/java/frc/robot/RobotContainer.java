@@ -14,6 +14,7 @@ import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 import frc.robot.subsystems.vision.Vision;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -27,9 +28,12 @@ public class RobotContainer {
     private static final CommandXboxController operatorController = new CommandXboxController(
         CONTROLLERS.OPERATOR_PORT
     );
+    public static final GenericHID coralController = new GenericHID(
+        CONTROLLERS.CORAL_SELECTOR_PORT
+    );
 
     // The robot's subsystems
-    public final Swerve swerve;
+    // public final Swerve swerve;
     public final Vision vision;
     //TODO: Add more subsystems here
 
@@ -41,7 +45,7 @@ public class RobotContainer {
      * up button bindings, and prepares for autonomous.
      */
     public RobotContainer() {
-        swerve = new Swerve();
+        // swerve = new Swerve();
         vision = new Vision();
         // TODO: Add more subsystems and instantiatable helpers here
 
@@ -57,11 +61,11 @@ public class RobotContainer {
      * Pass subsystems everywhere they're needed
      */
     private void passSubsystems(){
-        AutoManager.addSubsystems(swerve, vision);
-        AutoCommand.addSubsystems(swerve, vision);
-        LargeCommand.addSubsystems(swerve, vision);
-        NewtonCommands.addSubsystems(swerve, vision);
-        Suppliers.addSubsystems(swerve, vision);
+        AutoManager.addSubsystems(null, null);
+        AutoCommand.addSubsystems(null, null);
+        LargeCommand.addSubsystems(null, null);
+        NewtonCommands.addSubsystems(null, null);
+        Suppliers.addSubsystems(null, null);
     }
 
     /**
@@ -69,13 +73,13 @@ public class RobotContainer {
      */
     private void configureDefaults(){
         // Set the swerve's default command to drive with joysticks
-        setDefaultCommand(swerve, swerve.run(() -> {
-            swerve.drive(swerve.processJoystickInputs(
-                -driverController.getLeftX(),
-                -driverController.getLeftY(),
-                -driverController.getRightX()
-            ), DriveModes.AUTOMATIC);
-        }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        // setDefaultCommand(swerve, swerve.run(() -> {
+        //     swerve.drive(swerve.processJoystickInputs(
+        //         -driverController.getLeftX(),
+        //         -driverController.getLeftY(),
+        //         -driverController.getRightX()
+        //     ), DriveModes.AUTOMATIC);
+        // }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
     }
 
 
@@ -103,62 +107,62 @@ public class RobotContainer {
         // Score Grid position is x button
         // Ground position is "a" button
         // High score position is y button
-        driverController.rightBumper().onTrue(
-            // The Commands.runOnce (instead of swerve.runOnce) is a special case here
-            // to allow this to run while other swerve commands (the default driving
-            // command, for example) run. This is usually a horrible idea and shouldn't
-            // be used outside of special cases like this.
+        // driverController.rightBumper().onTrue(
+        //     // The Commands.runOnce (instead of swerve.runOnce) is a special case here
+        //     // to allow this to run while other swerve commands (the default driving
+        //     // command, for example) run. This is usually a horrible idea and shouldn't
+        //     // be used outside of special cases like this.
 
-            // The .ignoringDisable makes sure slow mode won't get stuck on or off if
-            // the robot is disabled.
-            Commands.runOnce(() -> swerve.setSlowMode(true)).ignoringDisable(true)
-        ).onFalse(
-            Commands.runOnce(() -> swerve.setSlowMode(false)).ignoringDisable(true)
-        );
+        //     // The .ignoringDisable makes sure slow mode won't get stuck on or off if
+        //     // the robot is disabled.
+        //     Commands.runOnce(() -> swerve.setSlowMode(true)).ignoringDisable(true)
+        // ).onFalse(
+        //     Commands.runOnce(() -> swerve.setSlowMode(false)).ignoringDisable(true)
+        // );
 
-        driverController.back().onTrue(
-            // Similar comment on Commands.runOnce as slow mode above
-            Commands.runOnce(() -> swerve.resetHeading())
-        );
+        // driverController.back().onTrue(
+        //     // Similar comment on Commands.runOnce as slow mode above
+        //     Commands.runOnce(() -> swerve.resetHeading())
+        // );
 
-        driverController.leftBumper().onTrue(
-            // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
-            Commands.runOnce(() -> swerve.setRobotRelative(true)).ignoringDisable(true)
-        ).onFalse(
-            Commands.runOnce(() -> swerve.setRobotRelative(false)).ignoringDisable(true)
-        );
+        // driverController.leftBumper().onTrue(
+        //     // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
+        //     Commands.runOnce(() -> swerve.setRobotRelative(true)).ignoringDisable(true)
+        // ).onFalse(
+        //     Commands.runOnce(() -> swerve.setRobotRelative(false)).ignoringDisable(true)
+        // );
 
-        driverController.pov(0).whileTrue(
-            swerveSnapToCommand(
-                Rotation2d.fromDegrees(0),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getLeftY()
-            )
-        );
+        // driverController.pov(0).whileTrue(
+        //     swerveSnapToCommand(
+        //         Rotation2d.fromDegrees(0),
+        //         () -> -driverController.getLeftX(),
+        //         () -> -driverController.getLeftY()
+        //     )
+        // );
 
-        driverController.pov(180).whileTrue(
-            swerveSnapToCommand(
-                Rotation2d.fromDegrees(180),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getLeftY()
-            )
-        );
+        // driverController.pov(180).whileTrue(
+        //     swerveSnapToCommand(
+        //         Rotation2d.fromDegrees(180),
+        //         () -> -driverController.getLeftX(),
+        //         () -> -driverController.getLeftY()
+        //     )
+        // );
 
-        driverController.pov(90).whileTrue(
-            swerveSnapToCommand(
-                Rotation2d.fromDegrees(270),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getLeftY()
-            )
-        );
+        // driverController.pov(90).whileTrue(
+        //     swerveSnapToCommand(
+        //         Rotation2d.fromDegrees(270),
+        //         () -> -driverController.getLeftX(),
+        //         () -> -driverController.getLeftY()
+        //     )
+        // );
 
-        driverController.pov(270).whileTrue(
-            swerveSnapToCommand(
-                Rotation2d.fromDegrees(90),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getLeftY()
-            ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
-        );
+        // driverController.pov(270).whileTrue(
+        //     swerveSnapToCommand(
+        //         Rotation2d.fromDegrees(90),
+        //         () -> -driverController.getLeftX(),
+        //         () -> -driverController.getLeftY()
+        //     ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
+        // );
     }
 
 
