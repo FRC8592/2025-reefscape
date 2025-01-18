@@ -156,33 +156,33 @@ public class Robot extends LoggedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        double xSpeed = 0d, ySpeed = 0d, rotSpeed = 0d;
+        // double xSpeed = 0d, ySpeed = 0d, rotSpeed = 0d;
 
-        if(robotContainer.vision.getTargetVisible() == true){
-            ySpeed = xController.calculate(robotContainer.vision.getTargetX(), CORAL_ALIGN.X_OFFSET);
-            ySpeed = Math.min(0.6, ySpeed);
-            ySpeed = Math.max(-0.6, ySpeed);
+        // if(robotContainer.vision.getTargetVisible() == true){
+        //     ySpeed = xController.calculate(robotContainer.vision.getTargetX(), CORAL_ALIGN.X_OFFSET);
+        //     ySpeed = Math.min(0.6, ySpeed);
+        //     ySpeed = Math.max(-0.6, ySpeed);
 
-            //robot goes side-to-side
-            if(robotContainer.vision.getTargetY() > 0.1){
-                xSpeed = -0.15;
-            }
-            else if(robotContainer.vision.getTargetY() < -0.1){
-                xSpeed = 0.15;
-            }
-            else {
-                xSpeed = 0;
-            }
+        //     //robot goes side-to-side
+        //     if(robotContainer.vision.getTargetY() > 0.1){
+        //         xSpeed = -0.15;
+        //     }
+        //     else if(robotContainer.vision.getTargetY() < -0.1){
+        //         xSpeed = 0.15;
+        //     }
+        //     else {
+        //         xSpeed = 0;
+        //     }
 
-            if(robotContainer.vision.getTargetYaw() > 10){
-                rotSpeed = -0.15;
-            }
-            else if(robotContainer.vision.getTargetYaw() < -10){
-                rotSpeed = 0.15;
-            }
-            else {
-                rotSpeed = 0;
-            }
+        //     if(robotContainer.vision.getTargetYaw() > 10){
+        //         rotSpeed = -0.15;
+        //     }
+        //     else if(robotContainer.vision.getTargetYaw() < -10){
+        //         rotSpeed = 0.15;
+        //     }
+        //     else {
+        //         rotSpeed = 0;
+        //     }
 
         //     ChassisSpeeds speed = robotContainer.swerve.processJoystickInputs(0, ySpeed, 0);
         //     SmartDashboard.putString("ChassisSpeedJoystick", speed.toString());
@@ -192,10 +192,10 @@ public class Robot extends LoggedRobot {
         //     robotContainer.swerve.drive(Swerve.speedZero);
         // }
 
-        SmartDashboard.putNumber("Provided XSpeed", xSpeed);
-        SmartDashboard.putNumber("Provided YSpeed", ySpeed);
-        }
-    }
+    //     SmartDashboard.putNumber("Provided XSpeed", xSpeed);
+    //     SmartDashboard.putNumber("Provided YSpeed", ySpeed);
+    //     }
+     }
 
     @Override
     public void testInit() {

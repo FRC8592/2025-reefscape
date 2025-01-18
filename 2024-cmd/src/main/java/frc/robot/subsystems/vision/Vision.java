@@ -21,6 +21,7 @@ public class Vision extends SubsystemBase{
  
     public Vision(){
         SmartDashboard.putString("hi", "hi");
+        SmartDashboard.putString("hello", "hello");
     }
 
     @Override
