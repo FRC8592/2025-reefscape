@@ -20,10 +20,13 @@ public class Vision extends SubsystemBase{
     double targetZ = 0.0;
     double targetPitch = 0.0;
     double targetArea = 0.0;
-    double targetSkew = 1;
     double targetXRotation =0d;
     double targetYRotation =0d;
     double targetZRotation =0d;
+    
+    double targetYawRotation = 0.0;
+    double targetPitchRotation = 0.0;
+    double targetRollRotation = 0.0;
  
     public Vision(){
         SmartDashboard.putString("hi", "hi");
@@ -53,13 +56,16 @@ public class Vision extends SubsystemBase{
                     targetYaw = target.getYaw();
                     targetPitch = target.getPitch();
                     targetArea = target.getArea();
-                    targetSkew = target.getSkew();
                     targetId = target.getFiducialId();
                     bestCameraToTarget = target.getBestCameraToTarget();
                     Rotation3d targetRotation = bestCameraToTarget.getRotation();
                     targetXRotation = targetRotation.getX();
                     targetYRotation = targetRotation.getY();
                     targetZRotation = targetRotation.getZ();
+
+                    targetYawRotation = targetRotation.getMeasureZ().baseUnitMagnitude()*(180/Math.PI);
+                    targetPitchRotation = targetRotation.getMeasureY().baseUnitMagnitude()*(180/Math.PI);
+                    targetRollRotation = targetRotation.getMeasureX().baseUnitMagnitude()*(180/Math.PI);
                 
                     targetX = bestCameraToTarget.getX();
                     targetY = bestCameraToTarget.getY();
@@ -77,11 +83,14 @@ public class Vision extends SubsystemBase{
          SmartDashboard.putNumber("Target Yaw", targetYaw);
          SmartDashboard.putNumber("Target Pitch", targetPitch);
          SmartDashboard.putNumber("Target Area", targetArea);
-         SmartDashboard.putNumber("Target Skew", targetSkew);
          SmartDashboard.putNumber("Target ID", targetId);
          SmartDashboard.putNumber("Target X", targetX);
          SmartDashboard.putNumber("Target Y", targetY);
          SmartDashboard.putNumber("Target Z", targetZ);
+
+         SmartDashboard.putNumber("Target Yaw Rotation", targetYawRotation);
+         SmartDashboard.putNumber("Target Pitch Rotation", targetPitchRotation);
+         SmartDashboard.putNumber("Target Roll Rotation", targetRollRotation);
  
          // Auto-align when requested
         //  if (controller.getAButton() && targetVisible) {
