@@ -47,7 +47,7 @@ public class RobotContainer {
 
         passSubsystems();
         configureBindings();
-        //configureDefaults();
+        configureDefaults();
 
 
         AutoManager.prepare();
