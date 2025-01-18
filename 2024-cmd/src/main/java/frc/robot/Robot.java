@@ -184,16 +184,17 @@ public class Robot extends LoggedRobot {
                 rotSpeed = 0;
             }
 
-            ChassisSpeeds speed = robotContainer.swerve.processJoystickInputs(0, ySpeed, 0);
-            SmartDashboard.putString("ChassisSpeedJoystick", speed.toString());
-            robotContainer.swerve.drive(speed);
+        //     ChassisSpeeds speed = robotContainer.swerve.processJoystickInputs(0, ySpeed, 0);
+        //     SmartDashboard.putString("ChassisSpeedJoystick", speed.toString());
+        //     robotContainer.swerve.drive(speed);
 
-        } else {
-            robotContainer.swerve.drive(Swerve.speedZero);
-        }
+        // } else {
+        //     robotContainer.swerve.drive(Swerve.speedZero);
+        // }
 
         SmartDashboard.putNumber("Provided XSpeed", xSpeed);
         SmartDashboard.putNumber("Provided YSpeed", ySpeed);
+        }
     }
 
     @Override
