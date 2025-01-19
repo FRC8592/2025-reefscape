@@ -71,7 +71,7 @@ public final class Constants {
         public static final double Y_KI = 0;
         public static final double Y_KD = 0;
 
-        public static final double ROT_KP = 0.015;
+        public static final double ROT_KP = 0; // 0.015 was the original value but set to 0 for testing y axis
         public static final double ROT_KI = 0;
         public static final double ROT_KD = 0;
 

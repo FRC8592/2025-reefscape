@@ -40,9 +40,6 @@ public class Robot extends LoggedRobot {
 
     public static Field2d FIELD = new Field2d();
 
-    private PIDController xController = new PIDController(CORAL_ALIGN.X_KP, CORAL_ALIGN.X_KI, CORAL_ALIGN.X_KD);
-    private PIDController yController = new PIDController(CORAL_ALIGN.Y_KP, CORAL_ALIGN.Y_KI, CORAL_ALIGN.Y_KD);
-    private PIDController rotController = new PIDController(CORAL_ALIGN.ROT_KP, CORAL_ALIGN.ROT_KI, CORAL_ALIGN.ROT_KD);
     /**
      * This function is run when the robot is first started up and should be used
      * for any
@@ -132,39 +129,7 @@ public class Robot extends LoggedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        // Setting the x speed, y speed,rotating speed
-        double xSpeed = 0d, ySpeed = 0d, rotSpeed = 0d;
 
-
-        if(robotContainer.vision.getTargetVisible() == true){
-            ySpeed = xController.calculate(robotContainer.vision.getTargetX(), CORAL_ALIGN.X_OFFSET);
-            ySpeed = Math.min(CORAL_ALIGN.SPEED_MAX, ySpeed);
-            ySpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, ySpeed);
-
-            ySpeed = -ySpeed * CORAL_ALIGN.SPEED_SCALE;
-
-            xSpeed = yController.calculate(robotContainer.vision.getTargetY(), CORAL_ALIGN.Y_OFFSET);
-            xSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, xSpeed);
-            xSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, xSpeed);
-    
-            xSpeed = -xSpeed * CORAL_ALIGN.SPEED_SCALE;
-    
-            rotSpeed = rotController.calculate(robotContainer.vision.getTargetYaw(), CORAL_ALIGN.ROT_OFFSET);
-            rotSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, rotSpeed);
-            rotSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, rotSpeed);
-    
-            rotSpeed = rotSpeed * CORAL_ALIGN.SPEED_SCALE;
-
-            ChassisSpeeds speed = robotContainer.swerve.processJoystickInputs(xSpeed, ySpeed, rotSpeed);
-            SmartDashboard.putString("ChassisSpeedJoystick", speed.toString());
-            robotContainer.swerve.drive(speed, DriveModes.ROBOT_RELATIVE);
-
-        } else {
-            robotContainer.swerve.drive(Swerve.speedZero);
-        }
-
-        SmartDashboard.putNumber("Provided XSpeed", xSpeed);
-        SmartDashboard.putNumber("Provided YSpeed", ySpeed);
     }
 
     @Override

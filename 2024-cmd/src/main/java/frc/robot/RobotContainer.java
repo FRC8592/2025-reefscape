@@ -10,6 +10,7 @@ import static frc.robot.commands.NewtonCommands.*;
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
+import frc.robot.subsystems.ScoreCoral;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 import frc.robot.subsystems.vision.Vision;
@@ -29,9 +30,10 @@ public class RobotContainer {
     );
 
     // The robot's subsystems
-    public final Swerve swerve;
-    public final Vision vision;
+    private final Swerve swerve;
+    private final Vision vision;
     //TODO: Add more subsystems here
+    private ScoreCoral scoreCoral;
 
     // Helpers
     // TODO: Add instantiatable helpers here
@@ -43,6 +45,7 @@ public class RobotContainer {
     public RobotContainer() {
         swerve = new Swerve();
         vision = new Vision();
+        scoreCoral = new ScoreCoral(swerve, vision);
         // TODO: Add more subsystems and instantiatable helpers here
 
         passSubsystems();
@@ -158,6 +161,11 @@ public class RobotContainer {
                 () -> -driverController.getLeftX(),
                 () -> -driverController.getLeftY()
             ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
+        );
+
+        driverController.x().whileTrue(
+            // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
+            Commands.runOnce(() -> scoreCoral.driveToReef())
         );
     }
 
