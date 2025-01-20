@@ -88,18 +88,7 @@ public class Robot extends LoggedRobot {
         // and running subsystem periodic() methods. This must be called from the
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
-        CommandScheduler.getInstance().run();
-
-        SmartDashboard.putBoolean("B1", coralController.getRawButton(1));
-        SmartDashboard.putBoolean("B2", coralController.getRawButton(2));
-        SmartDashboard.putBoolean("B3", coralController.getRawButton(3));
-        SmartDashboard.putBoolean("B4", coralController.getRawButton(4));
-        SmartDashboard.putBoolean("B5", coralController.getRawButton(5));
-        SmartDashboard.putBoolean("B6", coralController.getRawButton(6));
-        SmartDashboard.putBoolean("B7", coralController.getRawButton(7));
-        SmartDashboard.putBoolean("B8", coralController.getRawButton(8));
-
-        
+        CommandScheduler.getInstance().run(); 
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
