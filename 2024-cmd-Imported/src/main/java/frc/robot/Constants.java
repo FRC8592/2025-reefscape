@@ -27,17 +27,6 @@ public final class Constants {
     public final class CONTROLLERS {
         public static final int DRIVER_PORT = 0;
         public static final int OPERATOR_PORT = 1;
-        public static final int CORAL_SELECTOR_PORT = 0;
-
-        // Assignments for coralController buttons
-        public static final int CORAL_CONTROLLER_L1 = 7;
-        public static final int CORAL_CONTROLLER_L2 = 8;
-        public static final int CORAL_CONTROLLER_L3 = 2;
-        public static final int CORAL_CONTROLLER_L4 = 3;
-        public static final int CORAL_CONTROLLER_R1 = 5;
-        public static final int CORAL_CONTROLLER_R2 = 6;
-        public static final int CORAL_CONTROLLER_R3 = 1;
-        public static final int CORAL_CONTROLLER_R4 = 4;
     }
 
     public final class CAN {
@@ -72,27 +61,6 @@ public final class Constants {
         public static final int SWERVE_DRIVE_CURRENT_LIMIT = 80;
         public static final int SWERVE_STEER_CURRENT_LIMIT = 40;
     }
-
-    public final class CORAL_ALIGN {
-        public static final double X_KP = 0; // Used to be 1. Currently testing x_KP of 0
-        public static final double X_KI = 0;
-        public static final double X_KD = 0;
-
-        public static final double Y_KP = 1;
-        public static final double Y_KI = 0;
-        public static final double Y_KD = 0;
-
-        public static final double ROT_KP = 0; // 0.015 was the original value but set to 0 for testing y axis
-        public static final double ROT_KI = 0;
-        public static final double ROT_KD = 0;
-
-        public static final double X_OFFSET = 0.35;
-        public static final double Y_OFFSET = 0.0;
-        public static final double ROT_OFFSET = 180d;
-        public static final double SPEED_SCALE = 1.0;
-        public static final double SPEED_MAX = 0.35;
-    }
-
     public final class PIVOT {
         public static final int GROUND_DEGREES = 0;
         // TODO: Set these to correct values
@@ -186,7 +154,7 @@ public final class Constants {
         public static final int TRANSLATION_SMOOTHING_AMOUNT = 3;
         public static final int ROTATION_SMOOTHING_AMOUNT = 1;
 
-        public static final double JOYSTICK_EXPONENT = 1.2;
+        public static final double JOYSTICK_EXPONENT = 2;
 
         public static final Rotation2d BLUE_PERSPECTIVE_ROTATION = Rotation2d.fromDegrees(0);
         public static final Rotation2d RED_PERSPECTIVE_ROTATION = Rotation2d.fromDegrees(180);
