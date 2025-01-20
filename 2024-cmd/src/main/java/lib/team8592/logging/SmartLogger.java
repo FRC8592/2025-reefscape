@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.shuffleboard.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 public class SmartLogger {
-    private String tableName = "/CustomLogs/";
+    private String tableName = "CustomLogs/";
     private ShuffleboardTab shuffleboardTab;
     // private Dictionary<String, GenericEntry> cards;
 
@@ -26,7 +26,7 @@ public class SmartLogger {
     private boolean initialized = false;
 
     public SmartLogger(String name, boolean logToShuffleboard) {
-        this.tableName = name + "/";
+        this.tableName = tableName + name + "/";
         this.logToShuffleboard = logToShuffleboard;
         // this.cards = new Hashtable<>();
     }

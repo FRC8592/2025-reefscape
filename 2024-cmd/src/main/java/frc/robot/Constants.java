@@ -210,9 +210,9 @@ public final class Constants {
     }
 
     public final class CLOCK {
-        public static final double GEARBOX_RATIO = 125d;
-        public static final double SPROCKET_RATIO = 1d;
-        public static final double OVERALL_GEAR_RATIO = GEARBOX_RATIO * SPROCKET_RATIO;
+        public static final double GEARBOX_RATIO = 25d;
+        public static final double EXTERNAL_GEAR_RATIO = 3d;
+        public static final double OVERALL_GEAR_RATIO = GEARBOX_RATIO * EXTERNAL_GEAR_RATIO;
         public static final double WITHIN_THRESHOLD_DEGREES = 1d; // degrees
     }
 
