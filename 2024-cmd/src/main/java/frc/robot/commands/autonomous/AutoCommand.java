@@ -10,15 +10,15 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj2.command.*;
-import frc.robot.subsystems.swerve.*;
+import frc.robot.subsystems.SubsystemManager;
 
 /**
  * Class to provide subsystems, convenient methods, and a constructor to autonomous commands
  */
 public class AutoCommand extends WrapperCommand{
-    protected static Swerve swerve;
-    public static void addSubsystems(Swerve swerve){
-        AutoCommand.swerve = swerve;
+    @SuppressWarnings("unused") private static SubsystemManager manager;
+    public static void addSubsystems(SubsystemManager manager){
+        AutoCommand.manager = manager;
     }
 
     /**
@@ -58,6 +58,7 @@ public class AutoCommand extends WrapperCommand{
      * {@code FileNotFoundException} if the name doesn't represent a .traj file
      * located in the {@code choreo} folder in the {@code deploy} folder
      */
+    @SuppressWarnings("unchecked")
     protected static final Trajectory getChoreoTrajectory(String name){
         if(cachedChoreoTrajectories.containsKey(name)){
             return cachedChoreoTrajectories.get(name);

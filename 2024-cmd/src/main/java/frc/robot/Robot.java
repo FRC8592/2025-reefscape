@@ -4,20 +4,15 @@
 
 package frc.robot;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import org.littletonrobotics.junction.*;
 
-import org.littletonrobotics.junction.LoggedRobot;
-import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.inputs.LoggedPowerDistribution;
-import org.littletonrobotics.junction.networktables.NT4Publisher;
-import org.littletonrobotics.junction.wpilog.WPILOGWriter;
-
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import lib.team8592.logging.LogUtils;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -42,23 +37,21 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void robotInit() {
-        Logger.recordMetadata("Game", "Crescendo");
-        Logger.recordMetadata("Year", "2024");
-        Logger.recordMetadata("Robot", "Zenith");
-        Logger.recordMetadata("Team", "8592");
-
-        if (isReal()) { // If running on a real robot
-            String time = DateTimeFormatter.ofPattern("yy-MM-dd_HH-mm-ss").format(LocalDateTime.now());
-            String path = "/U/"+time+".wpilog";
-            Logger.addDataReceiver(new WPILOGWriter(path)); // Log to a USB stick
-            Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-            LoggedPowerDistribution.getInstance(1, ModuleType.kRev);// Enables power distribution logging
-            Logger.start();
-        }
-        else { // If simulated
+        LogUtils.initialize(
+            new LogUtils.LogConstants(
+                Constants.LOGS.GAME, 
+                Constants.LOGS.YEAR, 
+                Constants.LOGS.ROBOT, 
+                Constants.LOGS.TEAM
+            ), 
+            isSimulation()
+        );
+            
+        if (Robot.isSimulation()) {
             SmartDashboard.putData(FIELD);
         }
-        robotContainer = new RobotContainer();
+
+        this.robotContainer = new RobotContainer(Robot.isSimulation() || (Robot.isReal() && !DriverStation.isFMSAttached()));
     }
 
     /**

@@ -8,25 +8,21 @@ import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Robot;
 import frc.robot.Suppliers;
-import frc.robot.commands.autonomous.autos.FourCoralAuto;
-import frc.robot.commands.autonomous.autos.LeftSideLeaveSLAuto;
-import frc.robot.commands.autonomous.autos.ThreeCoralAuto;
-import frc.robot.commands.autonomous.autos.TwoCoralAuto;
+import frc.robot.commands.autonomous.autos.*;
 import frc.robot.commands.proxies.*;
-import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.SubsystemManager;
 
 /**
  * General class for autonomous management (loading autos, sending the chooser, getting the
  * user-selected auto command, etc).
  */
 public final class AutoManager {
-    private static Swerve swerve;
-    public static void addSubsystems(Swerve swerve){
-        AutoManager.swerve = swerve;
+    private static SubsystemManager manager;
+    public static void addSubsystems(SubsystemManager manager){
+        AutoManager.manager = manager;
     }
 
     private static SendableChooser<AutoCommand> autoChooser;
@@ -82,7 +78,7 @@ public final class AutoManager {
         }
         else{ // If we do have a starting pose, reset the odometry to that first
             return getAutonomousInitCommand().andThen(
-                swerve.runOnce(() -> swerve.resetPose(
+                manager.swerve.runOnce(() -> manager.swerve.resetPose(
                     autoCommand.startPose, Suppliers.robotRunningOnRed.getAsBoolean()
                 ))
             ).andThen(
@@ -98,9 +94,9 @@ public final class AutoManager {
      */
     private static Command getAutonomousInitCommand(){
         return new ParallelCommandGroup(
-            swerve.runOnce(() -> {
-                swerve.stop();
-                swerve.resetHeading();
+            manager.swerve.runOnce(() -> {
+                manager.swerve.stop();
+                manager.swerve.resetHeading();
             })
             // TODO: Add any other commands that need to be run on autonomous init here
         );

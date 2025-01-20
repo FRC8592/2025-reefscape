@@ -1,4 +1,4 @@
-package frc.robot.subsystems.swerve;
+package frc.robot.subsystems.swerve.ctreswerve;
 
 import static edu.wpi.first.units.Units.*;
 
@@ -8,10 +8,8 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import frc.robot.subsystems.swerve.ctreswerve.CommandSwerveDrivetrain;
-import frc.robot.subsystems.swerve.ctreswerve.TunerConstants;
 
-public class CTRESwerveWrapper {
+public class CTRESwerve {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
@@ -23,8 +21,10 @@ public class CTRESwerveWrapper {
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
     private final SwerveRequest.RobotCentric robotRelative = new SwerveRequest.RobotCentric()
         .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
-       
+
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+
+    private ChassisSpeeds targetSpeeds = new ChassisSpeeds();
 
     public void drive(ChassisSpeeds speeds, boolean driveRobotRelative) {
         if (driveRobotRelative) {
@@ -33,6 +33,8 @@ public class CTRESwerveWrapper {
                     .withVelocityY(speeds.vyMetersPerSecond) 
                     .withRotationalRate(speeds.omegaRadiansPerSecond) 
             );
+
+            this.targetSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getYaw());
         }
         else {
         drivetrain.setControl(
@@ -40,7 +42,17 @@ public class CTRESwerveWrapper {
                 .withVelocityY(speeds.vyMetersPerSecond) // Drive left with negative X (left)
                 .withRotationalRate(speeds.omegaRadiansPerSecond) // Drive counterclockwise with negative X (left)
             );
+
+            this.targetSpeeds = speeds;
         }
+    }
+
+    public ChassisSpeeds getCommandedSpeeds() {
+        return this.targetSpeeds;
+    }
+
+    public ChassisSpeeds getCurrentSpeeds() {
+        return drivetrain.getState().Speeds;
     }
 
     public void resetHeading() {
@@ -58,6 +70,15 @@ public class CTRESwerveWrapper {
     public void setKnownOdometryPose(Pose2d currentPose) {        
         drivetrain.resetPose(currentPose);
     }
+
+    public void setBraking() {
+        drivetrain.setControl(brake);
+    }
+
+    public void pointWheelsAt(Rotation2d angle) {
+        drivetrain.setControl(point.withModuleDirection(angle));
+    }
+
     public void periodic(){
         drivetrain.periodic();
     }

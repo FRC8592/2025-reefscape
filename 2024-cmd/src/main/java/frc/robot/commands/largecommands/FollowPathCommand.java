@@ -46,7 +46,7 @@ public class FollowPathCommand extends LargeCommand{
      * red side of the field.
      */
     public FollowPathCommand(Trajectory trajectory, BooleanSupplier flip){
-        super(swerve);
+        super(manager.swerve);
 
         this.trajectory = trajectory;
 
@@ -131,13 +131,16 @@ public class FollowPathCommand extends LargeCommand{
         this.alternateTranslation = translationSupplier;
     }
 
+    @Override
     public void initialize(){
         timer.reset();
         timer.start();
 
         // Stop the swerve
-        swerve.drive(new ChassisSpeeds());
+        manager.swerve.drive(new ChassisSpeeds());
     }
+
+    @Override
     public void execute(){
         // Instances of State contain information about pose, velocity, accelleration, curvature, etc.
         State desiredState = trajectory.sample(timer.get());
@@ -147,10 +150,10 @@ public class FollowPathCommand extends LargeCommand{
         }
 
         if(Robot.isReal()){
-            Logger.recordOutput(SWERVE.LOG_PATH+"TargetPose", desiredState.poseMeters);
+            Logger.recordOutput("CustomLogs/Trajectory/TargetPose", desiredState.poseMeters);
 
             ChassisSpeeds driveSpeeds = drivePID.calculate(
-                swerve.getCurrentPosition(),
+                manager.swerve.getCurrentPosition(),
                 desiredState,
                 desiredState.poseMeters.getRotation()
             );
@@ -167,17 +170,21 @@ public class FollowPathCommand extends LargeCommand{
                 driveSpeeds.vyMetersPerSecond = alternateTranslation.get().vyMetersPerSecond;
             }
 
-            swerve.drive(driveSpeeds);
+            manager.swerve.drive(driveSpeeds);
         }
         else{
             // The swerve automatically sets the visible position on the simulated
             // field, so all we have to do is set its known position
-            swerve.resetPose(desiredState.poseMeters);
+            manager.swerve.resetPose(desiredState.poseMeters);
         }
     }
+
+    @Override
     public void end(boolean interrupted){
-        swerve.drive(new ChassisSpeeds());
+        manager.swerve.drive(new ChassisSpeeds());
     }
+
+    @Override
     public boolean isFinished(){
         return ( // Only return true if enough time has elapsed, we're at the target location, and we're not using alternate movement.
             timer.hasElapsed(trajectory.getTotalTimeSeconds())

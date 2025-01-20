@@ -11,13 +11,15 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants.*;
-import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.SubsystemManager;
 import edu.wpi.first.util.WPISerializable;
 
 /**
  * Class for storing useful suppliers/lambdas
  */
 public final class Suppliers {
+    @SuppressWarnings("unused") private static SubsystemManager manager;
+
     public static class LoggedWPILibSupplier<T extends WPISerializable> implements Supplier<T>{
         private Supplier<T> supplier;
         private String name;
@@ -49,10 +51,8 @@ public final class Suppliers {
         public int getAsInt(){int d = supplier.getAsInt(); Logger.recordOutput(name, d); return d;}
     }
 
-    private static Swerve swerve;
-
-    public static void addSubsystems(Swerve swerve){
-        Suppliers.swerve = swerve;
+    public static void addSubsystems(SubsystemManager manager){
+        Suppliers.manager = manager;
     }
 
     /**

@@ -2,25 +2,24 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.swerve;
+package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import org.littletonrobotics.junction.Logger;
 
 import frc.robot.*;
-import frc.robot.helpers.*;
+import frc.robot.subsystems.swerve.ctreswerve.CTRESwerve;
 import frc.robot.Constants.*;
 
-public class Swerve extends SubsystemBase {
+import lib.team8592.MatchMode;
+import lib.team8592.SmoothingFilter;
+
+public class SwerveSubsystem extends NewtonSubsystem {
+    
     /**
      * Small enum to control whether to drive robot- or field-
-     * relative for {@link Swerve#drive(ChassisSpeeds, DriveModes)}
+     * relative for {@link SwerveSubsystem#drive(ChassisSpeeds, DriveModes)}
      */
     public enum DriveModes{
         /** Drive robot-relative */
@@ -38,9 +37,11 @@ public class Swerve extends SubsystemBase {
 
     private SmoothingFilter smoothingFilter;
     
-    private CTRESwerveWrapper swerve;
+    private CTRESwerve swerve;
 
-    public Swerve() {
+    protected SwerveSubsystem(boolean logToShuffleboard) {
+        super(logToShuffleboard);
+        
         smoothingFilter = new SmoothingFilter(
             SWERVE.TRANSLATION_SMOOTHING_AMOUNT,
             SWERVE.TRANSLATION_SMOOTHING_AMOUNT,
@@ -50,30 +51,7 @@ public class Swerve extends SubsystemBase {
         snapToController = new PIDController(SWERVE.SNAP_TO_kP, SWERVE.SNAP_TO_kI, SWERVE.SNAP_TO_kD);
 
         // TODO: Any initialization code needed for the new swerve stuff
-        swerve = new CTRESwerveWrapper();
-    }
-
-    @Override
-    public void periodic() {
-        // TODO: Periodic logging
-        Logger.recordOutput(SWERVE.LOG_PATH+"Current Pose", getCurrentPosition());
-        swerve.periodic();
-    }
-
-    public void simulationPeriodic() {
-        // Pose2d pose = getCurrentPosition();
-        Pose2d pose = new Pose2d(
-            getCurrentPosition().getTranslation(),
-            getCurrentPosition().getRotation().times(Math.PI/180.0)
-        );
-        Robot.FIELD.setRobotPose(pose==null?new Pose2d():pose);
-    }
-
-    /**
-     * Stop the swerve (feed zeros for all target velocities)
-     */
-    public void stop(){
-        drive(new ChassisSpeeds());
+        swerve = new CTRESwerve();
     }
 
     /**
@@ -97,11 +75,11 @@ public class Swerve extends SubsystemBase {
              speeds,
              switch(mode){
                  case FIELD_RELATIVE:
-                     yield true;
-                 case AUTOMATIC:
-                     yield !robotRelative;
-                 case ROBOT_RELATIVE:
                      yield false;
+                 case AUTOMATIC:
+                     yield robotRelative;
+                 case ROBOT_RELATIVE:
+                     yield true;
              }
          );
     }
@@ -145,10 +123,6 @@ public class Swerve extends SubsystemBase {
      * Get the current position of the swerve as judged by odometry.
      */
     public Pose2d getCurrentPosition() {
-        // TODO: implement something that allows the commented code to work
-        // if (Robot.isSimulation()){
-        //    return Robot.FIELD.getRobotPose();
-        // }
         return swerve.getCurrentOdometryPosition();
     }
 
@@ -162,16 +136,14 @@ public class Swerve extends SubsystemBase {
     public void resetPose(Pose2d pose) {
         // TODO: implement something that allows the commented code to work
         swerve.setKnownOdometryPose(pose);
-        Logger.recordOutput(
-            SWERVE.LOG_PATH+"Console", (
-                "Current pose reset to X: "+
-                pose.getX()+
-                "; Y: "+
-                pose.getY()+
-                "; Rotation: "+
-                pose.getRotation().getDegrees()+
-                "°."
-            )
+        this.logger.log("Console", 
+            "Current pose reset to X: "+
+            pose.getX()+
+            "; Y: "+
+            pose.getY()+
+            "; Rotation: "+
+            pose.getRotation().getDegrees()+
+            "°."
         );
     }
     
@@ -220,7 +192,7 @@ public class Swerve extends SubsystemBase {
      * @param rawY the raw Y input from a joystick. Should be -1 to 1
      * @param rawRot the raw rotation input from a joystick. Should be -1 to 1
      * @param fieldRelativeAllowed if this is true, switch between field- and
-     * robot-relative based on {@link Swerve#robotRelative}. Otherwise, force
+     * robot-relative based on {@link SwerveSubsystem#robotRelative}. Otherwise, force
      * robot-relative.
      *
      * @return a ChassisSpeeds ready to be sent to the swerve.
@@ -262,5 +234,33 @@ public class Swerve extends SubsystemBase {
         }
 
         return currentSpeeds;
+    }
+
+    @Override
+    public void onInit(MatchMode mode) {}
+
+    @Override
+    public void simulationPeriodic() {
+        // Pose2d pose = getCurrentPosition();
+        Pose2d pose = new Pose2d(
+            getCurrentPosition().getTranslation(),
+            getCurrentPosition().getRotation().times(Math.PI/180.0)
+        );
+
+        Robot.FIELD.setRobotPose(pose);
+    }
+
+    @Override
+    public void periodicTelemetry() {
+        this.logger.log("Current Pose", getCurrentPosition());
+        this.logger.log("Target Speeds", swerve.getCommandedSpeeds());
+        this.logger.log("Current Speeds", swerve.getCurrentSpeeds());
+        
+        swerve.periodic();
+    }
+
+    @Override
+    public void stop(){
+        drive(new ChassisSpeeds());
     }
 }

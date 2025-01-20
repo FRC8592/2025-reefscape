@@ -1,13 +1,21 @@
 package frc.robot;
 
-import java.util.concurrent.Flow.Processor;
-
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.util.Units;
 
 public final class Constants {
     public final class SHARED {
         public static final String LOG_FOLDER = "CustomLogs";
     }
+
+    public final class LOGS {
+        public static final String GAME = "Reefscape";
+        public static final String YEAR = "2025";
+        public static final String ROBOT = "Unnamed";
+        public static final String TEAM = "8592NewtonSquared";
+    }
+
     public final class CONVERSIONS {
         public static final double METERS_SECOND_TO_TICKS_TALONFX = ((2048 * 6.75 * 60) / (200 * Math.PI * 0.0508));
 
@@ -32,53 +40,41 @@ public final class Constants {
         public static final int OPERATOR_PORT = 1;
     }
 
-    public final class CAN {
-        public static final int PIVOT_MOTOR_CAN_ID = 30; //TODO Figure out the CAN ID for the wrist and the grip motor
-        public static final int INTAKE_WRIST_MOTOR_CAN_ID = -1; // TODO: Rename the These to match the motor class 
-        public static final int INTAKE_INNER_MOTOR_CAN_ID = -1;
-        public static final int INTAKE_OUTER_MOTOR_CAN_ID = -1;
-        
-        
-        public static final int SWERVE_BLACK_FRONT_LEFT_DRIVE_CAN_ID = 17;
-        public static final int SWERVE_BLACK_FRONT_LEFT_STEER_CAN_ID = 9;
-        public static final int SWERVE_BLACK_FRONT_LEFT_ENCODER_CAN_ID = 13;
-
-        public static final int SWERVE_ORANGE_FRONT_RIGHT_DRIVE_CAN_ID = 7;
-        public static final int SWERVE_ORANGE_FRONT_RIGHT_STEER_CAN_ID = 8;
-        public static final int SWERVE_ORANGE_FRONT_RIGHT_ENCODER_CAN_ID = 12;
-
-        public static final int SWERVE_TEAL_BACK_LEFT_DRIVE_CAN_ID = 18;
-        public static final int SWERVE_TEAL_BACK_LEFT_STEER_CAN_ID = 4;
-        public static final int SWERVE_TEAL_BACK_LEFT_ENCODER_CAN_ID = 10;
-
-        public static final int SWERVE_WHITE_BACK_RIGHT_DRIVE_CAN_ID = 5;
-        public static final int SWERVE_WHITE_BACK_RIGHT_STEER_CAN_ID = 6;
-        public static final int SWERVE_WHITE_BACK_RIGHT_ENCODER_CAN_ID = 11;
-
-        public static final int PIGEON_CAN_ID = 20;
-
-        public static final int PDH_CAN_ID = 1;
-    }
-
     public final class POWER {
         public static final int SWERVE_MAX_VOLTAGE = 12;
         public static final int SWERVE_DRIVE_CURRENT_LIMIT = 80;
         public static final int SWERVE_STEER_CURRENT_LIMIT = 40;
     }
-    
-    public final class INTAKE {
-        public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Intake/";
-        public static final double INNER_MOTOR_INTAKE_VELOCITY = 1000; // TODO: Set the velocity 
-        public static final double OUTER_MOTOR_INTAKE_VELOCITY = 0;// TODO: Set the velocity 
-        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 0; // TODO: Set the ID  
-        public static final double INNER_MOTOR_OUTAKE_VELOCITY = 1000; // TODO: Set the velocity
-        public static final double OUTER_MOTOR_OUTAKE_VELOCITY = 0; // TODO: set the velociy
+
+    public final class VISION {
+        public static final String CAM_NAME = "Arducam_OV9782_E";
+        public static final Transform3d CAMERA_OFFSET = new Transform3d();
     }
 
+    public final class SUPPLIERS {
+        public static final String LOG_PATH = SHARED.LOG_FOLDER + "/Suppliers/";
+    }
+
+    public final class SIMULATION {
+        public static final double SUPERSTRUCTURE_WIDTH_METERS = Units.inchesToMeters(36d);
+        public static final double SUPERSTRUCTURE_HEIGHT_METERS = Units.inchesToMeters(36d);
+        public static final double ELEVATOR_OFFSET_X = Units.inchesToMeters(9d);
+
+        public static final double ELEVATOR_HEIGHT_FROM_GROUND = Units.inchesToMeters(3d);
+
+        public static final double ELEVATOR_INITIAL_HEIGHT = Units.inchesToMeters(34.5d);
+
+        public static final double ELEVATOR_DRUM_RADIUS_METERS = Units.inchesToMeters(2d);
+
+        public static final double CLOCK_LENGTH_METERS = Units.inchesToMeters(24d);
+        public static final double WRIST_LENGTH_METERS = Units.inchesToMeters(12d);
+
+        public static final double FULL_ELEVATOR_SYSTEM_MASS = 20d; // kg
+
+        public static final double BASE_ATTACHMENT_Y = 0.1; // meters
+    }
     
     public final class SWERVE {
-        public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Swerve/";
-
         public static final double STEER_P = 100;
         public static final double STEER_I = 0;
         public static final double STEER_D = 0.2;
@@ -182,31 +178,56 @@ public final class Constants {
         public static final double PATH_FOLLOW_VELOCITY_TOLERANCE = 0.01;
     }
 
-    public final class ROBOT {
-        public static final String LOG_PATH = SHARED.LOG_FOLDER + "/Robot/";
-    }
-
-    public class SUPPLIERS{
-        public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Suppliers/";
-    }
-
     public class ELEVATOR{
-        public static final double L1_SCORE = -1.0;
-        public static final double L2_SCORE = -1.0;
-        public static final double L3_SCORE = -1.0;
-        public static final double L4_SCORE = -1.0;
+        public static final double L1_SCORE_HEIGHT_INCHES = 0d;
+        public static final double L2_SCORE_HEIGHT_INCHES = 0d;
+        public static final double L3_SCORE_HEIGHT_INCHES = 0d;
+        public static final double L4_SCORE_HEIGHT_INCHES = 0d;
 
-        public static final double L2_ALGAE_INTAKE = -1.0;
-        public static final double L3_ALGAE_INTAKE = -1.0;
+        public static final double L2_ALGAE_HEIGHT_INCHES = 0d;
+        public static final double L3_ALGAE_HEIGHT_INCHES = 0d;
 
-        public static final double GROUND_INTAKE = -1.0;
-        public static final double STOW = -1.0;
-        public static final double HUMAN_PLAYER_INTAKE = -1.0;
-        public static final double PROCESSOR = -1.0;
-        public static final double NET = -1.0;
+        public static final double GROUND_INTAKE_HEIGHT_INCHES = 0d;
+        public static final double STOW_HEIGHT_INCHES = 0d;
+        public static final double HP_INTAKE_HEIGHT_INCHES = 0d;
+        public static final double PROCESSOR_HEIGHT_INCHES = 0d;
+        public static final double NET_HEIGHT_INCHES = 0d;
 
-        public static final double ELEVATOR_GEARBOX_RATIO = -1.0;
-        public static final double ELEVATOR_SPROCKET_DIAMETER = -1.0;
-        public static final double ELEVATOR_GEAR_RATIO = ELEVATOR_GEARBOX_RATIO*ELEVATOR_SPROCKET_DIAMETER*Math.PI;
+        public static final double GEARBOX_RATIO = 125d;
+        public static final double SPROCKET_RATIO = 1d;
+        public static final double DRIVEN_SPROCKET_DIAMETER_INCHES = 1d;
+        public static final double OVERALL_GEAR_RATIO = GEARBOX_RATIO*SPROCKET_RATIO; // Motor-to-Subsystem Ratio
+
+        public static final double ELEVATOR_TOLERANCE_ROTATIONS = 0.5;
+    }
+
+    public final class INTAKE {
+        public static final double INNER_MOTOR_INTAKE_VELOCITY = 1000; // TODO: Set the velocity 
+        public static final double OUTER_MOTOR_INTAKE_VELOCITY = 0;// TODO: Set the velocity 
+        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 0; // TODO: Set the ID  
+        public static final double INNER_MOTOR_OUTAKE_VELOCITY = 1000; // TODO: Set the velocity
+        public static final double OUTER_MOTOR_OUTAKE_VELOCITY = 0; // TODO: set the velociy
+    }
+
+    public final class CLOCK {
+        public static final double GEARBOX_RATIO = 125d;
+        public static final double SPROCKET_RATIO = 1d;
+        public static final double OVERALL_GEAR_RATIO = GEARBOX_RATIO * SPROCKET_RATIO;
+        public static final double WITHIN_THRESHOLD_DEGREES = 1d; // degrees
+    }
+
+    public final class WRIST {
+        public static final double GEARBOX_RATIO = 125d;
+        public static final double SPROCKET_RATIO = 1d;
+        public static final double OVERALL_GEAR_RATIO = GEARBOX_RATIO * SPROCKET_RATIO;
+        public static final double WITHIN_THRESHOLD_DEGREES = 1d; // degrees
+    }
+
+    public final class SUPERSTRUCTURE {
+        public static final double FUNNEL_TOP_FROM_BASE_ELEVATOR_INCHES = 9d; // inches
+        public static final double ELEVATOR_STOWED_THRESHOLD = 3d; // inches
+        public static final double WRIST_LOCKED_UNDER_FUNNEL_THRESHOLD = 5d; // degrees
+        public static final double CLOCK_SWING_OUT_ANGLE = 45d; // degrees
+        public static final double CLOCK_STOW_ANGLE = 20d; // degrees
     }
 }
