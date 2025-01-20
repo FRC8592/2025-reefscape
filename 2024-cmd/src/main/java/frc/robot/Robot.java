@@ -15,6 +15,7 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -39,6 +40,8 @@ public class Robot extends LoggedRobot {
     private RobotContainer robotContainer;
 
     public static Field2d FIELD = new Field2d();
+
+    public GenericHID coralController = new GenericHID(0);
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -86,6 +89,17 @@ public class Robot extends LoggedRobot {
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
+
+        SmartDashboard.putBoolean("B1", coralController.getRawButton(1));
+        SmartDashboard.putBoolean("B2", coralController.getRawButton(2));
+        SmartDashboard.putBoolean("B3", coralController.getRawButton(3));
+        SmartDashboard.putBoolean("B4", coralController.getRawButton(4));
+        SmartDashboard.putBoolean("B5", coralController.getRawButton(5));
+        SmartDashboard.putBoolean("B6", coralController.getRawButton(6));
+        SmartDashboard.putBoolean("B7", coralController.getRawButton(7));
+        SmartDashboard.putBoolean("B8", coralController.getRawButton(8));
+
+        
     }
 
     /** This function is called once each time the robot enters Disabled mode. */

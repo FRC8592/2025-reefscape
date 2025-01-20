@@ -11,6 +11,8 @@ import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
 import frc.robot.subsystems.ScoreCoral;
+import frc.robot.subsystems.ScoreCoral.LeftOrRight;
+import frc.robot.subsystems.ScoreCoral.ScoreLevels;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 import frc.robot.subsystems.vision.Vision;
@@ -20,6 +22,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 public class RobotContainer {
     private static final CommandXboxController driverController = new CommandXboxController(
@@ -27,6 +32,9 @@ public class RobotContainer {
     );
     private static final CommandXboxController operatorController = new CommandXboxController(
         CONTROLLERS.OPERATOR_PORT
+    );
+    public static final GenericHID coralController = new GenericHID(
+        CONTROLLERS.CORAL_SELECTOR_PORT
     );
 
     // The robot's subsystems
@@ -98,14 +106,14 @@ public class RobotContainer {
         // Snap to is d pad
         
         // Operator: 
-        // Intake is left trigger
-        // Outtake is left bumper
-        // Slow Score is right bumper
-        // Score is right trigger
-        // Stow is b button
-        // Score Grid position is x button
-        // Ground position is "a" button
-        // High score position is y button
+        // X/Square is L1 Left Side
+        // Y/Triangle is L2 Left Side
+        // RB/R1 is L3 Left Side
+        // LB/L1 is L4 Left Side
+        // A/X is L1 Right Side
+        // B/O is L2 Right Side
+        // RT/R2 is L3 Right Side
+        // LT/L2 is L4 Right Side
         driverController.rightBumper().onTrue(
             // The Commands.runOnce (instead of swerve.runOnce) is a special case here
             // to allow this to run while other swerve commands (the default driving
@@ -167,6 +175,19 @@ public class RobotContainer {
             // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
             Commands.runOnce(() -> scoreCoral.driveToReef())
         );
+        
+        // D-input; LS; Turbo: Off
+        //Joystick is on top
+        // L4: 3    R4: 4
+        // L3: 2    R3: 1
+        // L2: 8    R2: 6
+        // L1: 7    R1: 5
+
+        // coralController.getRawButtonPressed(1).onTrue(
+        //     Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.L1))
+        // );
+
+        
     }
 
 

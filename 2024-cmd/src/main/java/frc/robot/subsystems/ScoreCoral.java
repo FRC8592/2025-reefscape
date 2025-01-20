@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,6 +27,23 @@ public class ScoreCoral extends SubsystemBase {
     private PIDController xController = new PIDController(CORAL_ALIGN.X_KP, CORAL_ALIGN.X_KI, CORAL_ALIGN.X_KD);
     private PIDController yController = new PIDController(CORAL_ALIGN.Y_KP, CORAL_ALIGN.Y_KI, CORAL_ALIGN.Y_KD);
     private PIDController rotController = new PIDController(CORAL_ALIGN.ROT_KP, CORAL_ALIGN.ROT_KI, CORAL_ALIGN.ROT_KD);
+    
+    //These enums are for the setPosition() method that will set the coral scoring level and its respective direction
+
+    public enum ScoreLevels{
+        L1,
+        L2,
+        L3,
+        L4
+    };
+
+    public enum LeftOrRight{
+        Left,
+        Right
+    };
+
+    private LeftOrRight direction = LeftOrRight.Left;
+    private ScoreLevels level = ScoreLevels.L1;
 
     public ScoreCoral(Swerve swerve, Vision vision) {
         this.swerve = swerve;
@@ -91,5 +109,10 @@ public class ScoreCoral extends SubsystemBase {
 
         SmartDashboard.putNumber("Provided XSpeed", xSpeed);
         SmartDashboard.putNumber("Provided YSpeed", ySpeed);
+    }
+
+    public void setPosition(LeftOrRight leftOrRight, ScoreLevels scoreLevel){
+       direction = leftOrRight;
+       level = scoreLevel;
     }
 }
