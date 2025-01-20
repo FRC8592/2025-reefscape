@@ -5,13 +5,17 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.autonomous.AutoManager;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
+import frc.robot.subsystems.vision.Vision;
 
 public final class NewtonCommands {
     private static Swerve swerve;
-    public static void addSubsystems(Swerve swerve){
+    private static Vision vision;
+    public static void addSubsystems(Swerve swerve, Vision vision){
         NewtonCommands.swerve = swerve;
+        NewtonCommands.vision = vision;
     }
 
     /**

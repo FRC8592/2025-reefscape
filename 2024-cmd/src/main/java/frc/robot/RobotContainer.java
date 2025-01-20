@@ -10,7 +10,7 @@ import static frc.robot.commands.NewtonCommands.*;
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
-import frc.robot.subsystems.ScoreCoral;
+import frc.robot.commands.largecommands.ScoreCoralCommand;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 import frc.robot.subsystems.vision.Vision;
@@ -33,7 +33,6 @@ public class RobotContainer {
     private final Swerve swerve;
     private final Vision vision;
     //TODO: Add more subsystems here
-    private ScoreCoral scoreCoral;
 
     // Helpers
     // TODO: Add instantiatable helpers here
@@ -45,7 +44,6 @@ public class RobotContainer {
     public RobotContainer() {
         swerve = new Swerve();
         vision = new Vision();
-        scoreCoral = new ScoreCoral(swerve, vision);
         // TODO: Add more subsystems and instantiatable helpers here
 
         passSubsystems();
@@ -60,11 +58,11 @@ public class RobotContainer {
      * Pass subsystems everywhere they're needed
      */
     private void passSubsystems(){
-        AutoManager.addSubsystems(swerve);
-        AutoCommand.addSubsystems(swerve);
-        LargeCommand.addSubsystems(swerve);
-        NewtonCommands.addSubsystems(swerve);
-        Suppliers.addSubsystems(swerve);
+        AutoManager.addSubsystems(swerve, vision);
+        AutoCommand.addSubsystems(swerve, vision);
+        LargeCommand.addSubsystems(swerve, vision);
+        NewtonCommands.addSubsystems(swerve, vision);
+        Suppliers.addSubsystems(swerve, vision);
     }
 
     /**
@@ -164,8 +162,7 @@ public class RobotContainer {
         );
 
         driverController.x().whileTrue(
-            // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
-            Commands.runOnce(() -> scoreCoral.driveToReef())
+            new ScoreCoralCommand()
         );
     }
 

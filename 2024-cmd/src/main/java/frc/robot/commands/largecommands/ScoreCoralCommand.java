@@ -2,62 +2,34 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.commands.largecommands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import org.littletonrobotics.junction.Logger;
-
-import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
-import frc.robot.subsystems.vision.Vision;
 import frc.robot.Constants.*;
 
-public class ScoreCoral extends SubsystemBase {
+public class ScoreCoralCommand extends LargeCommand {
 
     public static ChassisSpeeds speedZero = new ChassisSpeeds();
-
-    private Swerve swerve;
-    private Vision vision;
     
-    private PIDController xController = new PIDController(CORAL_ALIGN.X_KP, CORAL_ALIGN.X_KI, CORAL_ALIGN.X_KD);
-    private PIDController yController = new PIDController(CORAL_ALIGN.Y_KP, CORAL_ALIGN.Y_KI, CORAL_ALIGN.Y_KD);
-    private PIDController rotController = new PIDController(CORAL_ALIGN.ROT_KP, CORAL_ALIGN.ROT_KI, CORAL_ALIGN.ROT_KD);
+    private PIDController xController;
+    private PIDController yController;
+    private PIDController rotController;
 
-    public ScoreCoral(Swerve swerve, Vision vision) {
-        this.swerve = swerve;
-        this.vision = vision;
+    public ScoreCoralCommand() {
+        super(swerve);
     }
 
-    public void periodic() {
-        
+    public void initialize(){
+        xController = new PIDController(CORAL_ALIGN.X_KP, CORAL_ALIGN.X_KI, CORAL_ALIGN.X_KD);
+        yController = new PIDController(CORAL_ALIGN.Y_KP, CORAL_ALIGN.Y_KI, CORAL_ALIGN.Y_KD);
+        rotController = new PIDController(CORAL_ALIGN.ROT_KP, CORAL_ALIGN.ROT_KI, CORAL_ALIGN.ROT_KD);
     }
 
-    public void simulationPeriodic() {
-
-    }
-
-    /**
-     * Stop the swerve (feed zeros for all target velocities)
-     */
-    public void stop(){
-        drive(new ChassisSpeeds());
-    }
-
-    /**
-     * Send a {@code ChassisSpeeds} to the drivetrain, robot-relative
-     *
-     * @param speeds the speeds to run the drivetrain at
-     */
-    public void drive(ChassisSpeeds speeds){
-        // TODO: implement something that allows the commented code to work
-        swerve.drive(speeds);
-    }
-
-    public void driveToReef() {
+    public void execute() {
         // Setting the x speed, y speed,rotating speed
         double xSpeed = 0d, ySpeed = 0d, rotSpeed = 0d;
 
@@ -86,10 +58,14 @@ public class ScoreCoral extends SubsystemBase {
             swerve.drive(speed, DriveModes.ROBOT_RELATIVE);
 
         } else {
-            swerve.drive(Swerve.speedZero);
+            swerve.drive(new ChassisSpeeds());
         }
 
         SmartDashboard.putNumber("Provided XSpeed", xSpeed);
         SmartDashboard.putNumber("Provided YSpeed", ySpeed);
+    }
+
+    public void end(boolean interrupted){
+        swerve.drive(new ChassisSpeeds());
     }
 }
