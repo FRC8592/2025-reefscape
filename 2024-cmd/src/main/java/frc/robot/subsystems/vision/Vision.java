@@ -66,7 +66,14 @@ public class Vision extends SubsystemBase{
                     targetYawRotation = targetRotation.getMeasureZ().baseUnitMagnitude()*(180/Math.PI);
                     targetPitchRotation = targetRotation.getMeasureY().baseUnitMagnitude()*(180/Math.PI);
                     targetRollRotation = targetRotation.getMeasureX().baseUnitMagnitude()*(180/Math.PI);
-                
+
+                    if (targetYawRotation > 0){
+                        targetYawRotation -= 180;
+                    }
+                    else{
+                        targetYawRotation += 180;
+                    }
+                    
                     targetX = bestCameraToTarget.getX();
                     targetY = bestCameraToTarget.getY();
                     targetZ = bestCameraToTarget.getZ();
