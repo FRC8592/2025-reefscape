@@ -41,6 +41,20 @@ public final class NewtonCommands {
         });
     }
 
+    public static Command driveToReefCommand(double offset, DoubleSupplier driveX, DoubleSupplier driveY, DoubleSupplier rotate) {
+        return manager.swerve.run(() -> {
+            if (manager.vision.isAnyTargetVisible()) { // We see apriltag
+                manager.swerve.drive(manager.vision.driveToReef(offset));
+            } else {
+                manager.swerve.drive(manager.swerve.processJoystickInputs(
+                    driveX.getAsDouble(), 
+                    driveY.getAsDouble(),
+                    rotate.getAsDouble()
+                ));
+            }
+        });
+    }
+
     public static Command setRobotState(RobotStates state){
         double targetWrist = state.wristDegrees;
         double targetClock = state.clockDegrees;

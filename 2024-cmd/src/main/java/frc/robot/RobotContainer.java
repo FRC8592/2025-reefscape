@@ -155,6 +155,24 @@ public class RobotContainer {
         Controls.primeAlgaeL3.onTrue(NewtonCommands.primeL3AlgaeCommand());
         Controls.primeNet.onTrue(NewtonCommands.primeNetCommand());
         Controls.primeProcessor.onTrue(NewtonCommands.primeProcessorCommand());
+
+        Controls.alignToLeftBranch.whileTrue(
+            NewtonCommands.driveToReefCommand(
+                Constants.CORAL_ALIGN.LEFT_OFFSET, 
+                Controls.driveTranslateX,
+                Controls.driveTranslateY, 
+                Controls.driveRotate
+            )
+        );
+
+        Controls.alignToRightBranch.whileTrue(
+            NewtonCommands.driveToReefCommand(
+                Constants.CORAL_ALIGN.RIGHT_OFFSET, 
+                Controls.driveTranslateX,
+                Controls.driveTranslateY, 
+                Controls.driveRotate
+            )
+        );
     }
 
     public void onModeInit(MatchMode mode){

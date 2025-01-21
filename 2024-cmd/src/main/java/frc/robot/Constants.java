@@ -211,7 +211,7 @@ public final class Constants {
 
     public final class CLOCK {
         public static final double GEARBOX_RATIO = 25d;
-        public static final double EXTERNAL_GEAR_RATIO = 3d;
+        public static final double EXTERNAL_GEAR_RATIO = 48d / 16d; // 16t gear driving a 48t gear
         public static final double OVERALL_GEAR_RATIO = GEARBOX_RATIO * EXTERNAL_GEAR_RATIO;
         public static final double WITHIN_THRESHOLD_DEGREES = 1d; // degrees
     }
@@ -229,5 +229,29 @@ public final class Constants {
         public static final double WRIST_LOCKED_UNDER_FUNNEL_THRESHOLD = 5d; // degrees
         public static final double CLOCK_SWING_OUT_ANGLE = 45d; // degrees
         public static final double CLOCK_STOW_ANGLE = 20d; // degrees
+    }
+
+    public final class CORAL_ALIGN {
+        public static final double X_KP = 1; // Used to be 1. Currently testing x_KP of 0
+        public static final double X_KI = 0;
+        public static final double X_KD = 0;
+
+        public static final double Y_KP = 0;
+        public static final double Y_KI = 0;
+        public static final double Y_KD = 0;
+
+        public static final double ROT_KP = 0; // 0.015 was the original value but set to 0 for testing y axis
+        public static final double ROT_KI = 0;
+        public static final double ROT_KD = 0;
+
+        public static final double X_OFFSET = 0.35;
+        public static final double Y_OFFSET = 0.0;
+        public static final double ROT_OFFSET = 180d;
+        public static final double SPEED_SCALE = 1.0;
+        public static final double SPEED_MAX = 0.5;
+
+        // Arbitrary values for now
+        public static final double LEFT_OFFSET = -2.0; 
+        public static final double RIGHT_OFFSET = 2.0;
     }
 }
