@@ -14,7 +14,6 @@ public class Vision extends SubsystemBase{
     PhotonCamera camera = new PhotonCamera("Arducam_OV9782_E");
 
     boolean targetVisible = false;
-    double targetYaw = 0.0;
     double targetX = 0.0;
     double targetY = 0.0;
     double targetZ = 0.0;
@@ -53,7 +52,6 @@ public class Vision extends SubsystemBase{
              if (targetVisible) {
                  // At least one AprilTag was seen by the camera
                  for (PhotonTrackedTarget target : result.getTargets()) {
-                    targetYaw = target.getYaw();
                     targetPitch = target.getPitch();
                     targetArea = target.getArea();
                     targetId = target.getFiducialId();
@@ -87,7 +85,6 @@ public class Vision extends SubsystemBase{
          SmartDashboard.putNumber("Target Y Rotation ", targetYRotation);
 
          SmartDashboard.putBoolean("Vision Target Visible", targetVisible);
-         SmartDashboard.putNumber("Target Yaw", targetYaw);
          SmartDashboard.putNumber("Target Pitch", targetPitch);
          SmartDashboard.putNumber("Target Area", targetArea);
          SmartDashboard.putNumber("Target ID", targetId);
@@ -98,19 +95,6 @@ public class Vision extends SubsystemBase{
          SmartDashboard.putNumber("Target Yaw Rotation", targetYawRotation);
          SmartDashboard.putNumber("Target Pitch Rotation", targetPitchRotation);
          SmartDashboard.putNumber("Target Roll Rotation", targetRollRotation);
- 
-         // Auto-align when requested
-        //  if (controller.getAButton() && targetVisible) {
-        //      // Driver wants auto-alignment to tag 7
-        //      // And, tag 7 is in sight, so we can turn toward it.
-        //      // Override the driver's turn command with an automatic one that turns toward the tag.
-        //      turn = -1.0 * targetYaw * VISION_TURN_kP * Constants.Swerve.kMaxAngularSpeed;
-        //  }
- 
-        //  // Command drivetrain motors based on target speeds
-        //  drivetrain.drive(forward, strafe, turn);
- 
-         // Put debug information to the dashboard
     }
 
     public double getTargetX(){
@@ -126,7 +110,7 @@ public class Vision extends SubsystemBase{
     }
 
     public double getTargetYaw(){
-        return targetYaw;
+        return targetYawRotation;
     }
 
     public boolean getTargetVisible(){

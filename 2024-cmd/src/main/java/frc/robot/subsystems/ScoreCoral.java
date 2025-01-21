@@ -80,13 +80,13 @@ public class ScoreCoral extends SubsystemBase {
         // Setting the x speed, y speed,rotating speed
         double xSpeed = 0d, ySpeed = 0d, rotSpeed = 0d;
 
-
+        Logger.recordOutput("Target Visible", vision.getTargetVisible());
         if(vision.getTargetVisible() == true){
             ySpeed = xController.calculate(vision.getTargetX(), CORAL_ALIGN.X_OFFSET);
             ySpeed = Math.min(CORAL_ALIGN.SPEED_MAX, ySpeed);
             ySpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, ySpeed);
 
-            ySpeed = -ySpeed * CORAL_ALIGN.SPEED_SCALE;
+            ySpeed = ySpeed * CORAL_ALIGN.SPEED_SCALE;
 
             xSpeed = yController.calculate(vision.getTargetY(), CORAL_ALIGN.Y_OFFSET);
             xSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, xSpeed);
@@ -98,10 +98,11 @@ public class ScoreCoral extends SubsystemBase {
             rotSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, rotSpeed);
             rotSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, rotSpeed);
     
-            rotSpeed = rotSpeed * CORAL_ALIGN.SPEED_SCALE;
+            rotSpeed = -rotSpeed * CORAL_ALIGN.SPEED_SCALE;
 
             ChassisSpeeds speed = swerve.processJoystickInputs(xSpeed, ySpeed, rotSpeed);
             SmartDashboard.putString("ChassisSpeedJoystick", speed.toString());
+            Logger.recordOutput("speed", speed);
             swerve.drive(speed, DriveModes.ROBOT_RELATIVE);
 
         } else {

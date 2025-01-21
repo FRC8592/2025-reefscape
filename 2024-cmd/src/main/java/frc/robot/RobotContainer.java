@@ -174,7 +174,7 @@ public class RobotContainer {
 
         driverController.x().whileTrue(
             // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
-            Commands.run(() -> scoreCoral.driveToReef())
+            Commands.run(() -> scoreCoral.driveToReef(), swerve)
         );
         
         // D-input; LS; Turbo: Off
