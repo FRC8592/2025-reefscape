@@ -87,7 +87,7 @@ public final class Constants {
         public static final double ROT_KD = 0;
 
         public static final double X_OFFSET = 0.35;
-        public static final double Y_OFFSET = 0.0;
+        public static final double Y_OFFSET = 0.175;
         public static final double ROT_OFFSET = 0d;
         public static final double SPEED_SCALE = 1.0;
         public static final double SPEED_MAX = 0.5;

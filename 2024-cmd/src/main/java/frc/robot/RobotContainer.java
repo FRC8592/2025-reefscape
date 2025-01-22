@@ -178,7 +178,9 @@ public class RobotContainer {
         );
         
         // D-input; LS; Turbo: Off
-        //Joystick is on top
+        //
+        //Joystick is here
+        //
         // L4: 3    R4: 4
         // L3: 2    R3: 1
         // L2: 8    R2: 6

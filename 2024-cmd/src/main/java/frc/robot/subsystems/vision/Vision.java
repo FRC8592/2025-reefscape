@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase{
-    PhotonCamera camera = new PhotonCamera("Arducam_OV9782_E");
+    PhotonCamera camera = new PhotonCamera("Arducam_OV9782_B");
 
     boolean targetVisible = false;
     double targetX = 0.0;

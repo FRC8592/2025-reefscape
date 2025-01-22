@@ -27,6 +27,7 @@ public class ScoreCoral extends SubsystemBase {
     private PIDController xController = new PIDController(CORAL_ALIGN.X_KP, CORAL_ALIGN.X_KI, CORAL_ALIGN.X_KD);
     private PIDController yController = new PIDController(CORAL_ALIGN.Y_KP, CORAL_ALIGN.Y_KI, CORAL_ALIGN.Y_KD);
     private PIDController rotController = new PIDController(CORAL_ALIGN.ROT_KP, CORAL_ALIGN.ROT_KI, CORAL_ALIGN.ROT_KD);
+
     
     //These enums are for the setPosition() method that will set the coral scoring level and its respective direction
 
@@ -79,16 +80,28 @@ public class ScoreCoral extends SubsystemBase {
     public void driveToReef() {
         // Setting the x speed, y speed,rotating speed
         double xSpeed = 0d, ySpeed = 0d, rotSpeed = 0d;
+        double yOffset = 0d;
+
 
         Logger.recordOutput("Target Visible", vision.getTargetVisible());
-        if(vision.getTargetVisible() == true){
+
+        if (vision.getTargetVisible() == true){
+            
+            if (direction == LeftOrRight.Left) {
+                yOffset = CORAL_ALIGN.Y_OFFSET;
+            }
+           
+            else {
+                yOffset = -CORAL_ALIGN.Y_OFFSET;
+            }
+            
             ySpeed = xController.calculate(vision.getTargetX(), CORAL_ALIGN.X_OFFSET);
             ySpeed = Math.min(CORAL_ALIGN.SPEED_MAX, ySpeed);
             ySpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, ySpeed);
 
-            ySpeed = ySpeed * CORAL_ALIGN.SPEED_SCALE;
+            ySpeed = -ySpeed * CORAL_ALIGN.SPEED_SCALE;
 
-            xSpeed = yController.calculate(vision.getTargetY(), CORAL_ALIGN.Y_OFFSET);
+            xSpeed = yController.calculate(vision.getTargetY(),yOffset);
             xSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, xSpeed);
             xSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, xSpeed);
     
@@ -118,5 +131,9 @@ public class ScoreCoral extends SubsystemBase {
        level = scoreLevel;
        SmartDashboard.putString("direction", direction.name());
        SmartDashboard.putString("Level", level.name());
+
+
     }
+
+    
 }
