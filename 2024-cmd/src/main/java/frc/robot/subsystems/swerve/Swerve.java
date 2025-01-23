@@ -90,19 +90,22 @@ public class Swerve extends SubsystemBase {
      *
      * @param speeds the speeds to run the drivetrain at
      */
+    private int heartbeat = 0;
     public void drive(ChassisSpeeds speeds, DriveModes mode){
         // TODO: implement something that allows the commented code to work'
-         swerve.drive(
-             speeds,
-             switch(mode){
-                 case FIELD_RELATIVE:
-                     yield true;
-                 case AUTOMATIC:
-                     yield !robotRelative;
-                 case ROBOT_RELATIVE:
-                     yield false;
-             }
-         );
+        swerve.drive(
+            speeds,
+            switch(mode){
+                case FIELD_RELATIVE:
+                    yield true;
+                case AUTOMATIC:
+                    yield !robotRelative;
+                case ROBOT_RELATIVE:
+                    yield false;
+            }
+        );
+        heartbeat++;     
+        Logger.recordOutput("CustomLogs/Swerve/HeartBeat", heartbeat);
     }
 
     /**

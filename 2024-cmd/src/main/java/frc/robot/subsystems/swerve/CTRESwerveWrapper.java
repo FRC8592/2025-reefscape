@@ -32,17 +32,17 @@ public class CTRESwerveWrapper {
        
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    public void drive(ChassisSpeeds speeds, boolean driveRobotRelative) {
-        if (driveRobotRelative) {
+    public void drive(ChassisSpeeds speeds, boolean driveFieldRelative) {
+        if (driveFieldRelative) {
             drivetrain.setControl(
-                robotRelative.withVelocityX(speeds.vxMetersPerSecond) 
+                fieldRelative.withVelocityX(speeds.vxMetersPerSecond) 
                     .withVelocityY(speeds.vyMetersPerSecond) 
                     .withRotationalRate(speeds.omegaRadiansPerSecond) 
             );
         }
         else {
         drivetrain.setControl(
-            fieldRelative.withVelocityX(speeds.vxMetersPerSecond) // Drive forward with negative Y (forward)
+            robotRelative.withVelocityX(speeds.vxMetersPerSecond) // Drive forward with negative Y (forward)
                 .withVelocityY(speeds.vyMetersPerSecond) // Drive left with negative X (left)
                 .withRotationalRate(speeds.omegaRadiansPerSecond) // Drive counterclockwise with negative X (left)
             );

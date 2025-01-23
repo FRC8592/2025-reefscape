@@ -46,6 +46,7 @@ public class ScoreCoral extends SubsystemBase {
 
     private LeftOrRight direction = LeftOrRight.Left;
     private ScoreLevels level = ScoreLevels.Level1;
+    private int heartbeat = 0;
 
     public ScoreCoral(Swerve swerve, Vision vision) {
         this.swerve = swerve;
@@ -88,24 +89,24 @@ public class ScoreCoral extends SubsystemBase {
         if (vision.getTargetVisible() == true){
             
             if (direction == LeftOrRight.Left) {
-                yOffset = CORAL_ALIGN.Y_OFFSET;
+                yOffset = -CORAL_ALIGN.Y_OFFSET;
             }
            
             else {
-                yOffset = -CORAL_ALIGN.Y_OFFSET;
+                yOffset = CORAL_ALIGN.Y_OFFSET;
             }
             
             ySpeed = xController.calculate(vision.getTargetX(), CORAL_ALIGN.X_OFFSET);
             ySpeed = Math.min(CORAL_ALIGN.SPEED_MAX, ySpeed);
             ySpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, ySpeed);
 
-            ySpeed = -ySpeed * CORAL_ALIGN.SPEED_SCALE;
+            ySpeed = ySpeed * CORAL_ALIGN.SPEED_SCALE;
 
             xSpeed = yController.calculate(vision.getTargetY(),yOffset);
             xSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, xSpeed);
             xSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, xSpeed);
     
-            xSpeed = -xSpeed * CORAL_ALIGN.SPEED_SCALE;
+            xSpeed = xSpeed * CORAL_ALIGN.SPEED_SCALE;
     
             rotSpeed = rotController.calculate(vision.getTargetYaw(), CORAL_ALIGN.ROT_OFFSET);
             rotSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, rotSpeed);
@@ -124,6 +125,9 @@ public class ScoreCoral extends SubsystemBase {
 
         SmartDashboard.putNumber("Provided XSpeed", xSpeed);
         SmartDashboard.putNumber("Provided YSpeed", ySpeed);
+
+        heartbeat++;
+        Logger.recordOutput("CustomLogs/Scorecoral/heartbeat", heartbeat);
     }
 
     public void setPosition(LeftOrRight leftOrRight, ScoreLevels scoreLevel){

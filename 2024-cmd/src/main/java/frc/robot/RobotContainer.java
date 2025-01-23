@@ -172,7 +172,7 @@ public class RobotContainer {
             ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         );
 
-        driverController.x().whileTrue(
+        driverController.a().whileTrue(
             // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
             Commands.run(() -> scoreCoral.driveToReef(), swerve)
         );
