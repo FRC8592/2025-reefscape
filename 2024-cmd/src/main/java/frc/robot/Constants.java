@@ -212,7 +212,7 @@ public final class Constants {
 
     public final class VISION {
 
-        public static final int STOP_MAX_TICKS = 10;
+        public static final int STOP_MOVE_MAX_TICKS = 10;
 
     }
 
