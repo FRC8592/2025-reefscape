@@ -61,6 +61,7 @@ public final class Constants {
         public static final int SWERVE_DRIVE_CURRENT_LIMIT = 80;
         public static final int SWERVE_STEER_CURRENT_LIMIT = 40;
     }
+
     public final class PIVOT {
         public static final int GROUND_DEGREES = 0;
         // TODO: Set these to correct values
@@ -207,6 +208,12 @@ public final class Constants {
 
         public static final double PATH_FOLLOW_POSITION_TOLERANCE = 0.01;
         public static final double PATH_FOLLOW_VELOCITY_TOLERANCE = 0.01;
+    }
+
+    public final class VISION {
+
+        public static final int STOP_MAX_TICKS = 10;
+
     }
 
     public final class ROBOT {
