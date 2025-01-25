@@ -2,12 +2,15 @@ package frc.robot.commands.largecommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.swerve.Swerve;
 
 public abstract class LargeCommand extends Command {
     protected static Swerve swerve;
-    public static void addSubsystems(Swerve swerve){
+    protected static Intake intake;
+    public static void addSubsystems(Swerve swerve, Intake intake){
         LargeCommand.swerve = swerve;
+        LargeCommand.intake = intake;
     }
     // Require at least one subsystem to be passed in
     public LargeCommand(Subsystem requirement1, Subsystem... moreRequirements){

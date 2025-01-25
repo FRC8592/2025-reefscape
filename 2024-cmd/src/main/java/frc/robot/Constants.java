@@ -42,9 +42,8 @@ public final class Constants {
 
     public final class CAN {
         public static final int PIVOT_MOTOR_CAN_ID = 30; //TODO Change these value to correct value
-        public static final int INTAKE_TOP_MOTOR_CAN_ID = 29;
+        //public static final int INTAKE_TOP_MOTOR_CAN_ID = 29;
         public static final int INTAKE_BOTTOM_MOTOR_CAN_ID = 31;
-        
         
         public static final int SWERVE_BLACK_FRONT_LEFT_DRIVE_CAN_ID = 17;
         public static final int SWERVE_BLACK_FRONT_LEFT_STEER_CAN_ID = 9;
@@ -65,6 +64,8 @@ public final class Constants {
         public static final int PIGEON_CAN_ID = 20;
 
         public static final int PDH_CAN_ID = 1;
+
+        public static final int INTAKE_INNER_MOTOR_CAN_ID = 29;
     }
 
     public final class POWER {
@@ -86,8 +87,8 @@ public final class Constants {
         public static final double ROT_KI = 0;
         public static final double ROT_KD = 0;
 
-        public static final double X_OFFSET = 0.35;
-        public static final double Y_OFFSET = 0.225;
+        public static final double X_OFFSET = 0.40;
+        public static final double Y_OFFSET = 0.215;
         public static final double ROT_OFFSET = 0d;
         public static final double SPEED_SCALE = 1.0;
         public static final double SPEED_MAX = 0.5;
@@ -132,6 +133,14 @@ public final class Constants {
 
         public static final double TOP_MOTOR_DEFAULT_SPEED = 0.1;
         public static final double BOTTOM_MOTOR_DEFAULT_SPEED = 0.1;
+
+        public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Intake/";
+        
+        public static final double INNER_MOTOR_INTAKE_VELOCITY = -1000;
+        //public static final double OUTER_MOTOR_INTAKE_VELOCITY = 0.5;
+
+        public static final double INNER_MOTOR_OUTAKE_VELOCITY = 1000;
+        //public static final double OUTER_MOTOR_OUTAKE_VELOCITY = 0.5;
     }
 
     

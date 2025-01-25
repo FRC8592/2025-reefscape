@@ -14,6 +14,7 @@ import frc.robot.Robot;
 import frc.robot.Suppliers;
 import frc.robot.commands.autonomous.autos.TestAuto;
 import frc.robot.commands.proxies.*;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.swerve.Swerve;
 
 /**
@@ -22,8 +23,10 @@ import frc.robot.subsystems.swerve.Swerve;
  */
 public final class AutoManager {
     private static Swerve swerve;
-    public static void addSubsystems(Swerve swerve){
+    private static Intake intake;
+    public static void addSubsystems(Swerve swerve, Intake intake){
         AutoManager.swerve = swerve;
+        AutoManager.intake = intake;
     }
 
     private static SendableChooser<AutoCommand> autoChooser;

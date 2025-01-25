@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj2.command.*;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.swerve.*;
 
 /**
@@ -17,8 +18,10 @@ import frc.robot.subsystems.swerve.*;
  */
 public class AutoCommand extends WrapperCommand{
     protected static Swerve swerve;
-    public static void addSubsystems(Swerve swerve){
+    protected static Intake intake;
+    public static void addSubsystems(Swerve swerve, Intake intake){
         AutoCommand.swerve = swerve;
+        AutoCommand.intake = intake;
     }
 
     /**

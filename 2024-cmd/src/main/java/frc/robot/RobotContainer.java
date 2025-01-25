@@ -10,6 +10,7 @@ import static frc.robot.commands.NewtonCommands.*;
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.ScoreCoral;
 import frc.robot.subsystems.ScoreCoral.LeftOrRight;
 import frc.robot.subsystems.ScoreCoral.ScoreLevels;
@@ -41,6 +42,7 @@ public class RobotContainer {
     // The robot's subsystems
     private final Swerve swerve;
     private final Vision vision;
+    private final Intake intake;
     //TODO: Add more subsystems here
     private ScoreCoral scoreCoral;
 
@@ -54,6 +56,7 @@ public class RobotContainer {
     public RobotContainer() {
         swerve = new Swerve();
         vision = new Vision();
+        intake = new Intake();
         scoreCoral = new ScoreCoral(swerve, vision);
         // TODO: Add more subsystems and instantiatable helpers here
 
@@ -69,11 +72,11 @@ public class RobotContainer {
      * Pass subsystems everywhere they're needed
      */
     private void passSubsystems(){
-        AutoManager.addSubsystems(swerve);
-        AutoCommand.addSubsystems(swerve);
-        LargeCommand.addSubsystems(swerve);
-        NewtonCommands.addSubsystems(swerve);
-        Suppliers.addSubsystems(swerve);
+        AutoManager.addSubsystems(swerve, intake);
+        AutoCommand.addSubsystems(swerve, intake);
+        LargeCommand.addSubsystems(swerve, intake);
+        NewtonCommands.addSubsystems(swerve, intake);
+        Suppliers.addSubsystems(swerve, intake);
     }
 
     /**
@@ -175,6 +178,18 @@ public class RobotContainer {
         driverController.a().whileTrue(
             // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
             Commands.run(() -> scoreCoral.driveToReef(), swerve)
+        );
+
+        operatorController.leftTrigger().onTrue(
+            intakeCommand()
+        ).onFalse(
+            stopIntakeComand()
+        );
+
+        operatorController.rightTrigger().onTrue(
+            outakeCommand()
+        ).onFalse(
+            stopIntakeComand()
         );
         
         // D-input; LS; Turbo: Off

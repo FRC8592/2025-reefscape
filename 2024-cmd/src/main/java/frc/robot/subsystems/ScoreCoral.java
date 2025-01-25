@@ -115,9 +115,9 @@ public class ScoreCoral extends SubsystemBase {
             
             //only horizontal movement while moving to the apriltag
             //if xSpeed greater than ySpeed  
-            while (Math.abs(xSpeed) > Math.abs(ySpeed)) {
-                xSpeed = 0;
-            } 
+            // if (Math.abs(xSpeed) > Math.abs(ySpeed)) {
+            //     xSpeed = 0; 
+            // } 
 
             ChassisSpeeds speed = swerve.processJoystickInputs(xSpeed, ySpeed, rotSpeed);
             SmartDashboard.putString("ChassisSpeedJoystick", speed.toString());
