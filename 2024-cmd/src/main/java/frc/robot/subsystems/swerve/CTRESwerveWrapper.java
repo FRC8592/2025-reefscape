@@ -2,8 +2,11 @@ package frc.robot.subsystems.swerve;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.function.Consumer;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -66,5 +69,8 @@ public class CTRESwerveWrapper {
     }
     public void periodic(){
         drivetrain.periodic();
+    }
+    public void registerTelemetry(Consumer<SwerveDriveState> driveState){
+        drivetrain.registerTelemetry(driveState);
     }
 }
