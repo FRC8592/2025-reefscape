@@ -84,14 +84,13 @@ public class ScoreCoral extends SubsystemBase {
         double yOffset = 0d;
 
 
-        Logger.recordOutput("Target Visible", vision.getTargetVisible());
+        Logger.recordOutput("CustomLog/Scorecoral/Target Visible", vision.getTargetVisible());
 
         if (vision.getTargetVisible() == true){
             
             if (direction == LeftOrRight.Left) {
                 yOffset = -CORAL_ALIGN.Y_OFFSET;
             }
-           
             else {
                 yOffset = CORAL_ALIGN.Y_OFFSET;
             }
@@ -113,11 +112,18 @@ public class ScoreCoral extends SubsystemBase {
             rotSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, rotSpeed);
     
             rotSpeed = -rotSpeed * CORAL_ALIGN.SPEED_SCALE;
+            
+            //only horizontal movement while moving to the apriltag
+            //if xSpeed greater than ySpeed  
+            while (Math.abs(xSpeed) > Math.abs(ySpeed)) {
+                xSpeed = 0;
+            } 
 
             ChassisSpeeds speed = swerve.processJoystickInputs(xSpeed, ySpeed, rotSpeed);
             SmartDashboard.putString("ChassisSpeedJoystick", speed.toString());
             Logger.recordOutput("speed", speed);
             swerve.drive(speed, DriveModes.ROBOT_RELATIVE);
+
 
         } else {
             swerve.drive(Swerve.speedZero);
@@ -128,6 +134,8 @@ public class ScoreCoral extends SubsystemBase {
 
         heartbeat++;
         Logger.recordOutput("CustomLogs/Scorecoral/heartbeat", heartbeat);
+        Logger.recordOutput("CustomLogs/Scorecoral/direction", direction);
+            
     }
 
     public void setPosition(LeftOrRight leftOrRight, ScoreLevels scoreLevel){

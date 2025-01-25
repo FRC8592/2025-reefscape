@@ -243,6 +243,10 @@ public class Swerve extends SubsystemBase {
             : -(Math.pow(Math.abs(rawRot), SWERVE.JOYSTICK_EXPONENT))
         );
 
+        Logger.recordOutput(SWERVE.LOG_PATH+"TranslateY", driveTranslateY);
+        Logger.recordOutput(SWERVE.LOG_PATH+"TranslateX", driveTranslateX);
+        Logger.recordOutput(SWERVE.LOG_PATH+"driveRotate", driveRotate);
+
         ChassisSpeeds currentSpeeds;
 
         if (isSlowMode) {

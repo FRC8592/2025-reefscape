@@ -1,6 +1,4 @@
-package frc.robot.subsystems.vision;
-
-import static edu.wpi.first.units.Units.Rotation;
+package frc.robot.subsystems.vision;    
 
 import org.photonvision.*;
 import org.photonvision.targeting.PhotonTrackedTarget;
