@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -57,8 +58,23 @@ public class Robot extends LoggedRobot {
 
         if (isReal()) { // If running on a real robot
             String time = DateTimeFormatter.ofPattern("yy-MM-dd_HH-mm-ss").format(LocalDateTime.now());
-            String path = "/U/"+time+".wpilog";
-            Logger.addDataReceiver(new WPILOGWriter(path)); // Log to a USB stick
+
+            File sda1 = new File("/media/sda1/logs");
+            if(sda1.exists()){
+                String path = "/media/sda1/"+time+".wpilog";
+                Logger.addDataReceiver(new WPILOGWriter(path));
+            }
+            else{
+                File sdb1 = new File("/media/sdb1/logs");
+                if(sdb1.exists()){
+                    String path = "/media/sdb2/"+time+".wpilog";
+                    Logger.addDataReceiver(new WPILOGWriter(path));
+                }
+                else{
+                    System.err.println("UNABLE TO LOG TO A USB STICK!");
+                }
+            }
+
             Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
             LoggedPowerDistribution.getInstance(1, ModuleType.kRev);// Enables power distribution logging
             Logger.start();
