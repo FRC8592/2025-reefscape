@@ -79,11 +79,11 @@ public final class Constants {
         public static final double X_KI = 0;
         public static final double X_KD = 0;
 
-        public static final double Y_KP = 0.5;
+        public static final double Y_KP = 0.3; // Originally set to 0.5
         public static final double Y_KI = 0;
         public static final double Y_KD = 0;
 
-        public static final double ROT_KP = 0.001; // 0.015 was the original value but set to 0 for testing y axis
+        public static final double ROT_KP = 0.01; // 0.015 was the original value but set to 0 for testing y axis
         public static final double ROT_KI = 0;
         public static final double ROT_KD = 0;
 
@@ -93,6 +93,9 @@ public final class Constants {
         public static final double ROT_OFFSET = 0d;
         public static final double SPEED_SCALE = 1.0;
         public static final double SPEED_MAX = 0.5;
+
+        public static final int MAX_LOCK_LOSS_TICKS = 5;
+
     }
 
     public final class PIVOT {
@@ -251,11 +254,7 @@ public final class Constants {
         public static final double PATH_FOLLOW_VELOCITY_TOLERANCE = 0.01;
     }
 
-    public final class VISION {
 
-        public static final int MAX_LOCK_LOSS_TICKS = 5;
-
-    }
 
     public final class ROBOT {
         public static final String LOG_PATH = SHARED.LOG_FOLDER + "/Robot/";

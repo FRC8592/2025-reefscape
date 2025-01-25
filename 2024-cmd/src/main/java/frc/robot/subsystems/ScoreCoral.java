@@ -128,7 +128,7 @@ public class ScoreCoral extends SubsystemBase {
             ticks_stopped = 0;
 
         } else {
-            if (ticks_stopped >= VISION.MAX_LOCK_LOSS_TICKS) {
+            if (ticks_stopped >= CORAL_ALIGN.MAX_LOCK_LOSS_TICKS) {
                 swerve.drive(Swerve.speedZero);
             }
             ticks_stopped += 1;
