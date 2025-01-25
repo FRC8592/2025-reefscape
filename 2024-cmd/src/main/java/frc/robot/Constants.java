@@ -252,7 +252,7 @@ public final class Constants {
 
     public final class VISION {
 
-        public static final int MAX_LOCK_LOSS_TICKS = 10;
+        public static final int MAX_LOCK_LOSS_TICKS = 5;
 
     }
 
