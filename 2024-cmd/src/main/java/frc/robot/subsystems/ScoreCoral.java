@@ -89,10 +89,10 @@ public class ScoreCoral extends SubsystemBase {
         if (vision.getTargetVisible() == true){
             
             if (direction == LeftOrRight.Left) {
-                yOffset = -CORAL_ALIGN.Y_OFFSET;
+                yOffset = -CORAL_ALIGN.Y_OFFSET_LEFT;
             }
             else {
-                yOffset = CORAL_ALIGN.Y_OFFSET;
+                yOffset = CORAL_ALIGN.Y_OFFSET_RIGHT;
             }
             
             ySpeed = xController.calculate(vision.getTargetX(), CORAL_ALIGN.X_OFFSET);
@@ -115,9 +115,9 @@ public class ScoreCoral extends SubsystemBase {
             
             //only horizontal movement while moving to the apriltag
             //if xSpeed greater than ySpeed  
-            // if (Math.abs(xSpeed) > Math.abs(ySpeed)) {
-            //     xSpeed = 0; 
-            // } 
+            if (Math.abs(xSpeed) > Math.abs(ySpeed)) {
+                xSpeed = 0; 
+            } 
 
             ChassisSpeeds speed = swerve.processJoystickInputs(xSpeed, ySpeed, rotSpeed);
             SmartDashboard.putString("ChassisSpeedJoystick", speed.toString());

@@ -79,16 +79,17 @@ public final class Constants {
         public static final double X_KI = 0;
         public static final double X_KD = 0;
 
-        public static final double Y_KP = 0.75;
+        public static final double Y_KP = 0.5;
         public static final double Y_KI = 0;
         public static final double Y_KD = 0;
 
-        public static final double ROT_KP = 0.015; // 0.015 was the original value but set to 0 for testing y axis
+        public static final double ROT_KP = 0.001; // 0.015 was the original value but set to 0 for testing y axis
         public static final double ROT_KI = 0;
         public static final double ROT_KD = 0;
 
-        public static final double X_OFFSET = 0.40;
-        public static final double Y_OFFSET = 0.215;
+        public static final double X_OFFSET = 0.50;
+        public static final double Y_OFFSET_LEFT = 0.215;
+        public static final double Y_OFFSET_RIGHT = 0.155;
         public static final double ROT_OFFSET = 0d;
         public static final double SPEED_SCALE = 1.0;
         public static final double SPEED_MAX = 0.5;
