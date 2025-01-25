@@ -23,6 +23,8 @@ public class ScoreCoral extends SubsystemBase {
 
     private Swerve swerve;
     private Vision vision;
+
+    private int ticks_stopped;
     
     private PIDController xController = new PIDController(CORAL_ALIGN.X_KP, CORAL_ALIGN.X_KI, CORAL_ALIGN.X_KD);
     private PIDController yController = new PIDController(CORAL_ALIGN.Y_KP, CORAL_ALIGN.Y_KI, CORAL_ALIGN.Y_KD);
@@ -123,10 +125,13 @@ public class ScoreCoral extends SubsystemBase {
             SmartDashboard.putString("ChassisSpeedJoystick", speed.toString());
             Logger.recordOutput("speed", speed);
             swerve.drive(speed, DriveModes.ROBOT_RELATIVE);
-
+            ticks_stopped = 0;
 
         } else {
-            swerve.drive(Swerve.speedZero);
+            if (ticks_stopped >= VISION.MAX_LOCK_LOSS_TICKS) {
+                swerve.drive(Swerve.speedZero);
+            }
+            ticks_stopped += 1;
         }
 
         SmartDashboard.putNumber("Provided XSpeed", xSpeed);

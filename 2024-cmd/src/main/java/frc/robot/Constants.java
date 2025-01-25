@@ -251,6 +251,12 @@ public final class Constants {
         public static final double PATH_FOLLOW_VELOCITY_TOLERANCE = 0.01;
     }
 
+    public final class VISION {
+
+        public static final int MAX_LOCK_LOSS_TICKS = 5;
+
+    }
+
     public final class ROBOT {
         public static final String LOG_PATH = SHARED.LOG_FOLDER + "/Robot/";
     }
