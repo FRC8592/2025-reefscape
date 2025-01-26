@@ -79,8 +79,12 @@ public class ScoreCoral extends SubsystemBase {
             if (robot_pose.isPresent()) {
                 Pose2d robotPosition = robot_pose.get().estimatedPose.toPose2d();
                 //Trajectory traj = TrajectoryGenerator.generateTrajectory(robotPosition, null, robotPosition, config);
-                swerve.resetPose(robotPosition);
-                Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/InitialPose", robotPosition);
+                double ambiguity = vision.getPoseAmbiguityRatio();
+                Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/AmbiguityRatio", ambiguity);
+                if(ambiguity < 0.2) {
+                    swerve.resetPose(robotPosition);
+                    Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/InitialPose", robotPosition);
+                }
 
             }
         } else {

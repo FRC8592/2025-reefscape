@@ -1,6 +1,9 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 
 public final class Constants {
     public final class SHARED {
@@ -95,6 +98,8 @@ public final class Constants {
         public static final double SPEED_MAX = 0.6; // originally 0.65
 
         public static final int MAX_LOCK_LOSS_TICKS = 20;
+
+        public static final Transform3d CAMERA_OFFSETS = new Transform3d(new Translation3d(0.025, 0, 0.16), new Rotation3d(0, Math.toRadians(-12), 0));
 
     }
 
