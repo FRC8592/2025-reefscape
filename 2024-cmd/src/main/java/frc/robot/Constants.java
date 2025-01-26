@@ -83,7 +83,7 @@ public final class Constants {
         public static final double Y_KI = 0;
         public static final double Y_KD = 0;
 
-        public static final double ROT_KP = 0.015; // 0.015 was the original value but set to 0 for testing y axis
+        public static final double ROT_KP = 0.001; // 0.015 was the original value but set to 0 for testing y axis
         public static final double ROT_KI = 0;
         public static final double ROT_KD = 0;
 
@@ -248,7 +248,7 @@ public final class Constants {
 
         public static final double PATH_FOLLOW_POSITION_TOLERANCE = 0.01;
         public static final double PATH_FOLLOW_VELOCITY_TOLERANCE = 0.01;
-    }
+    }   
 
     public final class VISION {
 
