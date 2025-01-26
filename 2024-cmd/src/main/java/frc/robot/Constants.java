@@ -77,24 +77,24 @@ public final class Constants {
     public final class CORAL_ALIGN {
         public static final double X_KP = 1; // Used to be 1. Currently testing x_KP of 0
         public static final double X_KI = 0;
-        public static final double X_KD = 0.1;
+        public static final double X_KD = 0.01;
 
-        public static final double Y_KP = 0.6; // Originally set to 0.5
+        public static final double Y_KP = 0.8; // Originally set to 0.5
         public static final double Y_KI = 0;
         public static final double Y_KD = 0;
 
         public static final double ROT_KP = 0.01; // 0.015 was the original value but set to 0 for testing y axis
         public static final double ROT_KI = 0;
-        public static final double ROT_KD = 0.001;
+        public static final double ROT_KD = 0.0001;
 
         public static final double X_OFFSET = 0.50;
         public static final double Y_OFFSET_LEFT = 0.215;
         public static final double Y_OFFSET_RIGHT = 0.155;
         public static final double ROT_OFFSET = 0d;
         public static final double SPEED_SCALE = 1.0;
-        public static final double SPEED_MAX = 0.65;
+        public static final double SPEED_MAX = 0.6; // originally 0.65
 
-        public static final int MAX_LOCK_LOSS_TICKS = 5;
+        public static final int MAX_LOCK_LOSS_TICKS = 20;
 
     }
 
