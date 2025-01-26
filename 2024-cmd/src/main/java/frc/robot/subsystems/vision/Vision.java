@@ -60,20 +60,20 @@ public class Vision extends SubsystemBase{
              var result = results.get(results.size() - 1);
              targetVisible = result.hasTargets();
              if (targetVisible) {
-                 // At least one AprilTag was seen by the camera
-                 for (PhotonTrackedTarget target : result.getTargets()) {
-                    targetPitch = target.getPitch();
-                    targetArea = target.getArea();
-                    targetId = target.getFiducialId();
-                    bestCameraToTarget = target.getBestCameraToTarget();
-                    Rotation3d targetRotation = bestCameraToTarget.getRotation();
-                    targetXRotation = targetRotation.getX();
-                    targetYRotation = targetRotation.getY();
-                    targetZRotation = targetRotation.getZ();
+                // At least one AprilTag was seen by the camera
+                PhotonTrackedTarget target = result.getBestTarget();
+                targetPitch = target.getPitch();
+                targetArea = target.getArea();
+                targetId = target.getFiducialId();
+                bestCameraToTarget = target.getBestCameraToTarget();
+                Rotation3d targetRotation = bestCameraToTarget.getRotation();
+                targetXRotation = targetRotation.getX();
+                targetYRotation = targetRotation.getY();
+                targetZRotation = targetRotation.getZ();
 
-                    targetYawRotation = targetRotation.getMeasureZ().baseUnitMagnitude()*(180/Math.PI);
-                    targetPitchRotation = targetRotation.getMeasureY().baseUnitMagnitude()*(180/Math.PI);
-                    targetRollRotation = targetRotation.getMeasureX().baseUnitMagnitude()*(180/Math.PI);
+                targetYawRotation = targetRotation.getMeasureZ().baseUnitMagnitude()*(180/Math.PI);
+                targetPitchRotation = targetRotation.getMeasureY().baseUnitMagnitude()*(180/Math.PI);
+                targetRollRotation = targetRotation.getMeasureX().baseUnitMagnitude()*(180/Math.PI);
 
                     if (targetYawRotation > 0){
                         targetYawRotation -= 180;
@@ -89,7 +89,7 @@ public class Vision extends SubsystemBase{
                     
                  }
              }
-         }
+         
          SmartDashboard.putNumber("Target X Rotation ", targetXRotation);
          SmartDashboard.putNumber("Target Z Rotation ", targetZRotation);
          SmartDashboard.putNumber("Target Y Rotation ", targetYRotation);
