@@ -134,6 +134,10 @@ public class Vision extends SubsystemBase{
         return targetAmbiguity;
     }
 
+    public List<PhotonPipelineResult> getTargets() {
+        return camera.getAllUnreadResults();
+    }
+
     public Optional<EstimatedRobotPose> getRobotPoseVision() {
        return estimator.update(camera.getLatestResult());
 
