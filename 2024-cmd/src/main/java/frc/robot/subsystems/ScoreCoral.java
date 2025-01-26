@@ -135,7 +135,7 @@ public class ScoreCoral extends SubsystemBase {
        level = scoreLevel;
        SmartDashboard.putString("direction", direction.name());
        SmartDashboard.putString("Level", level.name());
-
+       Logger.recordOutput( "CustomLogs/Swerve/direction", direction);
 
     }
 

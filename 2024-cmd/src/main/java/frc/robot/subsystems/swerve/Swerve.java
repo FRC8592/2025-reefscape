@@ -11,6 +11,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -34,6 +36,14 @@ public class Swerve extends SubsystemBase {
         /** Drive field-relative */
         FIELD_RELATIVE
     }
+
+    PowerDistribution examplePD = new PowerDistribution(0, ModuleType.kCTRE);
+    
+    double totalPower = m_pdp.getTotalPower();
+    SmartDashboard.putNumber("Total Power", totalPower);
+
+    double current7 = m_pdp.getCurrent(7);
+    SmartDashboard.putNumber("Current Channel 7", current7);
 
     private PIDController snapToController;
 
@@ -140,6 +150,7 @@ public class Swerve extends SubsystemBase {
         );
         heartbeat++;     
         Logger.recordOutput("CustomLogs/Swerve/HeartBeat", heartbeat);
+        Logger.recordOutput("CustomLogs/Swerve/MotorPower", );
     }
 
     /**
