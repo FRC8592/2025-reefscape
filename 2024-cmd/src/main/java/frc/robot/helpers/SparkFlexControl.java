@@ -127,6 +127,13 @@ public class SparkFlexControl {
     }
 
     /**
+     * Returns the motor's voltage in volts
+     */
+    public double getVoltage(){
+        return motor.getBusVoltage();
+    }
+
+    /**
      * Returns the motor's position in rotations
      */
     public double getPosition(){
