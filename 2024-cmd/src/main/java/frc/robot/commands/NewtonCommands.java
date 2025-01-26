@@ -7,8 +7,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.INTAKE;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.elevator.*;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.subsystems.*;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 
@@ -16,11 +16,15 @@ public final class NewtonCommands {
     private static Swerve swerve;
     private static Intake intake;
     private static Elevator elevator;
+    private static ClockArm clockArm;
+    private static Wrist wrist;
     
-    public static void addSubsystems(Swerve swerve, Elevator elevator, Intake intake){
+    public static void addSubsystems(Swerve swerve, Elevator elevator, ClockArm clockArm, Wrist wrist, Intake intake){
         NewtonCommands.swerve = swerve;
         NewtonCommands.intake = intake;
         NewtonCommands.elevator = elevator;
+        NewtonCommands.clockArm = clockArm;
+        NewtonCommands.wrist = wrist;
     }
 
     /**

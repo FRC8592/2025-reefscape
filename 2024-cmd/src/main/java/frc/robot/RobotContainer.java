@@ -10,11 +10,13 @@ import static frc.robot.commands.NewtonCommands.*;
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
-import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.elevator.ClockArm;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.Wrist;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
@@ -31,9 +33,11 @@ public class RobotContainer {
 
     // The robot's subsystems
     private final Swerve swerve;
-    private final Elevator elevator;
     private final Vision vision;
     private final Intake intake;
+    private final Elevator elevator;
+    private final ClockArm clockArm;
+    private final Wrist wrist;
     //TODO: Add more subsystems here
 
     //TODO: Add all controls here
@@ -76,9 +80,11 @@ public class RobotContainer {
      */
     public RobotContainer() {
         swerve = new Swerve();
-        elevator = new Elevator();
         vision = new Vision();
         intake = new Intake();
+        elevator = new Elevator();
+        clockArm = new ClockArm();
+        wrist = new Wrist();
         // TODO: Add more subsystems and instantiatable helpers here
 
         passSubsystems();
@@ -95,7 +101,7 @@ public class RobotContainer {
         AutoManager.addSubsystems(swerve);
         AutoCommand.addSubsystems(swerve);
         LargeCommand.addSubsystems(swerve);
-        NewtonCommands.addSubsystems(swerve, elevator, intake);
+        NewtonCommands.addSubsystems(swerve, elevator, clockArm, wrist, intake);
         Suppliers.addSubsystems(swerve);
     }
 

@@ -1,7 +1,5 @@
 package frc.robot;
 
-import java.util.concurrent.Flow.Processor;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 
 public final class Constants {
@@ -61,6 +59,8 @@ public final class Constants {
 
         public static final int LEFT_EXTENSION_MOTOR_CAN_ID = -1;
         public static final int RIGHT_EXTENSION_MOTOR_CAN_ID = -1;
+        public static final int CLOCK_ARM_CAN_ID = 0;
+        public static final int WRIST_CAN_ID = 0;
     }
 
     public final class POWER {
@@ -213,5 +213,16 @@ public final class Constants {
 
         public static final double EXTENSION_INCHES_MAX = -1.0;
         public static final double EXTENSION_INCHES_MIN = -1.0;
+
+        public static final double EXTENSION_POSITION_TOLERANCE = 1.0;
+        public static final double CLOCK_ARM_POSITION_TOLERANCE = 2.0;
+        public static final double WRIST_POSITION_TOLERANCE = 2.0;
+
+        public static final double CLOCK_ARM_GEAR_RATIO = 1/192.0;
+        public static final double WRIST_GEAR_RATIO = 1/75.0;
+
+        public static final String EXTENSION_LOG_PATH = SHARED.LOG_FOLDER+"/Extension/";
+        public static final String CLOCK_ARM_LOG_PATH = SHARED.LOG_FOLDER+"/Clock Arm/";
+        public static final String WRIST_LOG_PATH = SHARED.LOG_FOLDER+"/Wrist/";
     }
 }

@@ -4,8 +4,6 @@ import edu.wpi.first.math.controller.*;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.util.sendable.*;
 
-import java.util.function.DoubleSupplier;
-
 public class PIDProfile implements Sendable {
     public int pidSlot = 0;
 

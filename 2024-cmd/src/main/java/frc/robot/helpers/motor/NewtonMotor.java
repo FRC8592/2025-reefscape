@@ -3,13 +3,15 @@ package frc.robot.helpers.motor;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
+import frc.robot.helpers.PIDProfile;
+import frc.robot.helpers.motor.spark.SparkFlexMotor;
+import frc.robot.helpers.motor.spark.SparkMaxMotor;
+import frc.robot.helpers.motor.talonfx.TalonFXMotor;
 
 public abstract class NewtonMotor {
     protected List<PIDProfile> motorPIDGains = new ArrayList<>();
-    protected List<NewtonFeedForward> feedForward = new ArrayList<>();
     protected int deviceID = 0;
     protected boolean inverted = false;
     protected MotorConstants motorConstants = null;
@@ -52,7 +54,7 @@ public abstract class NewtonMotor {
 
     public abstract void setPositionSmartMotion(double desiredRotations, int pidSlot);
 
-    public void setPositionSmartMotion(double desiredRotations) {
+    public void setPosition(double desiredRotations) {
         setPositionSmartMotion(desiredRotations, 0);
     }
     
@@ -74,23 +76,23 @@ public abstract class NewtonMotor {
 
     public abstract void resetEncoderPosition(double rotations);
 
-    public static <M extends NewtonMotor> DCMotor getDCMotor(M motor, int numMotors) {
-        DCMotor dcMotor = null;
-        if (motor.getClass().equals(SparkFlexMotor.class)) { // Vortex Motor
-            dcMotor = DCMotor.getNeoVortex(numMotors);
-        } else if (motor.getClass().equals(SparkMaxMotor.class)) { // Neo Motor
-            dcMotor = DCMotor.getNEO(numMotors);
-        } else if (motor.getClass().equals(Falcon500Motor.class)) {
-            dcMotor = DCMotor.getFalcon500(numMotors);
-        } else if (motor.getClass().equals(Falcon500FOCMotor.class)) {
-            dcMotor = DCMotor.getFalcon500Foc(numMotors);
-        } else if (motor.getClass().equals(KrakenX60Motor.class)) {
-            dcMotor = DCMotor.getKrakenX60(numMotors);
-        } else if (motor.getClass().equals(KrakenX60FOCMotor.class)) {
-            dcMotor = DCMotor.getKrakenX60Foc(numMotors);
-        }
-        return dcMotor;
-    }
+    // public static <M extends NewtonMotor> DCMotor getDCMotor(M motor, int numMotors) {
+    //     DCMotor dcMotor = null;
+    //     if (motor.getClass().equals(SparkFlexMotor.class)) { // Vortex Motor
+    //         dcMotor = DCMotor.getNeoVortex(numMotors);
+    //     } else if (motor.getClass().equals(SparkMaxMotor.class)) { // Neo Motor
+    //         dcMotor = DCMotor.getNEO(numMotors);
+    //     } else if (motor.getClass().equals(Falcon500Motor.class)) {
+    //         dcMotor = DCMotor.getFalcon500(numMotors);
+    //     } else if (motor.getClass().equals(Falcon500FOCMotor.class)) {
+    //         dcMotor = DCMotor.getFalcon500Foc(numMotors);
+    //     } else if (motor.getClass().equals(KrakenX60Motor.class)) {
+    //         dcMotor = DCMotor.getKrakenX60(numMotors);
+    //     } else if (motor.getClass().equals(KrakenX60FOCMotor.class)) {
+    //         dcMotor = DCMotor.getKrakenX60Foc(numMotors);
+    //     }
+    //     return dcMotor;
+    // }
 
     public boolean isInverted() {
         return this.inverted;
