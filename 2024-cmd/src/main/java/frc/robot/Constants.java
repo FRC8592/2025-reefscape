@@ -58,6 +58,9 @@ public final class Constants {
         public static final int PIGEON_CAN_ID = 20;
 
         public static final int PDH_CAN_ID = 1;
+
+        public static final int LEFT_EXTENSION_MOTOR_CAN_ID = -1;
+        public static final int RIGHT_EXTENSION_MOTOR_CAN_ID = -1;
     }
 
     public final class POWER {
@@ -205,8 +208,10 @@ public final class Constants {
         public static final double PROCESSOR = -1.0;
         public static final double NET = -1.0;
 
-        public static final double ELEVATOR_GEARBOX_RATIO = -1.0;
-        public static final double ELEVATOR_SPROCKET_DIAMETER = -1.0;
-        public static final double ELEVATOR_GEAR_RATIO = ELEVATOR_GEARBOX_RATIO*ELEVATOR_SPROCKET_DIAMETER*Math.PI;
+        public static final double EXTENSION_GEAR_RATIO = 0.25;
+        public static final double EXTENSION_DRUM_DIAMTER_INCHES = 1.0;
+
+        public static final double EXTENSION_INCHES_MAX = -1.0;
+        public static final double EXTENSION_INCHES_MIN = -1.0;
     }
 }
