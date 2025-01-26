@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.ctre.phoenix6.swerve.jni.SwerveJNI;
 import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -67,10 +68,16 @@ public class CTRESwerveWrapper {
     public void setKnownOdometryPose(Pose2d currentPose) {        
         drivetrain.resetPose(currentPose);
     }
+
     public void periodic(){
         drivetrain.periodic();
     }
+
     public void registerTelemetry(Consumer<SwerveDriveState> driveState){
         drivetrain.registerTelemetry(driveState);
+    }
+
+    public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds) {
+        drivetrain.addVisionMeasurement(visionRobotPoseMeters, timestampSeconds);
     }
 }

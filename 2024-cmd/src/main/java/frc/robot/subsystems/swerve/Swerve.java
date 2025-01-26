@@ -300,4 +300,8 @@ public class Swerve extends SubsystemBase {
 
         return currentSpeeds;
     }
+
+    public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds) {
+        swerve.addVisionMeasurement(visionRobotPoseMeters, timestampSeconds);
+    }
 }

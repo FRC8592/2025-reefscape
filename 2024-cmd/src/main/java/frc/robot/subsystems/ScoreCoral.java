@@ -11,6 +11,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -63,26 +64,42 @@ public class ScoreCoral extends SubsystemBase {
         this.swerve = swerve;
         this.vision = vision;
 
-
     }
 
-    public void initialize() {
+    public void initialize() {  
         
-        Optional<EstimatedRobotPose> robot_pose = vision.getRobotPoseVision();
-        //check this with martin later???
-        TrajectoryConfig config = new TrajectoryConfig(SWERVE.MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND, SWERVE.MAX_TRANSLATIONAL_ACCELERATION);
-        
-        if (robot_pose.isPresent()) {
-
-            Pose2d robotPosition = robot_pose.get().estimatedPose.toPose2d();
-            Trajectory traj = TrajectoryGenerator.generateTrajectory(robotPosition, null, robotPosition, config);
-
-
-        }
 
     }
 
     public void periodic() {
+        if (DriverStation.isDisabled()){
+            Optional<EstimatedRobotPose> robot_pose = vision.getRobotPoseVision();
+            //TrajectoryConfig config = new TrajectoryConfig(SWERVE.MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND, SWERVE.MAX_TRANSLATIONAL_ACCELERATION);
+        
+            if (robot_pose.isPresent()) {
+                Pose2d robotPosition = robot_pose.get().estimatedPose.toPose2d();
+                //Trajectory traj = TrajectoryGenerator.generateTrajectory(robotPosition, null, robotPosition, config);
+                swerve.resetPose(robotPosition);
+                Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/InitialPose", robotPosition);
+
+            }
+        } else {
+            Optional<EstimatedRobotPose> robot_pose = vision.getRobotPoseVision();
+            //TrajectoryConfig config = new TrajectoryConfig(SWERVE.MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND, SWERVE.MAX_TRANSLATIONAL_ACCELERATION);
+            
+            if (robot_pose.isPresent()) {
+                EstimatedRobotPose robotPosition = robot_pose.get();
+                //Trajectory traj = TrajectoryGenerator.generateTrajectory(robotPosition, null, robotPosition, config);
+                //var estStdDevs = vision.getEstimationStdDevs();
+                swerve.addVisionMeasurement(robotPosition.estimatedPose.toPose2d(), robotPosition.timestampSeconds);
+                Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/VisionPose", robotPosition.estimatedPose.toPose2d());
+                
+                heartbeat++;
+                Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/Hearbeat", heartbeat);
+            }
+            Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/SwervePosition", swerve.getCurrentPosition());
+        }
+
         
     }
 
