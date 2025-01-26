@@ -73,11 +73,9 @@ public class ScoreCoral extends SubsystemBase {
     public void initialize() {  
         
         Optional<EstimatedRobotPose> robot_pose = vision.getRobotPoseVision();
-        //TrajectoryConfig config = new TrajectoryConfig(SWERVE.MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND, SWERVE.MAX_TRANSLATIONAL_ACCELERATION);
     
         if (robot_pose.isPresent()) {
             Pose2d robotPosition = robot_pose.get().estimatedPose.toPose2d();
-            //Trajectory traj = TrajectoryGenerator.generateTrajectory(robotPosition, null, robotPosition, config);
             swerve.resetPose(robotPosition);
             Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/InitialPose", robotPosition);
 
@@ -88,14 +86,13 @@ public class ScoreCoral extends SubsystemBase {
     public void periodic() {
         if (DriverStation.isDisabled()){
             Optional<EstimatedRobotPose> robot_pose = vision.getRobotPoseVision();
-            //TrajectoryConfig config = new TrajectoryConfig(SWERVE.MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND, SWERVE.MAX_TRANSLATIONAL_ACCELERATION);
         
             if (robot_pose.isPresent()) {
                 Pose2d robotPosition = robot_pose.get().estimatedPose.toPose2d();
-                //Trajectory traj = TrajectoryGenerator.generateTrajectory(robotPosition, null, robotPosition, config);
                 double ambiguity = vision.getPoseAmbiguityRatio();
                 Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/AmbiguityRatio", ambiguity);
-                if(ambiguity < 0.2) {
+                Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/TagsInView", vision.getTargets().size());
+                if(ambiguity < 0.2 && vision.getTargets().size() > 1) {
                     swerve.resetPose(robotPosition);
                     Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/InitialPose", robotPosition);
                 }
@@ -103,15 +100,12 @@ public class ScoreCoral extends SubsystemBase {
             }
         } else {
             Optional<EstimatedRobotPose> robot_pose = vision.getRobotPoseVision();
-            //TrajectoryConfig config = new TrajectoryConfig(SWERVE.MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND, SWERVE.MAX_TRANSLATIONAL_ACCELERATION);
             
             if (robot_pose.isPresent()) {
                 EstimatedRobotPose robotPosition = robot_pose.get();
-                //Trajectory traj = TrajectoryGenerator.generateTrajectory(robotPosition, null, robotPosition, config);
-                //var estStdDevs = vision.getEstimationStdDevs();
 
                 if (vision.getTargets().size() > 1) {
-                    swerve.addVisionMeasurement(robotPosition.estimatedPose.toPose2d(), robotPosition.timestampSeconds);
+                    // swerve.addVisionMeasurement(robotPosition.estimatedPose.toPose2d(), robotPosition.timestampSeconds);
                 }
 
                 heartbeat++;

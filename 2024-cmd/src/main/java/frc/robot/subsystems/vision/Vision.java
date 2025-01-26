@@ -37,7 +37,8 @@ public class Vision extends SubsystemBase{
     double targetYawRotation = 0.0;
     double targetPitchRotation = 0.0;
     double targetRollRotation = 0.0;
- 
+    List<PhotonPipelineResult> results;
+
     public Vision(){
         SmartDashboard.putString("hi", "hi");
     }
@@ -53,7 +54,7 @@ public class Vision extends SubsystemBase{
          
          int targetId = 0;
          Transform3d bestCameraToTarget = new Transform3d();
-         var results = camera.getAllUnreadResults();
+         results = camera.getAllUnreadResults();
          SmartDashboard.putBoolean("results empty", results.isEmpty());
          if (!results.isEmpty()) {
              // Camera processed a new frame since last
@@ -134,8 +135,8 @@ public class Vision extends SubsystemBase{
         return targetAmbiguity;
     }
 
-    public List<PhotonPipelineResult> getTargets() {
-        return camera.getAllUnreadResults();
+    public List<PhotonTrackedTarget> getTargets() {
+        return camera.getLatestResult().getTargets();
     }
 
     public Optional<EstimatedRobotPose> getRobotPoseVision() {
