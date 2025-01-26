@@ -18,8 +18,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase{
     PhotonCamera camera = new PhotonCamera("Arducam_OV9782_B");
-
-    Transform3d cameraOffsets = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    //one of these is 3.5cm from the lens
+    Transform3d cameraOffsets = new Transform3d(new Translation3d(2.5, 0, 16), new Rotation3d(0, 0, 0));
     AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
     PhotonPoseEstimator estimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cameraOffsets);
 
