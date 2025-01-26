@@ -53,8 +53,15 @@ public final class NewtonCommands {
     //command for the release of the coral for scoring 
     public static Command outakeCommand(){
         return intake.run(() ->{
-            intake.runInnerMotor(INTAKE.INNER_MOTOR_INTAKE_VELOCITY);
+            intake.runInnerMotor(INTAKE.INNER_MOTOR_OUTAKE_VELOCITY);
         });
+    }
+
+    public static Command stopIntakeCommand(){
+        return intake.run (()-> {
+            intake.stop();
+        });
+
     }
 
 }

@@ -163,8 +163,10 @@ public class RobotContainer {
             ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         );
 
-        driverController.x().whileTrue(intakeCommand());
-        driverController.a().whileTrue(outakeCommand());
+        driverController.x().onTrue(intakeCommand()).onFalse(stopIntakeCommand());
+        driverController.a().onTrue(outakeCommand()).onFalse(stopIntakeCommand());
+        
+        
 
     }
 
