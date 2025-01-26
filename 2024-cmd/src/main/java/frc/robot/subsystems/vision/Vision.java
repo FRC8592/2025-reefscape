@@ -1,9 +1,11 @@
 package frc.robot.subsystems.vision;    
 
+import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.*;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -62,6 +64,7 @@ public class Vision extends SubsystemBase{
              if (targetVisible) {
                 // At least one AprilTag was seen by the camera
                 PhotonTrackedTarget target = result.getBestTarget();
+                
                 targetPitch = target.getPitch();
                 targetArea = target.getArea();
                 targetId = target.getFiducialId();
@@ -125,6 +128,10 @@ public class Vision extends SubsystemBase{
 
     public boolean getTargetVisible(){
         return targetVisible;
+    }
+
+    public List<PhotonPipelineResult> getTargets() {
+        return camera.getAllUnreadResults();
     }
 
     public Optional<EstimatedRobotPose> getRobotPoseVision() {

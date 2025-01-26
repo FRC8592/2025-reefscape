@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -13,8 +14,11 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.littletonrobotics.junction.Logger;
@@ -68,6 +72,16 @@ public class ScoreCoral extends SubsystemBase {
 
     public void initialize() {  
         
+        Optional<EstimatedRobotPose> robot_pose = vision.getRobotPoseVision();
+        //TrajectoryConfig config = new TrajectoryConfig(SWERVE.MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND, SWERVE.MAX_TRANSLATIONAL_ACCELERATION);
+    
+        if (robot_pose.isPresent()) {
+            Pose2d robotPosition = robot_pose.get().estimatedPose.toPose2d();
+            //Trajectory traj = TrajectoryGenerator.generateTrajectory(robotPosition, null, robotPosition, config);
+            swerve.resetPose(robotPosition);
+            Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/InitialPose", robotPosition);
+
+        }
 
     }
 
@@ -91,10 +105,14 @@ public class ScoreCoral extends SubsystemBase {
                 EstimatedRobotPose robotPosition = robot_pose.get();
                 //Trajectory traj = TrajectoryGenerator.generateTrajectory(robotPosition, null, robotPosition, config);
                 //var estStdDevs = vision.getEstimationStdDevs();
-                swerve.addVisionMeasurement(robotPosition.estimatedPose.toPose2d(), robotPosition.timestampSeconds);
-                Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/VisionPose", robotPosition.estimatedPose.toPose2d());
-                
+
+                if (vision.getTargets().size() > 1) {
+                    swerve.addVisionMeasurement(robotPosition.estimatedPose.toPose2d(), robotPosition.timestampSeconds);
+                }
+
                 heartbeat++;
+                Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/TagsInView", vision.getTargets().size());
+                Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/VisionPose", robotPosition.estimatedPose.toPose2d());
                 Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/Hearbeat", heartbeat);
             }
             Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/SwervePosition", swerve.getCurrentPosition());
@@ -123,6 +141,11 @@ public class ScoreCoral extends SubsystemBase {
         // TODO: implement something that allows the commented code to work
         swerve.drive(speeds);
     }
+
+
+
+
+
 
 
     public void driveToReef() {
@@ -186,6 +209,36 @@ public class ScoreCoral extends SubsystemBase {
         Logger.recordOutput("CustomLogs/Scorecoral/heartbeat", heartbeat);
         Logger.recordOutput("CustomLogs/Scorecoral/direction", direction);
             
+    }
+
+    public Command driveToReefVision() {
+
+
+        Optional<EstimatedRobotPose> robot_pose = vision.getRobotPoseVision();
+        List<Pose2d> waypoints = new ArrayList<Pose2d>();
+
+        if (robot_pose.isPresent()) {
+            Pose2d robotPosition = robot_pose.get().estimatedPose.toPose2d();
+            Pose2d tag18Position = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get().toPose2d();
+
+            waypoints.add(robotPosition);
+            waypoints.add(tag18Position);
+        }
+        return new FollowPathCommand(TrajectoryGenerator.generateTrajectory(waypoints, SWERVE.PATH_FOLLOW_TRAJECTORY_CONFIG), () -> false);
+
+    }
+
+    public Command driveToReefOdometry() {
+
+        Pose2d robotPose = swerve.getCurrentPosition();
+        List<Pose2d> waypoints = new ArrayList<Pose2d>();
+        Pose2d tag18Position = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get().toPose2d();
+
+        waypoints.add(robotPose);
+        waypoints.add(tag18Position);
+
+        return new FollowPathCommand(TrajectoryGenerator.generateTrajectory(waypoints, SWERVE.PATH_FOLLOW_TRAJECTORY_CONFIG), () -> false);
+
     }
 
     public void setPosition(LeftOrRight leftOrRight, ScoreLevels scoreLevel){

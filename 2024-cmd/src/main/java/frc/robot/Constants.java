@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
 
 public final class Constants {
     public final class SHARED {
@@ -176,6 +177,7 @@ public final class Constants {
 
         public static final double MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND = 4.73;
         public static final double MAX_TRANSLATIONAL_ACCELERATION = 2;
+        public static final TrajectoryConfig PATH_FOLLOW_TRAJECTORY_CONFIG = new TrajectoryConfig(MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND, MAX_TRANSLATIONAL_ACCELERATION);
         public static final double MAX_ROTATIONAL_VELOCITY_RADIANS_PER_SECOND = Math.toRadians(720);
         public static final double COUPLING_GEAR_RATIO = 3.5714285714285716;
         public static final double DRIVE_GEAR_RATIO = 6.746031746031747;
