@@ -70,7 +70,7 @@ public class ScoreCoral extends SubsystemBase {
         
         Optional<EstimatedRobotPose> robot_pose = vision.getRobotPoseVision();
         //check this with martin later???
-        TrajectoryConfig config = new TrajectoryConfig(SWERVE.MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND, 0);
+        TrajectoryConfig config = new TrajectoryConfig(SWERVE.MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND, SWERVE.MAX_TRANSLATIONAL_ACCELERATION);
         
         if (robot_pose.isPresent()) {
 
