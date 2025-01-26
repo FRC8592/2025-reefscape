@@ -61,32 +61,32 @@ public class Swerve extends SubsystemBase {
         swerve.registerTelemetry((drivetrainState) -> {
             SwerveModuleState[] moduleStates = drivetrainState.ModuleStates;
             SwerveModuleState[] moduleTargets = drivetrainState.ModuleTargets;
-            Logger.recordOutput(SWERVE.LOG_PATH+"TargetSwerveStates", drivetrainState.ModuleTargets);
+            // Logger.recordOutput(SWERVE.LOG_PATH+"TargetSwerveStates", drivetrainState.ModuleTargets);
 
-            Logger.recordOutput(SWERVE.LOG_PATH+"ReadSwerveStates", drivetrainState.ModuleStates);
-            Logger.recordOutput(SWERVE.LOG_PATH+"OdometryPosition", drivetrainState.Pose);
-            Logger.recordOutput(SWERVE.LOG_PATH+"ActualChassisSpeeds", drivetrainState.Speeds);
+            // Logger.recordOutput(SWERVE.LOG_PATH+"ReadSwerveStates", drivetrainState.ModuleStates);
+            // Logger.recordOutput(SWERVE.LOG_PATH+"OdometryPosition", drivetrainState.Pose);
+            // Logger.recordOutput(SWERVE.LOG_PATH+"ActualChassisSpeeds", drivetrainState.Speeds);
 
 
-            Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontLeft/DriveReadVelocityMPS", moduleStates[0].speedMetersPerSecond);
-            Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontLeft/DriveTargetVelocityMPS", moduleTargets[0].speedMetersPerSecond);
-            Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontLeft/SteerReadAngle", moduleStates[0].angle);
-            Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontLeft/SteerTargetAngle", moduleTargets[0].angle);
+            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontLeft/DriveReadVelocityMPS", moduleStates[0].speedMetersPerSecond);
+            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontLeft/DriveTargetVelocityMPS", moduleTargets[0].speedMetersPerSecond);
+            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontLeft/SteerReadAngle", moduleStates[0].angle);
+            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontLeft/SteerTargetAngle", moduleTargets[0].angle);
 
-            Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontRight/DriveReadVelocityMPS", moduleStates[1].speedMetersPerSecond);
-            Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontRight/DriveTargetVelocityMPS", moduleTargets[1].speedMetersPerSecond);
-            Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontRight/SteerReadAngle", moduleStates[1].angle);
-            Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontRight/SteerTargetAngle", moduleTargets[1].angle);
+            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontRight/DriveReadVelocityMPS", moduleStates[1].speedMetersPerSecond);
+            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontRight/DriveTargetVelocityMPS", moduleTargets[1].speedMetersPerSecond);
+            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontRight/SteerReadAngle", moduleStates[1].angle);
+            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/FrontRight/SteerTargetAngle", moduleTargets[1].angle);
 
-            Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackLeft/DriveReadVelocityMPS", moduleStates[2].speedMetersPerSecond);
-            Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackLeft/DriveTargetVelocityMPS", moduleTargets[2].speedMetersPerSecond);
-            Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackLeft/SteerReadAngle", moduleStates[2].angle);
-            Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackLeft/SteerTargetAngle", moduleTargets[2].angle);
+            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackLeft/DriveReadVelocityMPS", moduleStates[2].speedMetersPerSecond);
+            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackLeft/DriveTargetVelocityMPS", moduleTargets[2].speedMetersPerSecond);
+            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackLeft/SteerReadAngle", moduleStates[2].angle);
+            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackLeft/SteerTargetAngle", moduleTargets[2].angle);
 
-            Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackRight/DriveReadVelocityMPS", moduleStates[3].speedMetersPerSecond);
-            Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackRight/DriveTargetVelocityMPS", moduleTargets[3].speedMetersPerSecond);
-            Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackRight/SteerReadAngle", moduleStates[3].angle);
-            Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackRight/SteerTargetAngle", moduleTargets[3].angle);
+            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackRight/DriveReadVelocityMPS", moduleStates[3].speedMetersPerSecond);
+            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackRight/DriveTargetVelocityMPS", moduleTargets[3].speedMetersPerSecond);
+            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackRight/SteerReadAngle", moduleStates[3].angle);
+            // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackRight/SteerTargetAngle", moduleTargets[3].angle);
         }
         );
     }
