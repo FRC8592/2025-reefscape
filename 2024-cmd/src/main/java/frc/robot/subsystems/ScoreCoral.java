@@ -6,11 +6,15 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import java.util.Optional;
+
 import org.littletonrobotics.junction.Logger;
+import org.photonvision.EstimatedRobotPose;
 
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
@@ -30,6 +34,7 @@ public class ScoreCoral extends SubsystemBase {
     private PIDController yController = new PIDController(CORAL_ALIGN.Y_KP, CORAL_ALIGN.Y_KI, CORAL_ALIGN.Y_KD);
     private PIDController rotController = new PIDController(CORAL_ALIGN.ROT_KP, CORAL_ALIGN.ROT_KI, CORAL_ALIGN.ROT_KD);
 
+    
     
     //These enums are for the setPosition() method that will set the coral scoring level and its respective direction
 
@@ -53,6 +58,8 @@ public class ScoreCoral extends SubsystemBase {
     public ScoreCoral(Swerve swerve, Vision vision) {
         this.swerve = swerve;
         this.vision = vision;
+
+
     }
 
     public void periodic() {
@@ -80,6 +87,18 @@ public class ScoreCoral extends SubsystemBase {
         swerve.drive(speeds);
     }
 
+    public void initializeVisionOdometry() {
+
+        Optional<EstimatedRobotPose> robot_pose = vision.getRobotPoseVision();
+
+        if (robot_pose.isPresent()) {
+
+            Pose3d robotPosition = robot_pose.get().estimatedPose;
+
+        }
+
+    }
+
     public void driveToReef() {
         // Setting the x speed, y speed,rotating speed
         double xSpeed = 0d, ySpeed = 0d, rotSpeed = 0d;
@@ -103,7 +122,7 @@ public class ScoreCoral extends SubsystemBase {
 
             ySpeed = ySpeed * CORAL_ALIGN.SPEED_SCALE;
 
-            xSpeed = yController.calculate(vision.getTargetY(),yOffset);
+            xSpeed = yController.calculate(vision.getTargetY(), yOffset);
             xSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, xSpeed);
             xSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, xSpeed);
     

@@ -1,15 +1,27 @@
 package frc.robot.subsystems.vision;    
 
+import java.util.Optional;
+
 import org.photonvision.*;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase{
     PhotonCamera camera = new PhotonCamera("Arducam_OV9782_B");
+
+    Transform3d cameraOffsets = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
+    PhotonPoseEstimator estimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cameraOffsets);
 
     boolean targetVisible = false;
     double targetX = 0.0;
@@ -114,5 +126,15 @@ public class Vision extends SubsystemBase{
     public boolean getTargetVisible(){
         return targetVisible;
     }
+
+    public Optional<EstimatedRobotPose> getRobotPoseVision() {
+
+
+       return estimator.update(camera.getLatestResult());
+        
+
+    }
+
+
 
 }
