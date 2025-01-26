@@ -8,6 +8,9 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -20,6 +23,7 @@ import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.Constants.*;
+import frc.robot.commands.largecommands.FollowPathCommand;
 
 public class ScoreCoral extends SubsystemBase {
 
@@ -62,6 +66,22 @@ public class ScoreCoral extends SubsystemBase {
 
     }
 
+    public void initialize() {
+        
+        Optional<EstimatedRobotPose> robot_pose = vision.getRobotPoseVision();
+        //check this with martin later???
+        TrajectoryConfig config = new TrajectoryConfig(SWERVE.MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND, 0);
+        
+        if (robot_pose.isPresent()) {
+
+            Pose2d robotPosition = robot_pose.get().estimatedPose.toPose2d();
+            Trajectory traj = TrajectoryGenerator.generateTrajectory(robotPosition, null, robotPosition, config);
+
+
+        }
+
+    }
+
     public void periodic() {
         
     }
@@ -87,17 +107,6 @@ public class ScoreCoral extends SubsystemBase {
         swerve.drive(speeds);
     }
 
-    public void initializeVisionOdometry() {
-
-        Optional<EstimatedRobotPose> robot_pose = vision.getRobotPoseVision();
-
-        if (robot_pose.isPresent()) {
-
-            Pose3d robotPosition = robot_pose.get().estimatedPose;
-
-        }
-
-    }
 
     public void driveToReef() {
         // Setting the x speed, y speed,rotating speed
