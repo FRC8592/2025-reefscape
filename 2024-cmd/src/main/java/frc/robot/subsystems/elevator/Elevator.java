@@ -2,9 +2,11 @@ package frc.robot.subsystems.elevator;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
+import frc.robot.helpers.PIDProfile;
 import frc.robot.helpers.Utils;
 import frc.robot.helpers.motor.talonfx.KrakenX60Motor;
 

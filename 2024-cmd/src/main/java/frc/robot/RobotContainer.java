@@ -16,7 +16,9 @@ import frc.robot.subsystems.swerve.Swerve.DriveModes;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.elevator.ClockArm;
 import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorCommands;
 import frc.robot.subsystems.elevator.Wrist;
+import frc.robot.subsystems.elevator.ElevatorCommands.ElevatorPositions;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
@@ -188,16 +190,16 @@ public class RobotContainer {
         INTAKE.whileTrue(intakeCommand());
         SCORE.whileTrue(outtakeCommand());
 
-        PRIME_L1.onTrue(NewtonCommands.primeL1Command());
-        PRIME_L2.onTrue(NewtonCommands.primeL2Command());
-        PRIME_L3.onTrue(NewtonCommands.primeL3Command());
-        PRIME_L4.onTrue(NewtonCommands.primeL4Command());
-        PRIME_L2_ALGAE.onTrue(NewtonCommands.primeL2AlgaeCommand());
-        PRIME_L3_ALGAE.onTrue(NewtonCommands.primeL3AlgaeCommand());
-        PRIME_NET.onTrue(NewtonCommands.primeNetCommand());
-        PRIME_PROCESSOR.onTrue(NewtonCommands.primeProcessorCommand());
-        GROUND_INTAKE.onTrue(NewtonCommands.groundIntakeCommand());
-        STOW.onTrue(NewtonCommands.stowCommand());
+        PRIME_L1.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L1));
+        PRIME_L2.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L2));
+        PRIME_L3.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L3));
+        PRIME_L4.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L4));
+        PRIME_L2_ALGAE.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L2_ALGAE));
+        PRIME_L3_ALGAE.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L3_ALGAE));
+        PRIME_NET.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.NET));
+        PRIME_PROCESSOR.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.PROCESSOR));
+        GROUND_INTAKE.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.GROUND_ALGAE));
+        STOW.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.STOW));
         PRIME.onTrue(NewtonCommands.goToPrimePositionCommand());
     }
 
