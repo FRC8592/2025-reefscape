@@ -4,12 +4,15 @@
 
 package frc.robot.subsystems.swerve;
 
+import edu.wpi.first.hal.SimDevice.Direction;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -40,6 +43,9 @@ public class Swerve extends SubsystemBase {
     
     private CTRESwerveWrapper swerve;
 
+    private SysID swerveSysID;
+    private SysIdRoutine swerveRoutine;
+
     public Swerve() {
         smoothingFilter = new SmoothingFilter(
             SWERVE.TRANSLATION_SMOOTHING_AMOUNT,
@@ -49,8 +55,26 @@ public class Swerve extends SubsystemBase {
 
         snapToController = new PIDController(SWERVE.SNAP_TO_kP, SWERVE.SNAP_TO_kI, SWERVE.SNAP_TO_kD);
 
+        
         // TODO: Any initialization code needed for the new swerve stuff
         swerve = new CTRESwerveWrapper();
+
+        swerveSysID = new SysID(
+            swerve.drivetrain.getModule(0).getDriveMotor(), 
+            swerve.drivetrain.getModule(1).getDriveMotor(), 
+            swerve.drivetrain.getModule(2).getDriveMotor(), 
+            swerve.drivetrain.getModule(1).getDriveMotor(),
+            getName(),
+            this);
+        
+        swerveRoutine = swerveSysID.createSwerveRoutine(5);
+    }
+
+    public Command runSwerveSysIDRoutine(){
+        return swerveRoutine.dynamic(SysIdRoutine.Direction.kForward)
+                .andThen(swerveRoutine.dynamic(SysIdRoutine.Direction.kReverse))
+                .andThen(swerveRoutine.quasistatic(SysIdRoutine.Direction.kForward))
+                .andThen(swerveRoutine.quasistatic(SysIdRoutine.Direction.kReverse));
     }
 
     @Override
