@@ -18,10 +18,10 @@ import frc.robot.subsystems.swerve.*;
  */
 public class AutoCommand extends WrapperCommand{
     protected static Swerve swerve;
-    protected static Intake intake;
-    public static void addSubsystems(Swerve swerve, Intake intake){
+    // protected static Intake intake;
+    public static void addSubsystems(Swerve swerve){
         AutoCommand.swerve = swerve;
-        AutoCommand.intake = intake;
+        // AutoCommand.intake = intake;
     }
 
     /**

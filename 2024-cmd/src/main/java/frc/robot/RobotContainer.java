@@ -42,7 +42,7 @@ public class RobotContainer {
     // The robot's subsystems
     private final Swerve swerve;
     private final Vision vision;
-    private final Intake intake;
+    // private final Intake intake;
     //TODO: Add more subsystems here
     private ScoreCoral scoreCoral;
 
@@ -56,7 +56,7 @@ public class RobotContainer {
     public RobotContainer() {
         swerve = new Swerve();
         vision = new Vision();
-        intake = new Intake();
+        // intake = new Intake();
         scoreCoral = new ScoreCoral(swerve, vision);
         // TODO: Add more subsystems and instantiatable helpers here
 
@@ -72,11 +72,11 @@ public class RobotContainer {
      * Pass subsystems everywhere they're needed
      */
     private void passSubsystems(){
-        AutoManager.addSubsystems(swerve, intake);
-        AutoCommand.addSubsystems(swerve, intake);
-        LargeCommand.addSubsystems(swerve, intake);
-        NewtonCommands.addSubsystems(swerve, intake);
-        Suppliers.addSubsystems(swerve, intake);
+        AutoManager.addSubsystems(swerve);
+        AutoCommand.addSubsystems(swerve);
+        LargeCommand.addSubsystems(swerve);
+        NewtonCommands.addSubsystems(swerve);
+        Suppliers.addSubsystems(swerve);
     }
 
     /**
@@ -180,17 +180,17 @@ public class RobotContainer {
             Commands.run(() -> scoreCoral.driveToReef(), swerve)
         );
 
-        operatorController.leftTrigger().onTrue(
-            intakeCommand()
-        ).onFalse(
-            stopIntakeComand()
-        );
+        // operatorController.leftTrigger().onTrue(
+        //     intakeCommand()
+        // ).onFalse(
+        //     stopIntakeComand()
+        // );
 
-        operatorController.rightTrigger().onTrue(
-            outakeCommand()
-        ).onFalse(
-            stopIntakeComand()
-        );
+        // operatorController.rightTrigger().onTrue(
+        //     outakeCommand()
+        // ).onFalse(
+        //     stopIntakeComand()
+        // );
         
         // D-input; LS; Turbo: Off
         //

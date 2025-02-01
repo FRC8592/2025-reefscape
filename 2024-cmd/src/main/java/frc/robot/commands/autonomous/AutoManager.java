@@ -23,10 +23,10 @@ import frc.robot.subsystems.swerve.Swerve;
  */
 public final class AutoManager {
     private static Swerve swerve;
-    private static Intake intake;
-    public static void addSubsystems(Swerve swerve, Intake intake){
+    // private static Intake intake;
+    public static void addSubsystems(Swerve swerve){
         AutoManager.swerve = swerve;
-        AutoManager.intake = intake;
+        // AutoManager.intake = intake;
     }
 
     private static SendableChooser<AutoCommand> autoChooser;

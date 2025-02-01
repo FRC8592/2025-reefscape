@@ -18,10 +18,8 @@ import frc.robot.subsystems.swerve.Swerve.DriveModes;
 
 public final class NewtonCommands {
     private static Swerve swerve;
-    private static Intake intake;
-    public static void addSubsystems(Swerve swerve, Intake intake){
+    public static void addSubsystems(Swerve swerve){
         NewtonCommands.swerve = swerve;
-        NewtonCommands.intake = intake;
     }
 
     /**
@@ -47,24 +45,24 @@ public final class NewtonCommands {
         });
     }
 
-     // command for taking in coral 
-     public static Command intakeCommand(){
-        return intake.run(() ->{
-            intake.runInnerMotor(INTAKE.INNER_MOTOR_INTAKE_VELOCITY);
-        });
+    //  // command for taking in coral 
+    //  public static Command intakeCommand(){
+    //     return intake.run(() ->{
+    //         intake.runInnerMotor(INTAKE.INNER_MOTOR_INTAKE_VELOCITY);
+    //     });
 
-    }
+    // }
 
-    //command for the release of the coral for scoring 
-    public static Command outakeCommand(){
-        return intake.run(() ->{
-            intake.runInnerMotor(INTAKE.INNER_MOTOR_OUTAKE_VELOCITY);
-        });
-    }
+    // //command for the release of the coral for scoring 
+    // public static Command outakeCommand(){
+    //     return intake.run(() ->{
+    //         intake.runInnerMotor(INTAKE.INNER_MOTOR_OUTAKE_VELOCITY);
+    //     });
+    // }
 
-    public static Command stopIntakeComand(){
-        return intake.run(() -> {
-            intake.runInnerMotor(0);
-        });
-    }
+    // public static Command stopIntakeComand(){
+    //     return intake.run(() -> {
+    //         intake.runInnerMotor(0);
+    //     });
+    // }
 }
