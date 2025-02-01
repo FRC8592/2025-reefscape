@@ -7,6 +7,8 @@ package frc.robot;
 import frc.robot.Constants.*;
 import static frc.robot.commands.NewtonCommands.*;
 
+import java.util.Set;
+
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
@@ -20,6 +22,7 @@ import frc.robot.subsystems.vision.Vision;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
@@ -175,11 +178,15 @@ public class RobotContainer {
             ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         );
 
-        driverController.a().whileTrue(
-            // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
-            Commands.run(() -> scoreCoral.driveToReef(), swerve)
+        // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
+        driverController.a()
+        .whileTrue(
+            new DeferredCommand(
+                () -> scoreCoral.driveToReefOdometry(),
+                Set.of(swerve)
+            ) 
         );
-
+    
         // operatorController.leftTrigger().onTrue(
         //     intakeCommand()
         // ).onFalse(

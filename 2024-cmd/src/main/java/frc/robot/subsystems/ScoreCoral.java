@@ -8,10 +8,14 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -92,7 +96,7 @@ public class ScoreCoral extends SubsystemBase {
                 double ambiguity = vision.getPoseAmbiguityRatio();
                 Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/AmbiguityRatio", ambiguity);
                 Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/TagsInView", vision.getTargets().size());
-                if(ambiguity < 0.2 && vision.getTargets().size() > 1) {
+                if(Math.abs(ambiguity) < 0.2 && vision.getTargets().size() > 1) {
                     swerve.resetPose(robotPosition);
                     Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/InitialPose", robotPosition);
                 }
@@ -105,7 +109,7 @@ public class ScoreCoral extends SubsystemBase {
                 EstimatedRobotPose robotPosition = robot_pose.get();
 
                 if (vision.getTargets().size() > 1) {
-                    // swerve.addVisionMeasurement(robotPosition.estimatedPose.toPose2d(), robotPosition.timestampSeconds);
+                    swerve.addVisionMeasurement(robotPosition.estimatedPose.toPose2d(), robotPosition.timestampSeconds);
                 }
 
                 heartbeat++;
@@ -231,11 +235,21 @@ public class ScoreCoral extends SubsystemBase {
         Pose2d robotPose = swerve.getCurrentPosition();
         List<Pose2d> waypoints = new ArrayList<Pose2d>();
         Pose2d tag18Position = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get().toPose2d();
-
+        Pose2d tag18PositionOffset = new Pose2d(new Translation2d(tag18Position.getX()-0.1, tag18Position.getY()), tag18Position.getRotation().plus(Rotation2d.fromDegrees(180)));
         waypoints.add(robotPose);
-        waypoints.add(tag18Position);
+        waypoints.add(tag18PositionOffset);
+        Trajectory traj = TrajectoryGenerator.generateTrajectory(waypoints, SWERVE.PATH_FOLLOW_TRAJECTORY_CONFIG);
 
-        return new FollowPathCommand(TrajectoryGenerator.generateTrajectory(waypoints, SWERVE.PATH_FOLLOW_TRAJECTORY_CONFIG), () -> false);
+        State start = new State(0, 0, 1, robotPose, 0);
+        State middle = new State(traj.getTotalTimeSeconds()-0.25, 1, 1, tag18PositionOffset.transformBy(new Transform2d(new Translation2d(-0.75, 0), new Rotation2d())), 0);
+
+        traj = new Trajectory(List.of(start, middle));
+
+        List<Pose2d> path = new ArrayList<Pose2d>();
+        traj.getStates().forEach((state) -> {path.add(state.poseMeters);});
+        Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/GeneratedPath", path.toArray(new Pose2d[0]));
+
+        return new FollowPathCommand(traj, () -> false);
 
     }
 

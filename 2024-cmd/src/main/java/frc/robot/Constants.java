@@ -100,7 +100,7 @@ public final class Constants {
 
         public static final int MAX_LOCK_LOSS_TICKS = 20;
 
-        public static final Transform3d CAMERA_OFFSETS = new Transform3d(new Translation3d(0.025, 0, 0.16), new Rotation3d(0, Math.toRadians(-12), 0));
+        public static final Transform3d CAMERA_OFFSETS = new Transform3d(new Translation3d(0.14, -0.05, 0.245), new Rotation3d(0, Math.toRadians(-12), 0));
 
     }
 
@@ -182,7 +182,7 @@ public final class Constants {
 
         public static final double MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND = 4.73;
         public static final double MAX_TRANSLATIONAL_ACCELERATION = 2;
-        public static final TrajectoryConfig PATH_FOLLOW_TRAJECTORY_CONFIG = new TrajectoryConfig(MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND, MAX_TRANSLATIONAL_ACCELERATION);
+        public static final TrajectoryConfig PATH_FOLLOW_TRAJECTORY_CONFIG = new TrajectoryConfig(1, 1);
         public static final double MAX_ROTATIONAL_VELOCITY_RADIANS_PER_SECOND = Math.toRadians(720);
         public static final double COUPLING_GEAR_RATIO = 3.5714285714285716;
         public static final double DRIVE_GEAR_RATIO = 6.746031746031747;
@@ -246,7 +246,7 @@ public final class Constants {
         public static final double WHITE_BACK_RIGHT_Y_POSITION = -8.375;
 
         //TODO: Double check that these still work
-        public static final double PATH_FOLLOW_TRANSLATE_kP = 6d;
+        public static final double PATH_FOLLOW_TRANSLATE_kP = 8d;
         public static final double PATH_FOLLOW_TRANSLATE_kI = 0d;
         public static final double PATH_FOLLOW_TRANSLATE_kD = 0d;
 
