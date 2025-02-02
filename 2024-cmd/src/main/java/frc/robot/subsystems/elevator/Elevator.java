@@ -2,6 +2,7 @@ package frc.robot.subsystems.elevator;
 
 import org.littletonrobotics.junction.Logger;
 
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -11,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
 import frc.robot.helpers.PIDProfile;
 import frc.robot.helpers.Utils;
+import frc.robot.helpers.motor.NewtonMotor.IdleMode;
 import frc.robot.helpers.motor.talonfx.KrakenX60Motor;
 
 public class Elevator extends SubsystemBase{
@@ -49,18 +51,25 @@ public class Elevator extends SubsystemBase{
         PIDProfile pid = new PIDProfile();
         pid.setPID(ELEVATOR.ELEVATOR_P, ELEVATOR.ELEVATOR_I, ELEVATOR.ELEVATOR_D);
         
-        leftExtensionMotor = new KrakenX60Motor(CAN.LEFT_EXTENSION_MOTOR_CAN_ID);
-        rightExtensionMotor = new KrakenX60Motor(CAN.RIGHT_EXTENSION_MOTOR_CAN_ID);
+    
+        leftExtensionMotor = new KrakenX60Motor(CAN.BACK_EXTENSION_MOTOR_CAN_ID, true);
+        rightExtensionMotor = new KrakenX60Motor(CAN.FORWARD_EXTENSION_MOTOR_CAN_ID);
+
+        leftExtensionMotor.setIdleMode(IdleMode.kBrake);
+        rightExtensionMotor.setIdleMode(IdleMode.kBrake);
+
 
         //configure right motor to be inverted and to follow L motor
-        rightExtensionMotor.setInverted(true);
-        rightExtensionMotor.setFollowerTo(leftExtensionMotor);
+        rightExtensionMotor.setFollowerTo(leftExtensionMotor, true);
 
         leftExtensionMotor.setPositionSoftLimit(inchesToRotations(ELEVATOR.EXTENSION_INCHES_MIN), inchesToRotations(ELEVATOR.EXTENSION_INCHES_MAX));
+        leftExtensionMotor.setCurrentLimit(80);
+        rightExtensionMotor.setCurrentLimit(80);
+
         leftExtensionMotor.withGains(pid);
 
         SmartDashboard.putData("Elevator PID", pid);
-        
+        setPercentOutput(0);
         targetExtension = 0;
     }
 
@@ -68,9 +77,10 @@ public class Elevator extends SubsystemBase{
     public void periodic(){
         Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"current extension inches ", getExtensionPositionInches());
         Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"target inches ", targetExtension);
+        Logger.recordOutput("Target extension in rotations", inchesToRotations(targetExtension));
         Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"at position", atPosition());
 
-        // setExtensionPositionInches(targetExtension);
+        setExtensionPositionInches(targetExtension);
     }
 
     public double getExtensionPositionInches(){
@@ -106,14 +116,16 @@ public class Elevator extends SubsystemBase{
         return this.run(() -> setPercentOutput(power));
     }
     
+    public Command stopCommand() {
+        return this.run(() -> setPercentOutput(0));
+    }
 
     //debug commands
-    public Command iteratePositionUpCommand() {
-        return this.run(() -> {targetExtension += 0.05;});
+    public Command gotoPosition(double position) {
+        return this.run(() -> {targetExtension = position;});
     }
 
-    public Command iteratePositionDownCommand() {
-        return this.run(() -> {targetExtension -= 0.05;});
-    }
+
+    
 
 }

@@ -57,8 +57,8 @@ public final class Constants {
 
         public static final int PDH_CAN_ID = 1;
 
-        public static final int LEFT_EXTENSION_MOTOR_CAN_ID = -1;
-        public static final int RIGHT_EXTENSION_MOTOR_CAN_ID = -1;
+        public static final int BACK_EXTENSION_MOTOR_CAN_ID = 44;
+        public static final int FORWARD_EXTENSION_MOTOR_CAN_ID = 43;
         public static final int CLOCK_ARM_CAN_ID = 0;
         public static final int WRIST_CAN_ID = 0;
     }
@@ -211,8 +211,8 @@ public final class Constants {
         public static final double EXTENSION_GEAR_RATIO = 0.25;
         public static final double EXTENSION_DRUM_DIAMTER_INCHES = 1.0;
 
-        public static final double EXTENSION_INCHES_MAX = 20.0; //this is in inches
-        public static final double EXTENSION_INCHES_MIN = 0.0;
+        public static final double EXTENSION_INCHES_MAX = 15.0; //this is in inches
+        public static final double EXTENSION_INCHES_MIN = 1.0;
 
         public static final double EXTENSION_POSITION_TOLERANCE = 1.0;
         public static final double CLOCK_ARM_POSITION_TOLERANCE = 2.0;
@@ -225,7 +225,7 @@ public final class Constants {
         public static final String CLOCK_ARM_LOG_PATH = SHARED.LOG_FOLDER+"/Clock Arm/";
         public static final String WRIST_LOG_PATH = SHARED.LOG_FOLDER+"/Wrist/";
 
-        public static final double ELEVATOR_P = 0;
+        public static final double ELEVATOR_P = 0.3;
         public static final double ELEVATOR_I = 0;
         public static final double ELEVATOR_D = 0;
         public static final double ELEVATOR_S = 0;

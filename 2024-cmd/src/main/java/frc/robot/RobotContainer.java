@@ -57,8 +57,9 @@ public class RobotContainer {
 
     //Operator controls
 
-    private final Trigger ELEVATOR_UP = operatorController.y();
-    private final Trigger ELEVATOR_DOWN = operatorController.a(); 
+    private final Trigger ELEVATOR_UP = driverController.y();
+    private final Trigger ELEVATOR_MID = driverController.b();
+    private final Trigger ELEVATOR_DOWN = driverController.a(); 
 
     private final Trigger PRIME_L1 = operatorController.button(1);
     private final Trigger PRIME_L2 = operatorController.button(2);
@@ -117,6 +118,9 @@ public class RobotContainer {
                 -driverController.getRightX()
             ), DriveModes.AUTOMATIC);
         }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+
+        // setDefaultCommand(elevator, elevator.setExtensionStopCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+
     }
 
 
@@ -200,8 +204,13 @@ public class RobotContainer {
         // STOW.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.STOW));
         // PRIME.onTrue(NewtonCommands.goToPrimePositionCommand());
 
-        ELEVATOR_UP.onTrue(Commands.runOnce(() -> elevator.setExtensionPercentOutputCommand(0.1)));
-        ELEVATOR_DOWN.onTrue(Commands.runOnce(() -> elevator.setExtensionPercentOutputCommand(-0.1)));
+        ELEVATOR_UP.whileTrue(elevator.gotoPosition(15)).onFalse(elevator.stopCommand());
+        ELEVATOR_MID.whileTrue(elevator.gotoPosition(10)).onFalse(elevator.stopCommand());
+        ELEVATOR_DOWN.whileTrue(elevator.gotoPosition(5)).onFalse(elevator.stopCommand());
+
+        // ELEVATOR_UP.whileTrue(elevator.gotoPosition(10));
+        // ELEVATOR_UP.whileTrue(elevator.gotoPosition(10));
+        // ELEVATOR_UP.whileTrue(elevator.gotoPosition(10));
 
         
 

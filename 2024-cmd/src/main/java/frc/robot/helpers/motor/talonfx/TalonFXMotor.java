@@ -19,6 +19,7 @@ public abstract class TalonFXMotor extends NewtonMotor {
 
     private PositionVoltage positionOutput;
     private VelocityVoltage velocityOutput;
+    private DutyCycleOut percentOutput;
 
     protected TalonFXMotor(int motorID, MotorConstants constants) {
         this(motorID, false, constants);
@@ -37,6 +38,10 @@ public abstract class TalonFXMotor extends NewtonMotor {
 
         this.positionOutput = new PositionVoltage(0.0);
         this.velocityOutput = new VelocityVoltage(0.0);
+        this.percentOutput = new DutyCycleOut(0);
+        this.percentOutput.OverrideBrakeDurNeutral = true;
+        this.positionOutput.OverrideBrakeDurNeutral = true;
+        this.velocityOutput.OverrideBrakeDurNeutral = true;
     }
 
     @Override
@@ -47,6 +52,8 @@ public abstract class TalonFXMotor extends NewtonMotor {
 
         this.motor.getConfigurator().apply(configuration);
     }
+
+    
 
     @Override
     public void withGains(PIDProfile gains) {
@@ -103,7 +110,7 @@ public abstract class TalonFXMotor extends NewtonMotor {
 
     @Override
     public void setPercentOutput(double percent) {
-        this.motor.set(percent);
+        this.motor.setControl(percentOutput.withOutput(percent));
     }
 
     @Override
@@ -176,8 +183,9 @@ public abstract class TalonFXMotor extends NewtonMotor {
             case kBrake: default: // Should default to brake mode
                 break;
         }
-        this.motor.setNeutralMode(neutralMode);
+        this.motor.setNeutralMode(NeutralModeValue.Brake);
     }
+
 
     @Override
     public double getVelocityRPM() {

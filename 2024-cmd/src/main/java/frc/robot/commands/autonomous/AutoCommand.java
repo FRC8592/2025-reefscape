@@ -64,7 +64,9 @@ public class AutoCommand extends WrapperCommand{
         }
         else{
             try{
-               Trajectory wpilibTrajectory = fromChoreoPath((choreo.trajectory.Trajectory<SwerveSample>) Choreo.loadTrajectory(name).get());
+            //    Trajectory wpilibTrajectory = fromChoreoPath((choreo.trajectory.Trajectory<SwerveSample>) Choreo.loadTrajectory(name).get());
+               Trajectory wpilibTrajectory = new Trajectory();
+
                 cachedChoreoTrajectories.put(name, wpilibTrajectory);
                 return wpilibTrajectory;
             }
