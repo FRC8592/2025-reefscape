@@ -63,7 +63,7 @@ public class Swerve extends SubsystemBase {
             swerve.drivetrain.getModule(0).getDriveMotor(), 
             swerve.drivetrain.getModule(1).getDriveMotor(), 
             swerve.drivetrain.getModule(2).getDriveMotor(), 
-            swerve.drivetrain.getModule(1).getDriveMotor(),
+            swerve.drivetrain.getModule(3).getDriveMotor(),
             getName(),
             this);
         
