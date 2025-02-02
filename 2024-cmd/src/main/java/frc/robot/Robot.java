@@ -74,14 +74,13 @@ public class Robot extends LoggedRobot {
                     System.err.println("UNABLE TO LOG TO A USB STICK!");
                 }
             }
-
-            Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
             LoggedPowerDistribution.getInstance(1, ModuleType.kRev);// Enables power distribution logging
-            Logger.start();
         }
         else { // If simulated
             SmartDashboard.putData(FIELD);
         }
+        Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+        Logger.start();
         robotContainer = new RobotContainer();
     }
 

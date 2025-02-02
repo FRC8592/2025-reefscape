@@ -15,6 +15,7 @@ import frc.robot.commands.largecommands.LargeCommand;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.ScoreCoral;
 import frc.robot.subsystems.ScoreCoral.LeftOrRight;
+import frc.robot.subsystems.ScoreCoral.ReefPositions;
 import frc.robot.subsystems.ScoreCoral.ScoreLevels;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
@@ -209,35 +210,35 @@ public class RobotContainer {
         // L1: 7    R1: 5
 
         coralController.button(CONTROLLERS.CORAL_CONTROLLER_L1).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level1))
+            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level1, ReefPositions.South))
         );
 
         coralController.button(CONTROLLERS.CORAL_CONTROLLER_L2).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level2))
+            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level2, ReefPositions.South))
         );
 
         coralController.button(CONTROLLERS.CORAL_CONTROLLER_L3).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level3))
+            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level3, ReefPositions.South))
         );
 
         coralController.button(CONTROLLERS.CORAL_CONTROLLER_L4).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level4))
+            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level4, ReefPositions.South))
         );
 
         coralController.button(CONTROLLERS.CORAL_CONTROLLER_R1).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level1))
+            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level1, ReefPositions.South))
         );
         
         coralController.button(CONTROLLERS.CORAL_CONTROLLER_R2).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level2))
+            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level2, ReefPositions.South))
         );
 
         coralController.button(CONTROLLERS.CORAL_CONTROLLER_R3).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level3))
+            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level3, ReefPositions.South))
         );
 
         coralController.button(CONTROLLERS.CORAL_CONTROLLER_R4).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level4))
+            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level4, ReefPositions.South))
         );
     }
 

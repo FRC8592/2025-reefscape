@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Queue;
 
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
@@ -31,6 +32,7 @@ import org.photonvision.EstimatedRobotPose;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 import frc.robot.subsystems.vision.Vision;
+import frc.robot.Suppliers;
 import frc.robot.Constants.*;
 import frc.robot.commands.largecommands.FollowPathCommand;
 
@@ -64,8 +66,42 @@ public class ScoreCoral extends SubsystemBase {
         Right
     };
 
+    public enum ReefPositions{
+        //The positions goes from the side facing the driver being south and going clockwise on a compass
+        South(CORAL_ALIGN.SOUTH_BLUE_POSE, CORAL_ALIGN.SOUTH_RED_POSE),
+        SouthWest(CORAL_ALIGN.SOUTH_WEST_BLUE_POSE, CORAL_ALIGN.SOUTH_WEST_RED_POSE),
+        NorthWest(CORAL_ALIGN.NORTH_WEST_BLUE_POSE, CORAL_ALIGN.NORTH_WEST_RED_POSE),
+        North(CORAL_ALIGN.NORTH_BLUE_POSE, CORAL_ALIGN.NORTH_RED_POSE),
+        NorthEast(CORAL_ALIGN.NORTH_EAST_BLUE_POSE, CORAL_ALIGN.NORTH_EAST_RED_POSE),
+        SouthEast(CORAL_ALIGN.SOUTH_EAST_BLUE_POSE, CORAL_ALIGN.SOUTH_EAST_RED_POSE);
+
+        //Data fields for the which side the robot is on
+        public Pose2d bluePosition;
+        public Pose2d redPosition;
+        private ReefPositions(Pose2d bluePosition, Pose2d redPosition){
+            this.bluePosition = bluePosition;
+            this.redPosition = redPosition;
+        }
+
+        /**
+         * @param none
+         * Uses robotRunningOnRed, if it is true it returns the redPosition
+         * else it returns bluePosition
+         * @return redPosition or bluePosition
+         */
+        public Pose2d getReefPosition(){
+            if (Suppliers.robotRunningOnRed.getAsBoolean()){
+                return redPosition;
+            }
+            else{
+                return bluePosition;
+            }
+        }
+    }
+
     private LeftOrRight direction = LeftOrRight.Left;
     private ScoreLevels level = ScoreLevels.Level1;
+    private ReefPositions position = ReefPositions.South;
     private int heartbeat = 0;
 
     public ScoreCoral(Swerve swerve, Vision vision) {
@@ -234,16 +270,16 @@ public class ScoreCoral extends SubsystemBase {
 
         Pose2d robotPose = swerve.getCurrentPosition();
         List<Pose2d> waypoints = new ArrayList<Pose2d>();
-        Pose2d tag18Position = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get().toPose2d();
-        Pose2d tag18PositionOffset = new Pose2d(new Translation2d(tag18Position.getX()-0.1, tag18Position.getY()), tag18Position.getRotation().plus(Rotation2d.fromDegrees(180)));
+        Pose2d targetReefPosition = position.getReefPosition();//AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get().toPose2d();
+        Pose2d targetReefPositionOffset = new Pose2d(new Translation2d(targetReefPosition.getX()-0.5, targetReefPosition.getY()), targetReefPosition.getRotation().plus(Rotation2d.fromDegrees(180)));
         waypoints.add(robotPose);
-        waypoints.add(tag18PositionOffset);
+        waypoints.add(targetReefPositionOffset);
         Trajectory traj = TrajectoryGenerator.generateTrajectory(waypoints, SWERVE.PATH_FOLLOW_TRAJECTORY_CONFIG);
 
         State start = new State(0, 0, 1, robotPose, 0);
-        State middle = new State(traj.getTotalTimeSeconds()-0.25, 1, 1, tag18PositionOffset.transformBy(new Transform2d(new Translation2d(-0.75, 0), new Rotation2d())), 0);
+        State end = new State(traj.getTotalTimeSeconds()-0.25,0, -1, targetReefPositionOffset.transformBy(new Transform2d(new Translation2d(-0.75, 0), new Rotation2d())), 0);
 
-        traj = new Trajectory(List.of(start, middle));
+        //traj = new Trajectory(List.of(start, end));
 
         List<Pose2d> path = new ArrayList<Pose2d>();
         traj.getStates().forEach((state) -> {path.add(state.poseMeters);});
@@ -253,13 +289,13 @@ public class ScoreCoral extends SubsystemBase {
 
     }
 
-    public void setPosition(LeftOrRight leftOrRight, ScoreLevels scoreLevel){
+    public void setPosition(LeftOrRight leftOrRight, ScoreLevels scoreLevel, ReefPositions reefPosition){
        direction = leftOrRight;
        level = scoreLevel;
+       position = reefPosition;
        SmartDashboard.putString("direction", direction.name());
        SmartDashboard.putString("Level", level.name());
-
-
+       SmartDashboard.putString("Position", position.name());
     }
 
     
