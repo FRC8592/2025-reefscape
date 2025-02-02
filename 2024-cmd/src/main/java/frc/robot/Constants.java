@@ -211,8 +211,8 @@ public final class Constants {
         public static final double EXTENSION_GEAR_RATIO = 0.25;
         public static final double EXTENSION_DRUM_DIAMTER_INCHES = 1.0;
 
-        public static final double EXTENSION_INCHES_MAX = -1.0;
-        public static final double EXTENSION_INCHES_MIN = -1.0;
+        public static final double EXTENSION_INCHES_MAX = 20.0; //this is in inches
+        public static final double EXTENSION_INCHES_MIN = 0.0;
 
         public static final double EXTENSION_POSITION_TOLERANCE = 1.0;
         public static final double CLOCK_ARM_POSITION_TOLERANCE = 2.0;
@@ -224,5 +224,13 @@ public final class Constants {
         public static final String EXTENSION_LOG_PATH = SHARED.LOG_FOLDER+"/Extension/";
         public static final String CLOCK_ARM_LOG_PATH = SHARED.LOG_FOLDER+"/Clock Arm/";
         public static final String WRIST_LOG_PATH = SHARED.LOG_FOLDER+"/Wrist/";
+
+        public static final double ELEVATOR_P = 0;
+        public static final double ELEVATOR_I = 0;
+        public static final double ELEVATOR_D = 0;
+        public static final double ELEVATOR_S = 0;
+        public static final double ELEVATOR_V = 0;
+        public static final double ELEVATOR_A = 0;
+
     }
 }

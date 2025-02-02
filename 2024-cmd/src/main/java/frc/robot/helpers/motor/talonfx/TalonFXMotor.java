@@ -151,6 +151,21 @@ public abstract class TalonFXMotor extends NewtonMotor {
         this.motor.getConfigurator().apply(configuration);
     }
 
+    public void setPositionSoftLimit(double low, double high) {
+
+        SoftwareLimitSwitchConfigs soft_limit_motor = new SoftwareLimitSwitchConfigs();
+        soft_limit_motor.ForwardSoftLimitEnable = true;
+        soft_limit_motor.ReverseSoftLimitEnable = true;
+
+        soft_limit_motor.ForwardSoftLimitThreshold = high;
+        soft_limit_motor.ReverseSoftLimitThreshold = low;
+
+        this.configuration.withSoftwareLimitSwitch(soft_limit_motor);
+
+        this.motor.getConfigurator().apply(this.configuration);
+
+    }
+
     @Override
     public void setIdleMode(IdleMode idleMode) {
         NeutralModeValue neutralMode = NeutralModeValue.Brake;
@@ -183,4 +198,7 @@ public abstract class TalonFXMotor extends NewtonMotor {
     public void resetEncoderPosition(double rotations) {
         this.motor.setPosition(rotations);
     }
+
+
+
 }

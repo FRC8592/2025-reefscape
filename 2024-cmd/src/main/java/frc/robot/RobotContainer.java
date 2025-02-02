@@ -14,10 +14,8 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 import frc.robot.subsystems.Vision;
-import frc.robot.subsystems.elevator.ClockArm;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorCommands;
-import frc.robot.subsystems.elevator.Wrist;
 import frc.robot.subsystems.elevator.ElevatorCommands.ElevatorPositions;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.*;
@@ -38,8 +36,6 @@ public class RobotContainer {
     private final Vision vision;
     private final Intake intake;
     private final Elevator elevator;
-    private final ClockArm clockArm;
-    private final Wrist wrist;
     //TODO: Add more subsystems here
 
     //TODO: Add all controls here
@@ -60,6 +56,10 @@ public class RobotContainer {
     
 
     //Operator controls
+
+    private final Trigger ELEVATOR_UP = operatorController.y();
+    private final Trigger ELEVATOR_DOWN = operatorController.a(); 
+
     private final Trigger PRIME_L1 = operatorController.button(1);
     private final Trigger PRIME_L2 = operatorController.button(2);
     private final Trigger PRIME_L3 = operatorController.button(3);
@@ -85,8 +85,6 @@ public class RobotContainer {
         vision = new Vision();
         intake = new Intake();
         elevator = new Elevator();
-        clockArm = new ClockArm();
-        wrist = new Wrist();
         // TODO: Add more subsystems and instantiatable helpers here
 
         passSubsystems();
@@ -103,7 +101,7 @@ public class RobotContainer {
         AutoManager.addSubsystems(swerve);
         AutoCommand.addSubsystems(swerve);
         LargeCommand.addSubsystems(swerve);
-        NewtonCommands.addSubsystems(swerve, elevator, clockArm, wrist, intake);
+        NewtonCommands.addSubsystems(swerve, elevator);
         Suppliers.addSubsystems(swerve);
     }
 
@@ -187,20 +185,26 @@ public class RobotContainer {
             ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         );
 
-        INTAKE.whileTrue(intakeCommand());
-        SCORE.whileTrue(outtakeCommand());
+        // INTAKE.whileTrue(intakeCommand());
+        // SCORE.whileTrue(outtakeCommand());
 
-        PRIME_L1.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L1));
-        PRIME_L2.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L2));
-        PRIME_L3.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L3));
-        PRIME_L4.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L4));
-        PRIME_L2_ALGAE.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L2_ALGAE));
-        PRIME_L3_ALGAE.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L3_ALGAE));
-        PRIME_NET.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.NET));
-        PRIME_PROCESSOR.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.PROCESSOR));
-        GROUND_INTAKE.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.GROUND_ALGAE));
-        STOW.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.STOW));
-        PRIME.onTrue(NewtonCommands.goToPrimePositionCommand());
+        // PRIME_L1.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L1));
+        // PRIME_L2.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L2));
+        // PRIME_L3.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L3));
+        // PRIME_L4.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L4));
+        // PRIME_L2_ALGAE.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L2_ALGAE));
+        // PRIME_L3_ALGAE.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L3_ALGAE));
+        // PRIME_NET.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.NET));
+        // PRIME_PROCESSOR.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.PROCESSOR));
+        // GROUND_INTAKE.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.GROUND_ALGAE));
+        // STOW.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.STOW));
+        // PRIME.onTrue(NewtonCommands.goToPrimePositionCommand());
+
+        ELEVATOR_UP.onTrue(Commands.runOnce(() -> elevator.setExtensionPercentOutputCommand(0.1)));
+        ELEVATOR_DOWN.onTrue(Commands.runOnce(() -> elevator.setExtensionPercentOutputCommand(-0.1)));
+
+        
+
     }
 
 

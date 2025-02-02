@@ -16,15 +16,11 @@ public final class NewtonCommands {
     private static Swerve swerve;
     private static Intake intake;
     private static Elevator elevator;
-    private static ClockArm clockArm;
-    private static Wrist wrist;
     
-    public static void addSubsystems(Swerve swerve, Elevator elevator, ClockArm clockArm, Wrist wrist, Intake intake){
+    public static void addSubsystems(Swerve swerve, Elevator elevator){
         NewtonCommands.swerve = swerve;
-        NewtonCommands.intake = intake;
         NewtonCommands.elevator = elevator;
-        NewtonCommands.clockArm = clockArm;
-        NewtonCommands.wrist = wrist;
+
     }
 
     /**
