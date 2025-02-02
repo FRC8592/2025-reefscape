@@ -96,7 +96,7 @@ public final class Constants {
         public static final double Y_OFFSET_RIGHT = 0.155;
         public static final double ROT_OFFSET = 0d;
         public static final double SPEED_SCALE = 1.0;
-        public static final double SPEED_MAX = 0.6; // originally 0.65
+        public static final double SPEED_MAX = 0.2; // originally 0.65
 
         public static final int MAX_LOCK_LOSS_TICKS = 20;
 

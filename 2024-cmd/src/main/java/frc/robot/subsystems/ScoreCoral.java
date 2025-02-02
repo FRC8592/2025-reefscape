@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.xml.xpath.XPathNodes;
+
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
 
@@ -40,14 +42,13 @@ public class ScoreCoral extends SubsystemBase {
 
     private Swerve swerve;
     private Vision vision;
-
-    private int ticks_stopped;
     
     private PIDController xController = new PIDController(CORAL_ALIGN.X_KP, CORAL_ALIGN.X_KI, CORAL_ALIGN.X_KD);
     private PIDController yController = new PIDController(CORAL_ALIGN.Y_KP, CORAL_ALIGN.Y_KI, CORAL_ALIGN.Y_KD);
     private PIDController rotController = new PIDController(CORAL_ALIGN.ROT_KP, CORAL_ALIGN.ROT_KI, CORAL_ALIGN.ROT_KD);
 
-    
+    //The AprilTag target taken from vision
+    private Pose2d target;
     
     //These enums are for the setPosition() method that will set the coral scoring level and its respective direction
 
@@ -142,75 +143,60 @@ public class ScoreCoral extends SubsystemBase {
     public void drive(ChassisSpeeds speeds){
         // TODO: implement something that allows the commented code to work
         swerve.drive(speeds);
+    } 
+
+    public void setTarget(Pose2d target){
+        this.target = target;
     }
 
+    public Pose2d getTarget(){
+        return target;
+    }
 
+    //TODO complete writing the method to compute distance
+    public double getDistance(){
+        return 0.0;
+    }
 
-
-
-
-
-    public void driveToReef() {
+    public void driveToReef(Pose2d target) {
         // Setting the x speed, y speed,rotating speed
         double xSpeed = 0d, ySpeed = 0d, rotSpeed = 0d;
-        double yOffset = 0d;
 
+        Pose2d currentPosition = swerve.getCurrentPosition();
+        double xDistance = target.getX() - currentPosition.getX();
+        double yDistance = target.getY() - currentPosition.getY();
+        //TODO ensure if correct
+        double rotDistance = target.getRotation().getDegrees() - currentPosition.getRotation().getDegrees();
 
-        Logger.recordOutput("CustomLog/Scorecoral/Target Visible", vision.getTargetVisible());
+        Logger.recordOutput("CustomLog/Scorecoral/Target", target);
+        
+        xSpeed = xController.calculate(xDistance);
+        xSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, xSpeed);
+        xSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, xSpeed);
 
-        if (vision.getTargetVisible() == true){
-            
-            if (direction == LeftOrRight.Left) {
-                yOffset = -CORAL_ALIGN.Y_OFFSET_LEFT;
-            }
-            else {
-                yOffset = CORAL_ALIGN.Y_OFFSET_RIGHT;
-            }
-            
-            ySpeed = xController.calculate(vision.getTargetX(), CORAL_ALIGN.X_OFFSET);
-            ySpeed = Math.min(CORAL_ALIGN.SPEED_MAX, ySpeed);
-            ySpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, ySpeed);
+        xSpeed = xSpeed * CORAL_ALIGN.SPEED_SCALE;
 
-            ySpeed = ySpeed * CORAL_ALIGN.SPEED_SCALE;
+        ySpeed = yController.calculate(yDistance);
+        ySpeed = Math.min(CORAL_ALIGN.SPEED_MAX, ySpeed);
+        ySpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, ySpeed);
 
-            xSpeed = yController.calculate(vision.getTargetY(), yOffset);
-            xSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, xSpeed);
-            xSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, xSpeed);
-    
-            xSpeed = xSpeed * CORAL_ALIGN.SPEED_SCALE;
-    
-            rotSpeed = rotController.calculate(vision.getTargetYaw(), CORAL_ALIGN.ROT_OFFSET);
-            rotSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, rotSpeed);
-            rotSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, rotSpeed);
-    
-            rotSpeed = -rotSpeed * CORAL_ALIGN.SPEED_SCALE;
-            
-            //only horizontal movement while moving to the apriltag
-            //if xSpeed greater than ySpeed  
-            if (Math.abs(xSpeed) > Math.abs(ySpeed)) {
-                xSpeed = 0; 
-            } 
+        ySpeed = ySpeed * CORAL_ALIGN.SPEED_SCALE;
 
-            ChassisSpeeds speed = swerve.processJoystickInputs(xSpeed, ySpeed, rotSpeed);
-            SmartDashboard.putString("ChassisSpeedJoystick", speed.toString());
-            Logger.recordOutput("speed", speed);
-            swerve.drive(speed, DriveModes.ROBOT_RELATIVE);
-            ticks_stopped = 0;
+        rotSpeed = rotController.calculate(rotDistance);
+        rotSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, rotSpeed);
+        rotSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, rotSpeed);
 
-        } else {
-            if (ticks_stopped >= CORAL_ALIGN.MAX_LOCK_LOSS_TICKS) {
-                swerve.drive(Swerve.speedZero);
-            }
-            ticks_stopped += 1;
-        }
+        rotSpeed = -rotSpeed * CORAL_ALIGN.SPEED_SCALE;
+
+        ChassisSpeeds speed = swerve.processJoystickInputs(xSpeed, ySpeed, rotSpeed);
+        SmartDashboard.putString("ChassisSpeedJoystick", speed.toString());
+        Logger.recordOutput("speed", speed);
+        swerve.drive(speed, DriveModes.FIELD_RELATIVE);
 
         SmartDashboard.putNumber("Provided XSpeed", xSpeed);
         SmartDashboard.putNumber("Provided YSpeed", ySpeed);
+        SmartDashboard.putNumber("Provided RotSpeed", rotSpeed);
 
-        heartbeat++;
-        Logger.recordOutput("CustomLogs/Scorecoral/heartbeat", heartbeat);
-        Logger.recordOutput("CustomLogs/Scorecoral/direction", direction);
-            
     }
 
     public Command driveToReefVision() {
@@ -227,29 +213,6 @@ public class ScoreCoral extends SubsystemBase {
             waypoints.add(tag18Position);
         }
         return new FollowPathCommand(TrajectoryGenerator.generateTrajectory(waypoints, SWERVE.PATH_FOLLOW_TRAJECTORY_CONFIG), () -> false);
-
-    }
-
-    public Command driveToReefOdometry() {
-
-        Pose2d robotPose = swerve.getCurrentPosition();
-        List<Pose2d> waypoints = new ArrayList<Pose2d>();
-        Pose2d tag18Position = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get().toPose2d();
-        Pose2d tag18PositionOffset = new Pose2d(new Translation2d(tag18Position.getX()-0.1, tag18Position.getY()), tag18Position.getRotation().plus(Rotation2d.fromDegrees(180)));
-        waypoints.add(robotPose);
-        waypoints.add(tag18PositionOffset);
-        Trajectory traj = TrajectoryGenerator.generateTrajectory(waypoints, SWERVE.PATH_FOLLOW_TRAJECTORY_CONFIG);
-
-        State start = new State(0, 0, 1, robotPose, 0);
-        State middle = new State(traj.getTotalTimeSeconds()-0.25, 1, 1, tag18PositionOffset.transformBy(new Transform2d(new Translation2d(-0.75, 0), new Rotation2d())), 0);
-
-        traj = new Trajectory(List.of(start, middle));
-
-        List<Pose2d> path = new ArrayList<Pose2d>();
-        traj.getStates().forEach((state) -> {path.add(state.poseMeters);});
-        Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/GeneratedPath", path.toArray(new Pose2d[0]));
-
-        return new FollowPathCommand(traj, () -> false);
 
     }
 

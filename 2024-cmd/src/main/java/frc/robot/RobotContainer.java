@@ -19,7 +19,10 @@ import frc.robot.subsystems.ScoreCoral.ScoreLevels;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 import frc.robot.subsystems.vision.Vision;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
@@ -48,6 +51,11 @@ public class RobotContainer {
     // private final Intake intake;
     //TODO: Add more subsystems here
     private ScoreCoral scoreCoral;
+
+    //temporary constants for testing driving
+    Pose2d tag18Position = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get().toPose2d();
+    Pose2d tag18PositionOffset = new Pose2d(new Translation2d(tag18Position.getX()-0.1, tag18Position.getY()), tag18Position.getRotation().plus(Rotation2d.fromDegrees(180)));
+        
 
     // Helpers
     // TODO: Add instantiatable helpers here
@@ -179,14 +187,10 @@ public class RobotContainer {
         );
 
         // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
-        driverController.a()
-        .whileTrue(
-            new DeferredCommand(
-                () -> scoreCoral.driveToReefOdometry(),
-                Set.of(swerve)
-            ) 
+        driverController.a().whileTrue(
+            Commands.run(() -> scoreCoral.driveToReef(tag18PositionOffset))
         );
-    
+
         // operatorController.leftTrigger().onTrue(
         //     intakeCommand()
         // ).onFalse(
