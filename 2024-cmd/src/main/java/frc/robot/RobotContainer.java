@@ -54,7 +54,7 @@ public class RobotContainer {
 
     //temporary constants for testing driving
     Pose2d tag18Position = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get().toPose2d();
-    Pose2d tag18PositionOffset = new Pose2d(new Translation2d(tag18Position.getX()-0.1, tag18Position.getY()), tag18Position.getRotation().plus(Rotation2d.fromDegrees(180)));
+    Pose2d tag18PositionOffset = new Pose2d(new Translation2d(tag18Position.getX()-0.8, tag18Position.getY()), tag18Position.getRotation().plus(Rotation2d.fromDegrees(180)));
         
 
     // Helpers

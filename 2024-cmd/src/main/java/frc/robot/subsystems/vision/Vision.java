@@ -39,7 +39,6 @@ public class Vision extends SubsystemBase{
     double targetRollRotation = 0.0;
     List<PhotonPipelineResult> results;
 
-
     @Override
     public void periodic(){
         // Calculate drivetrain commands from Joystick values

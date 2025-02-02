@@ -97,7 +97,8 @@ public class ScoreCoral extends SubsystemBase {
                 double ambiguity = vision.getPoseAmbiguityRatio();
                 Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/AmbiguityRatio", ambiguity);
                 Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/TagsInView", vision.getTargets().size());
-                if(Math.abs(ambiguity) < 0.2 && vision.getTargets().size() > 1) {
+                //if(Math.abs(ambiguity) < 0.2 && vision.getTargets().size() > 1) {
+                if(Math.abs(ambiguity) < 0.2) {
                     swerve.resetPose(robotPosition);
                     Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/InitialPose", robotPosition);
                 }
@@ -167,9 +168,9 @@ public class ScoreCoral extends SubsystemBase {
         double yDistance = target.getY() - currentPosition.getY();
         //TODO: ensure if correct
         double rotDistance = target.getRotation().getDegrees() - currentPosition.getRotation().getDegrees();
-        SmartDashboard.putNumber("xDistance", xDistance);
-        SmartDashboard.putNumber("yDistance", yDistance);
-        SmartDashboard.putNumber("rotDistance", rotDistance);
+        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/xDistance", xDistance);
+        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/yDistance", yDistance);
+        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/rotDistance", rotDistance);
 
         Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/Target", target);
         
@@ -201,9 +202,9 @@ public class ScoreCoral extends SubsystemBase {
         SmartDashboard.putNumber("Provided YSpeed", ySpeed);
         SmartDashboard.putNumber("Provided RotSpeed", rotSpeed);
 
-        SmartDashboard.putNumber("Final XSpeed", speed.vxMetersPerSecond);
-        SmartDashboard.putNumber("Final YSpeed", speed.vyMetersPerSecond);
-        SmartDashboard.putNumber("Final RotSpeed", speed.omegaRadiansPerSecond);
+        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/Final XSpeed", speed.vxMetersPerSecond);
+        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/Final YSpeed", speed.vyMetersPerSecond);
+        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/Final RotSpeed", speed.omegaRadiansPerSecond);
 
     }
 
