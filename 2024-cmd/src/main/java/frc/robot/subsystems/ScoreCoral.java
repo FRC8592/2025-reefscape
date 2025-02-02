@@ -276,13 +276,18 @@ public class ScoreCoral extends SubsystemBase {
         waypoints.add(targetReefPositionOffset);
         Trajectory traj = TrajectoryGenerator.generateTrajectory(waypoints, SWERVE.PATH_FOLLOW_TRAJECTORY_CONFIG);
 
-        State start = new State(0, 0, 1, robotPose, 0);
-        State end = new State(traj.getTotalTimeSeconds()-0.25,0, -1, targetReefPositionOffset.transformBy(new Transform2d(new Translation2d(-0.75, 0), new Rotation2d())), 0);
+        // State start = new State(0, 0, 1, robotPose, 0);
+        // State end = new State(traj.getTotalTimeSeconds()-0.25,0, -1, targetReefPositionOffset.transformBy(new Transform2d(new Translation2d(-0.75, 0), new Rotation2d())), 0);
 
         //traj = new Trajectory(List.of(start, end));
 
         List<Pose2d> path = new ArrayList<Pose2d>();
+        List<State> wp = new ArrayList<State>();
+        
+        traj.getStates().forEach((state) -> {wp.add(new State(state.timeSeconds, state.velocityMetersPerSecond, state.accelerationMetersPerSecondSq, new Pose2d(state.poseMeters.getTranslation(), robotPose.getRotation()), 2));});
+        traj = new Trajectory(wp);
         traj.getStates().forEach((state) -> {path.add(state.poseMeters);});
+
         Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/GeneratedPath", path.toArray(new Pose2d[0]));
 
         return new FollowPathCommand(traj, () -> false);
