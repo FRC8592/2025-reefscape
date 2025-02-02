@@ -71,6 +71,8 @@ public class RobotContainer {
         scoreCoral = new ScoreCoral(swerve, vision);
         // TODO: Add more subsystems and instantiatable helpers here
 
+        scoreCoral.setTarget(tag18PositionOffset);
+
         passSubsystems();
         configureBindings();
         configureDefaults();
@@ -188,7 +190,7 @@ public class RobotContainer {
 
         // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
         driverController.a().whileTrue(
-            Commands.run(() -> scoreCoral.driveToReef(tag18PositionOffset))
+            Commands.run(() -> scoreCoral.driveToReef())
         );
 
         // operatorController.leftTrigger().onTrue(

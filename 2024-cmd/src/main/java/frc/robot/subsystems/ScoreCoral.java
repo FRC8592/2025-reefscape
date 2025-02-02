@@ -158,7 +158,7 @@ public class ScoreCoral extends SubsystemBase {
         return 0.0;
     }
 
-    public void driveToReef(Pose2d target) {
+    public void driveToReef() {
         // Setting the x speed, y speed,rotating speed
         double xSpeed = 0d, ySpeed = 0d, rotSpeed = 0d;
 
