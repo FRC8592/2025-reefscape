@@ -274,7 +274,7 @@ public class ScoreCoral extends SubsystemBase {
         Pose2d targetReefPositionOffset = new Pose2d(new Translation2d(targetReefPosition.getX()-0.5, targetReefPosition.getY()), targetReefPosition.getRotation().plus(Rotation2d.fromDegrees(180)));
         waypoints.add(robotPose);
         waypoints.add(targetReefPositionOffset);
-        Trajectory traj = TrajectoryGenerator.generateTrajectory(waypoints, SWERVE.PATH_FOLLOW_TRAJECTORY_CONFIG);
+        final Trajectory traj = TrajectoryGenerator.generateTrajectory(waypoints, SWERVE.PATH_FOLLOW_TRAJECTORY_CONFIG);
 
         // State start = new State(0, 0, 1, robotPose, 0);
         // State end = new State(traj.getTotalTimeSeconds()-0.25,0, -1, targetReefPositionOffset.transformBy(new Transform2d(new Translation2d(-0.75, 0), new Rotation2d())), 0);
@@ -283,14 +283,24 @@ public class ScoreCoral extends SubsystemBase {
 
         List<Pose2d> path = new ArrayList<Pose2d>();
         List<State> wp = new ArrayList<State>();
+
+
         
-        traj.getStates().forEach((state) -> {wp.add(new State(state.timeSeconds, state.velocityMetersPerSecond, state.accelerationMetersPerSecondSq, new Pose2d(state.poseMeters.getTranslation(), robotPose.getRotation()), 2));});
-        traj = new Trajectory(wp);
-        traj.getStates().forEach((state) -> {path.add(state.poseMeters);});
+        
+        traj.getStates().forEach((state) -> {wp.add(new State(state.timeSeconds, state.velocityMetersPerSecond, state.accelerationMetersPerSecondSq, new Pose2d(state.poseMeters.getTranslation(), robotPose.getRotation().interpolate(targetReefPositionOffset.getRotation(), state.timeSeconds/traj.getTotalTimeSeconds())), 2));});
+        Trajectory upTraj = new Trajectory(wp);
+        upTraj.getStates().forEach((state) -> {path.add(state.poseMeters);});
 
         Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/GeneratedPath", path.toArray(new Pose2d[0]));
 
-        return new FollowPathCommand(traj, () -> false);
+        return new FollowPathCommand(upTraj, () -> false);
+
+    }
+
+    public double Lerp(double time, double start, double end) {
+
+
+        return ((start*(end-start)) * time);
 
     }
 

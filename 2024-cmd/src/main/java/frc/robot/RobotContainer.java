@@ -240,7 +240,7 @@ public class RobotContainer {
         coralController.button(CONTROLLERS.CORAL_CONTROLLER_R4).onTrue(
             Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level4, ReefPositions.South))
         );
-    }
+    };
 
 
 

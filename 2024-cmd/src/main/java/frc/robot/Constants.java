@@ -285,4 +285,4 @@ public final class Constants {
     public class SUPPLIERS{
         public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Suppliers/";
     }
-}
+};
