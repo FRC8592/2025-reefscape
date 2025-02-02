@@ -39,9 +39,6 @@ public class Vision extends SubsystemBase{
     double targetRollRotation = 0.0;
     List<PhotonPipelineResult> results;
 
-    public Vision(){
-        SmartDashboard.putString("hi", "hi");
-    }
 
     @Override
     public void periodic(){
@@ -89,26 +86,13 @@ public class Vision extends SubsystemBase{
                     targetX = bestCameraToTarget.getX();
                     targetY = bestCameraToTarget.getY();
                     targetZ = bestCameraToTarget.getZ();
-                    targetVisible = true;
                     
                  }
              }
-         
-         SmartDashboard.putNumber("Target X Rotation ", targetXRotation);
-         SmartDashboard.putNumber("Target Z Rotation ", targetZRotation);
-         SmartDashboard.putNumber("Target Y Rotation ", targetYRotation);
-
+        
          SmartDashboard.putBoolean("Vision Target Visible", targetVisible);
-         SmartDashboard.putNumber("Target Pitch", targetPitch);
-         SmartDashboard.putNumber("Target Area", targetArea);
          SmartDashboard.putNumber("Target ID", targetId);
-         SmartDashboard.putNumber("Target X", targetX);
-         SmartDashboard.putNumber("Target Y", targetY);
-         SmartDashboard.putNumber("Target Z", targetZ);
-
          SmartDashboard.putNumber("Target Yaw Rotation", targetYawRotation);
-         SmartDashboard.putNumber("Target Pitch Rotation", targetPitchRotation);
-         SmartDashboard.putNumber("Target Roll Rotation", targetRollRotation);
     }
 
     public double getTargetX(){

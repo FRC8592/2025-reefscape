@@ -165,22 +165,25 @@ public class ScoreCoral extends SubsystemBase {
         Pose2d currentPosition = swerve.getCurrentPosition();
         double xDistance = target.getX() - currentPosition.getX();
         double yDistance = target.getY() - currentPosition.getY();
-        //TODO ensure if correct
+        //TODO: ensure if correct
         double rotDistance = target.getRotation().getDegrees() - currentPosition.getRotation().getDegrees();
+        SmartDashboard.putNumber("xDistance", xDistance);
+        SmartDashboard.putNumber("yDistance", yDistance);
+        SmartDashboard.putNumber("rotDistance", rotDistance);
 
-        Logger.recordOutput("CustomLog/Scorecoral/Target", target);
+        Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/Target", target);
         
         xSpeed = xController.calculate(xDistance);
         xSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, xSpeed);
         xSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, xSpeed);
 
-        xSpeed = xSpeed * CORAL_ALIGN.SPEED_SCALE;
+        xSpeed = -xSpeed * CORAL_ALIGN.SPEED_SCALE;
 
         ySpeed = yController.calculate(yDistance);
         ySpeed = Math.min(CORAL_ALIGN.SPEED_MAX, ySpeed);
         ySpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, ySpeed);
 
-        ySpeed = ySpeed * CORAL_ALIGN.SPEED_SCALE;
+        ySpeed = -ySpeed * CORAL_ALIGN.SPEED_SCALE;
 
         rotSpeed = rotController.calculate(rotDistance);
         rotSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, rotSpeed);
@@ -188,7 +191,8 @@ public class ScoreCoral extends SubsystemBase {
 
         rotSpeed = -rotSpeed * CORAL_ALIGN.SPEED_SCALE;
 
-        ChassisSpeeds speed = swerve.processJoystickInputs(xSpeed, ySpeed, rotSpeed);
+        //Field-relative x, y axis and joystick x, y axis are flipped (i.g. field x is joystick y)
+        ChassisSpeeds speed = swerve.processJoystickInputs(ySpeed, xSpeed, rotSpeed);
         SmartDashboard.putString("ChassisSpeedJoystick", speed.toString());
         Logger.recordOutput("speed", speed);
         swerve.drive(speed, DriveModes.FIELD_RELATIVE);
@@ -196,6 +200,10 @@ public class ScoreCoral extends SubsystemBase {
         SmartDashboard.putNumber("Provided XSpeed", xSpeed);
         SmartDashboard.putNumber("Provided YSpeed", ySpeed);
         SmartDashboard.putNumber("Provided RotSpeed", rotSpeed);
+
+        SmartDashboard.putNumber("Final XSpeed", speed.vxMetersPerSecond);
+        SmartDashboard.putNumber("Final YSpeed", speed.vyMetersPerSecond);
+        SmartDashboard.putNumber("Final RotSpeed", speed.omegaRadiansPerSecond);
 
     }
 

@@ -45,27 +45,6 @@ public final class Constants {
     }
 
     public final class CAN {
-        public static final int PIVOT_MOTOR_CAN_ID = 30; //TODO Change these value to correct value
-        //public static final int INTAKE_TOP_MOTOR_CAN_ID = 29;
-        public static final int INTAKE_BOTTOM_MOTOR_CAN_ID = 31;
-        
-        public static final int SWERVE_BLACK_FRONT_LEFT_DRIVE_CAN_ID = 17;
-        public static final int SWERVE_BLACK_FRONT_LEFT_STEER_CAN_ID = 9;
-        public static final int SWERVE_BLACK_FRONT_LEFT_ENCODER_CAN_ID = 13;
-
-        public static final int SWERVE_ORANGE_FRONT_RIGHT_DRIVE_CAN_ID = 7;
-        public static final int SWERVE_ORANGE_FRONT_RIGHT_STEER_CAN_ID = 8;
-        public static final int SWERVE_ORANGE_FRONT_RIGHT_ENCODER_CAN_ID = 12;
-
-        public static final int SWERVE_TEAL_BACK_LEFT_DRIVE_CAN_ID = 18;
-        public static final int SWERVE_TEAL_BACK_LEFT_STEER_CAN_ID = 4;
-        public static final int SWERVE_TEAL_BACK_LEFT_ENCODER_CAN_ID = 10;
-
-        public static final int SWERVE_WHITE_BACK_RIGHT_DRIVE_CAN_ID = 5;
-        public static final int SWERVE_WHITE_BACK_RIGHT_STEER_CAN_ID = 6;
-        public static final int SWERVE_WHITE_BACK_RIGHT_ENCODER_CAN_ID = 11;
-
-        public static final int PIGEON_CAN_ID = 20;
 
         public static final int PDH_CAN_ID = 1;
 
@@ -199,8 +178,8 @@ public final class Constants {
         public static final double DRIVE_FRICTION_VOLTAGE = 0.25;
 
         //TODO: Tone these down appropriately as per BB rules
-        public static final double TRANSLATE_POWER_FAST = 1.0;
-        public static final double ROTATE_POWER_FAST = 0.75;
+        public static final double TRANSLATE_POWER_FAST = 1.0; 
+        public static final double ROTATE_POWER_FAST = 0.75; 
         public static final double TRANSLATE_POWER_SLOW = 0.5;
         public static final double ROTATE_POWER_SLOW = 0.3;
 
