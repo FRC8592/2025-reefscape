@@ -15,55 +15,75 @@ import edu.wpi.first.wpilibj.XboxController;
  */
 public class Robot extends TimedRobot {
 
-  private SingleMotor singleMotor;
+  private SparkFlexControl deepClimbMotor;
   private XboxController controller;
 
 
   public Robot() {
-    singleMotor = new SingleMotor();
+    deepClimbMotor = new SparkFlexControl(Constants.MOTOR_CAN_ID, false);
     controller = new XboxController(0);
   }
 
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    
+  }
 
   @Override
-  public void autonomousInit() {}
+  public void autonomousInit() {
+
+  }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+
+  }
 
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+
+  }
 
   @Override
   public void teleopPeriodic() {
     if (controller.getAButton()){
-      singleMotor.setPercentMotorOutput(Constants.MOTOR_POWER_BACK);
+      deepClimbMotor.setPercentOutput(Constants.MOTOR_UP);
     }
 
     else if (controller.getYButton()){
-      singleMotor.setPercentMotorOutput(Constants.MOTOR_POWER_FORWARD);
+      deepClimbMotor.setPercentOutput(Constants.MOTOR_DOWN);
     }else{
-      singleMotor.setPercentMotorOutput(0);
+      deepClimbMotor.setPercentOutput(0);
     }
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+
+  }
 
   @Override
-  public void testInit() {}
+  public void testInit() {
+
+  }
 
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+
+  }
 
   @Override
-  public void simulationInit() {}
+  public void simulationInit() {
+
+  }
 
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+
+  }
 }
