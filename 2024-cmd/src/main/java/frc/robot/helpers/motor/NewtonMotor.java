@@ -52,10 +52,10 @@ public abstract class NewtonMotor {
         setVelocity(desiredRPM, 0);
     }
 
-    public abstract void setPositionSmartMotion(double desiredRotations, int pidSlot);
+    public abstract void setPosition(double desiredRotations, int pidSlot);
 
     public void setPosition(double desiredRotations) {
-        setPositionSmartMotion(desiredRotations, 0);
+        setPosition(desiredRotations, 0);
     }
     
     public abstract void setFollowerTo(NewtonMotor master, boolean reversed);

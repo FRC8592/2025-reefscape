@@ -225,10 +225,10 @@ public final class Constants {
         public static final String CLOCK_ARM_LOG_PATH = SHARED.LOG_FOLDER+"/Clock Arm/";
         public static final String WRIST_LOG_PATH = SHARED.LOG_FOLDER+"/Wrist/";
 
-        public static final double ELEVATOR_P = 0.3;
+        public static final double ELEVATOR_P = 3.5;
         public static final double ELEVATOR_I = 0;
         public static final double ELEVATOR_D = 0;
-        public static final double ELEVATOR_S = 0;
+        public static final double ELEVATOR_S = 0.2;
         public static final double ELEVATOR_V = 0;
         public static final double ELEVATOR_A = 0;
 

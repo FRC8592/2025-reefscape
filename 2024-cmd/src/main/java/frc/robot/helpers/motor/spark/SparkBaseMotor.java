@@ -109,7 +109,7 @@ public abstract class SparkBaseMotor<M extends SparkBase, C extends SparkBaseCon
     }
 
     @Override
-    public void setPositionSmartMotion(double desiredRotations, int pidSlot) {
+    public void setPosition(double desiredRotations, int pidSlot) {
         if (motorPIDGains != null) {
             Utils.clamp(
                 desiredRotations, 

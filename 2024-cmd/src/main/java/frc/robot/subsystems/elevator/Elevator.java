@@ -66,9 +66,12 @@ public class Elevator extends SubsystemBase{
         leftExtensionMotor.setCurrentLimit(80);
         rightExtensionMotor.setCurrentLimit(80);
 
-        leftExtensionMotor.withGains(pid);
+        leftExtensionMotor.withGains(pid, 0);
+
+        leftExtensionMotor.configureMotionMagic(100, 40);
 
         SmartDashboard.putData("Elevator PID", pid);
+
         setPercentOutput(0);
         targetExtension = 0;
     }
@@ -79,8 +82,10 @@ public class Elevator extends SubsystemBase{
         Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"target inches ", targetExtension);
         Logger.recordOutput("Target extension in rotations", inchesToRotations(targetExtension));
         Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"at position", atPosition());
+        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"applied voltage", leftExtensionMotor.getVoltage());
+        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"current velocity", leftExtensionMotor.getVelocityRPM());
 
-        setExtensionPositionInches(targetExtension);
+        // setExtensionPositionInches(targetExtension);
     }
 
     public double getExtensionPositionInches(){
@@ -125,7 +130,9 @@ public class Elevator extends SubsystemBase{
         return this.run(() -> {targetExtension = position;});
     }
 
-
+    public Command holdPositionCommand(){
+        return setExtensionCommand(getExtensionPositionInches()); 
+    }
     
 
 }
