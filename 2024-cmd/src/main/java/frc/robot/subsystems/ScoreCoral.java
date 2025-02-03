@@ -270,9 +270,12 @@ public class ScoreCoral extends SubsystemBase {
 
         Pose2d robotPose = swerve.getCurrentPosition();
         List<Pose2d> waypoints = new ArrayList<Pose2d>();
-        Pose2d targetReefPosition = position.getReefPosition();//AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get().toPose2d();
-        Pose2d targetReefPositionOffset = new Pose2d(new Translation2d(targetReefPosition.getX()-0.5, targetReefPosition.getY()), targetReefPosition.getRotation().plus(Rotation2d.fromDegrees(180)));
-        waypoints.add(robotPose);
+        Pose2d targetReefPosition = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get().toPose2d();
+        Pose2d targetReefPositionOffset = new Pose2d(new Translation2d(targetReefPosition.getX()-0.6, targetReefPosition.getY()), targetReefPosition.getRotation().plus(Rotation2d.fromDegrees(180)));
+        double deltaPosition[] = {targetReefPositionOffset.getX()-robotPose.getX(), targetReefPositionOffset.getY()-robotPose.getY()};
+        Pose2d robotPose2 = new Pose2d(robotPose.getTranslation(), Rotation2d.fromRadians(Math.atan2(deltaPosition[1],deltaPosition[0])));
+       
+        waypoints.add(robotPose2);
         waypoints.add(targetReefPositionOffset);
         final Trajectory traj = TrajectoryGenerator.generateTrajectory(waypoints, SWERVE.PATH_FOLLOW_TRAJECTORY_CONFIG);
 
@@ -287,7 +290,28 @@ public class ScoreCoral extends SubsystemBase {
 
         
         
-        traj.getStates().forEach((state) -> {wp.add(new State(state.timeSeconds, state.velocityMetersPerSecond, state.accelerationMetersPerSecondSq, new Pose2d(state.poseMeters.getTranslation(), robotPose.getRotation().interpolate(targetReefPositionOffset.getRotation(), state.timeSeconds/traj.getTotalTimeSeconds())), 2));});
+        traj.getStates().forEach((state) -> {
+            
+            wp.add(
+
+                new State(
+                    state.timeSeconds, 
+                    state.velocityMetersPerSecond, 
+                    state.accelerationMetersPerSecondSq, 
+                    new Pose2d(
+                        state.poseMeters.getTranslation(), 
+                        robotPose.getRotation().interpolate(
+                            targetReefPositionOffset.getRotation(), 
+                            (state.timeSeconds)/(traj.getTotalTimeSeconds()/2)
+                        )
+                    ), 
+                    2
+                )
+
+            );
+
+        });
+
         Trajectory upTraj = new Trajectory(wp);
         upTraj.getStates().forEach((state) -> {path.add(state.poseMeters);});
 
