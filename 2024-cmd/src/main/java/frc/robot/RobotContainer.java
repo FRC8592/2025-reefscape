@@ -19,7 +19,7 @@ import frc.robot.subsystems.ScoreCoral.ReefPositions;
 import frc.robot.subsystems.ScoreCoral.ScoreLevels;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
-import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorCommands;
 import frc.robot.subsystems.elevator.ElevatorCommands.ElevatorPositions;
