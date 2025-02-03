@@ -60,7 +60,7 @@ public class RobotContainer {
     //Driver controls
     private final Trigger INTAKE = driverController.leftTrigger();
     private final Trigger SCORE = driverController.rightTrigger();
-    private final Trigger ALIGN_TO_SCORE = driverController.leftBumper();
+    private final Trigger ALIGN_TO_SCORE = driverController.x();
     private final Trigger STOW = driverController.button(100);
     private final Trigger PRIME = driverController.button(100);
 
@@ -227,8 +227,8 @@ public class RobotContainer {
         ELEVATOR_DOWN.whileTrue(elevator.setExtensionCommand(0.5));
 
         // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
-        driverController.a()
-        .whileTrue(
+        // this activates tesla full self driving
+        ALIGN_TO_SCORE.whileTrue(
             new DeferredCommand(
                 () -> scoreCoral.driveToReefOdometry(),
                 Set.of(swerve)
