@@ -1,6 +1,13 @@
 package frc.robot;
 
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
 
 public final class Constants {
     public final class SHARED {
@@ -21,7 +28,8 @@ public final class Constants {
     }
 
     public final class MEASUREMENTS {
-        public static final double FIELD_LENGTH_METERS = 16.5410515;
+        public static final double FIELD_LENGTH_METERS = 17.548;
+        public static final double FIELD_WIDTH_METERS = 8.052;
     }
 
     public final class CONTROLLERS {
@@ -41,9 +49,10 @@ public final class Constants {
     }
 
     public final class CAN {
-        public static final int PIVOT_MOTOR_CAN_ID = 30; //TODO Change these value to correct value
-        //public static final int INTAKE_TOP_MOTOR_CAN_ID = 29;
-        public static final int INTAKE_BOTTOM_MOTOR_CAN_ID = 31;
+        public static final int PIVOT_MOTOR_CAN_ID = 30; //TODO Figure out the CAN ID for the wrist and the grip motor
+        public static final int INTAKE_WRIST_MOTOR_CAN_ID = -1; // TODO: Rename the These to match the motor class 
+        public static final int INTAKE_INNER_MOTOR_CAN_ID = -1;
+        public static final int INTAKE_OUTER_MOTOR_CAN_ID = -1;
         
         public static final int SWERVE_BLACK_FRONT_LEFT_DRIVE_CAN_ID = 17;
         public static final int SWERVE_BLACK_FRONT_LEFT_STEER_CAN_ID = 9;
@@ -65,7 +74,10 @@ public final class Constants {
 
         public static final int PDH_CAN_ID = 1;
 
-        public static final int INTAKE_INNER_MOTOR_CAN_ID = 29;
+        public static final int BACK_EXTENSION_MOTOR_CAN_ID = 44;
+        public static final int FORWARD_EXTENSION_MOTOR_CAN_ID = 43;
+        public static final int CLOCK_ARM_CAN_ID = 0;
+        public static final int WRIST_CAN_ID = 0;
     }
 
     public final class POWER {
@@ -96,6 +108,21 @@ public final class Constants {
 
         public static final int MAX_LOCK_LOSS_TICKS = 20;
 
+        public static final Transform3d CAMERA_OFFSETS = new Transform3d(new Translation3d(0.14, -0.05, 0.245), new Rotation3d(0, Math.toRadians(-12), 0));
+
+        public static final Pose2d SOUTH_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get().toPose2d();
+        public static final Pose2d SOUTH_WEST_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(19).get().toPose2d();
+        public static final Pose2d NORTH_WEST_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(20).get().toPose2d();
+        public static final Pose2d NORTH_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(21).get().toPose2d();
+        public static final Pose2d NORTH_EAST_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(22).get().toPose2d();
+        public static final Pose2d SOUTH_EAST_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(17).get().toPose2d();
+
+        public static final Pose2d SOUTH_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(7).get().toPose2d();
+        public static final Pose2d SOUTH_WEST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(6).get().toPose2d();
+        public static final Pose2d NORTH_WEST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(11).get().toPose2d();
+        public static final Pose2d NORTH_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(10).get().toPose2d();
+        public static final Pose2d NORTH_EAST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(9).get().toPose2d();
+        public static final Pose2d SOUTH_EAST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(8).get().toPose2d();
     }
 
     public final class PIVOT {
@@ -121,30 +148,12 @@ public final class Constants {
     }
     
     public final class INTAKE {
-        public static final double TOP_MOTOR_INTAKE_SPEED = 0.5;
-        public static final double BOTTOM_MOTOR_INTAKE_SPEED = 0.5;
-        
-        public static final double TOP_MOTOR_SCORE_SPEED = -0.5;
-        public static final double BOTTOM_MOTOR_SCORE_SPEED = -0.5; 
-
-        public static final double TOP_MOTOR_SLOW_SCORE_SPEED = -0.1;
-        public static final double BOTTOM_MOTOR_SLOW_SCORE_SPEED = -0.1;
-        
-        public static final double TOP_MOTOR_OUTTAKE_SPEED = -0.25;
-        public static final double BOTTOM_MOTOR_OUTTAKE_SPEED = -0.25;
-        
-        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 5;
-
-        public static final double TOP_MOTOR_DEFAULT_SPEED = 0.1;
-        public static final double BOTTOM_MOTOR_DEFAULT_SPEED = 0.1;
-
         public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Intake/";
-        
-        public static final double INNER_MOTOR_INTAKE_VELOCITY = -1000;
-        //public static final double OUTER_MOTOR_INTAKE_VELOCITY = 0.5;
-
-        public static final double INNER_MOTOR_OUTAKE_VELOCITY = 1000;
-        //public static final double OUTER_MOTOR_OUTAKE_VELOCITY = 0.5;
+        public static final double INNER_MOTOR_INTAKE_VELOCITY = 1000; // TODO: Set the velocity 
+        public static final double OUTER_MOTOR_INTAKE_VELOCITY = 0;// TODO: Set the velocity 
+        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 0; // TODO: Set the ID  
+        public static final double INNER_MOTOR_OUTAKE_VELOCITY = 1000; // TODO: Set the velocity
+        public static final double OUTER_MOTOR_OUTAKE_VELOCITY = 0; // TODO: set the velociy
     }
 
     
@@ -176,6 +185,7 @@ public final class Constants {
 
         public static final double MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND = 4.73;
         public static final double MAX_TRANSLATIONAL_ACCELERATION = 2;
+        public static final TrajectoryConfig PATH_FOLLOW_TRAJECTORY_CONFIG = new TrajectoryConfig(4, 2);
         public static final double MAX_ROTATIONAL_VELOCITY_RADIANS_PER_SECOND = Math.toRadians(720);
         public static final double COUPLING_GEAR_RATIO = 3.5714285714285716;
         public static final double DRIVE_GEAR_RATIO = 6.746031746031747;
@@ -239,7 +249,7 @@ public final class Constants {
         public static final double WHITE_BACK_RIGHT_Y_POSITION = -8.375;
 
         //TODO: Double check that these still work
-        public static final double PATH_FOLLOW_TRANSLATE_kP = 6d;
+        public static final double PATH_FOLLOW_TRANSLATE_kP = 8d;
         public static final double PATH_FOLLOW_TRANSLATE_kI = 0d;
         public static final double PATH_FOLLOW_TRANSLATE_kD = 0d;
 
@@ -261,5 +271,46 @@ public final class Constants {
 
     public class SUPPLIERS{
         public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Suppliers/";
+    }
+
+    public class ELEVATOR{
+        public static final double L1_SCORE = -1.0;
+        public static final double L2_SCORE = -1.0;
+        public static final double L3_SCORE = -1.0;
+        public static final double L4_SCORE = -1.0;
+
+        public static final double L2_ALGAE_INTAKE = -1.0;
+        public static final double L3_ALGAE_INTAKE = -1.0;
+
+        public static final double GROUND_INTAKE = -1.0;
+        public static final double STOW = -1.0;
+        public static final double HUMAN_PLAYER_INTAKE = -1.0;
+        public static final double PROCESSOR = -1.0;
+        public static final double NET = -1.0;
+
+        public static final double EXTENSION_GEAR_RATIO = 0.25;
+        public static final double EXTENSION_DRUM_DIAMTER_INCHES = 1.0;
+
+        public static final double EXTENSION_INCHES_MAX = 18.0; //this is in inches
+        public static final double EXTENSION_INCHES_MIN = 0.5;
+
+        public static final double EXTENSION_POSITION_TOLERANCE = 1.0;
+        public static final double CLOCK_ARM_POSITION_TOLERANCE = 2.0;
+        public static final double WRIST_POSITION_TOLERANCE = 2.0;
+
+        public static final double CLOCK_ARM_GEAR_RATIO = 1/192.0;
+        public static final double WRIST_GEAR_RATIO = 1/75.0;
+
+        public static final String EXTENSION_LOG_PATH = SHARED.LOG_FOLDER+"/Extension/";
+        public static final String CLOCK_ARM_LOG_PATH = SHARED.LOG_FOLDER+"/Clock Arm/";
+        public static final String WRIST_LOG_PATH = SHARED.LOG_FOLDER+"/Wrist/";
+
+        public static final double ELEVATOR_P = 3.5;
+        public static final double ELEVATOR_I = 0;
+        public static final double ELEVATOR_D = 0;
+        public static final double ELEVATOR_S = 0.2;
+        public static final double ELEVATOR_V = 0;
+        public static final double ELEVATOR_A = 0;
+
     }
 }

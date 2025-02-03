@@ -1,9 +1,11 @@
 package frc.robot.subsystems.vision;    
 
+import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.*;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -15,13 +17,12 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.CORAL_ALIGN;
 
 public class Vision extends SubsystemBase{
     PhotonCamera camera = new PhotonCamera("Arducam_OV9782_B");
-    //one of these is 3.5cm from the lens
-    Transform3d cameraOffsets = new Transform3d(new Translation3d(2.5, 0, 16), new Rotation3d(0, 0, 0));
     AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
-    PhotonPoseEstimator estimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cameraOffsets);
+    PhotonPoseEstimator estimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, CORAL_ALIGN.CAMERA_OFFSETS);
 
     boolean targetVisible = false;
     double targetX = 0.0;
@@ -32,11 +33,12 @@ public class Vision extends SubsystemBase{
     double targetXRotation =0d;
     double targetYRotation =0d;
     double targetZRotation =0d;
-    
+    double targetAmbiguity = 0.0;
     double targetYawRotation = 0.0;
     double targetPitchRotation = 0.0;
     double targetRollRotation = 0.0;
- 
+    List<PhotonPipelineResult> results;
+
     public Vision(){
         SmartDashboard.putString("hi", "hi");
     }
@@ -52,7 +54,7 @@ public class Vision extends SubsystemBase{
          
          int targetId = 0;
          Transform3d bestCameraToTarget = new Transform3d();
-         var results = camera.getAllUnreadResults();
+         results = camera.getAllUnreadResults();
          SmartDashboard.putBoolean("results empty", results.isEmpty());
          if (!results.isEmpty()) {
              // Camera processed a new frame since last
@@ -62,6 +64,8 @@ public class Vision extends SubsystemBase{
              if (targetVisible) {
                 // At least one AprilTag was seen by the camera
                 PhotonTrackedTarget target = result.getBestTarget();
+                
+                targetAmbiguity = target.getPoseAmbiguity();
                 targetPitch = target.getPitch();
                 targetArea = target.getArea();
                 targetId = target.getFiducialId();
@@ -125,6 +129,14 @@ public class Vision extends SubsystemBase{
 
     public boolean getTargetVisible(){
         return targetVisible;
+    }
+
+    public double getPoseAmbiguityRatio(){
+        return targetAmbiguity;
+    }
+
+    public List<PhotonTrackedTarget> getTargets() {
+        return camera.getLatestResult().getTargets();
     }
 
     public Optional<EstimatedRobotPose> getRobotPoseVision() {

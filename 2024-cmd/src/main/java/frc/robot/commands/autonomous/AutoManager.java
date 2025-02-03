@@ -12,7 +12,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Robot;
 import frc.robot.Suppliers;
-import frc.robot.commands.autonomous.autos.TestAuto;
+import frc.robot.commands.autonomous.autos.FourCoralAuto;
+import frc.robot.commands.autonomous.autos.LeftSideLeaveSLAuto;
+import frc.robot.commands.autonomous.autos.ThreeCoralAuto;
+import frc.robot.commands.autonomous.autos.TwoCoralAuto;
 import frc.robot.commands.proxies.*;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.swerve.Swerve;
@@ -23,10 +26,10 @@ import frc.robot.subsystems.swerve.Swerve;
  */
 public final class AutoManager {
     private static Swerve swerve;
-    private static Intake intake;
-    public static void addSubsystems(Swerve swerve, Intake intake){
+    // private static Intake intake;
+    public static void addSubsystems(Swerve swerve){
         AutoManager.swerve = swerve;
-        AutoManager.intake = intake;
+        // AutoManager.intake = intake;
     }
 
     private static SendableChooser<AutoCommand> autoChooser;
@@ -43,12 +46,16 @@ public final class AutoManager {
     public static void prepare(){
         autoCommands = new ArrayList<>();
 
-        // autoCommands.add(new ExampleAuto());
-        autoCommands.add(new TestAuto());
-        // TODO: Add autos here
 
+        // autoCommands.add(new ExampleAuto());
+        // TODO: Add autos here
+        autoCommands.add(new LeftSideLeaveSLAuto());
+        autoCommands.add(new TwoCoralAuto());
+        autoCommands.add(new ThreeCoralAuto());
+        autoCommands.add(new FourCoralAuto());
 
         autoChooser = new SendableChooser<>();
+        
         autoChooser.setDefaultOption("DEFAULT - No auto", new AutoCommand());
         for(AutoCommand c : autoCommands){
             autoChooser.addOption(

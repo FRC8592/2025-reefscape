@@ -18,10 +18,10 @@ import frc.robot.subsystems.swerve.*;
  */
 public class AutoCommand extends WrapperCommand{
     protected static Swerve swerve;
-    protected static Intake intake;
-    public static void addSubsystems(Swerve swerve, Intake intake){
+    // protected static Intake intake;
+    public static void addSubsystems(Swerve swerve){
         AutoCommand.swerve = swerve;
-        AutoCommand.intake = intake;
+        // AutoCommand.intake = intake;
     }
 
     /**
@@ -66,15 +66,17 @@ public class AutoCommand extends WrapperCommand{
             return cachedChoreoTrajectories.get(name);
         }
         else{
-            /*try{
-               Trajectory wpilibTrajectory = fromChoreoPath((choreo.trajectory.Trajectory<SwerveSample>) Choreo.loadTrajectory(name).get());
+            try{
+            //    Trajectory wpilibTrajectory = fromChoreoPath((choreo.trajectory.Trajectory<SwerveSample>) Choreo.loadTrajectory(name).get());
+               Trajectory wpilibTrajectory = new Trajectory();
+
                 cachedChoreoTrajectories.put(name, wpilibTrajectory);
                 return wpilibTrajectory;
             }
             catch(Exception e){
                 throw new RuntimeException(e);
-            }*/
-            return new Trajectory();
+            }
+            // return new Trajectory();
         }
     }
 

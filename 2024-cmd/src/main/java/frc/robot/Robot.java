@@ -56,6 +56,7 @@ public class Robot extends LoggedRobot {
         Logger.recordMetadata("Robot", "Zenith");
         Logger.recordMetadata("Team", "8592");
 
+        Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
         if (isReal()) { // If running on a real robot
             String time = DateTimeFormatter.ofPattern("yy-MM-dd_HH-mm-ss").format(LocalDateTime.now());
 
@@ -74,14 +75,13 @@ public class Robot extends LoggedRobot {
                     System.err.println("UNABLE TO LOG TO A USB STICK!");
                 }
             }
-
-            Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
             LoggedPowerDistribution.getInstance(1, ModuleType.kRev);// Enables power distribution logging
-            Logger.start();
         }
         else { // If simulated
             SmartDashboard.putData(FIELD);
         }
+        Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+        Logger.start();
         robotContainer = new RobotContainer();
     }
 

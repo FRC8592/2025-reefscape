@@ -8,13 +8,12 @@ import frc.robot.subsystems.swerve.Swerve;
 public abstract class LargeCommand extends Command {
     protected static Swerve swerve;
     protected static Intake intake;
-    public static void addSubsystems(Swerve swerve, Intake intake){
+    public static void addSubsystems(Swerve swerve){
         LargeCommand.swerve = swerve;
-        LargeCommand.intake = intake;
     }
     // Require at least one subsystem to be passed in
     public LargeCommand(Subsystem requirement1, Subsystem... moreRequirements){
         addRequirements(requirement1);
         addRequirements(moreRequirements);
     }
-}
+} 

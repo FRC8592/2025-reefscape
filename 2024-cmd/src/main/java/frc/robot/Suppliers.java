@@ -51,11 +51,9 @@ public final class Suppliers {
     }
 
     private static Swerve swerve;
-    private static Intake intake;
 
-    public static void addSubsystems(Swerve swerve, Intake intake){
+    public static void addSubsystems(Swerve swerve){
         Suppliers.swerve = swerve;
-        Suppliers.intake = intake;
     }
 
     /**
@@ -64,7 +62,7 @@ public final class Suppliers {
      * inaccessible.
      */
     public static final LoggedBooleanSupplier robotRunningOnRed = new LoggedBooleanSupplier(
-        () -> DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue,
+        () -> DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red,
         "RobotRunningOnRed"
     );
 
