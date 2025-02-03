@@ -62,7 +62,7 @@ public final class Suppliers {
      * inaccessible.
      */
     public static final LoggedBooleanSupplier robotRunningOnRed = new LoggedBooleanSupplier(
-        () -> DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue,
+        () -> DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red,
         "RobotRunningOnRed"
     );
 

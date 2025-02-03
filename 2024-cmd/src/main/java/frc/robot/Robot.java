@@ -56,6 +56,7 @@ public class Robot extends LoggedRobot {
         Logger.recordMetadata("Robot", "Zenith");
         Logger.recordMetadata("Team", "8592");
 
+        Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
         if (isReal()) { // If running on a real robot
             String time = DateTimeFormatter.ofPattern("yy-MM-dd_HH-mm-ss").format(LocalDateTime.now());
 

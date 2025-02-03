@@ -1,4 +1,4 @@
-package frc.robot.subsystems.vision;    
+package frc.robot.subsystems;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,31 +14,13 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CORAL_ALIGN;
 
 public class Vision extends SubsystemBase{
     PhotonCamera camera = new PhotonCamera("Arducam_OV9782_B");
-    AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
-    PhotonPoseEstimator estimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, CORAL_ALIGN.CAMERA_OFFSETS);
-
-    boolean targetVisible = false;
-    double targetX = 0.0;
-    double targetY = 0.0;
-    double targetZ = 0.0;
-    double targetPitch = 0.0;
-    double targetArea = 0.0;
-    double targetXRotation =0d;
-    double targetYRotation =0d;
-    double targetZRotation =0d;
-    double targetAmbiguity = 0.0;
-    double targetYawRotation = 0.0;
-    double targetPitchRotation = 0.0;
-    double targetRollRotation = 0.0;
-    List<PhotonPipelineResult> results;
-
+ 
     public Vision(){
         SmartDashboard.putString("hi", "hi");
     }

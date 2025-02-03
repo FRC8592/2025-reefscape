@@ -13,13 +13,21 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.*;
 import frc.robot.commands.largecommands.FollowPathCommand;
 import frc.robot.subsystems.Intake;
+import frc.robot.Constants.INTAKE;
+import frc.robot.subsystems.elevator.*;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 
 public final class NewtonCommands {
     private static Swerve swerve;
-    public static void addSubsystems(Swerve swerve){
+    private static Intake intake;
+    private static Elevator elevator;
+    
+    public static void addSubsystems(Swerve swerve, Elevator elevator){
         NewtonCommands.swerve = swerve;
+        NewtonCommands.elevator = elevator;
+
     }
 
     /**
@@ -44,25 +52,75 @@ public final class NewtonCommands {
             swerve.drive(processed, DriveModes.AUTOMATIC);
         });
     }
+    // command for taking in coral
+    public static Command intakeCommand(){
+        return intake.run(()-> {
+            intake.runInnerMotor(INTAKE.INNER_MOTOR_INTAKE_VELOCITY);
+        });
+    }
+    // command for release coral for scoring
+    public static Command outtakeCommand() {
+        return intake.run(() -> {
+            intake.runInnerMotor(INTAKE.INNER_MOTOR_OUTAKE_VELOCITY);
+        });
+    }
 
-    //  // command for taking in coral 
-    //  public static Command intakeCommand(){
-    //     return intake.run(() ->{
-    //         intake.runInnerMotor(INTAKE.INNER_MOTOR_INTAKE_VELOCITY);
-    //     });
+    public static Command primeL1Command(){
+        return Commands.none();
+    }
 
-    // }
+    public static Command primeL2Command(){
+        return Commands.none();
+    }
 
-    // //command for the release of the coral for scoring 
-    // public static Command outakeCommand(){
-    //     return intake.run(() ->{
-    //         intake.runInnerMotor(INTAKE.INNER_MOTOR_OUTAKE_VELOCITY);
-    //     });
-    // }
+    public static Command primeL3Command(){
+        return Commands.none();
+    }
 
-    // public static Command stopIntakeComand(){
-    //     return intake.run(() -> {
-    //         intake.runInnerMotor(0);
-    //     });
-    // }
+    public static Command primeL4Command(){
+        return Commands.none();
+    }
+
+    public static Command groundIntakeCommand(){
+        return Commands.none();
+    }
+
+    public static Command stowCommand(){
+        return Commands.none();
+    }
+
+    public static Command primeL2AlgaeCommand(){
+        return Commands.none();
+    }
+
+    public static Command primeL3AlgaeCommand(){
+        return Commands.none();
+    }
+
+    public static Command goToPrimePositionCommand(){
+        return Commands.none();
+    }
+
+    public static Command primeProcessorCommand(){
+        return Commands.none();
+    }
+
+    public static Command primeNetCommand(){
+        return Commands.none();
+    }
+
+
+    /**
+     * Currently Commands.none(). Update this comment when the command is added.
+     *
+     * @param position
+     * @return Commands.none()
+     */
+
+    /**
+     * Command to stop the intake and stow the pivot to REST position
+     * @return the command
+     */
 }
+
+

@@ -28,7 +28,8 @@ public final class Constants {
     }
 
     public final class MEASUREMENTS {
-        public static final double FIELD_LENGTH_METERS = 16.5410515;
+        public static final double FIELD_LENGTH_METERS = 17.548;
+        public static final double FIELD_WIDTH_METERS = 8.052;
     }
 
     public final class CONTROLLERS {
@@ -48,9 +49,10 @@ public final class Constants {
     }
 
     public final class CAN {
-        public static final int PIVOT_MOTOR_CAN_ID = 30; //TODO Change these value to correct value
-        //public static final int INTAKE_TOP_MOTOR_CAN_ID = 29;
-        public static final int INTAKE_BOTTOM_MOTOR_CAN_ID = 31;
+        public static final int PIVOT_MOTOR_CAN_ID = 30; //TODO Figure out the CAN ID for the wrist and the grip motor
+        public static final int INTAKE_WRIST_MOTOR_CAN_ID = -1; // TODO: Rename the These to match the motor class 
+        public static final int INTAKE_INNER_MOTOR_CAN_ID = -1;
+        public static final int INTAKE_OUTER_MOTOR_CAN_ID = -1;
         
         public static final int SWERVE_BLACK_FRONT_LEFT_DRIVE_CAN_ID = 17;
         public static final int SWERVE_BLACK_FRONT_LEFT_STEER_CAN_ID = 9;
@@ -72,7 +74,10 @@ public final class Constants {
 
         public static final int PDH_CAN_ID = 1;
 
-        public static final int INTAKE_INNER_MOTOR_CAN_ID = 29;
+        public static final int BACK_EXTENSION_MOTOR_CAN_ID = 44;
+        public static final int FORWARD_EXTENSION_MOTOR_CAN_ID = 43;
+        public static final int CLOCK_ARM_CAN_ID = 0;
+        public static final int WRIST_CAN_ID = 0;
     }
 
     public final class POWER {
@@ -143,30 +148,12 @@ public final class Constants {
     }
     
     public final class INTAKE {
-        public static final double TOP_MOTOR_INTAKE_SPEED = 0.5;
-        public static final double BOTTOM_MOTOR_INTAKE_SPEED = 0.5;
-        
-        public static final double TOP_MOTOR_SCORE_SPEED = -0.5;
-        public static final double BOTTOM_MOTOR_SCORE_SPEED = -0.5; 
-
-        public static final double TOP_MOTOR_SLOW_SCORE_SPEED = -0.1;
-        public static final double BOTTOM_MOTOR_SLOW_SCORE_SPEED = -0.1;
-        
-        public static final double TOP_MOTOR_OUTTAKE_SPEED = -0.25;
-        public static final double BOTTOM_MOTOR_OUTTAKE_SPEED = -0.25;
-        
-        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 5;
-
-        public static final double TOP_MOTOR_DEFAULT_SPEED = 0.1;
-        public static final double BOTTOM_MOTOR_DEFAULT_SPEED = 0.1;
-
         public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Intake/";
-        
-        public static final double INNER_MOTOR_INTAKE_VELOCITY = -1000;
-        //public static final double OUTER_MOTOR_INTAKE_VELOCITY = 0.5;
-
-        public static final double INNER_MOTOR_OUTAKE_VELOCITY = 1000;
-        //public static final double OUTER_MOTOR_OUTAKE_VELOCITY = 0.5;
+        public static final double INNER_MOTOR_INTAKE_VELOCITY = 1000; // TODO: Set the velocity 
+        public static final double OUTER_MOTOR_INTAKE_VELOCITY = 0;// TODO: Set the velocity 
+        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 0; // TODO: Set the ID  
+        public static final double INNER_MOTOR_OUTAKE_VELOCITY = 1000; // TODO: Set the velocity
+        public static final double OUTER_MOTOR_OUTAKE_VELOCITY = 0; // TODO: set the velociy
     }
 
     
@@ -285,4 +272,45 @@ public final class Constants {
     public class SUPPLIERS{
         public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Suppliers/";
     }
-};
+
+    public class ELEVATOR{
+        public static final double L1_SCORE = -1.0;
+        public static final double L2_SCORE = -1.0;
+        public static final double L3_SCORE = -1.0;
+        public static final double L4_SCORE = -1.0;
+
+        public static final double L2_ALGAE_INTAKE = -1.0;
+        public static final double L3_ALGAE_INTAKE = -1.0;
+
+        public static final double GROUND_INTAKE = -1.0;
+        public static final double STOW = -1.0;
+        public static final double HUMAN_PLAYER_INTAKE = -1.0;
+        public static final double PROCESSOR = -1.0;
+        public static final double NET = -1.0;
+
+        public static final double EXTENSION_GEAR_RATIO = 0.25;
+        public static final double EXTENSION_DRUM_DIAMTER_INCHES = 1.0;
+
+        public static final double EXTENSION_INCHES_MAX = 18.0; //this is in inches
+        public static final double EXTENSION_INCHES_MIN = 0.5;
+
+        public static final double EXTENSION_POSITION_TOLERANCE = 1.0;
+        public static final double CLOCK_ARM_POSITION_TOLERANCE = 2.0;
+        public static final double WRIST_POSITION_TOLERANCE = 2.0;
+
+        public static final double CLOCK_ARM_GEAR_RATIO = 1/192.0;
+        public static final double WRIST_GEAR_RATIO = 1/75.0;
+
+        public static final String EXTENSION_LOG_PATH = SHARED.LOG_FOLDER+"/Extension/";
+        public static final String CLOCK_ARM_LOG_PATH = SHARED.LOG_FOLDER+"/Clock Arm/";
+        public static final String WRIST_LOG_PATH = SHARED.LOG_FOLDER+"/Wrist/";
+
+        public static final double ELEVATOR_P = 3.5;
+        public static final double ELEVATOR_I = 0;
+        public static final double ELEVATOR_D = 0;
+        public static final double ELEVATOR_S = 0.2;
+        public static final double ELEVATOR_V = 0;
+        public static final double ELEVATOR_A = 0;
+
+    }
+}
