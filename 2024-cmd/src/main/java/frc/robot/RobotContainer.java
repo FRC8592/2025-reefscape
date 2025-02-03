@@ -107,13 +107,11 @@ public class RobotContainer {
     public RobotContainer() {
         swerve = new Swerve();
         vision = new Vision();
-        scoreCoral = new ScoreCoral(swerve, vision);
+        scoreCoral = new ScoreCoral(swerve);
         intake = new Intake();
         elevator = new Elevator();
-        // TODO: Add more subsystems and instantiatable helpers here
         odometryUpdates = new OdometryUpdates(swerve, vision);
 
-        scoreCoral.setTarget(tag18PositionOffset);
 
         passSubsystems();
         configureBindings();
