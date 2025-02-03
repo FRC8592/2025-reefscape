@@ -211,8 +211,8 @@ public final class Constants {
         public static final double EXTENSION_GEAR_RATIO = 0.25;
         public static final double EXTENSION_DRUM_DIAMTER_INCHES = 1.0;
 
-        public static final double EXTENSION_INCHES_MAX = 15.0; //this is in inches
-        public static final double EXTENSION_INCHES_MIN = 1.0;
+        public static final double EXTENSION_INCHES_MAX = 18.0; //this is in inches
+        public static final double EXTENSION_INCHES_MIN = 0.5;
 
         public static final double EXTENSION_POSITION_TOLERANCE = 1.0;
         public static final double CLOCK_ARM_POSITION_TOLERANCE = 2.0;

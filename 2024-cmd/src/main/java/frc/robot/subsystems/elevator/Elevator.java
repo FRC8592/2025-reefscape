@@ -48,10 +48,13 @@ public class Elevator extends SubsystemBase{
     }
 
     public Elevator(){
-        PIDProfile pid = new PIDProfile();
-        pid.setPID(ELEVATOR.ELEVATOR_P, ELEVATOR.ELEVATOR_I, ELEVATOR.ELEVATOR_D);
+        PIDProfile positionPid = new PIDProfile();
+        positionPid.setPID(ELEVATOR.ELEVATOR_P, ELEVATOR.ELEVATOR_I, ELEVATOR.ELEVATOR_D);
         
-    
+        PIDProfile velocityPid = new PIDProfile();
+        velocityPid.setPID(0.001, 0, 0);
+        velocityPid.setS(0.1);
+
         leftExtensionMotor = new KrakenX60Motor(CAN.BACK_EXTENSION_MOTOR_CAN_ID, true);
         rightExtensionMotor = new KrakenX60Motor(CAN.FORWARD_EXTENSION_MOTOR_CAN_ID);
 
@@ -66,11 +69,12 @@ public class Elevator extends SubsystemBase{
         leftExtensionMotor.setCurrentLimit(80);
         rightExtensionMotor.setCurrentLimit(80);
 
-        leftExtensionMotor.withGains(pid, 0);
+        leftExtensionMotor.withGains(positionPid, 0);
+        leftExtensionMotor.withGains(velocityPid, 1);
 
-        leftExtensionMotor.configureMotionMagic(100, 40);
+        leftExtensionMotor.configureMotionMagic(600, 100);
 
-        SmartDashboard.putData("Elevator PID", pid);
+        SmartDashboard.putData("Elevator PID", positionPid);
 
         setPercentOutput(0);
         targetExtension = 0;
@@ -131,8 +135,13 @@ public class Elevator extends SubsystemBase{
     }
 
     public Command holdPositionCommand(){
-        return setExtensionCommand(getExtensionPositionInches()); 
+        return setExtensionCommand(targetExtension); 
     }
     
+    public Command snapshotPositionCommand(){
+        return this.runOnce(()-> {targetExtension = getExtensionPositionInches();
+        });
+    }
+
 
 }

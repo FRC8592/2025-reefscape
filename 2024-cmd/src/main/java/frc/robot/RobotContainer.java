@@ -204,9 +204,9 @@ public class RobotContainer {
         // STOW.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.STOW));
         // PRIME.onTrue(NewtonCommands.goToPrimePositionCommand());
 
-        ELEVATOR_UP.whileTrue(elevator.setExtensionCommand(15)).onFalse(elevator.stopCommand());
-        ELEVATOR_MID.whileTrue(elevator.setExtensionCommand(10)).onFalse(elevator.stopCommand());
-        ELEVATOR_DOWN.whileTrue(elevator.setExtensionCommand(2)).onFalse(elevator.stopCommand());
+        ELEVATOR_UP.whileTrue(elevator.setExtensionCommand(18));
+        ELEVATOR_MID.whileTrue(elevator.setExtensionCommand(10));
+        ELEVATOR_DOWN.whileTrue(elevator.setExtensionCommand(0.5));
 
         // ELEVATOR_UP.whileTrue(elevator.gotoPosition(10));
         // ELEVATOR_UP.whileTrue(elevator.gotoPosition(10));
