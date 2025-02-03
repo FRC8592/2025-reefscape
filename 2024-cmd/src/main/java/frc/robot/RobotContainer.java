@@ -13,6 +13,7 @@ import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.OdometryUpdates;
 import frc.robot.subsystems.ScoreCoral;
 import frc.robot.subsystems.ScoreCoral.LeftOrRight;
 import frc.robot.subsystems.ScoreCoral.ScoreLevels;
@@ -51,6 +52,7 @@ public class RobotContainer {
     // private final Intake intake;
     //TODO: Add more subsystems here
     private ScoreCoral scoreCoral;
+    private OdometryUpdates odometryUpdates;
 
     //temporary constants for testing driving
     Pose2d tag18Position = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get().toPose2d();
@@ -68,8 +70,8 @@ public class RobotContainer {
         swerve = new Swerve();
         vision = new Vision();
         // intake = new Intake();
-        scoreCoral = new ScoreCoral(swerve, vision);
-        // TODO: Add more subsystems and instantiatable helpers here
+        scoreCoral = new ScoreCoral(swerve);
+        odometryUpdates = new OdometryUpdates(swerve, vision);
 
         scoreCoral.setTarget(tag18PositionOffset);
 
@@ -190,7 +192,7 @@ public class RobotContainer {
 
         // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
         driverController.a().whileTrue(
-            Commands.run(() -> scoreCoral.driveToReef())
+            Commands.run(() -> scoreCoral.driveToReef(), swerve)
         );
 
         // operatorController.leftTrigger().onTrue(

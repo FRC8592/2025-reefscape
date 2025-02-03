@@ -82,6 +82,9 @@ public final class Constants {
         public static final Transform3d CAMERA_OFFSETS = new Transform3d(new Translation3d(0.14, -0.05, 0.245), new Rotation3d(0, Math.toRadians(-12), 0));
 
     }
+    public final class NAVIGATION {
+        public static final double MAX_ACCEPTABLE_AMBIGUITY = 0.2;
+    }
 
     public final class PIVOT {
         public static final int GROUND_DEGREES = 0;
