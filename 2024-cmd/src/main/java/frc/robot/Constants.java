@@ -58,20 +58,6 @@ public final class Constants {
         public static final int SWERVE_BLACK_FRONT_LEFT_STEER_CAN_ID = 9;
         public static final int SWERVE_BLACK_FRONT_LEFT_ENCODER_CAN_ID = 13;
 
-        public static final int SWERVE_ORANGE_FRONT_RIGHT_DRIVE_CAN_ID = 7;
-        public static final int SWERVE_ORANGE_FRONT_RIGHT_STEER_CAN_ID = 8;
-        public static final int SWERVE_ORANGE_FRONT_RIGHT_ENCODER_CAN_ID = 12;
-
-        public static final int SWERVE_TEAL_BACK_LEFT_DRIVE_CAN_ID = 18;
-        public static final int SWERVE_TEAL_BACK_LEFT_STEER_CAN_ID = 4;
-        public static final int SWERVE_TEAL_BACK_LEFT_ENCODER_CAN_ID = 10;
-
-        public static final int SWERVE_WHITE_BACK_RIGHT_DRIVE_CAN_ID = 5;
-        public static final int SWERVE_WHITE_BACK_RIGHT_STEER_CAN_ID = 6;
-        public static final int SWERVE_WHITE_BACK_RIGHT_ENCODER_CAN_ID = 11;
-
-        public static final int PIGEON_CAN_ID = 20;
-
         public static final int PDH_CAN_ID = 1;
 
         public static final int BACK_EXTENSION_MOTOR_CAN_ID = 44;
@@ -104,7 +90,7 @@ public final class Constants {
         public static final double Y_OFFSET_RIGHT = 0.155;
         public static final double ROT_OFFSET = 0d;
         public static final double SPEED_SCALE = 1.0;
-        public static final double SPEED_MAX = 0.6; // originally 0.65
+        public static final double SPEED_MAX = 0.2; // originally 0.65
 
         public static final int MAX_LOCK_LOSS_TICKS = 20;
 
@@ -123,6 +109,9 @@ public final class Constants {
         public static final Pose2d NORTH_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(10).get().toPose2d();
         public static final Pose2d NORTH_EAST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(9).get().toPose2d();
         public static final Pose2d SOUTH_EAST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(8).get().toPose2d();
+    }
+    public final class NAVIGATION {
+        public static final double MAX_ACCEPTABLE_AMBIGUITY = 0.2;
     }
 
     public final class PIVOT {
@@ -202,8 +191,8 @@ public final class Constants {
         public static final double DRIVE_FRICTION_VOLTAGE = 0.25;
 
         //TODO: Tone these down appropriately as per BB rules
-        public static final double TRANSLATE_POWER_FAST = 1.0;
-        public static final double ROTATE_POWER_FAST = 0.75;
+        public static final double TRANSLATE_POWER_FAST = 1.0; 
+        public static final double ROTATE_POWER_FAST = 0.75; 
         public static final double TRANSLATE_POWER_SLOW = 0.5;
         public static final double ROTATE_POWER_SLOW = 0.3;
 

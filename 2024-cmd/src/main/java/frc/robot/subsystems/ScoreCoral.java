@@ -7,16 +7,12 @@ package frc.robot.subsystems;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.Trajectory.State;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -27,7 +23,6 @@ import java.util.Optional;
 import java.util.Queue;
 
 import org.littletonrobotics.junction.Logger;
-import org.photonvision.EstimatedRobotPose;
 
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
@@ -41,15 +36,13 @@ public class ScoreCoral extends SubsystemBase {
     public static ChassisSpeeds speedZero = new ChassisSpeeds();
 
     private Swerve swerve;
-    private Vision vision;
-
-    private int ticks_stopped;
     
     private PIDController xController = new PIDController(CORAL_ALIGN.X_KP, CORAL_ALIGN.X_KI, CORAL_ALIGN.X_KD);
     private PIDController yController = new PIDController(CORAL_ALIGN.Y_KP, CORAL_ALIGN.Y_KI, CORAL_ALIGN.Y_KD);
     private PIDController rotController = new PIDController(CORAL_ALIGN.ROT_KP, CORAL_ALIGN.ROT_KI, CORAL_ALIGN.ROT_KD);
 
-    
+    //The AprilTag target taken from vision
+    private Pose2d target;
     
     //These enums are for the setPosition() method that will set the coral scoring level and its respective direction
 
@@ -58,7 +51,6 @@ public class ScoreCoral extends SubsystemBase {
         Level2,
         Level3,
         Level4,
-    
     };
 
     public enum LeftOrRight{
@@ -104,58 +96,11 @@ public class ScoreCoral extends SubsystemBase {
     private ReefPositions position = ReefPositions.South;
     private int heartbeat = 0;
 
-    public ScoreCoral(Swerve swerve, Vision vision) {
+    public ScoreCoral(Swerve swerve) {
         this.swerve = swerve;
-        this.vision = vision;
-
-    }
-
-    public void initialize() {  
-        
-        Optional<EstimatedRobotPose> robot_pose = vision.getRobotPoseVision();
-    
-        if (robot_pose.isPresent()) {
-            Pose2d robotPosition = robot_pose.get().estimatedPose.toPose2d();
-            swerve.resetPose(robotPosition);
-            Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/InitialPose", robotPosition);
-
-        }
-
     }
 
     public void periodic() {
-        if (DriverStation.isDisabled()){
-            Optional<EstimatedRobotPose> robot_pose = vision.getRobotPoseVision();
-        
-            if (robot_pose.isPresent()) {
-                Pose2d robotPosition = robot_pose.get().estimatedPose.toPose2d();
-                double ambiguity = vision.getPoseAmbiguityRatio();
-                Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/AmbiguityRatio", ambiguity);
-                Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/TagsInView", vision.getTargets().size());
-                if(Math.abs(ambiguity) < 0.2 && vision.getTargets().size() > 1) {
-                    swerve.resetPose(robotPosition);
-                    Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/InitialPose", robotPosition);
-                }
-
-            }
-        } else {
-            Optional<EstimatedRobotPose> robot_pose = vision.getRobotPoseVision();
-            
-            if (robot_pose.isPresent()) {
-                EstimatedRobotPose robotPosition = robot_pose.get();
-
-                if (vision.getTargets().size() > 1) {
-                    swerve.addVisionMeasurement(robotPosition.estimatedPose.toPose2d(), robotPosition.timestampSeconds);
-                }
-
-                heartbeat++;
-                Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/TagsInView", vision.getTargets().size());
-                Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/VisionPose", robotPosition.estimatedPose.toPose2d());
-                Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/Hearbeat", heartbeat);
-            }
-            Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/SwervePosition", swerve.getCurrentPosition());
-        }
-
         
     }
 
@@ -178,91 +123,62 @@ public class ScoreCoral extends SubsystemBase {
     public void drive(ChassisSpeeds speeds){
         // TODO: implement something that allows the commented code to work
         swerve.drive(speeds);
+    } 
+
+    public void setTarget(Pose2d target){
+        this.target = target;
     }
 
-
-
-
-
-
+    public Pose2d getTarget(){
+        return target;
+    }
 
     public void driveToReef() {
         // Setting the x speed, y speed,rotating speed
         double xSpeed = 0d, ySpeed = 0d, rotSpeed = 0d;
-        double yOffset = 0d;
 
+        Pose2d currentPosition = swerve.getCurrentPosition();
+        double xDistance = target.getX() - currentPosition.getX();
+        double yDistance = target.getY() - currentPosition.getY();
+        //TODO: ensure if correct
+        double rotDistance = target.getRotation().getDegrees() - currentPosition.getRotation().getDegrees();
+        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/xDistance", xDistance);
+        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/yDistance", yDistance);
+        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/rotDistance", rotDistance);
 
-        Logger.recordOutput("CustomLog/Scorecoral/Target Visible", vision.getTargetVisible());
+        Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/Target", target);
+        
+        xSpeed = xController.calculate(xDistance);
+        xSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, xSpeed);
+        xSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, xSpeed);
 
-        if (vision.getTargetVisible() == true){
-            
-            if (direction == LeftOrRight.Left) {
-                yOffset = -CORAL_ALIGN.Y_OFFSET_LEFT;
-            }
-            else {
-                yOffset = CORAL_ALIGN.Y_OFFSET_RIGHT;
-            }
-            
-            ySpeed = xController.calculate(vision.getTargetX(), CORAL_ALIGN.X_OFFSET);
-            ySpeed = Math.min(CORAL_ALIGN.SPEED_MAX, ySpeed);
-            ySpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, ySpeed);
+        xSpeed = -xSpeed * CORAL_ALIGN.SPEED_SCALE;
 
-            ySpeed = ySpeed * CORAL_ALIGN.SPEED_SCALE;
+        ySpeed = yController.calculate(yDistance);
+        ySpeed = Math.min(CORAL_ALIGN.SPEED_MAX, ySpeed);
+        ySpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, ySpeed);
 
-            xSpeed = yController.calculate(vision.getTargetY(), yOffset);
-            xSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, xSpeed);
-            xSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, xSpeed);
-    
-            xSpeed = xSpeed * CORAL_ALIGN.SPEED_SCALE;
-    
-            rotSpeed = rotController.calculate(vision.getTargetYaw(), CORAL_ALIGN.ROT_OFFSET);
-            rotSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, rotSpeed);
-            rotSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, rotSpeed);
-    
-            rotSpeed = -rotSpeed * CORAL_ALIGN.SPEED_SCALE;
-            
-            //only horizontal movement while moving to the apriltag
-            //if xSpeed greater than ySpeed  
-            if (Math.abs(xSpeed) > Math.abs(ySpeed)) {
-                xSpeed = 0; 
-            } 
+        ySpeed = -ySpeed * CORAL_ALIGN.SPEED_SCALE;
 
-            ChassisSpeeds speed = swerve.processJoystickInputs(xSpeed, ySpeed, rotSpeed);
-            SmartDashboard.putString("ChassisSpeedJoystick", speed.toString());
-            Logger.recordOutput("speed", speed);
-            swerve.drive(speed, DriveModes.ROBOT_RELATIVE);
-            ticks_stopped = 0;
+        rotSpeed = rotController.calculate(rotDistance);
+        rotSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, rotSpeed);
+        rotSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, rotSpeed);
 
-        } else {
-            if (ticks_stopped >= CORAL_ALIGN.MAX_LOCK_LOSS_TICKS) {
-                swerve.drive(Swerve.speedZero);
-            }
-            ticks_stopped += 1;
-        }
+        rotSpeed = -rotSpeed * CORAL_ALIGN.SPEED_SCALE;
+
+        //Field-relative x, y axis and joystick x, y axis are flipped (i.g. field x is joystick y)
+        ChassisSpeeds speed = swerve.processJoystickInputs(ySpeed, xSpeed, rotSpeed);
+        SmartDashboard.putString("ChassisSpeedJoystick", speed.toString());
+        Logger.recordOutput("speed", speed);
+        swerve.drive(speed, DriveModes.FIELD_RELATIVE);
 
         SmartDashboard.putNumber("Provided XSpeed", xSpeed);
         SmartDashboard.putNumber("Provided YSpeed", ySpeed);
+        SmartDashboard.putNumber("Provided RotSpeed", rotSpeed);
 
-        heartbeat++;
-        Logger.recordOutput("CustomLogs/Scorecoral/heartbeat", heartbeat);
-        Logger.recordOutput("CustomLogs/Scorecoral/direction", direction);
-            
-    }
-
-    public Command driveToReefVision() {
-
-
-        Optional<EstimatedRobotPose> robot_pose = vision.getRobotPoseVision();
-        List<Pose2d> waypoints = new ArrayList<Pose2d>();
-
-        if (robot_pose.isPresent()) {
-            Pose2d robotPosition = robot_pose.get().estimatedPose.toPose2d();
-            Pose2d tag18Position = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get().toPose2d();
-
-            waypoints.add(robotPosition);
-            waypoints.add(tag18Position);
-        }
-        return new FollowPathCommand(TrajectoryGenerator.generateTrajectory(waypoints, SWERVE.PATH_FOLLOW_TRAJECTORY_CONFIG), () -> false);
+        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/Final XSpeed", speed.vxMetersPerSecond);
+        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/Final YSpeed", speed.vyMetersPerSecond);
+        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/Final RotSpeed", speed.omegaRadiansPerSecond);
 
     }
 
@@ -321,12 +237,7 @@ public class ScoreCoral extends SubsystemBase {
 
     }
 
-    public double Lerp(double time, double start, double end) {
 
-
-        return ((start*(end-start)) * time);
-
-    }
 
     public void setPosition(LeftOrRight leftOrRight, ScoreLevels scoreLevel, ReefPositions reefPosition){
        direction = leftOrRight;

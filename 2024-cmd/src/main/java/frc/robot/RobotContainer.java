@@ -13,6 +13,7 @@ import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.OdometryUpdates;
 import frc.robot.subsystems.ScoreCoral;
 import frc.robot.subsystems.ScoreCoral.LeftOrRight;
 import frc.robot.subsystems.ScoreCoral.ReefPositions;
@@ -20,10 +21,13 @@ import frc.robot.subsystems.ScoreCoral.ScoreLevels;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 import frc.robot.subsystems.vision.Vision;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorCommands;
 import frc.robot.subsystems.elevator.ElevatorCommands.ElevatorPositions;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
@@ -55,6 +59,7 @@ public class RobotContainer {
     private final Elevator elevator;
     //TODO: Add more subsystems here
     private ScoreCoral scoreCoral;
+    private OdometryUpdates odometryUpdates;
 
     //TODO: Add all controls here
     //Driver controls
@@ -102,10 +107,11 @@ public class RobotContainer {
     public RobotContainer() {
         swerve = new Swerve();
         vision = new Vision();
-        scoreCoral = new ScoreCoral(swerve, vision);
+        scoreCoral = new ScoreCoral(swerve);
         intake = new Intake();
         elevator = new Elevator();
-        // TODO: Add more subsystems and instantiatable helpers here
+        odometryUpdates = new OdometryUpdates(swerve, vision);
+
 
         passSubsystems();
         configureBindings();
@@ -234,7 +240,7 @@ public class RobotContainer {
                 Set.of(swerve)
             ) 
         );
-    
+
         // operatorController.leftTrigger().onTrue(
         //     intakeCommand()
         // ).onFalse(
