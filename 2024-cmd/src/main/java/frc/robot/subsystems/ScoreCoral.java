@@ -13,11 +13,14 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.Trajectory.State;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
@@ -133,10 +136,8 @@ public class ScoreCoral extends SubsystemBase {
         return target;
     }
  
+
     
-
-
-    //Will driveToReef in next commit
     public Command driveToReef(int tag) {
 
         Pose2d robotPose = swerve.getCurrentPosition();
@@ -193,6 +194,49 @@ public class ScoreCoral extends SubsystemBase {
 
     }
 
+
+    public int getClosestTag() {
+
+        Alliance alliance = DriverStation.getAlliance().get();
+        Pose2d robotPose = swerve.getCurrentPosition();
+        //this calculates only for each alliance, reduces all the iterative compute for the other 6 tags
+
+
+        if (alliance == Alliance.Blue) {
+
+            int tags[] = {17, 18, 19, 20, 21, 22};
+            List<Double> distances = new ArrayList<Double>();
+            for (int i = 0; i < 6; i++) {
+                
+                Pose2d tagpos = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tags[i]).get().toPose2d();
+                distances.add(Math.sqrt(Math.pow(robotPose.getX()-tagpos.getX(), 2) + Math.pow(robotPose.getY()-tagpos.getY(), 2)));
+
+            }
+
+            int tagID = tags[distances.indexOf(Collections.min(distances))];
+            Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/SelectedTag", AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tagID).get().toPose2d());
+            return tagID;
+
+        }
+        else {
+
+            int tags[] = {6, 7, 8, 9, 10, 11};
+            List<Double> distances = new ArrayList<Double>();
+            for (int i = 0; i < 6; i++) {
+                
+                Pose2d tagpos = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tags[i]).get().toPose2d();
+                distances.add(Math.sqrt(Math.pow(robotPose.getX()-tagpos.getX(), 2) + Math.pow(robotPose.getY()-tagpos.getY(), 2)));
+
+            }
+
+            int tagID = tags[distances.indexOf(Collections.min(distances))];
+            Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/SelectedTag", AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tagID).get().toPose2d());
+            return tagID;
+        
+        }
+
+
+    }
 
 
     public void setPosition(LeftOrRight leftOrRight, ScoreLevels scoreLevel, ReefPositions reefPosition){
