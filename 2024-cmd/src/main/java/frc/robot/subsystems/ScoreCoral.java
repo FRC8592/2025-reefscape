@@ -132,80 +132,31 @@ public class ScoreCoral extends SubsystemBase {
     public Pose2d getTarget(){
         return target;
     }
+ 
+    
 
-    public void driveToReef() {
-        // Setting the x speed, y speed,rotating speed
-        double xSpeed = 0d, ySpeed = 0d, rotSpeed = 0d;
 
-        Pose2d currentPosition = swerve.getCurrentPosition();
-        double xDistance = target.getX() - currentPosition.getX();
-        double yDistance = target.getY() - currentPosition.getY();
-        //TODO: ensure if correct
-        double rotDistance = target.getRotation().getDegrees() - currentPosition.getRotation().getDegrees();
-        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/xDistance", xDistance);
-        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/yDistance", yDistance);
-        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/rotDistance", rotDistance);
-
-        Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/Target", target);
-        
-        xSpeed = xController.calculate(xDistance);
-        xSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, xSpeed);
-        xSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, xSpeed);
-
-        xSpeed = -xSpeed * CORAL_ALIGN.SPEED_SCALE;
-
-        ySpeed = yController.calculate(yDistance);
-        ySpeed = Math.min(CORAL_ALIGN.SPEED_MAX, ySpeed);
-        ySpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, ySpeed);
-
-        ySpeed = -ySpeed * CORAL_ALIGN.SPEED_SCALE;
-
-        rotSpeed = rotController.calculate(rotDistance);
-        rotSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, rotSpeed);
-        rotSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, rotSpeed);
-
-        rotSpeed = -rotSpeed * CORAL_ALIGN.SPEED_SCALE;
-
-        //Field-relative x, y axis and joystick x, y axis are flipped (i.g. field x is joystick y)
-        ChassisSpeeds speed = swerve.processJoystickInputs(ySpeed, xSpeed, rotSpeed);
-        SmartDashboard.putString("ChassisSpeedJoystick", speed.toString());
-        Logger.recordOutput("speed", speed);
-        swerve.drive(speed, DriveModes.FIELD_RELATIVE);
-
-        SmartDashboard.putNumber("Provided XSpeed", xSpeed);
-        SmartDashboard.putNumber("Provided YSpeed", ySpeed);
-        SmartDashboard.putNumber("Provided RotSpeed", rotSpeed);
-
-        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/Final XSpeed", speed.vxMetersPerSecond);
-        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/Final YSpeed", speed.vyMetersPerSecond);
-        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/Final RotSpeed", speed.omegaRadiansPerSecond);
-
-    }
-
-    public Command driveToReefOdometry() {
+    //Will driveToReef in next commit
+    public Command driveToReef(int tag) {
 
         Pose2d robotPose = swerve.getCurrentPosition();
         List<Pose2d> waypoints = new ArrayList<Pose2d>();
-        Pose2d targetReefPosition = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get().toPose2d();
-        Pose2d targetReefPositionOffset = new Pose2d(new Translation2d(targetReefPosition.getX()-0.6, targetReefPosition.getY()), targetReefPosition.getRotation().plus(Rotation2d.fromDegrees(180)));
+        Pose2d targetReefPosition = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tag).get().toPose2d();
+        Pose2d targetReefPositionOffset = new Pose2d(new Translation2d(targetReefPosition.getX(), targetReefPosition.getY()), targetReefPosition.getRotation().plus(Rotation2d.fromDegrees(180)));
         double deltaPosition[] = {targetReefPositionOffset.getX()-robotPose.getX(), targetReefPositionOffset.getY()-robotPose.getY()};
+        
+        //trick the path generator into thinking the robot is always pointing at the tag
         Pose2d robotPose2 = new Pose2d(robotPose.getTranslation(), Rotation2d.fromRadians(Math.atan2(deltaPosition[1],deltaPosition[0])));
        
+        //create basic tank drive trajectory
         waypoints.add(robotPose2);
         waypoints.add(targetReefPositionOffset);
         final Trajectory traj = TrajectoryGenerator.generateTrajectory(waypoints, SWERVE.PATH_FOLLOW_TRAJECTORY_CONFIG);
 
-        // State start = new State(0, 0, 1, robotPose, 0);
-        // State end = new State(traj.getTotalTimeSeconds()-0.25,0, -1, targetReefPositionOffset.transformBy(new Transform2d(new Translation2d(-0.75, 0), new Rotation2d())), 0);
-
-        //traj = new Trajectory(List.of(start, end));
-
         List<Pose2d> path = new ArrayList<Pose2d>();
         List<State> wp = new ArrayList<State>();
 
-
-        
-        
+        //swervify trajectory by replacing built in tank drive rotation with custom holonomic lerp-based holonomic rotation system
         traj.getStates().forEach((state) -> {
             
             wp.add(
@@ -228,11 +179,16 @@ public class ScoreCoral extends SubsystemBase {
 
         });
 
+        //compile swervified states into an actual trajectory
         Trajectory upTraj = new Trajectory(wp);
+
+        //Make a renderable path for PathPlanner logging
         upTraj.getStates().forEach((state) -> {path.add(state.poseMeters);});
 
+        //Render the path to PathPlanner
         Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/GeneratedPath", path.toArray(new Pose2d[0]));
 
+        //Run path
         return new FollowPathCommand(upTraj, () -> false);
 
     }

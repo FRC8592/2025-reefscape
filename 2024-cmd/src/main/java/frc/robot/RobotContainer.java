@@ -236,7 +236,7 @@ public class RobotContainer {
         // this activates tesla full self driving
         ALIGN_TO_SCORE.whileTrue(
             new DeferredCommand(
-                () -> scoreCoral.driveToReefOdometry(),
+                () -> scoreCoral.driveToReef(vision.getClosestTagID()),
                 Set.of(swerve)
             ) 
         );

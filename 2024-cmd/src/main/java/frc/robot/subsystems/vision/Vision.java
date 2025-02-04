@@ -1,5 +1,7 @@
 package frc.robot.subsystems.vision;    
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -120,6 +122,30 @@ public class Vision extends SubsystemBase{
 
     public List<PhotonTrackedTarget> getTargets() {
         return camera.getLatestResult().getTargets();
+    }
+
+    //actually PhotonTrackedTarget
+    public int getClosestTagID() {
+
+        PhotonPipelineResult result = camera.getLatestResult();
+        if (result.hasTargets()) {
+            List<PhotonTrackedTarget> targets = result.getTargets();
+            List<Double> distances = new ArrayList<Double>();
+            
+
+            targets.forEach(
+                (target) -> {
+                    distances.add(Math.sqrt(Math.pow(targetX, 2) + Math.pow(targetX, 2)));
+                }
+            );
+
+
+            return targets.get(distances.indexOf(Collections.min(distances))).getFiducialId();
+        }
+        else {
+            return -1;
+        }
+
     }
 
     public Optional<EstimatedRobotPose> getRobotPoseVision() {
