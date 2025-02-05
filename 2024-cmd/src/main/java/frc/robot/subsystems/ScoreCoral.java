@@ -143,6 +143,9 @@ public class ScoreCoral extends SubsystemBase {
         Pose2d robotPose = swerve.getCurrentPosition();
         List<Pose2d> waypoints = new ArrayList<Pose2d>();
         Pose2d targetReefPosition = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tag).get().toPose2d();
+
+        Logger.recordOutput("CustomLogs/ScoreCoral/TargetedTagRotation", targetReefPosition.getRotation().getDegrees());
+        
         Pose2d targetReefPositionOffset = new Pose2d(new Translation2d(targetReefPosition.getX(), targetReefPosition.getY()), targetReefPosition.getRotation().plus(Rotation2d.fromDegrees(180)));
         double deltaPosition[] = {targetReefPositionOffset.getX()-robotPose.getX(), targetReefPositionOffset.getY()-robotPose.getY()};
         
