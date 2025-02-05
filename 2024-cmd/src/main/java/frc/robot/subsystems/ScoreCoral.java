@@ -251,5 +251,27 @@ public class ScoreCoral extends SubsystemBase {
        SmartDashboard.putString("Position", position.name());
     }
 
-    
+    /**
+     * Accepts a pose of a reef tag, calculates the offset to align with the coral branches,
+     * and returns a new pose based on the offset
+     * @param tagPose The pose of a tag on the reef
+     * @param reefScoringSide The side either left or right that we want to score on
+     * @return
+     */
+    public Pose2d generateScoringPose(Pose2d tagPose, LeftOrRight reefScoringSide){
+        double lateralOffsetX;
+        double lateralOffsetY;
+        double normalOffsetX; //Normal means perpendicular to a surface
+        double normalOffsetY;
+        /*TODO: Implemet code to calculate the lateral and normal offsets of the tags 
+        and create poses for those offsets. 
+        Calculations:
+        Lateral Offset:
+        - Delta X: Cos of angle
+        - Delta Y: Sin of angle
+        Normal Offset:
+        - Delta X: Cos of (angle + 270 degrees)
+        - Delta Y: Sin of (angle + 270 degrees)
+        */
+    }
 }
