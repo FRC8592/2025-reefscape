@@ -102,7 +102,7 @@ public class Swerve extends SubsystemBase {
         // Pose2d pose = getCurrentPosition();
         Pose2d pose = new Pose2d(
             getCurrentPosition().getTranslation(),
-            getCurrentPosition().getRotation().times(Math.PI/180.0)
+            getCurrentPosition().getRotation()
         );
         Robot.FIELD.setRobotPose(pose==null?new Pose2d():pose);
     }
