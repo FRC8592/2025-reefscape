@@ -8,6 +8,7 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -144,6 +145,8 @@ public class ScoreCoral extends SubsystemBase {
         List<Pose2d> waypoints = new ArrayList<Pose2d>();
         Pose2d targetReefPosition = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tag).get().toPose2d();
 
+        targetReefPosition = generateScoringPose(targetReefPosition, direction);
+
         Logger.recordOutput("CustomLogs/ScoreCoral/TargetedTagRotation", targetReefPosition.getRotation().getDegrees());
         
         Pose2d targetReefPositionOffset = new Pose2d(new Translation2d(targetReefPosition.getX(), targetReefPosition.getY()), targetReefPosition.getRotation().plus(Rotation2d.fromDegrees(180)));
@@ -256,22 +259,26 @@ public class ScoreCoral extends SubsystemBase {
      * and returns a new pose based on the offset
      * @param tagPose The pose of a tag on the reef
      * @param reefScoringSide The side either left or right that we want to score on
-     * @return
+     * @return new pose with correct translation and rotation
      */
     public Pose2d generateScoringPose(Pose2d tagPose, LeftOrRight reefScoringSide){
-        double lateralOffsetX;
-        double lateralOffsetY;
-        double normalOffsetX; //Normal means perpendicular to a surface
-        double normalOffsetY;
-        /*TODO: Implemet code to calculate the lateral and normal offsets of the tags 
-        and create poses for those offsets. 
-        Calculations:
-        Lateral Offset:
-        - Delta X: Cos of angle
-        - Delta Y: Sin of angle
-        Normal Offset:
-        - Delta X: Cos of (angle + 270 degrees)
-        - Delta Y: Sin of (angle + 270 degrees)
-        */
+        double lateralOffsetX = tagPose.getRotation().getSin();
+        double lateralOffsetY = -tagPose.getRotation().getCos();
+        double normalOffsetX = tagPose.getRotation().plus(Rotation2d.fromDegrees(270)).getSin() * CORAL_ALIGN.OFFSET_DEPTH; //Normal means perpendicular to a surface
+        double normalOffsetY = -tagPose.getRotation().plus(Rotation2d.fromDegrees(270)).getCos() * CORAL_ALIGN.OFFSET_DEPTH;
+
+        if(reefScoringSide == LeftOrRight.Left){
+            lateralOffsetX *= CORAL_ALIGN.OFFSET_LEFT_METERS;
+            lateralOffsetY *= CORAL_ALIGN.OFFSET_LEFT_METERS;
+        } else {
+            lateralOffsetX *= CORAL_ALIGN.OFFSET_RIGHT_METERS;
+            lateralOffsetY *= CORAL_ALIGN.OFFSET_RIGHT_METERS;
+        }
+
+        tagPose = tagPose.plus(new Transform2d(lateralOffsetX + normalOffsetX, lateralOffsetY + normalOffsetY, new Rotation2d()));
+
+        return tagPose;
+
+        
     }
 }
