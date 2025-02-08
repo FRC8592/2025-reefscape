@@ -62,42 +62,8 @@ public class ScoreCoral extends SubsystemBase {
         Right
     };
 
-    public enum ReefPositions{
-        //The positions goes from the side facing the driver being south and going clockwise on a compass
-        South(CORAL_ALIGN.SOUTH_BLUE_POSE, CORAL_ALIGN.SOUTH_RED_POSE),
-        SouthWest(CORAL_ALIGN.SOUTH_WEST_BLUE_POSE, CORAL_ALIGN.SOUTH_WEST_RED_POSE),
-        NorthWest(CORAL_ALIGN.NORTH_WEST_BLUE_POSE, CORAL_ALIGN.NORTH_WEST_RED_POSE),
-        North(CORAL_ALIGN.NORTH_BLUE_POSE, CORAL_ALIGN.NORTH_RED_POSE),
-        NorthEast(CORAL_ALIGN.NORTH_EAST_BLUE_POSE, CORAL_ALIGN.NORTH_EAST_RED_POSE),
-        SouthEast(CORAL_ALIGN.SOUTH_EAST_BLUE_POSE, CORAL_ALIGN.SOUTH_EAST_RED_POSE);
-
-        //Data fields for the which side the robot is on
-        public Pose2d bluePosition;
-        public Pose2d redPosition;
-        private ReefPositions(Pose2d bluePosition, Pose2d redPosition){
-            this.bluePosition = bluePosition;
-            this.redPosition = redPosition;
-        }
-
-        /**
-         * @param none
-         * Uses robotRunningOnRed, if it is true it returns the redPosition
-         * else it returns bluePosition
-         * @return redPosition or bluePosition
-         */
-        public Pose2d getReefPosition(){
-            if (Suppliers.robotRunningOnRed.getAsBoolean()){
-                return redPosition;
-            }
-            else{
-                return bluePosition;
-            }
-        }
-    }
-
     private LeftOrRight direction = LeftOrRight.Left;
     private ScoreLevels level = ScoreLevels.Level1;
-    private ReefPositions position = ReefPositions.South;
     private int heartbeat = 0;
 
     public ScoreCoral(Swerve swerve) {
@@ -242,13 +208,11 @@ public class ScoreCoral extends SubsystemBase {
     }
 
 
-    public void setPosition(LeftOrRight leftOrRight, ScoreLevels scoreLevel, ReefPositions reefPosition){
+    public void setPosition(LeftOrRight leftOrRight, ScoreLevels scoreLevel){
        direction = leftOrRight;
        level = scoreLevel;
-       position = reefPosition;
        SmartDashboard.putString("direction", direction.name());
        SmartDashboard.putString("Level", level.name());
-       SmartDashboard.putString("Position", position.name());
     }
 
     /**

@@ -7,6 +7,11 @@ import java.util.Optional;
 
 import org.photonvision.*;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.estimation.TargetModel;
+import org.photonvision.simulation.PhotonCameraSim;
+import org.photonvision.simulation.SimCameraProperties;
+import org.photonvision.simulation.VisionSystemSim;
+import org.photonvision.simulation.VisionTargetSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -14,12 +19,14 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CORAL_ALIGN;
+import frc.robot.Robot;
 
 public class Vision extends SubsystemBase{
     PhotonCamera camera = new PhotonCamera("Arducam_OV9782_B");
@@ -40,6 +47,47 @@ public class Vision extends SubsystemBase{
     double targetPitchRotation = 0.0;
     double targetRollRotation = 0.0;
     List<PhotonPipelineResult> results;
+
+    VisionSystemSim visionSim;
+    SimCameraProperties cameraBProperties;
+    PhotonCameraSim cameraSim;
+
+    public Vision(){
+        visionSim = new VisionSystemSim("photonvision");
+
+        visionSim.addAprilTags(aprilTagFieldLayout);
+
+        cameraBProperties = new SimCameraProperties();
+
+        // A 1280 x 800 camera with a 100 degree diagonal FOV.
+        cameraBProperties.setCalibration(1280, 800, Rotation2d.fromDegrees(100));
+        // Approximate detection noise with average and standard deviation error in pixels.
+        cameraBProperties.setCalibError(0.25, 0.08);
+        // Set the camera image capture framerate (Note: this is limited by robot loop rate).
+        cameraBProperties.setFPS(90);
+        // The average and standard deviation in milliseconds of image data latency.
+        cameraBProperties.setAvgLatencyMs(35);
+        cameraBProperties.setLatencyStdDevMs(5);
+
+        cameraSim = new PhotonCameraSim(camera, cameraBProperties);
+
+        // Our camera is mounted 0.6 meters forward and 0.05 meters up from the robot pose,
+        // (Robot pose is considered the center of rotation at the floor level, or Z = 0)
+        Translation3d robotToCameraTrl = new Translation3d(0.60, -0.05, 0.245);
+        // and pitched 15 degrees up.
+        Rotation3d robotToCameraRot = new Rotation3d(0, Math.toRadians(-12), 0);
+        Transform3d robotToCamera = new Transform3d(robotToCameraTrl, robotToCameraRot);
+
+        // Add this camera to the vision system simulation with the given robot-to-camera transform.
+        visionSim.addCamera(cameraSim, robotToCamera);
+
+        visionSim.getDebugField();
+
+        cameraSim.enableRawStream(true);
+        cameraSim.enableProcessedStream(true);
+
+        cameraSim.enableDrawWireframe(true);
+    }
 
     @Override
     public void periodic(){
@@ -94,6 +142,10 @@ public class Vision extends SubsystemBase{
          SmartDashboard.putBoolean("Vision Target Visible", targetVisible);
          SmartDashboard.putNumber("Target ID", targetId);
          SmartDashboard.putNumber("Target Yaw Rotation", targetYawRotation);
+    }
+
+    public void simulationPeriodic() {
+        visionSim.update(Robot.FIELD.getRobotPose());
     }
 
     public double getTargetX(){

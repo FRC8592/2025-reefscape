@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -96,19 +97,19 @@ public final class Constants {
 
         public static final Transform3d CAMERA_OFFSETS = new Transform3d(new Translation3d(0.60, -0.05, 0.245), new Rotation3d(0, Math.toRadians(-12), 0));
 
-        public static final Pose2d SOUTH_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get().toPose2d();
-        public static final Pose2d SOUTH_WEST_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(19).get().toPose2d();
-        public static final Pose2d NORTH_WEST_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(20).get().toPose2d();
-        public static final Pose2d NORTH_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(21).get().toPose2d();
-        public static final Pose2d NORTH_EAST_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(22).get().toPose2d();
-        public static final Pose2d SOUTH_EAST_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(17).get().toPose2d();
+        public static final Pose3d SOUTH_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get();
+        public static final Pose3d SOUTH_WEST_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(19).get();
+        public static final Pose3d NORTH_WEST_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(20).get();
+        public static final Pose3d NORTH_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(21).get();
+        public static final Pose3d NORTH_EAST_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(22).get();
+        public static final Pose3d SOUTH_EAST_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(17).get();
 
-        public static final Pose2d SOUTH_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(7).get().toPose2d();
-        public static final Pose2d SOUTH_WEST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(6).get().toPose2d();
-        public static final Pose2d NORTH_WEST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(11).get().toPose2d();
-        public static final Pose2d NORTH_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(10).get().toPose2d();
-        public static final Pose2d NORTH_EAST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(9).get().toPose2d();
-        public static final Pose2d SOUTH_EAST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(8).get().toPose2d();
+        public static final Pose3d SOUTH_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(7).get();
+        public static final Pose3d SOUTH_WEST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(6).get();
+        public static final Pose3d NORTH_WEST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(11).get();
+        public static final Pose3d NORTH_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(10).get();
+        public static final Pose3d NORTH_EAST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(9).get();
+        public static final Pose3d SOUTH_EAST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(8).get();
     
         public static final int[] BLUE_REEF_TAGS = {17, 18, 19, 20, 21, 22};
         public static final int[] RED_REEF_TAGS = {6, 7, 8, 9, 10, 11};
