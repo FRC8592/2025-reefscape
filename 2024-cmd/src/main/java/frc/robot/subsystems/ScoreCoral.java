@@ -137,27 +137,41 @@ public class ScoreCoral extends SubsystemBase {
         return target;
     }
  
+    public Command driveToClosestTag(){
+        if (Suppliers.robotRunningOnRed.getAsBoolean()){
+            return driveToTag(getClosestTag(CORAL_ALIGN.RED_TARGET_TAGS));
+        }
+        else {
+            return driveToTag(getClosestTag(CORAL_ALIGN.BLUE_TARGET_TAGS));
+        }
+    }
 
-    
-    public Command driveToReef(int tag) {
+
+    /**
+     * This command takes in a tag number and uses an 
+     * odometry-generated trajectory to drive to it
+     * @param tag
+     * @return a new FollowPathCommand to follow the generated trajectory 
+     */
+    public Command driveToTag(int tag) {
 
         Pose2d robotPose = swerve.getCurrentPosition();
         List<Pose2d> waypoints = new ArrayList<Pose2d>();
-        Pose2d targetReefPosition = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tag).get().toPose2d();
+        Pose2d targetTagPosition = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tag).get().toPose2d();
 
-        targetReefPosition = generateScoringPose(targetReefPosition, direction);
+        targetTagPosition = generateScoringPose(targetTagPosition, direction);
 
-        Logger.recordOutput("CustomLogs/ScoreCoral/TargetedTagRotation", targetReefPosition.getRotation().getDegrees());
+        Logger.recordOutput("CustomLogs/ScoreCoral/TargetedTagRotation", targetTagPosition.getRotation().getDegrees());
         
-        Pose2d targetReefPositionOffset = new Pose2d(new Translation2d(targetReefPosition.getX(), targetReefPosition.getY()), targetReefPosition.getRotation().plus(Rotation2d.fromDegrees(180)));
-        double deltaPosition[] = {targetReefPositionOffset.getX()-robotPose.getX(), targetReefPositionOffset.getY()-robotPose.getY()};
+        Pose2d targetTagPositionOffset = new Pose2d(new Translation2d(targetTagPosition.getX(), targetTagPosition.getY()), targetTagPosition.getRotation().plus(Rotation2d.fromDegrees(180)));
+        double deltaPosition[] = {targetTagPositionOffset.getX()-robotPose.getX(), targetTagPositionOffset.getY()-robotPose.getY()};
         
         //trick the path generator into thinking the robot is always pointing at the tag
         Pose2d robotPose2 = new Pose2d(robotPose.getTranslation(), Rotation2d.fromRadians(Math.atan2(deltaPosition[1],deltaPosition[0])));
        
         //create basic tank drive trajectory
         waypoints.add(robotPose2);
-        waypoints.add(targetReefPositionOffset);
+        waypoints.add(targetTagPositionOffset);
         final Trajectory traj = TrajectoryGenerator.generateTrajectory(waypoints, SWERVE.PATH_FOLLOW_TRAJECTORY_CONFIG);
 
         List<Pose2d> path = new ArrayList<Pose2d>();
@@ -175,7 +189,7 @@ public class ScoreCoral extends SubsystemBase {
                     new Pose2d(
                         state.poseMeters.getTranslation(), 
                         robotPose.getRotation().interpolate(
-                            targetReefPositionOffset.getRotation(), 
+                            targetTagPositionOffset.getRotation(), 
                             (state.timeSeconds)/(traj.getTotalTimeSeconds()/2)
                         )
                     ), 
@@ -201,47 +215,21 @@ public class ScoreCoral extends SubsystemBase {
     }
 
 
-    public int getClosestTag() {
-
-        Alliance alliance = DriverStation.getAlliance().get();
+    public int getClosestTag(int[] tags) {
         Pose2d robotPose = swerve.getCurrentPosition();
         //this calculates only for each alliance, reduces all the iterative compute for the other 6 tags
 
-
-        if (alliance == Alliance.Blue) {
-
-            int tags[] = {17, 18, 19, 20, 21, 22};
-            List<Double> distances = new ArrayList<Double>();
-            for (int i = 0; i < 6; i++) {
-                
-                Pose2d tagpos = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tags[i]).get().toPose2d();
-                distances.add(Math.sqrt(Math.pow(robotPose.getX()-tagpos.getX(), 2) + Math.pow(robotPose.getY()-tagpos.getY(), 2)));
-
-            }
-
-            int tagID = tags[distances.indexOf(Collections.min(distances))];
-            Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/SelectedTag", AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tagID).get().toPose2d());
-            return tagID;
+        List<Double> distances = new ArrayList<Double>();
+        for (int i = 0; i < tags.length; i++) {
+            
+            Pose2d tagpos = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tags[i]).get().toPose2d();
+            distances.add(Math.sqrt(Math.pow(robotPose.getX()-tagpos.getX(), 2) + Math.pow(robotPose.getY()-tagpos.getY(), 2)));
 
         }
-        else {
 
-            int tags[] = {6, 7, 8, 9, 10, 11};
-            List<Double> distances = new ArrayList<Double>();
-            for (int i = 0; i < 6; i++) {
-                
-                Pose2d tagpos = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tags[i]).get().toPose2d();
-                distances.add(Math.sqrt(Math.pow(robotPose.getX()-tagpos.getX(), 2) + Math.pow(robotPose.getY()-tagpos.getY(), 2)));
-
-            }
-
-            int tagID = tags[distances.indexOf(Collections.min(distances))];
-            Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/SelectedTag", AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tagID).get().toPose2d());
-            return tagID;
-        
-        }
-
-
+        int tagID = tags[distances.indexOf(Collections.min(distances))];
+        Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/SelectedTag", AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tagID).get().toPose2d());
+        return tagID;
     }
 
 
