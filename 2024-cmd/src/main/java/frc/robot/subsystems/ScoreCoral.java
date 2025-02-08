@@ -137,12 +137,21 @@ public class ScoreCoral extends SubsystemBase {
         return target;
     }
  
-    public Command driveToClosestTag(){
+    public Command driveToClosestReefTag(){
         if (Suppliers.robotRunningOnRed.getAsBoolean()){
-            return driveToTag(getClosestTag(CORAL_ALIGN.RED_TARGET_TAGS));
+            return driveToTag(getClosestTag(CORAL_ALIGN.RED_REEF_TAGS));
         }
         else {
-            return driveToTag(getClosestTag(CORAL_ALIGN.BLUE_TARGET_TAGS));
+            return driveToTag(getClosestTag(CORAL_ALIGN.BLUE_REEF_TAGS));
+        }
+    }
+
+    public Command driveToClosestHumanPlayerStation(){
+        if (Suppliers.robotRunningOnRed.getAsBoolean()){
+            return driveToTag(getClosestTag(CORAL_ALIGN.RED_HPLAYER_TAGS));
+        }
+        else {
+            return driveToTag(getClosestTag(CORAL_ALIGN.BLUE_HPLAYER_TAGS));
         }
     }
 

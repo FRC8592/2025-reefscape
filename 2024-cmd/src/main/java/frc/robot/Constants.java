@@ -110,8 +110,12 @@ public final class Constants {
         public static final Pose2d NORTH_EAST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(9).get().toPose2d();
         public static final Pose2d SOUTH_EAST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(8).get().toPose2d();
     
-        public static final int[] BLUE_TARGET_TAGS = {12, 13,17, 18, 19, 20, 21, 22};
-        public static final int[] RED_TARGET_TAGS = {1, 2, 6, 7, 8, 9, 10, 11};
+        public static final int[] BLUE_REEF_TAGS = {17, 18, 19, 20, 21, 22};
+        public static final int[] RED_REEF_TAGS = {6, 7, 8, 9, 10, 11};
+
+        public static final int[] BLUE_HPLAYER_TAGS = {12, 13};
+        public static final int[] RED_HPLAYER_TAGS = {1, 2};
+
     }
     public final class NAVIGATION {
         public static final double MAX_ACCEPTABLE_AMBIGUITY = 0.2;
