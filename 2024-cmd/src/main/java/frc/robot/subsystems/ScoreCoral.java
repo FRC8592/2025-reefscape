@@ -261,23 +261,27 @@ public class ScoreCoral extends SubsystemBase {
      * @param reefScoringSide The side either left or right that we want to score on
      * @return new pose with correct translation and rotation
      */
+    
     public Pose2d generateScoringPose(Pose2d tagPose, LeftOrRight reefScoringSide){
-        double lateralOffsetX = tagPose.getRotation().getSin();
-        double lateralOffsetY = -tagPose.getRotation().getCos();
-        double normalOffsetX = tagPose.getRotation().plus(Rotation2d.fromDegrees(270)).getSin() * CORAL_ALIGN.OFFSET_DEPTH; //Normal means perpendicular to a surface
-        double normalOffsetY = -tagPose.getRotation().plus(Rotation2d.fromDegrees(270)).getCos() * CORAL_ALIGN.OFFSET_DEPTH;
+
+        Pose2d newPose;
+
+        double offset = 0;
 
         if(reefScoringSide == LeftOrRight.Left){
-            lateralOffsetX *= CORAL_ALIGN.OFFSET_LEFT_METERS;
-            lateralOffsetY *= CORAL_ALIGN.OFFSET_LEFT_METERS;
+            offset = CORAL_ALIGN.OFFSET_LEFT_METERS;
         } else {
-            lateralOffsetX *= CORAL_ALIGN.OFFSET_RIGHT_METERS;
-            lateralOffsetY *= CORAL_ALIGN.OFFSET_RIGHT_METERS;
+            offset = CORAL_ALIGN.OFFSET_RIGHT_METERS;
         }
 
-        tagPose = tagPose.plus(new Transform2d(lateralOffsetX + normalOffsetX, lateralOffsetY + normalOffsetY, new Rotation2d()));
+        //Using a plus function on a Transform2D will transform the pose or transform it has been called on RELATIVELY.
+        // Pose2d.plus(Transform2d) transforms relatively
+        // both of these descriptions work, as long as we remember it next time! ツ
+        newPose = tagPose.plus(new Transform2d(CORAL_ALIGN.OFFSET_DEPTH, offset, new Rotation2d()));
 
-        return tagPose;
+        Logger.recordOutput("CustomLogs/ScoreCoral/ChosenPose", newPose);
+
+        return newPose;
 
         
     }
