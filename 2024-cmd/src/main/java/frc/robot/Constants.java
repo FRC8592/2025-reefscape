@@ -59,7 +59,7 @@ public final class Constants {
         public static final int BACK_EXTENSION_MOTOR_CAN_ID = 44;
         public static final int FORWARD_EXTENSION_MOTOR_CAN_ID = 43;
         public static final int CLOCK_ARM_CAN_ID = 41;
-        public static final int WRIST_CAN_ID = 0;
+        //public static final int WRIST_CAN_ID = 0;
     }
 
     public final class POWER {
@@ -90,7 +90,7 @@ public final class Constants {
 
         public static final int MAX_LOCK_LOSS_TICKS = 20;
 
-        public static final Transform3d CAMERA_OFFSETS = new Transform3d(new Translation3d(0.60, -0.05, 0.245), new Rotation3d(0, Math.toRadians(-12), 0));
+        public static final Transform3d CAMERA_OFFSETS = new Transform3d(new Translation3d(-0.14, -0.17, 0.245), new Rotation3d(0, Math.toRadians(-12), 0));
 
         public static final Pose3d SOUTH_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get();
         public static final Pose3d SOUTH_WEST_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(19).get();

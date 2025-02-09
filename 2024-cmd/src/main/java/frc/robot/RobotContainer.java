@@ -62,8 +62,8 @@ public class RobotContainer {
     private final Trigger INTAKE = driverController.leftTrigger();
     private final Trigger SCORE = driverController.rightTrigger();
 
-    // private final Trigger ALIGN_TO_REEF = driverController.x();
-    // private final Trigger ALIGN_TO_HPST = driverController.y();
+    private final Trigger ALIGN_TO_REEF = driverController.x();
+    private final Trigger ALIGN_TO_HPST = driverController.b();
 
     private final Trigger STOW = driverController.button(100);
     private final Trigger PRIME = driverController.button(100);
@@ -237,19 +237,19 @@ public class RobotContainer {
 
         // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
         // this activates tesla full self driving
-        // ALIGN_TO_REEF.whileTrue(
-        //     new DeferredCommand(
-        //         () -> scoreCoral.driveToClosestReefTag(),
-        //         Set.of(swerve)
-        //     ) 
-        // );
+        ALIGN_TO_REEF.whileTrue(
+            new DeferredCommand(
+                () -> scoreCoral.driveToClosestReefTag(),
+                Set.of(swerve)
+            ) 
+        );
 
-        // ALIGN_TO_HPST.whileTrue(
-        //     new DeferredCommand(
-        //         () -> scoreCoral.driveToClosestHumanPlayerStation(),
-        //         Set.of(swerve)
-        //     ) 
-        // );
+        ALIGN_TO_HPST.whileTrue(
+            new DeferredCommand(
+                () -> scoreCoral.driveToClosestHumanPlayerStation(),
+                Set.of(swerve)
+            ) 
+        );
 
         // operatorController.leftTrigger().onTrue(
         //     intakeCommand()
