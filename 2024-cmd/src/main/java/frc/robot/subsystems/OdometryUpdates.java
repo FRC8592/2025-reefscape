@@ -45,7 +45,6 @@ public class OdometryUpdates extends SubsystemBase {
 
             //if(Math.abs(ambiguity) < 0.2 && vision.getTargets().size() > 1) {
             if(Math.abs(ambiguity) < Constants.NAVIGATION.MAX_ACCEPTABLE_AMBIGUITY) {
-            
                 if (DriverStation.isDisabled()){
                     initialPose = robotPosition;
                     swerve.resetPose(initialPose);        
