@@ -86,7 +86,7 @@ public final class Constants {
         public static final double ROT_KD = 0.0001;
 
         public static final double OFFSET_DEPTH = 0.50;
-        public static final double OFFSET_LEFT_METERS = 0.175;
+        public static final double OFFSET_LEFT_METERS = -0.175;
         public static final double OFFSET_RIGHT_METERS = 0.175;
         public static final double ROT_OFFSET = 0d;
         public static final double SPEED_SCALE = 1.0;
@@ -94,7 +94,7 @@ public final class Constants {
 
         public static final int MAX_LOCK_LOSS_TICKS = 20;
 
-        public static final Transform3d CAMERA_OFFSETS = new Transform3d(new Translation3d(0.14, -0.05, 0.245), new Rotation3d(0, Math.toRadians(-12), 0));
+        public static final Transform3d CAMERA_OFFSETS = new Transform3d(new Translation3d(0.60, -0.05, 0.245), new Rotation3d(0, Math.toRadians(-12), 0));
 
         public static final Pose2d SOUTH_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get().toPose2d();
         public static final Pose2d SOUTH_WEST_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(19).get().toPose2d();
@@ -109,6 +109,13 @@ public final class Constants {
         public static final Pose2d NORTH_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(10).get().toPose2d();
         public static final Pose2d NORTH_EAST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(9).get().toPose2d();
         public static final Pose2d SOUTH_EAST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(8).get().toPose2d();
+    
+        public static final int[] BLUE_REEF_TAGS = {17, 18, 19, 20, 21, 22};
+        public static final int[] RED_REEF_TAGS = {6, 7, 8, 9, 10, 11};
+
+        public static final int[] BLUE_HPLAYER_TAGS = {12, 13};
+        public static final int[] RED_HPLAYER_TAGS = {1, 2};
+
     }
     public final class NAVIGATION {
         public static final double MAX_ACCEPTABLE_AMBIGUITY = 0.2;
