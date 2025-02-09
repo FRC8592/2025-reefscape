@@ -17,7 +17,6 @@ import frc.robot.commands.autonomous.autos.LeftSideLeaveSLAuto;
 import frc.robot.commands.autonomous.autos.ThreeCoralAuto;
 import frc.robot.commands.autonomous.autos.TwoCoralAuto;
 import frc.robot.commands.proxies.*;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.swerve.Swerve;
 
 /**

@@ -12,7 +12,6 @@ import java.util.Set;
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.OdometryUpdates;
 import frc.robot.subsystems.ScoreCoral;
 import frc.robot.subsystems.ScoreCoral.LeftOrRight;
@@ -23,8 +22,7 @@ import frc.robot.subsystems.vision.Vision;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.subsystems.elevator.Elevator;
-import frc.robot.subsystems.elevator.ElevatorCommands;
-import frc.robot.subsystems.elevator.ElevatorCommands.ElevatorPositions;
+import frc.robot.subsystems.elevator.Scoring;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -54,8 +52,7 @@ public class RobotContainer {
     // The robot's subsystems
     private final Swerve swerve;
     private final Vision vision;
-    private final Intake intake;
-    private final Elevator elevator;
+    private final Scoring scoring;
     //TODO: Add more subsystems here
     private ScoreCoral scoreCoral;
     private OdometryUpdates odometryUpdates;
@@ -110,8 +107,7 @@ public class RobotContainer {
         swerve = new Swerve();
         vision = new Vision();
         scoreCoral = new ScoreCoral(swerve);
-        intake = new Intake();
-        elevator = new Elevator();
+        scoring = new Scoring();
         odometryUpdates = new OdometryUpdates(swerve, vision);
 
 
@@ -129,7 +125,7 @@ public class RobotContainer {
         AutoManager.addSubsystems(swerve);
         AutoCommand.addSubsystems(swerve);
         LargeCommand.addSubsystems(swerve);
-        NewtonCommands.addSubsystems(swerve, elevator);
+        NewtonCommands.addSubsystems(swerve, scoring);
         Suppliers.addSubsystems(swerve);
     }
 
@@ -146,7 +142,7 @@ public class RobotContainer {
             ), DriveModes.AUTOMATIC);
         }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-        // setDefaultCommand(elevator, elevator.setExtensionStopCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        setDefaultCommand(scoring, scoring.stopArmCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
     }
 
@@ -230,9 +226,14 @@ public class RobotContainer {
         // GROUND_INTAKE.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.GROUND_ALGAE));
         // STOW.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.STOW));
         // PRIME.onTrue(NewtonCommands.goToPrimePositionCommand());
-        ELEVATOR_UP.whileTrue(elevator.setExtensionCommand(18));
-        ELEVATOR_MID.whileTrue(elevator.setExtensionCommand(10));
-        ELEVATOR_DOWN.whileTrue(elevator.setExtensionCommand(0.5));
+
+        // ELEVATOR_UP.whileTrue(scoring.setExtensionCommand(18));
+        // ELEVATOR_MID.whileTrue(scoring.setExtensionCommand(10));
+        // ELEVATOR_DOWN.whileTrue(scoring.setExtensionCommand(0.5));
+
+        ELEVATOR_UP.whileTrue(scoring.setArmPercentOutputCommand(0.5));
+        ELEVATOR_DOWN.whileTrue(scoring.setArmPercentOutputCommand(-0.5));
+
 
         // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
         // this activates tesla full self driving

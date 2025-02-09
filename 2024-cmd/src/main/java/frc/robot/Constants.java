@@ -54,16 +54,11 @@ public final class Constants {
         public static final int INTAKE_WRIST_MOTOR_CAN_ID = -1; // TODO: Rename the These to match the motor class 
         public static final int INTAKE_INNER_MOTOR_CAN_ID = -1;
         public static final int INTAKE_OUTER_MOTOR_CAN_ID = -1;
-        
-        public static final int SWERVE_BLACK_FRONT_LEFT_DRIVE_CAN_ID = 17;
-        public static final int SWERVE_BLACK_FRONT_LEFT_STEER_CAN_ID = 9;
-        public static final int SWERVE_BLACK_FRONT_LEFT_ENCODER_CAN_ID = 13;
-
         public static final int PDH_CAN_ID = 1;
 
         public static final int BACK_EXTENSION_MOTOR_CAN_ID = 44;
         public static final int FORWARD_EXTENSION_MOTOR_CAN_ID = 43;
-        public static final int CLOCK_ARM_CAN_ID = 0;
+        public static final int CLOCK_ARM_CAN_ID = 41;
         public static final int WRIST_CAN_ID = 0;
     }
 
@@ -291,6 +286,10 @@ public final class Constants {
         public static final double EXTENSION_INCHES_MAX = 18.0; //this is in inches
         public static final double EXTENSION_INCHES_MIN = 0.5;
 
+        public static final double ARM_ANGLE_DEGREES_MIN = 0.0;
+        public static final double ARM_ANGLE_DEGREES_MAX = 0.0;
+
+
         public static final double EXTENSION_POSITION_TOLERANCE = 1.0;
         public static final double CLOCK_ARM_POSITION_TOLERANCE = 2.0;
         public static final double WRIST_POSITION_TOLERANCE = 2.0;
@@ -302,12 +301,31 @@ public final class Constants {
         public static final String CLOCK_ARM_LOG_PATH = SHARED.LOG_FOLDER+"/Clock Arm/";
         public static final String WRIST_LOG_PATH = SHARED.LOG_FOLDER+"/Wrist/";
 
-        public static final double ELEVATOR_P = 3.5;
-        public static final double ELEVATOR_I = 0;
-        public static final double ELEVATOR_D = 0;
-        public static final double ELEVATOR_S = 0.2;
-        public static final double ELEVATOR_V = 0;
-        public static final double ELEVATOR_A = 0;
+        public static final double ELEVATOR_POSITION_P = 3.5;
+        public static final double ELEVATOR_POSITION_I = 0;
+        public static final double ELEVATOR_POSITION_D = 0;
+        public static final double ELEVATOR_POSITION_S = 0;
+        public static final double ELEVATOR_POSITION_V = 0;
+        public static final double ELEVATOR_POSITION_A = 0;
+
+        public static final double ELEVATOR_VELOCITY_P = 0.001;
+        public static final double ELEVATOR_VELOCITY_I = 0;
+        public static final double ELEVATOR_VELOCITY_D = 0;
+        public static final double ELEVATOR_VELOCITY_S = 0.1;
+
+        public static final int ELEVATOR_CURRENT_LIMIT = 80;//amps
+
+        public static final double ELEVATOR_MAX_ACCELERATION = 600;
+        public static final double ELEVATOR_MAX_VELOCITY = 100;
+
+
+
+        public static final double ARM_P = 0;
+        public static final double ARM_I = 0;
+        public static final double ARM_D = 0;
+        public static final double ARM_S = 0;
+        public static final double ARM_V = 0;
+        public static final double ARM_A = 0;
 
     }
 }

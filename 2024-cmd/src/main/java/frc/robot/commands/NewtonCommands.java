@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.*;
 import frc.robot.commands.largecommands.FollowPathCommand;
-import frc.robot.subsystems.Intake;
 import frc.robot.Constants.INTAKE;
 import frc.robot.subsystems.elevator.*;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -21,12 +20,11 @@ import frc.robot.subsystems.swerve.Swerve.DriveModes;
 
 public final class NewtonCommands {
     private static Swerve swerve;
-    private static Intake intake;
-    private static Elevator elevator;
+    private static Scoring scoring;
     
-    public static void addSubsystems(Swerve swerve, Elevator elevator){
+    public static void addSubsystems(Swerve swerve, Scoring scoring){
         NewtonCommands.swerve = swerve;
-        NewtonCommands.elevator = elevator;
+        NewtonCommands.scoring = scoring;
 
     }
 
@@ -53,17 +51,17 @@ public final class NewtonCommands {
         });
     }
     // command for taking in coral
-    public static Command intakeCommand(){
-        return intake.run(()-> {
-            intake.runInnerMotor(INTAKE.INNER_MOTOR_INTAKE_VELOCITY);
-        });
-    }
-    // command for release coral for scoring
-    public static Command outtakeCommand() {
-        return intake.run(() -> {
-            intake.runInnerMotor(INTAKE.INNER_MOTOR_OUTAKE_VELOCITY);
-        });
-    }
+    // public static Command intakeCommand(){
+    //     return intake.run(()-> {
+    //         intake.runInnerMotor(INTAKE.INNER_MOTOR_INTAKE_VELOCITY);
+    //     });
+    // }
+    // // command for release coral for scoring
+    // public static Command outtakeCommand() {
+    //     return intake.run(() -> {
+    //         intake.runInnerMotor(INTAKE.INNER_MOTOR_OUTAKE_VELOCITY);
+    //     });
+    // }
 
     public static Command primeL1Command(){
         return Commands.none();
