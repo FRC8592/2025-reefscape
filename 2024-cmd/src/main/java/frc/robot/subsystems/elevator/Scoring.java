@@ -18,7 +18,8 @@ import frc.robot.helpers.motor.talonfx.KrakenX60Motor;
 public class Scoring extends SubsystemBase{
 
     private Elevator elevator;
-    private Arm arm;
+    private ClockArm clockArm;
+    private Wrist wrist;
 
     // public enum ScoringPositions {
 
@@ -51,7 +52,8 @@ public class Scoring extends SubsystemBase{
     public Scoring(){
         
         this.elevator = new Elevator();
-        this.arm = new Arm();
+        this.clockArm = new ClockArm();
+        this.wrist = new Wrist();
 
     }
 
@@ -59,13 +61,13 @@ public class Scoring extends SubsystemBase{
     public void periodic(){
         
         elevator.periodic();
-        arm.periodic();
-
+        clockArm.periodic();
+        wrist.periodic();
     }
 
    
     public Command setExtensionCommand(double targetExtension){
-        return this.run(()-> elevator.setExtensionPositionInches(targetExtension));
+        return this.run(()-> elevator.setExtensionPositionInches(targetExtension)).until(() -> elevator.atPosition());
     }
 
     public Command setExtensionPercentOutputCommand(double power) {
@@ -73,17 +75,43 @@ public class Scoring extends SubsystemBase{
     }
 
     public Command setArmPercentOutputCommand(double power) {
-        return this.run(() -> arm.setPercentOutput(power));
+        return this.run(() -> clockArm.setPercentOutput(power));
     }
     
     public Command stopArmCommand() {
-        return this.runOnce(() -> arm.setPercentOutput(0));
+        return this.runOnce(() -> clockArm.setPercentOutput(0));
+    }
+
+    public Command setArmPositionCommand(double degrees){
+        return this.run(()-> clockArm.setArmPositionDegrees(degrees)).until(() -> clockArm.atPosition());
+    }
+
+    public Command setWristPercentOutput(double percent){
+        return this.run(() -> wrist.setPercentOutput(percent));
+    }
+
+    public Command stopWrist(){
+        return this.run(() -> wrist.setPercentOutput(0));
+    }
+
+    public Command setWristCommand(double degrees){
+        return this.run(()-> wrist.setWristDegrees(degrees)).until(() -> wrist.atPosition());
     }
 
     public Command stopElevatorCommand() {
         return this.runOnce(() -> elevator.setPercentOutput(0));
     }
 
+    public Command goToL4Command(){
+        return setWristCommand(90).andThen(setExtensionCommand(18), setArmPositionCommand(135));
+    }
 
+    public Command stow(){
+        return setWristCommand(0).andThen(setExtensionCommand(0), setArmPositionCommand(0));
+    }
+
+    public Command stopAll(){
+        return stopElevatorCommand().andThen(stopWrist(), stopArmCommand());
+    }
 
 }

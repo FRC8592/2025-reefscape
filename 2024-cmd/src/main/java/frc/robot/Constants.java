@@ -59,7 +59,7 @@ public final class Constants {
         public static final int BACK_EXTENSION_MOTOR_CAN_ID = 44;
         public static final int FORWARD_EXTENSION_MOTOR_CAN_ID = 43;
         public static final int CLOCK_ARM_CAN_ID = 41;
-        public static final int WRIST_CAN_ID = 0;
+        public static final int WRIST_CAN_ID = 40;
     }
 
     public final class POWER {
@@ -294,7 +294,7 @@ public final class Constants {
         public static final double CLOCK_ARM_POSITION_TOLERANCE = 2.0;
         public static final double WRIST_POSITION_TOLERANCE = 2.0;
 
-        public static final double CLOCK_ARM_GEAR_RATIO = 1/192.0;
+        public static final double CLOCK_ARM_GEAR_RATIO = 1/300.0;
         public static final double WRIST_GEAR_RATIO = 1/75.0;
 
         public static final String EXTENSION_LOG_PATH = SHARED.LOG_FOLDER+"/Extension/";

@@ -65,7 +65,7 @@ public class RobotContainer {
     // private final Trigger ALIGN_TO_REEF = driverController.x();
     // private final Trigger ALIGN_TO_HPST = driverController.y();
 
-    private final Trigger STOW = driverController.button(100);
+    // private final Trigger STOW = driverController.button(100);
     private final Trigger PRIME = driverController.button(100);
 
     private final Trigger SLOW_MODE = driverController.rightBumper();
@@ -75,13 +75,18 @@ public class RobotContainer {
     private final Trigger SNAP_SOUTH = driverController.pov(180);
     private final Trigger SNAP_EAST = driverController.pov(90);
     private final Trigger SNAP_WEST = driverController.pov(270);
-    
+
+    // private final Trigger WRIST_CLOCKWISE = driverController.x();
+    // private final Trigger WRIST_COUNTER_CLOCKWISE = driverController.b();
+
+    private final Trigger GO_TO_L4 = driverController.x();
+    private final Trigger STOW = driverController.y();
 
     //Operator controls
 
-    private final Trigger ELEVATOR_UP = driverController.a();
-    private final Trigger ELEVATOR_MID = operatorController.b();
-    private final Trigger ELEVATOR_DOWN = driverController.y(); 
+    // private final Trigger ELEVATOR_UP = driverController.a();
+    // private final Trigger ELEVATOR_MID = operatorController.b();
+    // private final Trigger ELEVATOR_DOWN = driverController.y(); 
 
     private final Trigger PRIME_L1 = operatorController.button(1);
     private final Trigger PRIME_L2 = operatorController.button(2);
@@ -142,7 +147,8 @@ public class RobotContainer {
             ), DriveModes.AUTOMATIC);
         }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-        setDefaultCommand(scoring, scoring.stopArmCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        
+        
 
     }
 
@@ -231,8 +237,14 @@ public class RobotContainer {
         // ELEVATOR_MID.whileTrue(scoring.setExtensionCommand(10));
         // ELEVATOR_DOWN.whileTrue(scoring.setExtensionCommand(0.5));
 
-        ELEVATOR_UP.whileTrue(scoring.setArmPercentOutputCommand(0.5));
-        ELEVATOR_DOWN.whileTrue(scoring.setArmPercentOutputCommand(-0.5));
+        // ELEVATOR_UP.whileTrue(scoring.setArmPositionCommand(90)).onFalse(scoring.stopArmCommand());
+        // ELEVATOR_DOWN.whileTrue(scoring.setArmPositionCommand(0)).onFalse(scoring.stopArmCommand());
+
+        // WRIST_CLOCKWISE.whileTrue(scoring.setWristCommand(90)).onFalse(scoring.stopWrist());
+        // WRIST_COUNTER_CLOCKWISE.whileTrue(scoring.setWristCommand(0)).onFalse(scoring.stopWrist());
+
+        GO_TO_L4.whileTrue(scoring.goToL4Command()).onFalse(scoring.stopAll());
+        STOW.whileTrue(scoring.stow()).onFalse(scoring.stopAll());
 
 
         // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
