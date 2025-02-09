@@ -10,7 +10,7 @@ import frc.robot.helpers.Utils;
 import frc.robot.helpers.motor.NewtonMotor.IdleMode;
 import frc.robot.helpers.motor.talonfx.KrakenX60Motor;
 
-public class Wrist{
+public class Wrist extends SubsystemBase{
     private KrakenX60Motor wristMotor;
     private double targetDegree;
 
@@ -33,7 +33,7 @@ public class Wrist{
         wristMotor.configureMotionMagic(300, 100);
         
     }
-y
+
     public void setWristDegrees(double degrees){
         targetDegree = degrees;
         wristMotor.setPosition(wristDegreesToMotorRotations(degrees));
@@ -59,8 +59,19 @@ y
         return ((degrees/360.0)/ELEVATOR.WRIST_GEAR_RATIO);
     }
 
+    public Command setWristPercentOutput(double percent){
+        return this.run(() -> setPercentOutput(percent));
+    }
 
+    public Command stopWrist(){
+        return this.run(() -> setPercentOutput(0));
+    }
 
+    public Command setWristCommand(double degrees){
+        return this.run(()-> setWristDegrees(degrees)).until(() -> atPosition());
+    }
+
+    @Override
     public void periodic(){
         Logger.recordOutput(ELEVATOR.WRIST_LOG_PATH+"current wrist degrees ", getWristDegrees());
         Logger.recordOutput(ELEVATOR.WRIST_LOG_PATH+"target degree ", targetDegree);

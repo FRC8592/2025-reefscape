@@ -15,7 +15,7 @@ import frc.robot.helpers.Utils;
 import frc.robot.helpers.motor.NewtonMotor.IdleMode;
 import frc.robot.helpers.motor.talonfx.KrakenX60Motor;
 
-public class Elevator {
+public class Elevator extends SubsystemBase{
     private KrakenX60Motor leftExtensionMotor;
     private KrakenX60Motor rightExtensionMotor;
     private double targetExtension;
@@ -83,14 +83,7 @@ public class Elevator {
         targetExtension = 0;
     }
 
-    public void periodic(){
-        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"current extension inches ", getExtensionPositionInches());
-        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"target inches ", targetExtension);
-        Logger.recordOutput("Target extension in rotations", inchesToRotations(targetExtension));
-        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"at position", atPosition());
-        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"applied voltage", leftExtensionMotor.getVoltage());
-        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"current velocity", leftExtensionMotor.getVelocityRPM());
-    }
+
 
     public double getExtensionPositionInches(){
         return rotationsToInches(leftExtensionMotor.getRotations());
@@ -117,7 +110,27 @@ public class Elevator {
         return Utils.isWithin(getExtensionPositionInches(), targetExtension, ELEVATOR.EXTENSION_POSITION_TOLERANCE);
     }
 
-   
+    public Command setExtensionCommand(double targetExtension){
+        return this.run(()-> setExtensionPositionInches(targetExtension)).until(() -> atPosition());
+    }
+
+    public Command setExtensionPercentOutputCommand(double power) {
+        return this.run(() -> setPercentOutput(power));
+    }
+
+    public Command stopElevatorCommand() {
+        return this.runOnce(() -> setPercentOutput(0));
+    }
+
+    @Override
+    public void periodic(){
+        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"current extension inches ", getExtensionPositionInches());
+        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"target inches ", targetExtension);
+        Logger.recordOutput("Target extension in rotations", inchesToRotations(targetExtension));
+        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"at position", atPosition());
+        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"applied voltage", leftExtensionMotor.getVoltage());
+        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"current velocity", leftExtensionMotor.getVelocityRPM());
+    }
 
 
 }

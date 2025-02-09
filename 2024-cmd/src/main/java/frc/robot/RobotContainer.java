@@ -12,6 +12,7 @@ import java.util.Set;
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.OdometryUpdates;
 import frc.robot.subsystems.ScoreCoral;
 import frc.robot.subsystems.ScoreCoral.LeftOrRight;
@@ -21,8 +22,11 @@ import frc.robot.subsystems.swerve.Swerve.DriveModes;
 import frc.robot.subsystems.vision.Vision;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
+import frc.robot.subsystems.elevator.ClockArm;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.Scoring;
+import frc.robot.subsystems.elevator.Scoring.ElevatorPositions;
+import frc.robot.subsystems.elevator.Wrist;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -53,20 +57,20 @@ public class RobotContainer {
     private final Swerve swerve;
     private final Vision vision;
     private final Scoring scoring;
-    //TODO: Add more subsystems here
+
+    private final ClockArm clockArm;
+    private final Elevator elevator;
+    private final Wrist wrist;
+    private final Intake intake;
+   
     private ScoreCoral scoreCoral;
     private OdometryUpdates odometryUpdates;
+    
 
     //TODO: Add all controls here
     //Driver controls
     private final Trigger INTAKE = driverController.leftTrigger();
     private final Trigger SCORE = driverController.rightTrigger();
-
-    // private final Trigger ALIGN_TO_REEF = driverController.x();
-    // private final Trigger ALIGN_TO_HPST = driverController.y();
-
-    // private final Trigger STOW = driverController.button(100);
-    private final Trigger PRIME = driverController.button(100);
 
     private final Trigger SLOW_MODE = driverController.rightBumper();
     private final Trigger RESET_HEADING = driverController.back();
@@ -76,27 +80,24 @@ public class RobotContainer {
     private final Trigger SNAP_EAST = driverController.pov(90);
     private final Trigger SNAP_WEST = driverController.pov(270);
 
-    // private final Trigger WRIST_CLOCKWISE = driverController.x();
-    // private final Trigger WRIST_COUNTER_CLOCKWISE = driverController.b();
 
-    private final Trigger GO_TO_L4 = driverController.x();
-    private final Trigger STOW = driverController.y();
+    private final Trigger GO_TO_L4 = driverController.y();
+    private final Trigger STOW = driverController.x();
+    private final Trigger GO_TO_POSITION = driverController.a();
 
     //Operator controls
 
-    // private final Trigger ELEVATOR_UP = driverController.a();
-    // private final Trigger ELEVATOR_MID = operatorController.b();
-    // private final Trigger ELEVATOR_DOWN = driverController.y(); 
-
-    private final Trigger PRIME_L1 = operatorController.button(1);
-    private final Trigger PRIME_L2 = operatorController.button(2);
-    private final Trigger PRIME_L3 = operatorController.button(3);
-    private final Trigger PRIME_L4 = operatorController.button(4);
-    private final Trigger PRIME_L2_ALGAE = operatorController.button(5);
-    private final Trigger PRIME_L3_ALGAE = operatorController.button(6);
-    private final Trigger PRIME_NET = operatorController.button(7);
-    private final Trigger PRIME_PROCESSOR = operatorController.button(8);
-    private final Trigger GROUND_INTAKE = operatorController.button(9);
+    private final Trigger PRIME_L1 = coralController.button(2);
+    private final Trigger PRIME_L2 = coralController.button(3);
+    private final Trigger PRIME_L3 = coralController.button(8);
+    private final Trigger PRIME_L4 = coralController.button(9);
+    private final Trigger PRIME_L2_ALGAE = coralController.button(4);
+    private final Trigger PRIME_L3_ALGAE = coralController.button(6);
+    private final Trigger PRIME_NET = coralController.button(5);
+    private final Trigger PRIME_PROCESSOR = coralController.button(1);
+    // private final Trigger GROUND_INTAKE = coralController.button();
+    private final Trigger MODE_SWITCH_ALGAE = coralController.button(13);
+    private final Trigger MODE_SWITCH_CORAL = coralController.button(10);
 
     
 
@@ -114,6 +115,11 @@ public class RobotContainer {
         scoreCoral = new ScoreCoral(swerve);
         scoring = new Scoring();
         odometryUpdates = new OdometryUpdates(swerve, vision);
+
+        clockArm = new ClockArm();
+        wrist = new Wrist();
+        elevator = new Elevator();
+        intake = new Intake();
 
 
         passSubsystems();
@@ -148,7 +154,9 @@ public class RobotContainer {
         }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         
-        
+        setDefaultCommand(elevator, elevator.stopElevatorCommand());
+        setDefaultCommand(wrist, wrist.stopWrist());
+        setDefaultCommand(clockArm, clockArm.stopArmCommand());
 
     }
 
@@ -221,30 +229,23 @@ public class RobotContainer {
         // INTAKE.whileTrue(intakeCommand());
         // SCORE.whileTrue(outtakeCommand());
 
-        // PRIME_L1.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L1));
-        // PRIME_L2.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L2));
-        // PRIME_L3.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L3));
-        // PRIME_L4.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L4));
-        // PRIME_L2_ALGAE.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L2_ALGAE));
-        // PRIME_L3_ALGAE.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L3_ALGAE));
-        // PRIME_NET.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.NET));
-        // PRIME_PROCESSOR.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.PROCESSOR));
-        // GROUND_INTAKE.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.GROUND_ALGAE));
-        // STOW.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.STOW));
-        // PRIME.onTrue(NewtonCommands.goToPrimePositionCommand());
+        PRIME_L1.onTrue(scoring.setPosition(ElevatorPositions.L1));
+        PRIME_L2.onTrue(scoring.setPosition(ElevatorPositions.L2));
+        PRIME_L3.onTrue(scoring.setPosition(ElevatorPositions.L3));
+        PRIME_L4.onTrue(scoring.setPosition(ElevatorPositions.L4));
+        PRIME_L2_ALGAE.onTrue(scoring.setPosition(ElevatorPositions.L2_ALGAE));
+        PRIME_L3_ALGAE.onTrue(scoring.setPosition(ElevatorPositions.L3_ALGAE));
+        PRIME_NET.onTrue(scoring.setPosition(ElevatorPositions.NET));
+        PRIME_PROCESSOR.onTrue(scoring.setPosition(ElevatorPositions.PROCESSOR));
+        // GROUND_INTAKE.onTrue(scoring.setPosition(ElevatorPositions.GROUND_ALGAE));
+        
+        GO_TO_L4.whileTrue(scoring.goToL4Command());
+        STOW.whileTrue(scoring.setPosition(ElevatorPositions.STOW).andThen(scoring.stow()));
+        GO_TO_POSITION.whileTrue(scoring.goToPosition()).onFalse(scoring.stopAll());
 
-        // ELEVATOR_UP.whileTrue(scoring.setExtensionCommand(18));
-        // ELEVATOR_MID.whileTrue(scoring.setExtensionCommand(10));
-        // ELEVATOR_DOWN.whileTrue(scoring.setExtensionCommand(0.5));
+        INTAKE.whileTrue(intake.setIntakeCommand(0.5)).onFalse(intake.stopIntakeCommand());
+        SCORE.whileTrue(intake.setIntakeCommand(-0.5)).onFalse(intake.stopIntakeCommand());
 
-        // ELEVATOR_UP.whileTrue(scoring.setArmPositionCommand(90)).onFalse(scoring.stopArmCommand());
-        // ELEVATOR_DOWN.whileTrue(scoring.setArmPositionCommand(0)).onFalse(scoring.stopArmCommand());
-
-        // WRIST_CLOCKWISE.whileTrue(scoring.setWristCommand(90)).onFalse(scoring.stopWrist());
-        // WRIST_COUNTER_CLOCKWISE.whileTrue(scoring.setWristCommand(0)).onFalse(scoring.stopWrist());
-
-        GO_TO_L4.whileTrue(scoring.goToL4Command()).onFalse(scoring.stopAll());
-        STOW.whileTrue(scoring.stow()).onFalse(scoring.stopAll());
 
 
         // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
@@ -284,37 +285,37 @@ public class RobotContainer {
         // L2: 8    R2: 6
         // L1: 7    R1: 5
 
-        coralController.button(CONTROLLERS.CORAL_CONTROLLER_L1).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level1))
-        );
+        // coralController.button(CONTROLLERS.CORAL_CONTROLLER_L1).onTrue(
+        //     Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level1))
+        // );
 
-        coralController.button(CONTROLLERS.CORAL_CONTROLLER_L2).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level2))
-        );
+        // coralController.button(CONTROLLERS.CORAL_CONTROLLER_L2).onTrue(
+        //     Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level2))
+        // );
 
-        coralController.button(CONTROLLERS.CORAL_CONTROLLER_L3).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level3))
-        );
+        // coralController.button(CONTROLLERS.CORAL_CONTROLLER_L3).onTrue(
+        //     Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level3))
+        // );
 
-        coralController.button(CONTROLLERS.CORAL_CONTROLLER_L4).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level4))
-        );
+        // coralController.button(CONTROLLERS.CORAL_CONTROLLER_L4).onTrue(
+        //     Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level4))
+        // );
 
-        coralController.button(CONTROLLERS.CORAL_CONTROLLER_R1).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level1))
-        );
+        // coralController.button(CONTROLLERS.CORAL_CONTROLLER_R1).onTrue(
+        //     Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level1))
+        // );
         
-        coralController.button(CONTROLLERS.CORAL_CONTROLLER_R2).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level2))
-        );
+        // coralController.button(CONTROLLERS.CORAL_CONTROLLER_R2).onTrue(
+        //     Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level2))
+        // );
 
-        coralController.button(CONTROLLERS.CORAL_CONTROLLER_R3).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level3))
-        );
+        // coralController.button(CONTROLLERS.CORAL_CONTROLLER_R3).onTrue(
+        //     Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level3))
+        // );
 
-        coralController.button(CONTROLLERS.CORAL_CONTROLLER_R4).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level4))
-        );
+        // coralController.button(CONTROLLERS.CORAL_CONTROLLER_R4).onTrue(
+        //     Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level4))
+        // );
     };
 
 

@@ -10,7 +10,7 @@ import frc.robot.helpers.Utils;
 import frc.robot.helpers.motor.NewtonMotor.IdleMode;
 import frc.robot.helpers.motor.talonfx.KrakenX60Motor;
 
-public class ClockArm{
+public class ClockArm extends SubsystemBase{
     private KrakenX60Motor clockArmMotor;
     private double targetDegree;
 
@@ -57,9 +57,19 @@ public class ClockArm{
         return ((degrees/360.0)/ELEVATOR.CLOCK_ARM_GEAR_RATIO);
     }
 
+    public Command setArmPercentOutputCommand(double power) {
+        return this.run(() -> setPercentOutput(power));
+    }
     
+    public Command stopArmCommand() {
+        return this.runOnce(() -> setPercentOutput(0));
+    }
 
-    
+    public Command setArmPositionCommand(double degrees){
+        return this.run(()-> setArmPositionDegrees(degrees)).until(() -> atPosition());
+    }
+
+    @Override
     public void periodic(){
         Logger.recordOutput(ELEVATOR.CLOCK_ARM_LOG_PATH+"current arm degrees ", getArmPositionDegrees());
         Logger.recordOutput(ELEVATOR.CLOCK_ARM_LOG_PATH+"target degree ", targetDegree);
