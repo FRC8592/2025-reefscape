@@ -9,6 +9,8 @@ import static frc.robot.commands.NewtonCommands.*;
 
 import java.util.Set;
 
+import org.littletonrobotics.junction.Logger;
+
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
@@ -69,6 +71,9 @@ public class RobotContainer {
 
     //TODO: Add all controls here
     //Driver controls
+
+    private boolean isCoralMode = true;
+
     private final Trigger INTAKE = driverController.leftTrigger();
     private final Trigger SCORE = driverController.rightTrigger();
 
@@ -87,16 +92,22 @@ public class RobotContainer {
 
     //Operator controls
 
-    private final Trigger PRIME_L1 = coralController.button(2);
-    private final Trigger PRIME_L2 = coralController.button(3);
-    private final Trigger PRIME_L3 = coralController.button(8);
-    private final Trigger PRIME_L4 = coralController.button(9);
-    private final Trigger PRIME_L2_ALGAE = coralController.button(4);
-    private final Trigger PRIME_L3_ALGAE = coralController.button(6);
-    private final Trigger PRIME_NET = coralController.button(5);
-    private final Trigger PRIME_PROCESSOR = coralController.button(1);
+    private final Trigger PRIME_L1 = (coralController.button(2).or(coralController.button(1))).and(()->isCoralMode);
+    private final Trigger PRIME_L2 = (coralController.button(3).or(coralController.button(4))).and(()->isCoralMode);
+    private final Trigger PRIME_L3 = (coralController.button(8).or(coralController.button(6))).and(()->isCoralMode);
+    private final Trigger PRIME_L4 = (coralController.button(7).or(coralController.button(5))).and(()->isCoralMode);
+
+    private final Trigger ALIGN_RIGHT = (coralController.button(2).or(coralController.button(3)).or(coralController.button(8)).or(coralController.button(7))).and(()->isCoralMode);
+    private final Trigger ALIGN_LEFT = (coralController.button(1).or(coralController.button(4)).or(coralController.button(6)).or(coralController.button(5))).and(()->isCoralMode);
+
+    private final Trigger ALIGN_CENTER = (coralController.button(2).or(coralController.button(3)).or(coralController.button(8)).or(coralController.button(7))).and(()->!isCoralMode);
+    
+    private final Trigger PRIME_L2_ALGAE = coralController.button(4).and(()->!isCoralMode);
+    private final Trigger PRIME_L3_ALGAE = coralController.button(6).and(()->!isCoralMode);
+    private final Trigger PRIME_NET = coralController.button(5).and(()->!isCoralMode);
+    private final Trigger PRIME_PROCESSOR = coralController.button(1).and(()->!isCoralMode);
     // private final Trigger GROUND_INTAKE = coralController.button();
-    private final Trigger MODE_SWITCH_ALGAE = coralController.button(13);
+    private final Trigger MODE_SWITCH_ALGAE = coralController.button(9);
     private final Trigger MODE_SWITCH_CORAL = coralController.button(10);
 
     
@@ -226,8 +237,6 @@ public class RobotContainer {
             ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         );
 
-        // INTAKE.whileTrue(intakeCommand());
-        // SCORE.whileTrue(outtakeCommand());
 
         PRIME_L1.onTrue(scoring.setPosition(ElevatorPositions.L1));
         PRIME_L2.onTrue(scoring.setPosition(ElevatorPositions.L2));
@@ -237,14 +246,28 @@ public class RobotContainer {
         PRIME_L3_ALGAE.onTrue(scoring.setPosition(ElevatorPositions.L3_ALGAE));
         PRIME_NET.onTrue(scoring.setPosition(ElevatorPositions.NET));
         PRIME_PROCESSOR.onTrue(scoring.setPosition(ElevatorPositions.PROCESSOR));
+
         // GROUND_INTAKE.onTrue(scoring.setPosition(ElevatorPositions.GROUND_ALGAE));
         
         GO_TO_L4.whileTrue(scoring.goToL4Command());
-        STOW.whileTrue(scoring.setPosition(ElevatorPositions.STOW).andThen(scoring.stow()));
+        STOW.whileTrue(scoring.setPosition(ElevatorPositions.STOW).andThen(scoring.goToPosition()));
         GO_TO_POSITION.whileTrue(scoring.goToPosition()).onFalse(scoring.stopAll());
 
-        INTAKE.whileTrue(intake.setIntakeCommand(0.5)).onFalse(intake.stopIntakeCommand());
+        INTAKE.whileTrue(scoring.setPosition(ElevatorPositions.STOW).andThen(scoring.goToPosition().alongWith(intake.setIntakeCommand(0.5)))).onFalse(intake.stopIntakeCommand());
         SCORE.whileTrue(intake.setIntakeCommand(-0.5)).onFalse(intake.stopIntakeCommand());
+
+        MODE_SWITCH_ALGAE.onTrue(Commands.runOnce(()->{
+            isCoralMode=false; 
+            Logger.recordOutput(Constants.SHARED.LOG_FOLDER + "/isCoralMode", isCoralMode);
+        }, new Subsystem[0]));
+
+        MODE_SWITCH_CORAL.onTrue(Commands.runOnce(()->{
+            isCoralMode=true; 
+            Logger.recordOutput(Constants.SHARED.LOG_FOLDER + "/isCoralMode", isCoralMode);
+        }, new Subsystem[0]));
+
+        ALIGN_LEFT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level1)));
+        ALIGN_RIGHT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level1)));
 
 
 

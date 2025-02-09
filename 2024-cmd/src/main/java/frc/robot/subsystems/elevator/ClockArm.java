@@ -29,7 +29,7 @@ public class ClockArm extends SubsystemBase{
 
         clockArmMotor.withGains(positionPid);
 
-        clockArmMotor.configureMotionMagic(300, 100);
+        clockArmMotor.configureMotionMagic(100, 50);
     }
 
     public void setArmPositionDegrees(double degrees){

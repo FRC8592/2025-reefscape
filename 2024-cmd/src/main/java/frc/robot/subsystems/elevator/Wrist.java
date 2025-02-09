@@ -30,7 +30,7 @@ public class Wrist extends SubsystemBase{
     
         wristMotor.withGains(positionPid);
 
-        wristMotor.configureMotionMagic(300, 100);
+        wristMotor.configureMotionMagic(100, 50);
         
     }
 

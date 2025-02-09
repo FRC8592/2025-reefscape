@@ -52,7 +52,7 @@ public final class Constants {
     public final class CAN {
         public static final int PIVOT_MOTOR_CAN_ID = 30; //TODO Figure out the CAN ID for the wrist and the grip motor
         public static final int INTAKE_WRIST_MOTOR_CAN_ID = -1; // TODO: Rename the These to match the motor class 
-        public static final int INTAKE_INNER_MOTOR_CAN_ID = -1;
+        public static final int INTAKE_INNER_MOTOR_CAN_ID = 12;
         public static final int INTAKE_OUTER_MOTOR_CAN_ID = -1;
         public static final int PDH_CAN_ID = 1;
 
@@ -315,8 +315,8 @@ public final class Constants {
 
         public static final int ELEVATOR_CURRENT_LIMIT = 80;//amps
 
-        public static final double ELEVATOR_MAX_ACCELERATION = 600;
-        public static final double ELEVATOR_MAX_VELOCITY = 100;
+        public static final double ELEVATOR_MAX_ACCELERATION = 100;
+        public static final double ELEVATOR_MAX_VELOCITY = 50;
 
 
 

@@ -32,8 +32,8 @@ public class Scoring {
         L3(12, 135, 90),
         L4(18, 135, 90),
         GROUND_ALGAE(0, 0, 0),
-        HP_INTAKE(0, 0, 0),
-        STOW(0, 0, 0),
+        STARTING(0, 0, 0),
+        STOW(0, 10, 45),
         L2_ALGAE(0, 0, 0),
         L3_ALGAE(0, 0, 0),
         PROCESSOR(0, 0, 0),
@@ -55,7 +55,7 @@ public class Scoring {
         this.clockArm = new ClockArm();
         this.wrist = new Wrist();
 
-        targetPosition = ElevatorPositions.STOW;
+        targetPosition = ElevatorPositions.STARTING;
 
     }
 
@@ -79,10 +79,10 @@ public class Scoring {
          clockArm.setArmPositionCommand(targetPosition.clockArmPos));
     }
 
-    public Command stow(){
-        return clockArm.setArmPositionCommand(30)
-        .alongWith(elevator.setExtensionCommand(0)).andThen(wrist.setWristCommand(0), clockArm.setArmPositionCommand(0));
-    }
+    // public Command starting(){
+    //     return clockArm.setArmPositionCommand(30)
+    //     .alongWith(elevator.setExtensionCommand(0)).andThen(wrist.setWristCommand(0), clockArm.setArmPositionCommand(0));
+    // }
 
     public Command stopAll(){
         return elevator.stopElevatorCommand().alongWith(wrist.stopWrist(), clockArm.stopArmCommand());

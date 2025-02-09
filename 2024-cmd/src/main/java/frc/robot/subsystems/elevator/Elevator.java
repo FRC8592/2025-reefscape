@@ -20,33 +20,6 @@ public class Elevator extends SubsystemBase{
     private KrakenX60Motor rightExtensionMotor;
     private double targetExtension;
 
-    public enum ElevatorPositions {
-
-        L1(0),
-        L2(0),
-        L3(0),
-        L4(0),
-        GROUND_ALGAE(0),
-        HP_INTAKE(0),
-        STOW(0),
-        L2_ALGAE(0),
-        L3_ALGAE(0),
-        PROCESSOR(0),
-        NET(0);
-
-        public double elevatorPos = 0;
-        public double wristPos = 0;
-        public double clockArmPos = 0;
-        
-        private  ElevatorPositions(double elevator) {
-
-            elevatorPos = elevator;
-
-
-        }
-
-    }
-
     public Elevator(){
         PIDProfile positionPid = new PIDProfile();
         positionPid.setPID(ELEVATOR.ELEVATOR_POSITION_P, ELEVATOR.ELEVATOR_POSITION_I, ELEVATOR.ELEVATOR_POSITION_D);
