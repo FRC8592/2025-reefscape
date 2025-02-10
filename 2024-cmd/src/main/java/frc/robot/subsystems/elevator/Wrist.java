@@ -60,15 +60,15 @@ public class Wrist extends SubsystemBase{
         return ((degrees/360.0)/ELEVATOR.WRIST_GEAR_RATIO);
     }
 
-    public Command setWristPercentOutput(double percent){
+    public Command setWristPercentOutputCommand(double percent){
         return this.run(() -> setPercentOutput(percent));
     }
 
-    public Command stopWrist(){
+    public Command stopWristCommand(){
         return this.run(() -> setPercentOutput(0));
     }
 
-    public Command setWristCommand(DoubleSupplier degrees){
+    public Command setWristPositionCommand(DoubleSupplier degrees){
         return this.run(()-> setWristDegrees(degrees.getAsDouble()));
     }
 

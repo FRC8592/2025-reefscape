@@ -42,6 +42,10 @@ public class ClockArm extends SubsystemBase{
         return motorRotationsToArmDegrees(clockArmMotor.getRotations());
     }
 
+    public double getTargetArmPositionDegrees(){
+        return targetDegree;
+    }
+
     public void setPercentOutput(double percent){
         clockArmMotor.setPercentOutput(percent);
     }
