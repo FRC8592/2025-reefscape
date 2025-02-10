@@ -1,7 +1,10 @@
 package frc.robot.subsystems.elevator;
 
+import java.util.function.DoubleSupplier;
+
 import org.littletonrobotics.junction.Logger;
 
+import com.fasterxml.jackson.databind.ser.std.NumberSerializers.DoubleSerializer;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,8 +35,8 @@ public class Elevator extends SubsystemBase{
         leftExtensionMotor = new KrakenX60Motor(CAN.BACK_EXTENSION_MOTOR_CAN_ID, true);
         rightExtensionMotor = new KrakenX60Motor(CAN.FORWARD_EXTENSION_MOTOR_CAN_ID);
 
-        leftExtensionMotor.setIdleMode(IdleMode.kBrake);
-        rightExtensionMotor.setIdleMode(IdleMode.kBrake);
+        leftExtensionMotor.setIdleMode(IdleMode.kCoast);
+        rightExtensionMotor.setIdleMode(IdleMode.kCoast);
 
 
         //configure right motor to be inverted and to follow L motor
@@ -64,7 +67,6 @@ public class Elevator extends SubsystemBase{
 
     public void setExtensionPositionInches(double targetInches){
         targetExtension = targetInches;
-        leftExtensionMotor.setPosition(inchesToRotations(targetInches));
     }
 
     public void setPercentOutput(double percent){
@@ -83,8 +85,8 @@ public class Elevator extends SubsystemBase{
         return Utils.isWithin(getExtensionPositionInches(), targetExtension, ELEVATOR.EXTENSION_POSITION_TOLERANCE);
     }
 
-    public Command setExtensionCommand(double targetExtension){
-        return this.run(()-> setExtensionPositionInches(targetExtension)).until(() -> atPosition());
+    public Command setExtensionCommand(DoubleSupplier targetExtension){
+        return this.run(()-> setExtensionPositionInches(targetExtension.getAsDouble()));
     }
 
     public Command setExtensionPercentOutputCommand(double power) {
@@ -97,12 +99,15 @@ public class Elevator extends SubsystemBase{
 
     @Override
     public void periodic(){
+        leftExtensionMotor.setPosition(inchesToRotations(targetExtension));
         Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"current extension inches ", getExtensionPositionInches());
         Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"target inches ", targetExtension);
         Logger.recordOutput("Target extension in rotations", inchesToRotations(targetExtension));
         Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"at position", atPosition());
         Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"applied voltage", leftExtensionMotor.getVoltage());
         Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"current velocity", leftExtensionMotor.getVelocityRPM());
+    
+        
     }
 
 

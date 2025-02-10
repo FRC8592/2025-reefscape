@@ -283,7 +283,7 @@ public final class Constants {
         public static final double EXTENSION_GEAR_RATIO = 0.25;
         public static final double EXTENSION_DRUM_DIAMTER_INCHES = 1.0;
 
-        public static final double EXTENSION_INCHES_MAX = 18.0; //this is in inches
+        public static final double EXTENSION_INCHES_MAX = 19.5; //this is in inches
         public static final double EXTENSION_INCHES_MIN = 0.5;
 
         public static final double ARM_ANGLE_DEGREES_MIN = 0.0;
@@ -315,8 +315,8 @@ public final class Constants {
 
         public static final int ELEVATOR_CURRENT_LIMIT = 80;//amps
 
-        public static final double ELEVATOR_MAX_ACCELERATION = 100;
-        public static final double ELEVATOR_MAX_VELOCITY = 50;
+        public static final double ELEVATOR_MAX_ACCELERATION = 200;
+        public static final double ELEVATOR_MAX_VELOCITY = 80;
 
 
 

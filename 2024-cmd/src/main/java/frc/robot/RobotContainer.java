@@ -92,8 +92,8 @@ public class RobotContainer {
 
     //Operator controls
 
-    private final Trigger PRIME_L1 = (coralController.button(2).or(coralController.button(1))).and(()->isCoralMode);
-    private final Trigger PRIME_L2 = (coralController.button(3).or(coralController.button(4))).and(()->isCoralMode);
+    private final Trigger PRIME_L1 = (coralController.button(3).or(coralController.button(4))).and(()->isCoralMode);
+    private final Trigger PRIME_L2 = (coralController.button(2).or(coralController.button(1))).and(()->isCoralMode);
     private final Trigger PRIME_L3 = (coralController.button(8).or(coralController.button(6))).and(()->isCoralMode);
     private final Trigger PRIME_L4 = (coralController.button(7).or(coralController.button(5))).and(()->isCoralMode);
 
@@ -124,14 +124,14 @@ public class RobotContainer {
         swerve = new Swerve();
         vision = new Vision();
         scoreCoral = new ScoreCoral(swerve);
-        scoring = new Scoring();
         odometryUpdates = new OdometryUpdates(swerve, vision);
-
+        
         clockArm = new ClockArm();
         wrist = new Wrist();
         elevator = new Elevator();
         intake = new Intake();
-
+        
+        scoring = new Scoring(elevator, clockArm, wrist);
 
         passSubsystems();
         configureBindings();
@@ -237,7 +237,6 @@ public class RobotContainer {
             ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         );
 
-
         PRIME_L1.onTrue(scoring.setPosition(ElevatorPositions.L1));
         PRIME_L2.onTrue(scoring.setPosition(ElevatorPositions.L2));
         PRIME_L3.onTrue(scoring.setPosition(ElevatorPositions.L3));
@@ -249,27 +248,26 @@ public class RobotContainer {
 
         // GROUND_INTAKE.onTrue(scoring.setPosition(ElevatorPositions.GROUND_ALGAE));
         
-        GO_TO_L4.whileTrue(scoring.goToL4Command());
+        GO_TO_L4.whileTrue(scoring.setPosition(ElevatorPositions.L4).andThen(scoring.goToPosition()));
         STOW.whileTrue(scoring.setPosition(ElevatorPositions.STOW).andThen(scoring.goToPosition()));
         GO_TO_POSITION.whileTrue(scoring.goToPosition()).onFalse(scoring.stopAll());
+
 
         INTAKE.whileTrue(scoring.setPosition(ElevatorPositions.STOW).andThen(scoring.goToPosition().alongWith(intake.setIntakeCommand(0.5)))).onFalse(intake.stopIntakeCommand());
         SCORE.whileTrue(intake.setIntakeCommand(-0.5)).onFalse(intake.stopIntakeCommand());
 
-        MODE_SWITCH_ALGAE.onTrue(Commands.runOnce(()->{
-            isCoralMode=false; 
-            Logger.recordOutput(Constants.SHARED.LOG_FOLDER + "/isCoralMode", isCoralMode);
-        }, new Subsystem[0]));
+        // MODE_SWITCH_ALGAE.onTrue(Commands.runOnce(()->{
+        //     isCoralMode=false; 
+        //     Logger.recordOutput(Constants.SHARED.LOG_FOLDER + "/isCoralMode", isCoralMode);
+        // }, new Subsystem[0]));
 
-        MODE_SWITCH_CORAL.onTrue(Commands.runOnce(()->{
-            isCoralMode=true; 
-            Logger.recordOutput(Constants.SHARED.LOG_FOLDER + "/isCoralMode", isCoralMode);
-        }, new Subsystem[0]));
+        // MODE_SWITCH_CORAL.onTrue(Commands.runOnce(()->{
+        //     isCoralMode=true; 
+        //     Logger.recordOutput(Constants.SHARED.LOG_FOLDER + "/isCoralMode", isCoralMode);
+        // }, new Subsystem[0]));
 
-        ALIGN_LEFT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level1)));
-        ALIGN_RIGHT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level1)));
-
-
+        // ALIGN_LEFT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level1)));
+        // ALIGN_RIGHT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level1)));
 
         // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
         // this activates tesla full self driving

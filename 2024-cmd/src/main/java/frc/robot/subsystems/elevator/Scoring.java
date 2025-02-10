@@ -1,5 +1,7 @@
 package frc.robot.subsystems.elevator;
 
+import java.lang.annotation.Target;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -18,24 +20,24 @@ import frc.robot.helpers.Utils;
 import frc.robot.helpers.motor.NewtonMotor.IdleMode;
 import frc.robot.helpers.motor.talonfx.KrakenX60Motor;
 
-public class Scoring {
+public class Scoring extends SubsystemBase {
 
     private Elevator elevator;
     private ClockArm clockArm;
     private Wrist wrist;
 
-    private ElevatorPositions targetPosition;
+    private static ElevatorPositions targetPosition;
 
-    public enum ElevatorPositions {
-        L1(15, 30, 90),
-        L2(15, 30, 90),
-        L3(12, 135, 90),
-        L4(18, 135, 90),
+    public static enum ElevatorPositions {
+        L1(15, 30, 120),
+        L2(13.5, 30, 120),
+        L3(2.5, 150, 120),
+        L4(17.5, 150, 135),
         GROUND_ALGAE(0, 0, 0),
         STARTING(0, 0, 0),
-        STOW(0, 10, 45),
-        L2_ALGAE(0, 0, 0),
-        L3_ALGAE(0, 0, 0),
+        STOW(0, 10, -45),
+        L2_ALGAE(14, 30, 120),
+        L3_ALGAE(3, 150, 120),
         PROCESSOR(0, 0, 0),
         NET(0, 0, 0);
         public double elevatorPos = 0;
@@ -49,11 +51,10 @@ public class Scoring {
         }
     }
 
-    public Scoring(){
-        
-        this.elevator = new Elevator();
-        this.clockArm = new ClockArm();
-        this.wrist = new Wrist();
+    public Scoring(Elevator elevator, ClockArm arm, Wrist wrist){
+        this.elevator = elevator;
+        this.clockArm = arm;
+        this.wrist = wrist;
 
         targetPosition = ElevatorPositions.STARTING;
 
@@ -68,15 +69,15 @@ public class Scoring {
     }
 
     public Command goToL4Command(){
-        return clockArm.setArmPositionCommand(135)
-        .alongWith(elevator.setExtensionCommand(18), new WaitUntilCommand(wrist.setWristCommand(90), ()->clockArm.getArmPositionDegrees()>30));
+        return clockArm.setArmPositionCommand(()->135)
+        .alongWith(elevator.setExtensionCommand(()->18), new WaitUntilCommand(wrist.setWristCommand(()->90), ()->clockArm.getArmPositionDegrees()>30));
     }
 
     public Command goToPosition(){
-        return clockArm.setArmPositionCommand(30)
-        .alongWith(elevator.setExtensionCommand(targetPosition.elevatorPos))
-        .andThen(wrist.setWristCommand(targetPosition.wristPos),
-         clockArm.setArmPositionCommand(targetPosition.clockArmPos));
+        return new ConditionalCommand(clockArm.setArmPositionCommand(()->45).until(()->clockArm.atPosition()), Commands.none(), ()->targetPosition.equals(ElevatorPositions.STOW)).andThen(
+            elevator.setExtensionCommand(()->targetPosition.elevatorPos)
+        .alongWith(wrist.setWristCommand(()->targetPosition.wristPos))
+        .alongWith(clockArm.setArmPositionCommand(()->targetPosition.clockArmPos)));
     }
 
     // public Command starting(){

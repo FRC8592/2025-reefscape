@@ -1,5 +1,7 @@
 package frc.robot.subsystems.elevator;
 
+import java.util.function.DoubleSupplier;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,18 +25,17 @@ public class ClockArm extends SubsystemBase{
         clockArmMotor = new KrakenX60Motor(CAN.CLOCK_ARM_CAN_ID);
         targetDegree = 0.0;
 
-        clockArmMotor.setIdleMode(IdleMode.kBrake);
+        clockArmMotor.setIdleMode(IdleMode.kCoast);
         clockArmMotor.setPositionSoftLimit(armDegreesToMotorRotations(0), armDegreesToMotorRotations(180));
         clockArmMotor.setCurrentLimit(80);
 
         clockArmMotor.withGains(positionPid);
 
-        clockArmMotor.configureMotionMagic(100, 50);
+        clockArmMotor.configureMotionMagic(200, 80);
     }
 
     public void setArmPositionDegrees(double degrees){
         targetDegree = degrees;
-        clockArmMotor.setPosition(armDegreesToMotorRotations(degrees));
     }
 
     public double getArmPositionDegrees(){
@@ -65,12 +66,13 @@ public class ClockArm extends SubsystemBase{
         return this.runOnce(() -> setPercentOutput(0));
     }
 
-    public Command setArmPositionCommand(double degrees){
-        return this.run(()-> setArmPositionDegrees(degrees)).until(() -> atPosition());
+    public Command setArmPositionCommand(DoubleSupplier degrees){
+        return this.run(()-> setArmPositionDegrees(degrees.getAsDouble()));
     }
 
     @Override
     public void periodic(){
+        clockArmMotor.setPosition(armDegreesToMotorRotations(targetDegree));
         Logger.recordOutput(ELEVATOR.CLOCK_ARM_LOG_PATH+"current arm degrees ", getArmPositionDegrees());
         Logger.recordOutput(ELEVATOR.CLOCK_ARM_LOG_PATH+"target degree ", targetDegree);
         Logger.recordOutput(ELEVATOR.CLOCK_ARM_LOG_PATH+"at position", atPosition());

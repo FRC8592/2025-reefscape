@@ -1,5 +1,7 @@
 package frc.robot.subsystems.elevator;
 
+import java.util.function.DoubleSupplier;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,22 +23,21 @@ public class Wrist extends SubsystemBase{
     
       
     
-        wristMotor = new KrakenX60Motor(CAN.WRIST_CAN_ID);
+        wristMotor = new KrakenX60Motor(CAN.WRIST_CAN_ID, true);
         targetDegree = 0.0;
     
-        wristMotor.setIdleMode(IdleMode.kBrake);
-        wristMotor.setPositionSoftLimit(wristDegreesToMotorRotations(0), wristDegreesToMotorRotations(180));
+        wristMotor.setIdleMode(IdleMode.kCoast);
+        wristMotor.setPositionSoftLimit(wristDegreesToMotorRotations(-45), wristDegreesToMotorRotations(135));
         wristMotor.setCurrentLimit(80);
     
         wristMotor.withGains(positionPid);
 
-        wristMotor.configureMotionMagic(100, 50);
+        wristMotor.configureMotionMagic(200, 80);
         
     }
 
     public void setWristDegrees(double degrees){
         targetDegree = degrees;
-        wristMotor.setPosition(wristDegreesToMotorRotations(degrees));
     }
 
     public double getWristDegrees(){
@@ -67,12 +68,13 @@ public class Wrist extends SubsystemBase{
         return this.run(() -> setPercentOutput(0));
     }
 
-    public Command setWristCommand(double degrees){
-        return this.run(()-> setWristDegrees(degrees)).until(() -> atPosition());
+    public Command setWristCommand(DoubleSupplier degrees){
+        return this.run(()-> setWristDegrees(degrees.getAsDouble()));
     }
 
     @Override
     public void periodic(){
+        wristMotor.setPosition(wristDegreesToMotorRotations(targetDegree));
         Logger.recordOutput(ELEVATOR.WRIST_LOG_PATH+"current wrist degrees ", getWristDegrees());
         Logger.recordOutput(ELEVATOR.WRIST_LOG_PATH+"target degree ", targetDegree);
         Logger.recordOutput(ELEVATOR.WRIST_LOG_PATH+"at position", atPosition());
