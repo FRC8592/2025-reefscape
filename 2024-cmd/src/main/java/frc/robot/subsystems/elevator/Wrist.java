@@ -1,9 +1,8 @@
 package frc.robot.subsystems.elevator;
 
-import java.util.function.DoubleSupplier;
-
 import org.littletonrobotics.junction.Logger;
 
+import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
@@ -19,7 +18,7 @@ public class Wrist extends SubsystemBase{
     public Wrist(){
     
         PIDProfile positionPid = new PIDProfile();
-        positionPid.setPID(3, 0, 0);
+        positionPid.setPID(WRIST.WRIST_P, WRIST.WRIST_I, WRIST.WRIST_D);
     
       
     
@@ -27,12 +26,12 @@ public class Wrist extends SubsystemBase{
         targetDegree = 0.0;
     
         wristMotor.setIdleMode(IdleMode.kCoast);
-        wristMotor.setPositionSoftLimit(wristDegreesToMotorRotations(-45), wristDegreesToMotorRotations(135));
-        wristMotor.setCurrentLimit(80);
+        wristMotor.setPositionSoftLimit(wristDegreesToMotorRotations(WRIST.WRIST_ANGLE_DEGREES_MIN), wristDegreesToMotorRotations(WRIST.WRIST_ANGLE_DEGREES_MAX));
+        wristMotor.setCurrentLimit(WRIST.WRIST_CURRENT_LIMIT);
     
         wristMotor.withGains(positionPid);
 
-        wristMotor.configureMotionMagic(200, 80);
+        wristMotor.configureMotionMagic(WRIST.WRIST_MAX_ACCELERATION, WRIST.WRIST_MAX_VELOCITY);
         
     }
 
@@ -49,15 +48,15 @@ public class Wrist extends SubsystemBase{
     }
 
     public boolean atPosition(){
-        return Utils.isWithin(getWristDegrees(), targetDegree, ELEVATOR.WRIST_POSITION_TOLERANCE);
+        return Utils.isWithin(getWristDegrees(), targetDegree, WRIST.WRIST_POSITION_TOLERANCE);
     }
 
     public double motorRotationsToWristDegrees(double rotations){
-        return (rotations*ELEVATOR.WRIST_GEAR_RATIO*360);
+        return (rotations*WRIST.WRIST_GEAR_RATIO*360);
     }
 
     public double wristDegreesToMotorRotations(double degrees){
-        return ((degrees/360.0)/ELEVATOR.WRIST_GEAR_RATIO);
+        return ((degrees/360.0)/WRIST.WRIST_GEAR_RATIO);
     }
 
     public Command setWristPercentOutputCommand(double percent){
@@ -65,7 +64,7 @@ public class Wrist extends SubsystemBase{
     }
 
     public Command stopWristCommand(){
-        return this.run(() -> setPercentOutput(0));
+        return setWristPercentOutputCommand(0);
     }
 
     public Command setWristPositionCommand(DoubleSupplier degrees){
@@ -75,8 +74,8 @@ public class Wrist extends SubsystemBase{
     @Override
     public void periodic(){
         wristMotor.setPosition(wristDegreesToMotorRotations(targetDegree));
-        Logger.recordOutput(ELEVATOR.WRIST_LOG_PATH+"current wrist degrees ", getWristDegrees());
-        Logger.recordOutput(ELEVATOR.WRIST_LOG_PATH+"target degree ", targetDegree);
-        Logger.recordOutput(ELEVATOR.WRIST_LOG_PATH+"at position", atPosition());
+        Logger.recordOutput(WRIST.WRIST_LOG_PATH+"current wrist degrees ", getWristDegrees());
+        Logger.recordOutput(WRIST.WRIST_LOG_PATH+"target degree ", targetDegree);
+        Logger.recordOutput(WRIST.WRIST_LOG_PATH+"at position", atPosition());
     }
 }

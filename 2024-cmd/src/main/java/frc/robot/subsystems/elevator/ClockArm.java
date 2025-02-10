@@ -18,7 +18,7 @@ public class ClockArm extends SubsystemBase{
 
     public ClockArm(){
         PIDProfile positionPid = new PIDProfile();
-        positionPid.setPID(3, 0, 0);
+        positionPid.setPID(ARM.ARM_P, ARM.ARM_I, ARM.ARM_D);
 
   
 
@@ -26,12 +26,12 @@ public class ClockArm extends SubsystemBase{
         targetDegree = 0.0;
 
         clockArmMotor.setIdleMode(IdleMode.kCoast);
-        clockArmMotor.setPositionSoftLimit(armDegreesToMotorRotations(0), armDegreesToMotorRotations(180));
-        clockArmMotor.setCurrentLimit(80);
+        clockArmMotor.setPositionSoftLimit(armDegreesToMotorRotations(ARM.ARM_ANGLE_DEGREES_MIN), armDegreesToMotorRotations(ARM.ARM_ANGLE_DEGREES_MAX));
+        clockArmMotor.setCurrentLimit(ARM.ARM_CURRENT_LIMIT);
 
         clockArmMotor.withGains(positionPid);
 
-        clockArmMotor.configureMotionMagic(200, 80);
+        clockArmMotor.configureMotionMagic(ARM.ARM_MAX_ACCELERATION, ARM.ARM_MAX_VELOCITY);
     }
 
     public void setArmPositionDegrees(double degrees){
@@ -51,15 +51,15 @@ public class ClockArm extends SubsystemBase{
     }
 
     public boolean atPosition(){
-        return Utils.isWithin(getArmPositionDegrees(), targetDegree, ELEVATOR.CLOCK_ARM_POSITION_TOLERANCE);
+        return Utils.isWithin(getArmPositionDegrees(), targetDegree, ARM.CLOCK_ARM_POSITION_TOLERANCE);
     }
 
     public double motorRotationsToArmDegrees(double rotations){
-        return (rotations*ELEVATOR.CLOCK_ARM_GEAR_RATIO*360);
+        return (rotations*ARM.CLOCK_ARM_GEAR_RATIO*360);
     }
 
     public double armDegreesToMotorRotations(double degrees){
-        return ((degrees/360.0)/ELEVATOR.CLOCK_ARM_GEAR_RATIO);
+        return ((degrees/360.0)/ARM.CLOCK_ARM_GEAR_RATIO);
     }
 
     public Command setArmPercentOutputCommand(double power) {
@@ -67,7 +67,7 @@ public class ClockArm extends SubsystemBase{
     }
     
     public Command stopArmCommand() {
-        return this.runOnce(() -> setPercentOutput(0));
+        return setArmPercentOutputCommand(0);
     }
 
     public Command setArmPositionCommand(DoubleSupplier degrees){
@@ -77,8 +77,8 @@ public class ClockArm extends SubsystemBase{
     @Override
     public void periodic(){
         clockArmMotor.setPosition(armDegreesToMotorRotations(targetDegree));
-        Logger.recordOutput(ELEVATOR.CLOCK_ARM_LOG_PATH+"current arm degrees ", getArmPositionDegrees());
-        Logger.recordOutput(ELEVATOR.CLOCK_ARM_LOG_PATH+"target degree ", targetDegree);
-        Logger.recordOutput(ELEVATOR.CLOCK_ARM_LOG_PATH+"at position", atPosition());
+        Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"current arm degrees ", getArmPositionDegrees());
+        Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"target degree ", targetDegree);
+        Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"at position", atPosition());
     }
 }

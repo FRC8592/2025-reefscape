@@ -48,10 +48,7 @@ public final class Constants {
     }
 
     public final class CAN {
-        public static final int PIVOT_MOTOR_CAN_ID = 30; //TODO Figure out the CAN ID for the wrist and the grip motor
-        public static final int INTAKE_WRIST_MOTOR_CAN_ID = -1; // TODO: Rename the These to match the motor class 
-        public static final int INTAKE_INNER_MOTOR_CAN_ID = 12;
-        public static final int INTAKE_OUTER_MOTOR_CAN_ID = -1;
+        public static final int INTAKE_MOTOR_CAN_ID = 12;
         public static final int PDH_CAN_ID = 1;
 
         public static final int BACK_EXTENSION_MOTOR_CAN_ID = 44;
@@ -114,36 +111,12 @@ public final class Constants {
     public final class NAVIGATION {
         public static final double MAX_ACCEPTABLE_AMBIGUITY = 0.2;
     }
-
-    public final class PIVOT {
-        public static final int GROUND_DEGREES = 0;
-        // TODO: Set these to correct values
-        public static final int KNOCK_BUCKET_OVER_DEGREES = 14;
-        public static final int STOW_DEGREES = 90;
-        public static final int SCORE_HIGH_DEGREES = 75;
-        public static final int SCORE_GRID_DEGREES = 30;
-
-        public static final double PIVOT_GEAR_RATIO = 300d;
-        
-        public static final double PIVOT_kP = 2e-4;
-        public static final double PIVOT_kI = 0; 
-        public static final double PIVOT_kD = 0;
-        public static final double PIVOT_kF = 1.5e-4;
-
-        public static final double INTAKE_ANGLE = 9.5;
-        public static final double PIVOT_TARGET_THRESHOLD_DEGREES = 2.0;
-
-        public static final double PIVOT_MANUAL_CONTROL_MAX_SPEED = 0.4;
-         
-    }
+   
     
     public final class INTAKE {
         public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Intake/";
-        public static final double INNER_MOTOR_INTAKE_VELOCITY = 1000; // TODO: Set the velocity 
-        public static final double OUTER_MOTOR_INTAKE_VELOCITY = 0;// TODO: Set the velocity 
-        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 0; // TODO: Set the ID  
-        public static final double INNER_MOTOR_OUTAKE_VELOCITY = 1000; // TODO: Set the velocity
-        public static final double OUTER_MOTOR_OUTAKE_VELOCITY = 0; // TODO: set the velociy
+        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 0; // TODO: Set the ID
+
     }
 
     
@@ -205,10 +178,6 @@ public final class Constants {
         public static final Rotation2d BLUE_PERSPECTIVE_ROTATION = Rotation2d.fromDegrees(0);
         public static final Rotation2d RED_PERSPECTIVE_ROTATION = Rotation2d.fromDegrees(180);
 
-        // public static final double BLACK_FRONT_LEFT_STEER_OFFSET = -0.388427734375;
-        // public static final double ORANGE_FRONT_RIGHT_STEER_OFFSET = -0.462646484375;
-        // public static final double TEAL_BACK_LEFT_STEER_OFFSET = -0.18017578125;
-        // public static final double WHITE_BACK_RIGHT_STEER_OFFSET = -0.4853515625;
 
         //TODO: Set these
         public static final double BLACK_FRONT_LEFT_STEER_OFFSET = 0.062255859375;
@@ -264,19 +233,7 @@ public final class Constants {
     }
 
     public class ELEVATOR{
-        public static final double L1_SCORE = -1.0;
-        public static final double L2_SCORE = -1.0;
-        public static final double L3_SCORE = -1.0;
-        public static final double L4_SCORE = -1.0;
-
-        public static final double L2_ALGAE_INTAKE = -1.0;
-        public static final double L3_ALGAE_INTAKE = -1.0;
-
-        public static final double GROUND_INTAKE = -1.0;
-        public static final double STOW = -1.0;
-        public static final double HUMAN_PLAYER_INTAKE = -1.0;
-        public static final double PROCESSOR = -1.0;
-        public static final double NET = -1.0;
+        public static final String EXTENSION_LOG_PATH = SHARED.LOG_FOLDER+"/Extension/";
 
         public static final double EXTENSION_GEAR_RATIO = 0.25;
         public static final double EXTENSION_DRUM_DIAMTER_INCHES = 1.0;
@@ -284,20 +241,12 @@ public final class Constants {
         public static final double EXTENSION_INCHES_MAX = 19.5; //this is in inches
         public static final double EXTENSION_INCHES_MIN = 0.5;
 
-        public static final double ARM_ANGLE_DEGREES_MIN = 0.0;
-        public static final double ARM_ANGLE_DEGREES_MAX = 0.0;
-
-
         public static final double EXTENSION_POSITION_TOLERANCE = 1.0;
-        public static final double CLOCK_ARM_POSITION_TOLERANCE = 2.0;
-        public static final double WRIST_POSITION_TOLERANCE = 2.0;
 
-        public static final double CLOCK_ARM_GEAR_RATIO = 1/300.0;
-        public static final double WRIST_GEAR_RATIO = 1/75.0;
+        public static final int ELEVATOR_CURRENT_LIMIT = 80;//amps
 
-        public static final String EXTENSION_LOG_PATH = SHARED.LOG_FOLDER+"/Extension/";
-        public static final String CLOCK_ARM_LOG_PATH = SHARED.LOG_FOLDER+"/Clock Arm/";
-        public static final String WRIST_LOG_PATH = SHARED.LOG_FOLDER+"/Wrist/";
+        public static final double ELEVATOR_MAX_ACCELERATION = 200;
+        public static final double ELEVATOR_MAX_VELOCITY = 80;
 
         public static final double ELEVATOR_POSITION_P = 3.5;
         public static final double ELEVATOR_POSITION_I = 0;
@@ -310,20 +259,52 @@ public final class Constants {
         public static final double ELEVATOR_VELOCITY_I = 0;
         public static final double ELEVATOR_VELOCITY_D = 0;
         public static final double ELEVATOR_VELOCITY_S = 0.1;
+    }
 
-        public static final int ELEVATOR_CURRENT_LIMIT = 80;//amps
+    public class ARM{
+        public static final String CLOCK_ARM_LOG_PATH = SHARED.LOG_FOLDER+"/Clock Arm/";
+        
+        public static final double CLOCK_ARM_GEAR_RATIO = 1/300.0;
 
-        public static final double ELEVATOR_MAX_ACCELERATION = 200;
-        public static final double ELEVATOR_MAX_VELOCITY = 80;
+        public static final double ARM_ANGLE_DEGREES_MIN = 0d;
+        public static final double ARM_ANGLE_DEGREES_MAX = 180d;
 
+        public static final double CLOCK_ARM_POSITION_TOLERANCE = 2.0;
 
+        public static final int ARM_CURRENT_LIMIT = 80;//amps
 
-        public static final double ARM_P = 0;
+        public static final double ARM_MAX_ACCELERATION = 200;
+        public static final double ARM_MAX_VELOCITY = 80;
+
+        public static final double ARM_P = 3;
         public static final double ARM_I = 0;
         public static final double ARM_D = 0;
         public static final double ARM_S = 0;
         public static final double ARM_V = 0;
         public static final double ARM_A = 0;
-
     }
+
+    public class WRIST{
+        public static final String WRIST_LOG_PATH = SHARED.LOG_FOLDER+"/Wrist/";
+
+        public static final double WRIST_GEAR_RATIO = 1/75.0;
+
+        public static final double WRIST_ANGLE_DEGREES_MIN = -45d;
+        public static final double WRIST_ANGLE_DEGREES_MAX = 135d;
+
+        public static final double WRIST_POSITION_TOLERANCE = 2.0;
+
+        public static final int WRIST_CURRENT_LIMIT = 80;//amps
+
+        public static final double WRIST_MAX_ACCELERATION = 200;
+        public static final double WRIST_MAX_VELOCITY = 80;
+
+        public static final double WRIST_P = 3;
+        public static final double WRIST_I = 0;
+        public static final double WRIST_D = 0;
+        public static final double WRIST_S = 0;
+        public static final double WRIST_V = 0;
+        public static final double WRIST_A = 0;
+    }
+
 }

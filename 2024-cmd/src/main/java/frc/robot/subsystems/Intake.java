@@ -11,7 +11,7 @@ public class Intake extends SubsystemBase {
 
     NewtonMotor intakeMotor;
     public Intake() {
-        intakeMotor = new KrakenX60Motor(CAN.INTAKE_INNER_MOTOR_CAN_ID, true);
+        intakeMotor = new KrakenX60Motor(CAN.INTAKE_MOTOR_CAN_ID, true);
     }
 
     public void setIntakePercentOutput(double percent){
