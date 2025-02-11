@@ -7,6 +7,8 @@ package frc.robot;
 import frc.robot.Constants.*;
 import static frc.robot.commands.NewtonCommands.*;
 
+import java.util.Set;
+
 import org.littletonrobotics.junction.Logger;
 
 import frc.robot.commands.NewtonCommands;
@@ -26,9 +28,6 @@ import frc.robot.subsystems.elevator.Scoring;
 import frc.robot.subsystems.elevator.Scoring.ElevatorPositions;
 import frc.robot.subsystems.elevator.Wrist;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
@@ -79,6 +78,7 @@ public class RobotContainer {
 
     private final Trigger STOW = driverController.x();
     private final Trigger GO_TO_POSITION = driverController.a();
+    private final Trigger ALIGN_TO_REEF = driverController.y();
 
     //Operator controls
 
@@ -171,8 +171,8 @@ public class RobotContainer {
      * Configure all button bindings
      */
     private void configureBindings() {
-        // Driver controls:
-        // Operator:
+
+        //------------------------------ SWERVE COMMANDS ------------------------------//
         SLOW_MODE.onTrue(
             // The Commands.runOnce (instead of swerve.runOnce) is a special case here
             // to allow this to run while other swerve commands (the default driving
@@ -255,15 +255,22 @@ public class RobotContainer {
         ALIGN_LEFT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level1)));
         ALIGN_RIGHT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level1)));
 
-        //------------------------------ DRIVER ELEVATOR COMMANDS ------------------------------//
+        //------------------------------ DRIVER COMMANDS ------------------------------//
 
         STOW.whileTrue(scoring.stowCommand());
         GO_TO_POSITION.whileTrue(scoring.goToPosition()).onFalse(scoring.stopAllCommand());
 
-
         INTAKE.whileTrue(scoring.intakeCommand());
         
         SCORE.whileTrue(intake.setIntakeCommand(-0.5));
+
+        ALIGN_TO_REEF.whileTrue(
+            new DeferredCommand(
+                () -> scoreCoral.driveToClosestReefTag(),
+                Set.of(swerve)
+            ) 
+        );
+
 
 
 
