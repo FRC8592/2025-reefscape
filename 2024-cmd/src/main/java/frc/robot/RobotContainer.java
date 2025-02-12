@@ -65,21 +65,6 @@ public class RobotContainer {
 
     private boolean isCoralMode = true;
 
-    private final Trigger INTAKE = driverController.leftTrigger();
-    private final Trigger SCORE = driverController.rightTrigger();
-
-    private final Trigger SLOW_MODE = driverController.rightBumper();
-    private final Trigger RESET_HEADING = driverController.back();
-    private final Trigger ROBOT_RELATIVE = driverController.leftBumper();
-    private final Trigger SNAP_NORTH = driverController.pov(0);
-    private final Trigger SNAP_SOUTH = driverController.pov(180);
-    private final Trigger SNAP_EAST = driverController.pov(90);
-    private final Trigger SNAP_WEST = driverController.pov(270);
-
-    private final Trigger STOW = driverController.x();
-    private final Trigger GO_TO_POSITION = driverController.a();
-    private final Trigger ALIGN_TO_REEF = driverController.y();
-
     //Operator controls
 
     private final Trigger PRIME_L1 = (coralController.button(3).or(coralController.button(4))).and(()->isCoralMode);
@@ -173,7 +158,7 @@ public class RobotContainer {
     private void configureBindings() {
 
         //------------------------------ SWERVE COMMANDS ------------------------------//
-        SLOW_MODE.onTrue(
+        driverController.rightBumper().onTrue(
             // The Commands.runOnce (instead of swerve.runOnce) is a special case here
             // to allow this to run while other swerve commands (the default driving
             // command, for example) run. This is usually a horrible idea and shouldn't
@@ -186,19 +171,19 @@ public class RobotContainer {
             Commands.runOnce(() -> swerve.setSlowMode(false)).ignoringDisable(true)
         );
 
-        RESET_HEADING.onTrue(
+        driverController.back().onTrue(
             // Similar comment on Commands.runOnce as slow mode above
             Commands.runOnce(() -> swerve.resetHeading())
         );
 
-        ROBOT_RELATIVE.onTrue(
+        driverController.leftBumper().onTrue(
             // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
             Commands.runOnce(() -> swerve.setRobotRelative(true)).ignoringDisable(true)
         ).onFalse(
             Commands.runOnce(() -> swerve.setRobotRelative(false)).ignoringDisable(true)
         );
 
-        SNAP_NORTH.whileTrue(
+        driverController.pov(0).whileTrue(
             swerveSnapToCommand(
                 Rotation2d.fromDegrees(0),
                 () -> -driverController.getLeftX(),
@@ -206,7 +191,7 @@ public class RobotContainer {
             )
         );
 
-        SNAP_SOUTH.whileTrue(
+        driverController.pov(180).whileTrue(
             swerveSnapToCommand(
                 Rotation2d.fromDegrees(180),
                 () -> -driverController.getLeftX(),
@@ -214,7 +199,7 @@ public class RobotContainer {
             )
         );
 
-        SNAP_EAST.whileTrue(
+        driverController.pov(90).whileTrue(
             swerveSnapToCommand(
                 Rotation2d.fromDegrees(270),
                 () -> -driverController.getLeftX(),
@@ -222,7 +207,7 @@ public class RobotContainer {
             )
         );
 
-        SNAP_WEST.whileTrue(
+        driverController.pov(270).whileTrue(
             swerveSnapToCommand(
                 Rotation2d.fromDegrees(90),
                 () -> -driverController.getLeftX(),
@@ -257,14 +242,14 @@ public class RobotContainer {
 
         //------------------------------ DRIVER COMMANDS ------------------------------//
 
-        STOW.whileTrue(scoring.stowCommand());
-        GO_TO_POSITION.whileTrue(scoring.goToPosition()).onFalse(scoring.stopAllCommand());
+        driverController.x().whileTrue(scoring.stowCommand());
+        driverController.a().whileTrue(scoring.goToPosition()).onFalse(scoring.stopAllCommand());
 
-        INTAKE.whileTrue(scoring.intakeCommand());
+        driverController.leftTrigger().whileTrue(scoring.intakeCommand());
         
-        SCORE.whileTrue(intake.setIntakeCommand(-0.5));
+        driverController.rightTrigger().whileTrue(intake.setIntakeCommand(-0.5));
 
-        ALIGN_TO_REEF.whileTrue(
+        driverController.y().whileTrue(
             new DeferredCommand(
                 () -> scoreCoral.driveToClosestReefTag(),
                 Set.of(swerve)
@@ -275,8 +260,6 @@ public class RobotContainer {
 
 
     };
-
-
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
