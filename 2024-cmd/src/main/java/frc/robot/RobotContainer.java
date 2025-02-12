@@ -70,7 +70,7 @@ public class RobotContainer {
 
     private final Trigger SLOW_MODE = driverController.rightBumper();
     private final Trigger RESET_HEADING = driverController.back();
-    private final Trigger ROBOT_RELATIVE = driverController.leftBumper();
+    private final Trigger ROBOT_RELATIVE = driverController.y();
     private final Trigger SNAP_NORTH = driverController.pov(0);
     private final Trigger SNAP_SOUTH = driverController.pov(180);
     private final Trigger SNAP_EAST = driverController.pov(90);
@@ -78,7 +78,7 @@ public class RobotContainer {
 
     private final Trigger STOW = driverController.x();
     private final Trigger GO_TO_POSITION = driverController.a();
-    private final Trigger ALIGN_TO_REEF = driverController.y();
+    private final Trigger ALIGN_TO_REEF = driverController.leftBumper();
 
     //Operator controls
 
