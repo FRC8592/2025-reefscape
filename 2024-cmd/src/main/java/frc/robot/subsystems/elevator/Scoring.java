@@ -24,9 +24,9 @@ public class Scoring extends SubsystemBase {
 
     public static enum ElevatorPositions {
         L1(15, 30, 120),
-        L2(13.5, 30, 120),
-        L3(2.5, 150, 120),
-        L4(17.5, 150, 135),
+        L2(13, 30, 120),
+        L3(2, 180, 120),
+        L4(10., 180, 135),
         GROUND_ALGAE(0, 0, 0),
         STARTING(0, 0, 0),
         STOW(0, 10, -45),
