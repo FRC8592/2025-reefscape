@@ -256,6 +256,14 @@ public class RobotContainer {
             ) 
         );
 
+        driverController.b().whileTrue(
+            new DeferredCommand(
+                () -> scoreCoral.driveToClosestHumanPlayerStation(),
+                Set.of(swerve)
+            ) 
+        );
+
+
 
 
 
