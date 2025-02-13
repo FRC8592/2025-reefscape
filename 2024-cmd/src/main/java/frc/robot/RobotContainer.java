@@ -9,9 +9,12 @@ import static frc.robot.commands.NewtonCommands.*;
 
 import java.util.Set;
 
+import org.littletonrobotics.junction.Logger;
+
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.OdometryUpdates;
 import frc.robot.subsystems.ScoreCoral;
 import frc.robot.subsystems.ScoreCoral.LeftOrRight;
@@ -19,22 +22,16 @@ import frc.robot.subsystems.ScoreCoral.ScoreLevels;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 import frc.robot.subsystems.vision.Vision;
-import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.geometry.Pose2d;
+import frc.robot.subsystems.elevator.ClockArm;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.Scoring;
+import frc.robot.subsystems.elevator.Scoring.ElevatorPositions;
+import frc.robot.subsystems.elevator.Wrist;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.DeferredCommand;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 
@@ -53,45 +50,42 @@ public class RobotContainer {
     private final Swerve swerve;
     private final Vision vision;
     private final Scoring scoring;
-    //TODO: Add more subsystems here
+
+    private final ClockArm clockArm;
+    private final Elevator elevator;
+    private final Wrist wrist;
+    private final Intake intake;
+   
     private ScoreCoral scoreCoral;
     private OdometryUpdates odometryUpdates;
+    
 
     //TODO: Add all controls here
     //Driver controls
-    private final Trigger INTAKE = driverController.leftTrigger();
-    private final Trigger SCORE = driverController.rightTrigger();
 
-    private final Trigger ALIGN_TO_REEF = driverController.x();
-    private final Trigger ALIGN_TO_HPST = driverController.b();
-
-    private final Trigger STOW = driverController.button(100);
-    private final Trigger PRIME = driverController.button(100);
-
-    private final Trigger SLOW_MODE = driverController.rightBumper();
-    private final Trigger RESET_HEADING = driverController.back();
-    private final Trigger ROBOT_RELATIVE = driverController.leftBumper();
-    private final Trigger SNAP_NORTH = driverController.pov(0);
-    private final Trigger SNAP_SOUTH = driverController.pov(180);
-    private final Trigger SNAP_EAST = driverController.pov(90);
-    private final Trigger SNAP_WEST = driverController.pov(270);
-    
+    private boolean isCoralMode = true;
 
     //Operator controls
 
-    private final Trigger ELEVATOR_UP = driverController.a();
-    private final Trigger ELEVATOR_MID = operatorController.b();
-    private final Trigger ELEVATOR_DOWN = driverController.y(); 
+    private final Trigger PRIME_L1 = (coralController.button(3).or(coralController.button(4))).and(()->isCoralMode);
+    private final Trigger PRIME_L2 = (coralController.button(2).or(coralController.button(1))).and(()->isCoralMode);
+    private final Trigger PRIME_L3 = (coralController.button(8).or(coralController.button(6))).and(()->isCoralMode);
+    private final Trigger PRIME_L4 = (coralController.button(7).or(coralController.button(5))).and(()->isCoralMode);
 
-    private final Trigger PRIME_L1 = operatorController.button(1);
-    private final Trigger PRIME_L2 = operatorController.button(2);
-    private final Trigger PRIME_L3 = operatorController.button(3);
-    private final Trigger PRIME_L4 = operatorController.button(4);
-    private final Trigger PRIME_L2_ALGAE = operatorController.button(5);
-    private final Trigger PRIME_L3_ALGAE = operatorController.button(6);
-    private final Trigger PRIME_NET = operatorController.button(7);
-    private final Trigger PRIME_PROCESSOR = operatorController.button(8);
-    private final Trigger GROUND_INTAKE = operatorController.button(9);
+    private final Trigger ALIGN_RIGHT = (coralController.button(2).or(coralController.button(3)).or(coralController.button(8)).or(coralController.button(7))).and(()->isCoralMode);
+    private final Trigger ALIGN_LEFT = (coralController.button(1).or(coralController.button(4)).or(coralController.button(6)).or(coralController.button(5))).and(()->isCoralMode);
+
+    private final Trigger ALIGN_CENTER = (coralController.button(2).or(coralController.button(3)).or(coralController.button(8)).or(coralController.button(7))).and(()->!isCoralMode);
+    
+    private final Trigger PRIME_PROCESSOR = coralController.button(4).and(()->!isCoralMode);
+    private final Trigger PRIME_L2_ALGAE = coralController.button(1).and(()->!isCoralMode);
+    private final Trigger PRIME_L3_ALGAE = coralController.button(6).and(()->!isCoralMode);
+    private final Trigger PRIME_NET = coralController.button(5).and(()->!isCoralMode);
+
+    private final Trigger ALGAE_INTAKE = coralController.button(3).and(()->!isCoralMode);
+    // private final Trigger GROUND_INTAKE = coralController.button();
+    private final Trigger MODE_SWITCH_ALGAE = coralController.button(9);
+    private final Trigger MODE_SWITCH_CORAL = coralController.button(10);
 
     
 
@@ -107,9 +101,14 @@ public class RobotContainer {
         swerve = new Swerve();
         vision = new Vision();
         scoreCoral = new ScoreCoral(swerve);
-        scoring = new Scoring();
         odometryUpdates = new OdometryUpdates(swerve, vision);
-
+        
+        clockArm = new ClockArm();
+        wrist = new Wrist();
+        elevator = new Elevator();
+        intake = new Intake();
+        
+        scoring = new Scoring(elevator, clockArm, wrist, intake);
 
         passSubsystems();
         configureBindings();
@@ -142,7 +141,11 @@ public class RobotContainer {
             ), DriveModes.AUTOMATIC);
         }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-        setDefaultCommand(scoring, scoring.stopArmCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        
+        setDefaultCommand(elevator, elevator.stopElevatorCommand());
+        setDefaultCommand(wrist, wrist.stopWristCommand());
+        setDefaultCommand(clockArm, clockArm.stopArmCommand());
+        setDefaultCommand(intake, intake.stopIntakeCommand());
 
     }
 
@@ -153,9 +156,9 @@ public class RobotContainer {
      * Configure all button bindings
      */
     private void configureBindings() {
-        // Driver controls:
-        // Operator:
-        SLOW_MODE.onTrue(
+
+        //------------------------------ SWERVE COMMANDS ------------------------------//
+        driverController.rightBumper().onTrue(
             // The Commands.runOnce (instead of swerve.runOnce) is a special case here
             // to allow this to run while other swerve commands (the default driving
             // command, for example) run. This is usually a horrible idea and shouldn't
@@ -168,19 +171,19 @@ public class RobotContainer {
             Commands.runOnce(() -> swerve.setSlowMode(false)).ignoringDisable(true)
         );
 
-        RESET_HEADING.onTrue(
+        driverController.back().onTrue(
             // Similar comment on Commands.runOnce as slow mode above
             Commands.runOnce(() -> swerve.resetHeading())
         );
 
-        ROBOT_RELATIVE.onTrue(
+        driverController.leftBumper().onTrue(
             // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
             Commands.runOnce(() -> swerve.setRobotRelative(true)).ignoringDisable(true)
         ).onFalse(
             Commands.runOnce(() -> swerve.setRobotRelative(false)).ignoringDisable(true)
         );
 
-        SNAP_NORTH.whileTrue(
+        driverController.pov(0).whileTrue(
             swerveSnapToCommand(
                 Rotation2d.fromDegrees(0),
                 () -> -driverController.getLeftX(),
@@ -188,7 +191,7 @@ public class RobotContainer {
             )
         );
 
-        SNAP_SOUTH.whileTrue(
+        driverController.pov(180).whileTrue(
             swerveSnapToCommand(
                 Rotation2d.fromDegrees(180),
                 () -> -driverController.getLeftX(),
@@ -196,7 +199,7 @@ public class RobotContainer {
             )
         );
 
-        SNAP_EAST.whileTrue(
+        driverController.pov(90).whileTrue(
             swerveSnapToCommand(
                 Rotation2d.fromDegrees(270),
                 () -> -driverController.getLeftX(),
@@ -204,7 +207,7 @@ public class RobotContainer {
             )
         );
 
-        SNAP_WEST.whileTrue(
+        driverController.pov(270).whileTrue(
             swerveSnapToCommand(
                 Rotation2d.fromDegrees(90),
                 () -> -driverController.getLeftX(),
@@ -212,100 +215,59 @@ public class RobotContainer {
             ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         );
 
-        // INTAKE.whileTrue(intakeCommand());
-        // SCORE.whileTrue(outtakeCommand());
+        //------------------------------ OPERATOR POSITION COMMANDS ------------------------------//
+        PRIME_L1.onTrue(scoring.setPosition(ElevatorPositions.L1));
+        PRIME_L2.onTrue(scoring.setPosition(ElevatorPositions.L2));
+        PRIME_L3.onTrue(scoring.setPosition(ElevatorPositions.L3));
+        PRIME_L4.onTrue(scoring.setPosition(ElevatorPositions.L4));
 
-        // PRIME_L1.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L1));
-        // PRIME_L2.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L2));
-        // PRIME_L3.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L3));
-        // PRIME_L4.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L4));
-        // PRIME_L2_ALGAE.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L2_ALGAE));
-        // PRIME_L3_ALGAE.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.L3_ALGAE));
-        // PRIME_NET.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.NET));
-        // PRIME_PROCESSOR.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.PROCESSOR));
-        // GROUND_INTAKE.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.GROUND_ALGAE));
-        // STOW.onTrue(ElevatorCommands.setElevatorPosCommand(ElevatorPositions.STOW));
-        // PRIME.onTrue(NewtonCommands.goToPrimePositionCommand());
+        PRIME_PROCESSOR.onTrue(scoring.setPosition(ElevatorPositions.PROCESSOR));
+        PRIME_L2_ALGAE.onTrue(scoring.setPosition(ElevatorPositions.L2_ALGAE));
+        PRIME_L3_ALGAE.onTrue(scoring.setPosition(ElevatorPositions.L3_ALGAE));
+        PRIME_NET.onTrue(scoring.setPosition(ElevatorPositions.NET));
+        ALGAE_INTAKE.onTrue(scoring.setPosition(ElevatorPositions.GROUND_ALGAE));
 
-        // ELEVATOR_UP.whileTrue(scoring.setExtensionCommand(18));
-        // ELEVATOR_MID.whileTrue(scoring.setExtensionCommand(10));
-        // ELEVATOR_DOWN.whileTrue(scoring.setExtensionCommand(0.5));
+        MODE_SWITCH_ALGAE.onTrue(Commands.runOnce(()->{
+            isCoralMode=false; 
+            Logger.recordOutput(Constants.SHARED.LOG_FOLDER + "/isCoralMode", isCoralMode);
+        }, new Subsystem[0]));
 
-        ELEVATOR_UP.whileTrue(scoring.setArmPercentOutputCommand(0.5));
-        ELEVATOR_DOWN.whileTrue(scoring.setArmPercentOutputCommand(-0.5));
+        MODE_SWITCH_CORAL.onTrue(Commands.runOnce(()->{
+            isCoralMode=true; 
+            Logger.recordOutput(Constants.SHARED.LOG_FOLDER + "/isCoralMode", isCoralMode);
+        }, new Subsystem[0]));
 
+        ALIGN_LEFT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level1)));
+        ALIGN_RIGHT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level1)));
 
-        // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
-        // this activates tesla full self driving
-        ALIGN_TO_REEF.whileTrue(
+        //------------------------------ DRIVER COMMANDS ------------------------------//
+
+        driverController.x().whileTrue(scoring.stowCommand());
+        driverController.a().whileTrue(scoring.goToPosition()).onFalse(scoring.stopAllCommand());
+
+        driverController.leftTrigger().whileTrue(scoring.intakeCommand());
+        
+        driverController.rightTrigger().whileTrue(intake.setIntakeCommand(-0.5));
+
+        driverController.y().whileTrue(
             new DeferredCommand(
                 () -> scoreCoral.driveToClosestReefTag(),
                 Set.of(swerve)
             ) 
         );
 
-        ALIGN_TO_HPST.whileTrue(
+        driverController.b().whileTrue(
             new DeferredCommand(
                 () -> scoreCoral.driveToClosestHumanPlayerStation(),
                 Set.of(swerve)
             ) 
         );
 
-        // operatorController.leftTrigger().onTrue(
-        //     intakeCommand()
-        // ).onFalse(
-        //     stopIntakeComand()
-        // );
 
-        // operatorController.rightTrigger().onTrue(
-        //     outakeCommand()
-        // ).onFalse(
-        //     stopIntakeComand()
-        // );
-        
-        // D-input; LS; Turbo: Off
-        //
-        //Joystick is here
-        //
-        // L4: 3    R4: 4
-        // L3: 2    R3: 1
-        // L2: 8    R2: 6
-        // L1: 7    R1: 5
 
-        coralController.button(CONTROLLERS.CORAL_CONTROLLER_L1).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level1))
-        );
 
-        coralController.button(CONTROLLERS.CORAL_CONTROLLER_L2).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level2))
-        );
 
-        coralController.button(CONTROLLERS.CORAL_CONTROLLER_L3).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level3))
-        );
-
-        coralController.button(CONTROLLERS.CORAL_CONTROLLER_L4).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level4))
-        );
-
-        coralController.button(CONTROLLERS.CORAL_CONTROLLER_R1).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level1))
-        );
-        
-        coralController.button(CONTROLLERS.CORAL_CONTROLLER_R2).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level2))
-        );
-
-        coralController.button(CONTROLLERS.CORAL_CONTROLLER_R3).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level3))
-        );
-
-        coralController.button(CONTROLLERS.CORAL_CONTROLLER_R4).onTrue(
-            Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level4))
-        );
     };
-
-
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.

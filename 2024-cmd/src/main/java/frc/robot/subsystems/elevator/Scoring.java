@@ -2,88 +2,99 @@ package frc.robot.subsystems.elevator;
 
 import org.littletonrobotics.junction.Logger;
 
-
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.PIDCommand;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.*;
-import frc.robot.helpers.PIDProfile;
-import frc.robot.helpers.Utils;
-import frc.robot.helpers.motor.NewtonMotor.IdleMode;
-import frc.robot.helpers.motor.talonfx.KrakenX60Motor;
+import frc.robot.Constants;
+import frc.robot.commands.proxies.WaitUntilCommand;
+import frc.robot.subsystems.Intake;
 
-public class Scoring extends SubsystemBase{
+public class Scoring extends SubsystemBase {
 
     private Elevator elevator;
-    private Arm arm;
+    private ClockArm clockArm;
+    private Wrist wrist;
+    private Intake intake;
 
-    // public enum ScoringPositions {
+    private static ElevatorPositions targetPosition;
 
-    //     L1(0),
-    //     L2(0),
-    //     L3(0),
-    //     L4(0),
-    //     GROUND_ALGAE(0),
-    //     HP_INTAKE(0),
-    //     STOW(0),
-    //     L2_ALGAE(0),
-    //     L3_ALGAE(0),
-    //     PROCESSOR(0),
-    //     NET(0);
-
-    //     public double elevatorPos = 0;
-    //     public double wristPos = 0;
-    //     public double clockArmPos = 0;
-
+    public static enum ElevatorPositions {
+        L1(15, 30, 120),
+        L2(13.5, 30, 120),
+        L3(2.5, 150, 120),
+        L4(17.5, 150, 135),
+        GROUND_ALGAE(0, 0, 0),
+        STARTING(0, 0, 0),
+        STOW(0, 10, -45),
+        L2_ALGAE(14, 30, 120),
+        L3_ALGAE(3, 150, 120),
+        PROCESSOR(0, 0, 0),
+        NET(0, 0, 0);
+        public double elevatorPos = 0;
+        public double wristPos = 0;
+        public double clockArmPos = 0;
         
-    //     private ElevatorPositions(double elevator) {
+        private  ElevatorPositions(double elevator, double clockArm, double wrist) {
+          elevatorPos = elevator;
+          wristPos = wrist;
+          clockArmPos =  clockArm;
+        }
+    }
 
-    //         elevatorPos = elevator;
+    public Scoring(Elevator elevator, ClockArm arm, Wrist wrist, Intake intake){
+        this.elevator = elevator;
+        this.clockArm = arm;
+        this.wrist = wrist;
+        this.intake = intake;
 
-
-    //     }
-
-    // }
-
-    public Scoring(){
-        
-        this.elevator = new Elevator();
-        this.arm = new Arm();
+        targetPosition = ElevatorPositions.STARTING;
 
     }
 
-    @Override
-    public void periodic(){
-        
-        elevator.periodic();
-        arm.periodic();
-
+    public Command setPosition(ElevatorPositions eposition){
+        return Commands.runOnce(()->{
+            Logger.recordOutput(Constants.SHARED.LOG_FOLDER + "/targetPosition", eposition.toString());
+            SmartDashboard.putString("targetPosition", eposition.toString());
+            targetPosition = eposition;
+        }, new Subsystem[0]);
     }
 
-   
-    public Command setExtensionCommand(double targetExtension){
-        return this.run(()-> elevator.setExtensionPositionInches(targetExtension));
+    public Command goToL4Command(){
+        return clockArm.setArmPositionCommand(()->135)
+        .alongWith(elevator.setExtensionPositionCommand(()->18), new WaitUntilCommand(wrist.setWristPositionCommand(()->90), ()->clockArm.getArmPositionDegrees()>30));
     }
 
-    public Command setExtensionPercentOutputCommand(double power) {
-        return this.run(() -> elevator.setPercentOutput(power));
+    public Command goToPosition(){
+        return new ConditionalCommand(
+            clockArm.setArmPositionCommand(()->45).until(()->clockArm.atPosition()), 
+            Commands.none(), 
+            ()->targetPosition.equals(ElevatorPositions.STOW) && clockArm.getTargetArmPositionDegrees() != ElevatorPositions.STOW.clockArmPos).andThen(
+            elevator.setExtensionPositionCommand(()->targetPosition.elevatorPos)
+        .alongWith(wrist.setWristPositionCommand(()->targetPosition.wristPos))
+        .alongWith(clockArm.setArmPositionCommand(()->targetPosition.clockArmPos)));
     }
 
-    public Command setArmPercentOutputCommand(double power) {
-        return this.run(() -> arm.setPercentOutput(power));
+    public Command stowCommand(){
+        return new ConditionalCommand(
+            clockArm.setArmPositionCommand(()->45).until(()->clockArm.atPosition()), 
+            Commands.none(), 
+            ()-> clockArm.getTargetArmPositionDegrees() != ElevatorPositions.STOW.clockArmPos).andThen(
+            elevator.setExtensionPositionCommand(()->ElevatorPositions.STOW.elevatorPos)
+        .alongWith(wrist.setWristPositionCommand(()->ElevatorPositions.STOW.wristPos))
+        .alongWith(clockArm.setArmPositionCommand(()->ElevatorPositions.STOW.elevatorPos)));
     }
+
     
-    public Command stopArmCommand() {
-        return this.runOnce(() -> arm.setPercentOutput(0));
+    public Command intakeCommand(){
+        return stowCommand().alongWith(intake.setIntakeCommand(0.5)).withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
     }
 
-    public Command stopElevatorCommand() {
-        return this.runOnce(() -> elevator.setPercentOutput(0));
+    public Command stopAllCommand(){
+        return elevator.stopElevatorCommand().alongWith(wrist.stopWristCommand(), clockArm.stopArmCommand());
     }
-
-
 
 }
