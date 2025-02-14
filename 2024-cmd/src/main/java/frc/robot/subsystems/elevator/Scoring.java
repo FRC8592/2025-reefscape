@@ -25,8 +25,8 @@ public class Scoring extends SubsystemBase {
     public static enum ElevatorPositions {
         L1(15, 30, 120),
         L2(13, 30, 120),
-        L3(2, 180, 120),
-        L4(10., 180, 135),
+        L3(2, 165, 120),
+        L4(19.5, 175, 135),
         GROUND_ALGAE(0, 0, 0),
         STARTING(0, 0, 0),
         STOW(0, 10, -45),
@@ -69,23 +69,17 @@ public class Scoring extends SubsystemBase {
     }
 
     public Command goToPosition(){
-        return new ConditionalCommand(
-            clockArm.setArmPositionCommand(()->45).until(()->clockArm.atPosition()), 
-            Commands.none(), 
-            ()->targetPosition.equals(ElevatorPositions.STOW) && clockArm.getTargetArmPositionDegrees() != ElevatorPositions.STOW.clockArmPos).andThen(
-            elevator.setExtensionPositionCommand(()->targetPosition.elevatorPos)
+        return elevator.setExtensionPositionCommand(()->targetPosition.elevatorPos)
         .alongWith(wrist.setWristPositionCommand(()->targetPosition.wristPos))
-        .alongWith(clockArm.setArmPositionCommand(()->targetPosition.clockArmPos)));
+        .alongWith(clockArm.setArmPositionCommand(()->targetPosition.clockArmPos));
     }
 
     public Command stowCommand(){
-        return new ConditionalCommand(
-            clockArm.setArmPositionCommand(()->45).until(()->clockArm.atPosition()), 
-            Commands.none(), 
-            ()-> clockArm.getTargetArmPositionDegrees() != ElevatorPositions.STOW.clockArmPos).andThen(
-            elevator.setExtensionPositionCommand(()->ElevatorPositions.STOW.elevatorPos)
+        return 
+            clockArm.setArmPositionCommand(()->45).onlyIf(()-> clockArm.getTargetArmPositionDegrees() != ElevatorPositions.STOW.clockArmPos).until(()->clockArm.atPosition()) 
+            .andThen(elevator.setExtensionPositionCommand(()->ElevatorPositions.STOW.elevatorPos)
         .alongWith(wrist.setWristPositionCommand(()->ElevatorPositions.STOW.wristPos))
-        .alongWith(clockArm.setArmPositionCommand(()->ElevatorPositions.STOW.elevatorPos)));
+        .alongWith(clockArm.setArmPositionCommand(()->ElevatorPositions.STOW.clockArmPos)));
     }
 
     

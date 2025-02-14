@@ -85,7 +85,7 @@ public final class Constants {
 
         public static final int MAX_LOCK_LOSS_TICKS = 20;
 
-        public static final Transform3d CAMERA_OFFSETS = new Transform3d(new Translation3d(0.60, -0.05, 0.245), new Rotation3d(0, Math.toRadians(-12), 0));
+        public static final Transform3d CAMERA_OFFSETS = new Transform3d(new Translation3d(-0.14, -0.17, 0.245), new Rotation3d(0, Math.toRadians(-12), 0));
 
         public static final Pose3d SOUTH_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get();
         public static final Pose3d SOUTH_WEST_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(19).get();
@@ -245,8 +245,8 @@ public final class Constants {
 
         public static final int ELEVATOR_CURRENT_LIMIT = 80;//amps
 
-        public static final double ELEVATOR_MAX_ACCELERATION = 200;
-        public static final double ELEVATOR_MAX_VELOCITY = 80;
+        public static final double ELEVATOR_MAX_ACCELERATION = 300;
+        public static final double ELEVATOR_MAX_VELOCITY = 100;
 
         public static final double ELEVATOR_POSITION_P = 3.5;
         public static final double ELEVATOR_POSITION_I = 0;
@@ -273,8 +273,8 @@ public final class Constants {
 
         public static final int ARM_CURRENT_LIMIT = 80;//amps
 
-        public static final double ARM_MAX_ACCELERATION = 200;
-        public static final double ARM_MAX_VELOCITY = 80;
+        public static final double ARM_MAX_ACCELERATION = 300;
+        public static final double ARM_MAX_VELOCITY = 100;
 
         public static final double ARM_P = 3;
         public static final double ARM_I = 0;
@@ -290,14 +290,14 @@ public final class Constants {
         public static final double WRIST_GEAR_RATIO = 1/75.0;
 
         public static final double WRIST_ANGLE_DEGREES_MIN = -45d;
-        public static final double WRIST_ANGLE_DEGREES_MAX = 135d;
+        public static final double WRIST_ANGLE_DEGREES_MAX = 150d;
 
         public static final double WRIST_POSITION_TOLERANCE = 2.0;
 
         public static final int WRIST_CURRENT_LIMIT = 80;//amps
 
-        public static final double WRIST_MAX_ACCELERATION = 200;
-        public static final double WRIST_MAX_VELOCITY = 80;
+        public static final double WRIST_MAX_ACCELERATION = 300;
+        public static final double WRIST_MAX_VELOCITY = 100;
 
         public static final double WRIST_P = 3;
         public static final double WRIST_I = 0;
