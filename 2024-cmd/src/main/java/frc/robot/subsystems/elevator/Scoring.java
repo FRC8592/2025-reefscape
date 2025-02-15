@@ -63,15 +63,20 @@ public class Scoring extends SubsystemBase {
         }, new Subsystem[0]);
     }
 
-    public Command goToL4Command(){
-        return clockArm.setArmPositionCommand(()->135)
-        .alongWith(elevator.setExtensionPositionCommand(()->18), new WaitUntilCommand(wrist.setWristPositionCommand(()->90), ()->clockArm.getArmPositionDegrees()>30));
-    }
-
     public Command goToPosition(){
         return elevator.setExtensionPositionCommand(()->targetPosition.elevatorPos)
         .alongWith(wrist.setWristPositionCommand(()->targetPosition.wristPos))
         .alongWith(clockArm.setArmPositionCommand(()->targetPosition.clockArmPos));
+    }
+
+    /**
+     * Accepts an elevator position and sets the position of the elevator the
+     * position specified then makes the elevator go the position
+     * @param position
+     * @return setting the elevator position and making it go to the position
+     */
+    public Command goToSpecifiedPosition(ElevatorPositions position){
+        return setPosition(position).andThen(goToPosition());
     }
 
     public Command stowCommand(){

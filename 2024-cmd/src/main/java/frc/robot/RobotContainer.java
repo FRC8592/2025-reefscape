@@ -137,7 +137,7 @@ public class RobotContainer {
      */
     private void passSubsystems(){
         AutoManager.addSubsystems(swerve);
-        AutoCommand.addSubsystems(swerve);
+        AutoCommand.addSubsystems(swerve, scoring, intake);
         LargeCommand.addSubsystems(swerve);
         NewtonCommands.addSubsystems(swerve, scoring);
         Suppliers.addSubsystems(swerve);

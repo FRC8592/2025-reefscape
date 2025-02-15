@@ -1,5 +1,5 @@
 {
- "name":"FourCoralAuto",
+ "name":"MiddlePreloadMobilityAuto",
  "version":1,
  "type":"Swerve",
  "variables":{
@@ -9,27 +9,27 @@
  "config":{
   "frontLeft":{
    "x":{
-    "exp":"12.75 in",
-    "val":0.32384999999999997
+    "exp":"11 in",
+    "val":0.2794
    },
    "y":{
-    "exp":"12.75 in",
-    "val":0.32384999999999997
+    "exp":"11 in",
+    "val":0.2794
    }
   },
   "backLeft":{
    "x":{
-    "exp":"-12.75 in",
-    "val":-0.32384999999999997
+    "exp":"-11 in",
+    "val":-0.2794
    },
    "y":{
-    "exp":"12.75 in",
-    "val":0.32384999999999997
+    "exp":"11 in",
+    "val":0.2794
    }
   },
   "mass":{
-   "exp":"125 lbs",
-   "val":56.69904625
+   "exp":"150 lbs",
+   "val":68.0388555
   },
   "inertia":{
    "exp":"6 kg m ^ 2",
@@ -57,16 +57,16 @@
   },
   "bumper":{
    "front":{
-    "exp":"18.25 in",
-    "val":0.46355
+    "exp":"16 in",
+    "val":0.4064
    },
    "side":{
-    "exp":"18.25 in",
-    "val":0.46355
+    "exp":"16 in",
+    "val":0.4064
    },
    "back":{
-    "exp":"18.25 in",
-    "val":0.46355
+    "exp":"16 in",
+    "val":0.4064
    }
   },
   "differentialTrackWidth":{

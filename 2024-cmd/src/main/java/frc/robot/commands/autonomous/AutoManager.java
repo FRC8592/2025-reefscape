@@ -14,6 +14,7 @@ import frc.robot.Robot;
 import frc.robot.Suppliers;
 import frc.robot.commands.autonomous.autos.FourCoralAuto;
 import frc.robot.commands.autonomous.autos.LeftSideLeaveSLAuto;
+import frc.robot.commands.autonomous.autos.MiddlePreloadMobilityAuto;
 import frc.robot.commands.autonomous.autos.ThreeCoralAuto;
 import frc.robot.commands.autonomous.autos.TwoCoralAuto;
 import frc.robot.commands.proxies.*;
@@ -48,10 +49,11 @@ public final class AutoManager {
 
         // autoCommands.add(new ExampleAuto());
         // TODO: Add autos here
-        autoCommands.add(new LeftSideLeaveSLAuto());
-        autoCommands.add(new TwoCoralAuto());
-        autoCommands.add(new ThreeCoralAuto());
-        autoCommands.add(new FourCoralAuto());
+        // autoCommands.add(new LeftSideLeaveSLAuto());
+        // autoCommands.add(new TwoCoralAuto());
+        // autoCommands.add(new ThreeCoralAuto());
+        // autoCommands.add(new FourCoralAuto());
+        autoCommands.add(new MiddlePreloadMobilityAuto());
 
         autoChooser = new SendableChooser<>();
         

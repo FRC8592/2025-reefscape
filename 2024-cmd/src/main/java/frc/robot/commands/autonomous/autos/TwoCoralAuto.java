@@ -8,7 +8,7 @@ import frc.robot.commands.largecommands.FollowPathCommand;
 public class TwoCoralAuto extends AutoCommand {
     public TwoCoralAuto(){
         super(
-            new FollowPathCommand(getChoreoTrajectory("SLToBranch2"), Suppliers.robotRunningOnRed),
+            new FollowPathCommand(getChoreoTrajectory("SlToBranch2"), Suppliers.robotRunningOnRed),
             new WaitCommand(1),
             new FollowPathCommand(getChoreoTrajectory("Branch2ToLeftHP"), Suppliers.robotRunningOnRed),
             new WaitCommand(.5),

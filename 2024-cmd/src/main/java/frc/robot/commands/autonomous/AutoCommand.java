@@ -10,6 +10,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj2.command.*;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.elevator.Scoring;
 import frc.robot.subsystems.swerve.*;
 
 /**
@@ -17,9 +19,12 @@ import frc.robot.subsystems.swerve.*;
  */
 public class AutoCommand extends WrapperCommand{
     protected static Swerve swerve;
-    // protected static Intake intake;
-    public static void addSubsystems(Swerve swerve){
+    protected static Scoring scoring;
+    protected static Intake intake;
+    public static void addSubsystems(Swerve swerve, Scoring scoring, Intake intake){
         AutoCommand.swerve = swerve;
+        AutoCommand.scoring = scoring;
+        AutoCommand.intake = intake;
         // AutoCommand.intake = intake;
     }
 
@@ -66,8 +71,8 @@ public class AutoCommand extends WrapperCommand{
         }
         else{
             try{
-            //    Trajectory wpilibTrajectory = fromChoreoPath((choreo.trajectory.Trajectory<SwerveSample>) Choreo.loadTrajectory(name).get());
-               Trajectory wpilibTrajectory = new Trajectory();
+               Trajectory wpilibTrajectory = fromChoreoPath((choreo.trajectory.Trajectory<SwerveSample>) Choreo.loadTrajectory(name).get());
+               //Trajectory wpilibTrajectory = new Trajectory();
 
                 cachedChoreoTrajectories.put(name, wpilibTrajectory);
                 return wpilibTrajectory;
