@@ -52,7 +52,7 @@ public final class AutoManager {
         // autoCommands.add(new LeftSideLeaveSLAuto());
         // autoCommands.add(new TwoCoralAuto());
         // autoCommands.add(new ThreeCoralAuto());
-        // autoCommands.add(new FourCoralAuto());
+        autoCommands.add(new FourCoralAuto());
         autoCommands.add(new MiddlePreloadMobilityAuto());
 
         autoChooser = new SendableChooser<>();
