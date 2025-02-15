@@ -115,7 +115,7 @@ public final class Constants {
     
     public final class INTAKE {
         public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Intake/";
-        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 0; // TODO: Set the ID
+        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 9;
 
     }
 
@@ -264,7 +264,7 @@ public final class Constants {
     public class ARM{
         public static final String CLOCK_ARM_LOG_PATH = SHARED.LOG_FOLDER+"/Clock Arm/";
         
-        public static final double CLOCK_ARM_GEAR_RATIO = 1/300.0;
+        public static final double CLOCK_ARM_GEAR_RATIO = 1/180.0;
 
         public static final double ARM_ANGLE_DEGREES_MIN = 0d;
         public static final double ARM_ANGLE_DEGREES_MAX = 180d;
@@ -290,7 +290,7 @@ public final class Constants {
         public static final double WRIST_GEAR_RATIO = 1/75.0;
 
         public static final double WRIST_ANGLE_DEGREES_MIN = -45d;
-        public static final double WRIST_ANGLE_DEGREES_MAX = 150d;
+        public static final double WRIST_ANGLE_DEGREES_MAX = 155d;
 
         public static final double WRIST_POSITION_TOLERANCE = 2.0;
 

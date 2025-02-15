@@ -1,8 +1,10 @@
-package frc.robot.subsystems.elevator;
+package frc.robot.subsystems.scoring;
 
 import org.littletonrobotics.junction.Logger;
 
 import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
@@ -13,7 +15,7 @@ import frc.robot.helpers.motor.talonfx.KrakenX60Motor;
 
 public class Wrist extends SubsystemBase{
     private KrakenX60Motor wristMotor;
-    private double targetDegree;
+    private double targetWristDegrees;
 
     public Wrist(){
     
@@ -23,7 +25,7 @@ public class Wrist extends SubsystemBase{
       
     
         wristMotor = new KrakenX60Motor(CAN.WRIST_CAN_ID, true);
-        targetDegree = 0.0;
+        targetWristDegrees = 0.0;
     
         wristMotor.setIdleMode(IdleMode.kCoast);
         wristMotor.setPositionSoftLimit(wristDegreesToMotorRotations(WRIST.WRIST_ANGLE_DEGREES_MIN), wristDegreesToMotorRotations(WRIST.WRIST_ANGLE_DEGREES_MAX));
@@ -36,7 +38,7 @@ public class Wrist extends SubsystemBase{
     }
 
     public void setWristDegrees(double degrees){
-        targetDegree = degrees;
+        targetWristDegrees = degrees;
     }
 
     public double getWristDegrees(){
@@ -48,7 +50,7 @@ public class Wrist extends SubsystemBase{
     }
 
     public boolean atPosition(){
-        return Utils.isWithin(getWristDegrees(), targetDegree, WRIST.WRIST_POSITION_TOLERANCE);
+        return Utils.isWithin(getWristDegrees(), targetWristDegrees, WRIST.WRIST_POSITION_TOLERANCE);
     }
 
     public double motorRotationsToWristDegrees(double rotations){
@@ -73,9 +75,12 @@ public class Wrist extends SubsystemBase{
 
     @Override
     public void periodic(){
-        wristMotor.setPosition(wristDegreesToMotorRotations(targetDegree));
-        Logger.recordOutput(WRIST.WRIST_LOG_PATH+"current wrist degrees ", getWristDegrees());
-        Logger.recordOutput(WRIST.WRIST_LOG_PATH+"target degree ", targetDegree);
-        Logger.recordOutput(WRIST.WRIST_LOG_PATH+"at position", atPosition());
+        wristMotor.setPosition(wristDegreesToMotorRotations(targetWristDegrees));
+        SmartDashboard.putNumber("Wrist|CurrentDegrees", getWristDegrees());
+        SmartDashboard.putNumber("Wrist|TargetDegrees", targetWristDegrees);
+        SmartDashboard.putBoolean("Wrist|AtPosition", atPosition());
+        Logger.recordOutput(WRIST.WRIST_LOG_PATH+"Wrist|CurrentDegrees ", getWristDegrees());
+        Logger.recordOutput(WRIST.WRIST_LOG_PATH+"Wrist|TargetDegrees ", targetWristDegrees);
+        Logger.recordOutput(WRIST.WRIST_LOG_PATH+"Wrist|AtPosition", atPosition());
     }
 }

@@ -1,4 +1,4 @@
-package frc.robot.subsystems.elevator;
+package frc.robot.subsystems.scoring;
 
 import java.util.function.DoubleSupplier;
 
@@ -95,15 +95,18 @@ public class Elevator extends SubsystemBase{
     @Override
     public void periodic(){
         leftExtensionMotor.setPosition(inchesToRotations(targetExtension));
-        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"current extension inches ", getExtensionPositionInches());
-        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"target inches ", targetExtension);
-        Logger.recordOutput("Target extension in rotations", inchesToRotations(targetExtension));
-        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"at position", atPosition());
-        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"applied voltage", leftExtensionMotor.getVoltage());
-        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"current velocity", leftExtensionMotor.getVelocityRPM());
-    
-        
+        SmartDashboard.putNumber("Extension|CurrentInches", getExtensionPositionInches());
+        SmartDashboard.putNumber("Extension|TargetInches ", targetExtension);
+        SmartDashboard.putNumber("Extension|TargetExtentionInRot", inchesToRotations(targetExtension));
+        SmartDashboard.putBoolean("Extension|AtPosition", atPosition());
+        SmartDashboard.putNumber("Extension|AppliedVoltage", leftExtensionMotor.getVoltage());
+        SmartDashboard.putNumber("Extension|CurrentVelocity", leftExtensionMotor.getVelocityRPM());
+        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"Extension|CurrentInches", getExtensionPositionInches());
+        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"Extension|TargetInches ", targetExtension);
+        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"Extension|TargetExtentionInRot", inchesToRotations(targetExtension));
+        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"Extension|AtPosition", atPosition());
+        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"Extension|AppliedVoltage", leftExtensionMotor.getVoltage());
+        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"Extension|CurrentVelocity", leftExtensionMotor.getVelocityRPM());
     }
-
 
 }

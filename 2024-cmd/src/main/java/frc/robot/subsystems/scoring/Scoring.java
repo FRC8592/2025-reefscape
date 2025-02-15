@@ -1,4 +1,4 @@
-package frc.robot.subsystems.elevator;
+package frc.robot.subsystems.scoring;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.proxies.WaitUntilCommand;
-import frc.robot.subsystems.Intake;
 
 public class Scoring extends SubsystemBase {
 
@@ -24,17 +23,17 @@ public class Scoring extends SubsystemBase {
 
     public static enum ElevatorPositions {
         L1(11.8, 0, 144),
-        // elevator front: 15, back: -15, arm: 0 , wrist: 30
+        // elevator front: , back: , arm: , wrist: 
         L2(14.4, 12, 133),
-        // front: 18.3, back: -18, arm: 11.1, wrist: 27.8
+        // front: , back: , arm: , wrist: 
         L3(0, 172, 155),
-        //TODO: change soft limit
-        // front: 0, back: 0, arm: 143.4, wrist: 32.3
+        // front: , back: , arm: , wrist: 
         L4(19.5, 175, 135),
         // front: , back: , arm: , wrist: 
         GROUND_ALGAE(0, 0, 0),
         STARTING(0, 0, 0),
-        STOW(0, 10, -45),
+        STOW(0, 0, 0), //0, 10, -45
+        // elevator front: 0.117, back: -0.165, arm: -0.4277, wrist: -0.2622
         L2_ALGAE(14, 30, 120),
         L3_ALGAE(3, 150, 120),
         PROCESSOR(0, 0, 0),
@@ -88,8 +87,9 @@ public class Scoring extends SubsystemBase {
     }
 
     
+
     public Command intakeCommand(){
-        return stowCommand().alongWith(intake.setIntakeCommand(0.5)).withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
+        return intake.setIntakeCommand(0.5).until(() -> intake.robotHasCoral());
     }
 
     public Command stopAllCommand(){

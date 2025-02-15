@@ -14,19 +14,19 @@ import org.littletonrobotics.junction.Logger;
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.OdometryUpdates;
 import frc.robot.subsystems.ScoreCoral;
 import frc.robot.subsystems.ScoreCoral.LeftOrRight;
 import frc.robot.subsystems.ScoreCoral.ScoreLevels;
+import frc.robot.subsystems.scoring.ClockArm;
+import frc.robot.subsystems.scoring.Elevator;
+import frc.robot.subsystems.scoring.Intake;
+import frc.robot.subsystems.scoring.Scoring;
+import frc.robot.subsystems.scoring.Wrist;
+import frc.robot.subsystems.scoring.Scoring.ElevatorPositions;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 import frc.robot.subsystems.vision.Vision;
-import frc.robot.subsystems.elevator.ClockArm;
-import frc.robot.subsystems.elevator.Elevator;
-import frc.robot.subsystems.elevator.Scoring;
-import frc.robot.subsystems.elevator.Scoring.ElevatorPositions;
-import frc.robot.subsystems.elevator.Wrist;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
@@ -260,7 +260,7 @@ public class RobotContainer {
         STOW.whileTrue(scoring.stowCommand());
         GO_TO_POSITION.whileTrue(scoring.goToPosition()).onFalse(scoring.stopAllCommand());
 
-        INTAKE.whileTrue(scoring.intakeCommand());
+        INTAKE.whileTrue(scoring.intakeCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
         
         SCORE.whileTrue(intake.setIntakeCommand(-0.5));
 

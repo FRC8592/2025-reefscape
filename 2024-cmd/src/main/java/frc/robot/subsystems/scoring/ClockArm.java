@@ -1,9 +1,10 @@
-package frc.robot.subsystems.elevator;
+package frc.robot.subsystems.scoring;
 
 import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
@@ -14,7 +15,7 @@ import frc.robot.helpers.motor.talonfx.KrakenX60Motor;
 
 public class ClockArm extends SubsystemBase{
     private KrakenX60Motor clockArmMotor;
-    private double targetDegree;
+    private double targetArmDegrees;
 
     public ClockArm(){
         PIDProfile positionPid = new PIDProfile();
@@ -23,7 +24,7 @@ public class ClockArm extends SubsystemBase{
   
 
         clockArmMotor = new KrakenX60Motor(CAN.CLOCK_ARM_CAN_ID);
-        targetDegree = 0.0;
+        targetArmDegrees = 0.0;
 
         clockArmMotor.setIdleMode(IdleMode.kCoast);
         clockArmMotor.setPositionSoftLimit(armDegreesToMotorRotations(ARM.ARM_ANGLE_DEGREES_MIN), armDegreesToMotorRotations(ARM.ARM_ANGLE_DEGREES_MAX));
@@ -35,7 +36,7 @@ public class ClockArm extends SubsystemBase{
     }
 
     public void setArmPositionDegrees(double degrees){
-        targetDegree = degrees;
+        targetArmDegrees = degrees;
     }
 
     public double getArmPositionDegrees(){
@@ -43,7 +44,7 @@ public class ClockArm extends SubsystemBase{
     }
 
     public double getTargetArmPositionDegrees(){
-        return targetDegree;
+        return targetArmDegrees;
     }
 
     public void setPercentOutput(double percent){
@@ -51,7 +52,7 @@ public class ClockArm extends SubsystemBase{
     }
 
     public boolean atPosition(){
-        return Utils.isWithin(getArmPositionDegrees(), targetDegree, ARM.CLOCK_ARM_POSITION_TOLERANCE);
+        return Utils.isWithin(getArmPositionDegrees(), targetArmDegrees, ARM.CLOCK_ARM_POSITION_TOLERANCE);
     }
 
     public double motorRotationsToArmDegrees(double rotations){
@@ -76,9 +77,12 @@ public class ClockArm extends SubsystemBase{
 
     @Override
     public void periodic(){
-        clockArmMotor.setPosition(armDegreesToMotorRotations(targetDegree));
-        Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"current arm degrees ", getArmPositionDegrees());
-        Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"target degree ", targetDegree);
-        Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"at position", atPosition());
+        clockArmMotor.setPosition(armDegreesToMotorRotations(targetArmDegrees));
+        SmartDashboard.putNumber("ClockArm|CurrentDegrees", getArmPositionDegrees());
+        SmartDashboard.putNumber("ClockArm|TargetDegrees", targetArmDegrees);
+        SmartDashboard.putBoolean("ClockArm|AtPosition", atPosition());
+        Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"ClockArm|CurrentDegrees ", getArmPositionDegrees());
+        Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"ClockArm|TargetDegrees", targetArmDegrees);
+        Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"ClockArm|AtPosition", atPosition());
     }
 }
