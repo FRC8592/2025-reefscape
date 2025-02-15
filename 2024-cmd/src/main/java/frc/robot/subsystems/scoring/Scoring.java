@@ -67,29 +67,28 @@ public class Scoring extends SubsystemBase {
         }, new Subsystem[0]);
     }
 
-    public Command goToL4Command(){
-        return clockArm.setArmPositionCommand(()->135)
-        .alongWith(elevator.setExtensionPositionCommand(()->18), new WaitUntilCommand(wrist.setWristPositionCommand(()->90), ()->clockArm.getArmPositionDegrees()>30));
-    }
-
     public Command goToPosition(){
         return elevator.setExtensionPositionCommand(()->targetPosition.elevatorPos)
         .alongWith(wrist.setWristPositionCommand(()->targetPosition.wristPos))
         .alongWith(clockArm.setArmPositionCommand(()->targetPosition.clockArmPos));
     }
 
-    public Command stowCommand(){
-        return 
-            clockArm.setArmPositionCommand(()->45).onlyIf(()-> clockArm.getTargetArmPositionDegrees() != ElevatorPositions.STOW.clockArmPos).until(()->clockArm.atPosition()) 
-            .andThen(elevator.setExtensionPositionCommand(()->ElevatorPositions.STOW.elevatorPos)
-        .alongWith(wrist.setWristPositionCommand(()->ElevatorPositions.STOW.wristPos))
-        .alongWith(clockArm.setArmPositionCommand(()->ElevatorPositions.STOW.clockArmPos)));
+    public Command goToSpecifiedPosition(ElevatorPositions eposition){
+        return setPosition(targetPosition).andThen(goToPosition());
     }
 
+    public Command stowCommand(){
+        return clockArm.setArmPositionCommand(()->45).onlyIf(()-> clockArm.getTargetArmPositionDegrees() != ElevatorPositions.STOW.clockArmPos).until(()->clockArm.atPosition()) 
+        .andThen(goToSpecifiedPosition(ElevatorPositions.STOW));
+    }
     
 
     public Command intakeCommand(){
         return intake.setIntakeCommand(0.5).until(() -> intake.robotHasCoral());
+    }
+
+    public Command outtakeCommand(){
+        return intake.setIntakeCommand(-0.5).withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
     }
 
     public Command stopAllCommand(){
