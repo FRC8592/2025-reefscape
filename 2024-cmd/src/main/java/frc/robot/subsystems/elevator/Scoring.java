@@ -23,10 +23,15 @@ public class Scoring extends SubsystemBase {
     private static ElevatorPositions targetPosition;
 
     public static enum ElevatorPositions {
-        L1(15, 30, 120),
-        L2(13, 30, 120),
-        L3(2, 165, 120),
+        L1(11.8, 0, 144),
+        // elevator front: 15, back: -15, arm: 0 , wrist: 30
+        L2(14.4, 12, 133),
+        // front: 18.3, back: -18, arm: 11.1, wrist: 27.8
+        L3(0, 172, 155),
+        //TODO: change soft limit
+        // front: 0, back: 0, arm: 143.4, wrist: 32.3
         L4(19.5, 175, 135),
+        // front: , back: , arm: , wrist: 
         GROUND_ALGAE(0, 0, 0),
         STARTING(0, 0, 0),
         STOW(0, 10, -45),
