@@ -6,8 +6,6 @@ import java.util.List;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import frc.robot.helpers.PIDProfile;
-import frc.robot.helpers.motor.spark.SparkFlexMotor;
-import frc.robot.helpers.motor.spark.SparkMaxMotor;
 import frc.robot.helpers.motor.talonfx.TalonFXMotor;
 
 public abstract class NewtonMotor {
@@ -121,14 +119,6 @@ public abstract class NewtonMotor {
 
     public double getDesiredVelocity() {
         return this.desiredVelocityRPM;
-    }
-
-    public SparkFlexMotor getAsSparkFlex() {
-        return (SparkFlexMotor)this;
-    }
-
-    public SparkMaxMotor getAsSparkMax() {
-        return (SparkMaxMotor)this;
     }
 
     public TalonFXMotor getAsTalonFX() {

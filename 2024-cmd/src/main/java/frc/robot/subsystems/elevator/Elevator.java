@@ -1,13 +1,11 @@
 package frc.robot.subsystems.elevator;
 
+import java.util.function.DoubleSupplier;
+
 import org.littletonrobotics.junction.Logger;
 
-
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
 import frc.robot.helpers.PIDProfile;
@@ -20,59 +18,35 @@ public class Elevator extends SubsystemBase{
     private KrakenX60Motor rightExtensionMotor;
     private double targetExtension;
 
-    public enum ElevatorPositions {
-
-        L1(0),
-        L2(0),
-        L3(0),
-        L4(0),
-        GROUND_ALGAE(0),
-        HP_INTAKE(0),
-        STOW(0),
-        L2_ALGAE(0),
-        L3_ALGAE(0),
-        PROCESSOR(0),
-        NET(0);
-
-        public double elevatorPos = 0;
-        public double wristPos = 0;
-        public double clockArmPos = 0;
-        
-        private  ElevatorPositions(double elevator) {
-
-            elevatorPos = elevator;
-
-
-        }
-
-    }
-
     public Elevator(){
         PIDProfile positionPid = new PIDProfile();
-        positionPid.setPID(ELEVATOR.ELEVATOR_P, ELEVATOR.ELEVATOR_I, ELEVATOR.ELEVATOR_D);
+        positionPid.setPID(ELEVATOR.ELEVATOR_POSITION_P, ELEVATOR.ELEVATOR_POSITION_I, ELEVATOR.ELEVATOR_POSITION_D);
         
         PIDProfile velocityPid = new PIDProfile();
-        velocityPid.setPID(0.001, 0, 0);
-        velocityPid.setS(0.1);
+
+        velocityPid.setPID(ELEVATOR.ELEVATOR_VELOCITY_P, ELEVATOR.ELEVATOR_VELOCITY_I, ELEVATOR.ELEVATOR_VELOCITY_D);
+        velocityPid.setS(ELEVATOR.ELEVATOR_VELOCITY_S);
 
         leftExtensionMotor = new KrakenX60Motor(CAN.BACK_EXTENSION_MOTOR_CAN_ID, true);
         rightExtensionMotor = new KrakenX60Motor(CAN.FORWARD_EXTENSION_MOTOR_CAN_ID);
 
-        leftExtensionMotor.setIdleMode(IdleMode.kBrake);
-        rightExtensionMotor.setIdleMode(IdleMode.kBrake);
+        leftExtensionMotor.setIdleMode(IdleMode.kCoast);
+        rightExtensionMotor.setIdleMode(IdleMode.kCoast);
 
 
         //configure right motor to be inverted and to follow L motor
         rightExtensionMotor.setFollowerTo(leftExtensionMotor, true);
 
         leftExtensionMotor.setPositionSoftLimit(inchesToRotations(ELEVATOR.EXTENSION_INCHES_MIN), inchesToRotations(ELEVATOR.EXTENSION_INCHES_MAX));
-        leftExtensionMotor.setCurrentLimit(80);
-        rightExtensionMotor.setCurrentLimit(80);
+        leftExtensionMotor.setCurrentLimit(ELEVATOR.ELEVATOR_CURRENT_LIMIT);
+        rightExtensionMotor.setCurrentLimit(ELEVATOR.ELEVATOR_CURRENT_LIMIT);
 
         leftExtensionMotor.withGains(positionPid, 0);
         leftExtensionMotor.withGains(velocityPid, 1);
 
-        leftExtensionMotor.configureMotionMagic(600, 100);
+        // leftExtensionMotor.configureMotionMagic(600, 100);
+        leftExtensionMotor.configureMotionMagic(ELEVATOR.ELEVATOR_MAX_ACCELERATION, ELEVATOR.ELEVATOR_MAX_VELOCITY);
+
 
         SmartDashboard.putData("Elevator PID", positionPid);
 
@@ -80,17 +54,7 @@ public class Elevator extends SubsystemBase{
         targetExtension = 0;
     }
 
-    @Override
-    public void periodic(){
-        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"current extension inches ", getExtensionPositionInches());
-        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"target inches ", targetExtension);
-        Logger.recordOutput("Target extension in rotations", inchesToRotations(targetExtension));
-        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"at position", atPosition());
-        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"applied voltage", leftExtensionMotor.getVoltage());
-        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"current velocity", leftExtensionMotor.getVelocityRPM());
 
-        // setExtensionPositionInches(targetExtension);
-    }
 
     public double getExtensionPositionInches(){
         return rotationsToInches(leftExtensionMotor.getRotations());
@@ -98,7 +62,6 @@ public class Elevator extends SubsystemBase{
 
     public void setExtensionPositionInches(double targetInches){
         targetExtension = targetInches;
-        leftExtensionMotor.setPosition(inchesToRotations(targetInches));
     }
 
     public void setPercentOutput(double percent){
@@ -117,30 +80,29 @@ public class Elevator extends SubsystemBase{
         return Utils.isWithin(getExtensionPositionInches(), targetExtension, ELEVATOR.EXTENSION_POSITION_TOLERANCE);
     }
 
-    public Command setExtensionCommand(double targetExtension){
-        return this.run(()-> setExtensionPositionInches(targetExtension));
+    public Command setExtensionPositionCommand(DoubleSupplier targetExtension){
+        return this.run(()-> setExtensionPositionInches(targetExtension.getAsDouble()));
     }
 
     public Command setExtensionPercentOutputCommand(double power) {
         return this.run(() -> setPercentOutput(power));
     }
-    
-    public Command stopCommand() {
-        return this.run(() -> setPercentOutput(0));
+
+    public Command stopElevatorCommand() {
+        return this.runOnce(() -> setPercentOutput(0));
     }
 
-    //debug commands
-    public Command gotoPosition(double position) {
-        return this.run(() -> {targetExtension = position;});
-    }
-
-    public Command holdPositionCommand(){
-        return setExtensionCommand(targetExtension); 
-    }
+    @Override
+    public void periodic(){
+        leftExtensionMotor.setPosition(inchesToRotations(targetExtension));
+        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"current extension inches ", getExtensionPositionInches());
+        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"target inches ", targetExtension);
+        Logger.recordOutput("Target extension in rotations", inchesToRotations(targetExtension));
+        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"at position", atPosition());
+        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"applied voltage", leftExtensionMotor.getVoltage());
+        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"current velocity", leftExtensionMotor.getVelocityRPM());
     
-    public Command snapshotPositionCommand(){
-        return this.runOnce(()-> {targetExtension = getExtensionPositionInches();
-        });
+        
     }
 
 

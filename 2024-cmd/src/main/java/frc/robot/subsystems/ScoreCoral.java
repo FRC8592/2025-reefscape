@@ -8,16 +8,20 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.Trajectory.State;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
@@ -58,42 +62,8 @@ public class ScoreCoral extends SubsystemBase {
         Right
     };
 
-    public enum ReefPositions{
-        //The positions goes from the side facing the driver being south and going clockwise on a compass
-        South(CORAL_ALIGN.SOUTH_BLUE_POSE, CORAL_ALIGN.SOUTH_RED_POSE),
-        SouthWest(CORAL_ALIGN.SOUTH_WEST_BLUE_POSE, CORAL_ALIGN.SOUTH_WEST_RED_POSE),
-        NorthWest(CORAL_ALIGN.NORTH_WEST_BLUE_POSE, CORAL_ALIGN.NORTH_WEST_RED_POSE),
-        North(CORAL_ALIGN.NORTH_BLUE_POSE, CORAL_ALIGN.NORTH_RED_POSE),
-        NorthEast(CORAL_ALIGN.NORTH_EAST_BLUE_POSE, CORAL_ALIGN.NORTH_EAST_RED_POSE),
-        SouthEast(CORAL_ALIGN.SOUTH_EAST_BLUE_POSE, CORAL_ALIGN.SOUTH_EAST_RED_POSE);
-
-        //Data fields for the which side the robot is on
-        public Pose2d bluePosition;
-        public Pose2d redPosition;
-        private ReefPositions(Pose2d bluePosition, Pose2d redPosition){
-            this.bluePosition = bluePosition;
-            this.redPosition = redPosition;
-        }
-
-        /**
-         * @param none
-         * Uses robotRunningOnRed, if it is true it returns the redPosition
-         * else it returns bluePosition
-         * @return redPosition or bluePosition
-         */
-        public Pose2d getReefPosition(){
-            if (Suppliers.robotRunningOnRed.getAsBoolean()){
-                return redPosition;
-            }
-            else{
-                return bluePosition;
-            }
-        }
-    }
-
     private LeftOrRight direction = LeftOrRight.Left;
     private ScoreLevels level = ScoreLevels.Level1;
-    private ReefPositions position = ReefPositions.South;
     private int heartbeat = 0;
 
     public ScoreCoral(Swerve swerve) {
@@ -132,80 +102,57 @@ public class ScoreCoral extends SubsystemBase {
     public Pose2d getTarget(){
         return target;
     }
-
-    public void driveToReef() {
-        // Setting the x speed, y speed,rotating speed
-        double xSpeed = 0d, ySpeed = 0d, rotSpeed = 0d;
-
-        Pose2d currentPosition = swerve.getCurrentPosition();
-        double xDistance = target.getX() - currentPosition.getX();
-        double yDistance = target.getY() - currentPosition.getY();
-        //TODO: ensure if correct
-        double rotDistance = target.getRotation().getDegrees() - currentPosition.getRotation().getDegrees();
-        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/xDistance", xDistance);
-        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/yDistance", yDistance);
-        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/rotDistance", rotDistance);
-
-        Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/Target", target);
-        
-        xSpeed = xController.calculate(xDistance);
-        xSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, xSpeed);
-        xSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, xSpeed);
-
-        xSpeed = -xSpeed * CORAL_ALIGN.SPEED_SCALE;
-
-        ySpeed = yController.calculate(yDistance);
-        ySpeed = Math.min(CORAL_ALIGN.SPEED_MAX, ySpeed);
-        ySpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, ySpeed);
-
-        ySpeed = -ySpeed * CORAL_ALIGN.SPEED_SCALE;
-
-        rotSpeed = rotController.calculate(rotDistance);
-        rotSpeed = Math.min(CORAL_ALIGN.SPEED_MAX, rotSpeed);
-        rotSpeed = Math.max(-CORAL_ALIGN.SPEED_MAX, rotSpeed);
-
-        rotSpeed = -rotSpeed * CORAL_ALIGN.SPEED_SCALE;
-
-        //Field-relative x, y axis and joystick x, y axis are flipped (i.g. field x is joystick y)
-        ChassisSpeeds speed = swerve.processJoystickInputs(ySpeed, xSpeed, rotSpeed);
-        SmartDashboard.putString("ChassisSpeedJoystick", speed.toString());
-        Logger.recordOutput("speed", speed);
-        swerve.drive(speed, DriveModes.FIELD_RELATIVE);
-
-        SmartDashboard.putNumber("Provided XSpeed", xSpeed);
-        SmartDashboard.putNumber("Provided YSpeed", ySpeed);
-        SmartDashboard.putNumber("Provided RotSpeed", rotSpeed);
-
-        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/Final XSpeed", speed.vxMetersPerSecond);
-        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/Final YSpeed", speed.vyMetersPerSecond);
-        SmartDashboard.putNumber(SHARED.LOG_FOLDER+"/Scorecoral/Final RotSpeed", speed.omegaRadiansPerSecond);
-
+ 
+    public Command driveToClosestReefTag(){
+        if (Suppliers.robotRunningOnRed.getAsBoolean()){
+            return driveToTag(getClosestTag(CORAL_ALIGN.RED_REEF_TAGS));
+        }
+        else {
+            return driveToTag(getClosestTag(CORAL_ALIGN.BLUE_REEF_TAGS));
+        }
     }
 
-    public Command driveToReefOdometry() {
+    public Command driveToClosestHumanPlayerStation(){
+        if (Suppliers.robotRunningOnRed.getAsBoolean()){
+            return driveToTag(getClosestTag(CORAL_ALIGN.RED_HPLAYER_TAGS));
+        }
+        else {
+            return driveToTag(getClosestTag(CORAL_ALIGN.BLUE_HPLAYER_TAGS));
+        }
+    }
+
+
+    /**
+     * This command takes in a tag number and uses an 
+     * odometry-generated trajectory to drive to it
+     * @param tag
+     * @return a new FollowPathCommand to follow the generated trajectory 
+     */
+    public Command driveToTag(int tag) {
 
         Pose2d robotPose = swerve.getCurrentPosition();
         List<Pose2d> waypoints = new ArrayList<Pose2d>();
-        Pose2d targetReefPosition = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get().toPose2d();
-        Pose2d targetReefPositionOffset = new Pose2d(new Translation2d(targetReefPosition.getX()-0.6, targetReefPosition.getY()), targetReefPosition.getRotation().plus(Rotation2d.fromDegrees(180)));
-        double deltaPosition[] = {targetReefPositionOffset.getX()-robotPose.getX(), targetReefPositionOffset.getY()-robotPose.getY()};
+        Pose2d targetTagPosition = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tag).get().toPose2d();
+
+        targetTagPosition = generateScoringPose(targetTagPosition, direction);
+
+        Logger.recordOutput("CustomLogs/ScoreCoral/TargetedTagRotation", targetTagPosition.getRotation().getDegrees());
+        
+        Pose2d targetTagPositionOffset = new Pose2d(new Translation2d(targetTagPosition.getX(), targetTagPosition.getY()), targetTagPosition.getRotation().plus(Rotation2d.fromDegrees(180)));
+        double deltaPosition[] = {targetTagPositionOffset.getX()-robotPose.getX(), targetTagPositionOffset.getY()-robotPose.getY()};
+        
+        //trick the path generator into thinking the robot is always pointing at the tag
         Pose2d robotPose2 = new Pose2d(robotPose.getTranslation(), Rotation2d.fromRadians(Math.atan2(deltaPosition[1],deltaPosition[0])));
        
+        //create basic tank drive trajectory
         waypoints.add(robotPose2);
-        waypoints.add(targetReefPositionOffset);
+        waypoints.add(targetTagPositionOffset);
         final Trajectory traj = TrajectoryGenerator.generateTrajectory(waypoints, SWERVE.PATH_FOLLOW_TRAJECTORY_CONFIG);
-
-        // State start = new State(0, 0, 1, robotPose, 0);
-        // State end = new State(traj.getTotalTimeSeconds()-0.25,0, -1, targetReefPositionOffset.transformBy(new Transform2d(new Translation2d(-0.75, 0), new Rotation2d())), 0);
-
-        //traj = new Trajectory(List.of(start, end));
 
         List<Pose2d> path = new ArrayList<Pose2d>();
         List<State> wp = new ArrayList<State>();
 
-
-        
-        
+        //swervify trajectory by replacing built in tank drive rotation with custom holonomic lerp-based holonomic rotation system
         traj.getStates().forEach((state) -> {
             
             wp.add(
@@ -217,7 +164,7 @@ public class ScoreCoral extends SubsystemBase {
                     new Pose2d(
                         state.poseMeters.getTranslation(), 
                         robotPose.getRotation().interpolate(
-                            targetReefPositionOffset.getRotation(), 
+                            targetTagPositionOffset.getRotation(), 
                             (state.timeSeconds)/(traj.getTotalTimeSeconds()/2)
                         )
                     ), 
@@ -228,25 +175,75 @@ public class ScoreCoral extends SubsystemBase {
 
         });
 
+        //compile swervified states into an actual trajectory
         Trajectory upTraj = new Trajectory(wp);
+
+        //Make a renderable path for PathPlanner logging
         upTraj.getStates().forEach((state) -> {path.add(state.poseMeters);});
 
+        //Render the path to PathPlanner
         Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/GeneratedPath", path.toArray(new Pose2d[0]));
 
+        //Run path
         return new FollowPathCommand(upTraj, () -> false);
 
     }
 
 
+    public int getClosestTag(int[] tags) {
+        Pose2d robotPose = swerve.getCurrentPosition();
+        //this calculates only for each alliance, reduces all the iterative compute for the other 6 tags
 
-    public void setPosition(LeftOrRight leftOrRight, ScoreLevels scoreLevel, ReefPositions reefPosition){
-       direction = leftOrRight;
-       level = scoreLevel;
-       position = reefPosition;
-       SmartDashboard.putString("direction", direction.name());
-       SmartDashboard.putString("Level", level.name());
-       SmartDashboard.putString("Position", position.name());
+        List<Double> distances = new ArrayList<Double>();
+        for (int i = 0; i < tags.length; i++) {
+            
+            Pose2d tagpos = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tags[i]).get().toPose2d();
+            distances.add(Math.sqrt(Math.pow(robotPose.getX()-tagpos.getX(), 2) + Math.pow(robotPose.getY()-tagpos.getY(), 2)));
+
+        }
+
+        int tagID = tags[distances.indexOf(Collections.min(distances))];
+        Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/SelectedTag", AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tagID).get().toPose2d());
+        return tagID;
     }
 
+
+    public void setPosition(LeftOrRight leftOrRight, ScoreLevels scoreLevel){
+       direction = leftOrRight;
+       level = scoreLevel;
+       SmartDashboard.putString("direction", direction.name());
+       SmartDashboard.putString("Level", level.name());
+    }
+
+    /**
+     * Accepts a pose of a reef tag, calculates the offset to align with the coral branches,
+     * and returns a new pose based on the offset
+     * @param tagPose The pose of a tag on the reef
+     * @param reefScoringSide The side either left or right that we want to score on
+     * @return new pose with correct translation and rotation
+     */
     
+    public Pose2d generateScoringPose(Pose2d tagPose, LeftOrRight reefScoringSide){
+
+        Pose2d newPose;
+
+        double offset = 0;
+
+        if(reefScoringSide == LeftOrRight.Left){
+            offset = CORAL_ALIGN.OFFSET_LEFT_METERS;
+        } else {
+            offset = CORAL_ALIGN.OFFSET_RIGHT_METERS;
+        }
+
+        //Using a plus function on a Transform2D will transform the pose or transform it has been called on RELATIVELY.
+        // Pose2d.plus(Transform2d) transforms relatively
+        // both of these descriptions work, as long as we remember it next time! ツ
+        newPose = tagPose.plus(new Transform2d(CORAL_ALIGN.OFFSET_DEPTH, offset, new Rotation2d()));
+
+        Logger.recordOutput("CustomLogs/ScoreCoral/ChosenPose", newPose);
+
+        return newPose;
+
+        
+    }
 }
