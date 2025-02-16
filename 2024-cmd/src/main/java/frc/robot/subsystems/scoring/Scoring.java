@@ -17,11 +17,12 @@ public class Scoring extends SubsystemBase {
     private ClockArm clockArm;
     private Wrist wrist;
     private Intake intake;
+    private static double speed;
 
     private static ElevatorPositions targetPosition;
 
     public static enum ElevatorPositions {
-        L1(11.8, 0, 180),
+        L1(11.8, 0, 180, -0.3),
         // elevator front: , back: , arm: , wrist: 
         L2(14.4, 5, 180),
         // front: , back: , arm: , wrist: 
@@ -33,8 +34,8 @@ public class Scoring extends SubsystemBase {
         STARTING(0, 0, 0),
         STOW(0, 0, 0), //0, 10, -45
         // elevator front: 0.117, back: -0.165, arm: -0.4277, wrist: -0.2622
-        L2_ALGAE(14, 30, 120),
-        L3_ALGAE(3, 150, 120),
+        L2_ALGAE(14, 50, 120),
+        L3_ALGAE(0, 160, 160),
         PROCESSOR(0, 0, 0),
         INTERMEDIATE(0, 45, 0),
         NET(0, 0, 0);
@@ -42,10 +43,11 @@ public class Scoring extends SubsystemBase {
         public double wristPos = 0;
         public double clockArmPos = 0;
         
-        private  ElevatorPositions(double elevator, double clockArm, double wrist) {
+        private  ElevatorPositions(double elevator, double clockArm, double wrist, double speedAmt) {
           elevatorPos = elevator;
           wristPos = wrist;
           clockArmPos =  clockArm;
+          speed = speedAmt;
         }
     }
 
