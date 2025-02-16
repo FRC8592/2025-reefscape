@@ -5,8 +5,8 @@ import frc.robot.Suppliers;
 import frc.robot.commands.autonomous.AutoCommand;
 import frc.robot.commands.largecommands.FollowPathCommand;
 
-public class FourCoralAuto extends AutoCommand{
-    public FourCoralAuto(){
+public class FourCoralRightAuto extends AutoCommand{
+    public FourCoralRightAuto(){
         super(
             new FollowPathCommand(getChoreoTrajectory("RightToNELeft"), Suppliers.robotRunningOnRed),
             new WaitCommand(0.5),

@@ -12,11 +12,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Robot;
 import frc.robot.Suppliers;
-import frc.robot.commands.autonomous.autos.FourCoralAuto;
-import frc.robot.commands.autonomous.autos.LeftSideLeaveSLAuto;
+import frc.robot.commands.autonomous.autos.FourCoralLeftAuto;
 import frc.robot.commands.autonomous.autos.MiddlePreloadMobilityAuto;
-import frc.robot.commands.autonomous.autos.ThreeCoralAuto;
-import frc.robot.commands.autonomous.autos.TwoCoralAuto;
+import frc.robot.commands.autonomous.autos.ThreeCoralLeftAuto;
 import frc.robot.commands.proxies.*;
 import frc.robot.subsystems.swerve.Swerve;
 
@@ -52,7 +50,8 @@ public final class AutoManager {
         // autoCommands.add(new LeftSideLeaveSLAuto());
         // autoCommands.add(new TwoCoralAuto());
         // autoCommands.add(new ThreeCoralAuto());
-        autoCommands.add(new FourCoralAuto());
+        autoCommands.add(new ThreeCoralLeftAuto());
+        autoCommands.add(new FourCoralLeftAuto());
         autoCommands.add(new MiddlePreloadMobilityAuto());
 
         autoChooser = new SendableChooser<>();
