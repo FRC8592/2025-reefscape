@@ -4,7 +4,6 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,37 +15,37 @@ public class Scoring extends SubsystemBase {
     private ClockArm clockArm;
     private Wrist wrist;
     private Intake intake;
-    private static double speed;
 
     private static ElevatorPositions targetPosition;
 
     public static enum ElevatorPositions {
-        L1(11.8, 0, 180, -0.3),
+        L1(11.8, 0, 180, -0.2),
         // elevator front: , back: , arm: , wrist: 
-        L2(14.4, 5, 180),
+        L2(14.4, 5, 180, -0.5),
         // front: , back: , arm: , wrist: 
-        L3(0, 160, 195),
+        L3(0, 160, 195, -0.5),
         // front: , back: , arm: , wrist: 
-        L4(19.5, 160, 200),
+        L4(19.5, 160, 200, -0.5),
         // front: , back: , arm: , wrist: 
-        GROUND_ALGAE(0, 0, 0),
-        STARTING(0, 0, 0),
-        STOW(0, 0, 0), //0, 10, -45
+        GROUND_ALGAE(0, 0, 0, 0.5),
+        STARTING(0, 0, 0, 0),
+        STOW(0, 0, 0, 0.5), //0, 10, -45
         // elevator front: 0.117, back: -0.165, arm: -0.4277, wrist: -0.2622
-        L2_ALGAE(14, 50, 120),
-        L3_ALGAE(0, 160, 160),
-        PROCESSOR(0, 0, 0),
-        INTERMEDIATE(0, 45, 0),
-        NET(0, 0, 0);
+        L2_ALGAE(14, 50, 120, -0.5),
+        L3_ALGAE(0, 160, 160, -0.5),
+        PROCESSOR(0, 0, 0, -0.3),
+        INTERMEDIATE(0, 45, 0, 0),
+        NET(0, 0, 0, -0.5);
         public double elevatorPos = 0;
         public double wristPos = 0;
         public double clockArmPos = 0;
+        public double outtakeSpeed = 0;
         
         private  ElevatorPositions(double elevator, double clockArm, double wrist, double speedAmt) {
           elevatorPos = elevator;
           wristPos = wrist;
           clockArmPos =  clockArm;
-          speed = speedAmt;
+          outtakeSpeed = speedAmt;
         }
     }
 
@@ -100,7 +99,11 @@ public class Scoring extends SubsystemBase {
     }
 
     public Command outtakeCommand(){
-        return intake.setIntakeCommand(-0.5).withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
+        final double[] speed = {0};
+        return Commands.runOnce(() -> {speed[0] = targetPosition.outtakeSpeed;}).andThen(
+            intake.setIntakeCommand(speed[0])
+            .alongWith(stowCommand())
+        );
     }
 
     public Command stopAllCommand(){
