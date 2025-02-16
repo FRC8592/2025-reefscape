@@ -110,24 +110,13 @@ public class Scoring extends SubsystemBase {
         double currentWristPosition = wrist.getDegrees();
         double currentArmPosition = clockArm.getDegrees();
 
-        // Protect the collector from being smashed when heading to the stow position
-        if(scoringTargetPosition.clockArmPos < 20 && currentWristPosition > 5) {
-            targetArmPostion = 20;
-        }
-
-        //Protect the funnel from being destroyed if the wrist attempts to flip up
-        if(scoringTargetPosition.wristPos > 0 && currentArmPosition < 20){
-            targetWristPosition = 0;
-        }
-
-        //Protect the funnel from being hit by the wrist 
-        if(scoringTargetPosition.clockArmPos < 20 && currentElevatorPosition > 0.5) {
-            targetArmPostion = 20;
-        }
-
-        //Protect the funnel from being destroyed
-        if(scoringTargetPosition.elevatorPos > 0 && currentArmPosition < 20){
-            targetElevatorPosition = currentElevatorPosition;
+        // If the elevator is not at 0 position or we command it to move...
+        if(!(elevator.atPosition() && scoringTargetPosition.elevatorPos == 0)){
+            targetArmPostion = Math.max(targetArmPostion, 23);                // ask the arm to be out. Then,
+            if(currentArmPosition < 20){                                        // if the arm is in,
+                targetElevatorPosition = currentElevatorPosition;               // freeze the elevator, AND
+                targetWristPosition = currentWristPosition;                     // freeze the wrist.
+            }
         }
 
         Logger.recordOutput(SCORING.LOG_PATH+"ElevatorSetPoint", targetElevatorPosition);
