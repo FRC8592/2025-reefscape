@@ -9,8 +9,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.Constants.SCORING;
+import frc.robot.Constants.*;
 import frc.robot.commands.proxies.WaitUntilCommand;
 
 public class Scoring extends SubsystemBase {
@@ -64,13 +63,14 @@ public class Scoring extends SubsystemBase {
 
     public Command setPosition(ElevatorPositions eposition){
         return Commands.runOnce(()->{
-            Logger.recordOutput(Constants.SHARED.LOG_FOLDER + "/targetPosition", eposition.toString());
+            Logger.recordOutput(SHARED.LOG_FOLDER + "/targetPosition", eposition.toString());
             SmartDashboard.putString("targetPosition", eposition.toString());
             userSelectedPosition = eposition;
         }, new Subsystem[0]);
     }
 
     public Command goToPosition(){
+        Logger.recordOutput(SCORING.LOG_PATH + "goToPosition", true);
         return this.run(() -> {
             scoringTargetPosition = userSelectedPosition;
         }).until(() -> atPosition());
@@ -78,7 +78,7 @@ public class Scoring extends SubsystemBase {
     }
 
     public Command goToSpecifiedPosition(ElevatorPositions eposition){
-        return setPosition(userSelectedPosition).andThen(goToPosition());
+        return setPosition(eposition).andThen(goToPosition());
     }
 
     public boolean atPosition(){
@@ -98,6 +98,7 @@ public class Scoring extends SubsystemBase {
     }
 
     public Command stopAllCommand(){
+        Logger.recordOutput(SCORING.LOG_PATH + "stopAllCmd", true);
         return elevator.stopCommand().alongWith(wrist.stopCommand(), clockArm.stopCommand());
     }
 
