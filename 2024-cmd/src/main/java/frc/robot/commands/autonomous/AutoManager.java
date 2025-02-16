@@ -15,6 +15,8 @@ import frc.robot.Suppliers;
 import frc.robot.commands.autonomous.autos.FourCoralLeftAuto;
 import frc.robot.commands.autonomous.autos.MiddlePreloadMobilityAuto;
 import frc.robot.commands.autonomous.autos.ThreeCoralLeftAuto;
+import frc.robot.commands.autonomous.autos.TwoCoralLeftAuto;
+import frc.robot.commands.autonomous.autos.TwoCoralRightAuto;
 import frc.robot.commands.proxies.*;
 import frc.robot.subsystems.swerve.Swerve;
 
@@ -48,7 +50,8 @@ public final class AutoManager {
         // autoCommands.add(new ExampleAuto());
         // TODO: Add autos here
         // autoCommands.add(new LeftSideLeaveSLAuto());
-        // autoCommands.add(new TwoCoralAuto());
+        autoCommands.add(new TwoCoralLeftAuto());
+        autoCommands.add(new TwoCoralRightAuto());
         // autoCommands.add(new ThreeCoralAuto());
         autoCommands.add(new ThreeCoralLeftAuto());
         autoCommands.add(new FourCoralLeftAuto());

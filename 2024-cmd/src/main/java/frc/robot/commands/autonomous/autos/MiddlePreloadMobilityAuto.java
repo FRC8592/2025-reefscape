@@ -14,7 +14,7 @@ public class MiddlePreloadMobilityAuto extends AutoCommand{
             new FollowPathCommand(getChoreoTrajectory("MiddleToNorthLeft"), Suppliers.robotRunningOnRed)
             //.alongWith(new TimingSimulatedCommand(scoring.goToSpecifiedPosition(ElevatorPositions.L4)))
             // .andThen(intake.setIntakeCommand(-0.5).withTimeout(0.5)),
-            ,new FollowPathCommand(getChoreoTrajectory("NorthLeftBackup"), Suppliers.robotRunningOnRed)
+            ,new FollowPathCommand(getChoreoTrajectory("FaceDToBarge"), Suppliers.robotRunningOnRed)
            // .andThen(new TimingSimulatedCommand(scoring.stowCommand()))
         );
         setStartStateFromChoreoTrajectory("MiddleToNorthLeft");
