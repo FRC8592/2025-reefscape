@@ -28,7 +28,7 @@ public class Wrist extends SubsystemBase{
         targetWristDegrees = 0.0;
     
         wristMotor.setIdleMode(IdleMode.kCoast);
-        wristMotor.setPositionSoftLimit(wristDegreesToMotorRotations(WRIST.WRIST_ANGLE_DEGREES_MIN), wristDegreesToMotorRotations(WRIST.WRIST_ANGLE_DEGREES_MAX));
+        wristMotor.setPositionSoftLimit(degreesToMotorRotations(WRIST.WRIST_ANGLE_DEGREES_MIN), degreesToMotorRotations(WRIST.WRIST_ANGLE_DEGREES_MAX));
         wristMotor.setCurrentLimit(WRIST.WRIST_CURRENT_LIMIT);
     
         wristMotor.withGains(positionPid);
@@ -37,12 +37,12 @@ public class Wrist extends SubsystemBase{
         
     }
 
-    public void setWristDegrees(double degrees){
+    public void setDegrees(double degrees){
         targetWristDegrees = degrees;
     }
 
-    public double getWristDegrees(){
-        return motorRotationsToWristDegrees(wristMotor.getRotations());
+    public double getDegrees(){
+        return motorRotationsToDegrees(wristMotor.getRotations());
     }
 
     public void setPercentOutput(double percent){
@@ -50,36 +50,36 @@ public class Wrist extends SubsystemBase{
     }
 
     public boolean atPosition(){
-        return Utils.isWithin(getWristDegrees(), targetWristDegrees, WRIST.WRIST_POSITION_TOLERANCE);
+        return Utils.isWithin(getDegrees(), targetWristDegrees, WRIST.WRIST_POSITION_TOLERANCE);
     }
 
-    public double motorRotationsToWristDegrees(double rotations){
+    public double motorRotationsToDegrees(double rotations){
         return (rotations*WRIST.WRIST_GEAR_RATIO*360);
     }
 
-    public double wristDegreesToMotorRotations(double degrees){
+    public double degreesToMotorRotations(double degrees){
         return ((degrees/360.0)/WRIST.WRIST_GEAR_RATIO);
     }
 
-    public Command setWristPercentOutputCommand(double percent){
+    public Command setPercentOutputCommand(double percent){
         return this.run(() -> setPercentOutput(percent));
     }
 
-    public Command stopWristCommand(){
-        return setWristPercentOutputCommand(0);
+    public Command stopCommand(){
+        return setPercentOutputCommand(0);
     }
 
-    public Command setWristPositionCommand(DoubleSupplier degrees){
-        return this.run(()-> setWristDegrees(degrees.getAsDouble()));
+    public Command setDegreesCommand(DoubleSupplier degrees){
+        return this.run(()-> setDegrees(degrees.getAsDouble()));
     }
 
     @Override
     public void periodic(){
-        wristMotor.setPosition(wristDegreesToMotorRotations(targetWristDegrees));
-        SmartDashboard.putNumber("Wrist|CurrentDegrees", getWristDegrees());
+        wristMotor.setPosition(degreesToMotorRotations(targetWristDegrees));
+        SmartDashboard.putNumber("Wrist|CurrentDegrees", getDegrees());
         SmartDashboard.putNumber("Wrist|TargetDegrees", targetWristDegrees);
         SmartDashboard.putBoolean("Wrist|AtPosition", atPosition());
-        Logger.recordOutput(WRIST.WRIST_LOG_PATH+"Wrist|CurrentDegrees ", getWristDegrees());
+        Logger.recordOutput(WRIST.WRIST_LOG_PATH+"Wrist|CurrentDegrees ", getDegrees());
         Logger.recordOutput(WRIST.WRIST_LOG_PATH+"Wrist|TargetDegrees ", targetWristDegrees);
         Logger.recordOutput(WRIST.WRIST_LOG_PATH+"Wrist|AtPosition", atPosition());
     }

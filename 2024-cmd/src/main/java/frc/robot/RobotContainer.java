@@ -17,7 +17,6 @@ import frc.robot.commands.largecommands.LargeCommand;
 import frc.robot.subsystems.OdometryUpdates;
 import frc.robot.subsystems.ScoreCoral;
 import frc.robot.subsystems.ScoreCoral.LeftOrRight;
-import frc.robot.subsystems.ScoreCoral.ScoreLevels;
 import frc.robot.subsystems.scoring.ClockArm;
 import frc.robot.subsystems.scoring.Elevator;
 import frc.robot.subsystems.scoring.Intake;
@@ -157,9 +156,9 @@ public class RobotContainer {
         }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         
-        setDefaultCommand(elevator, elevator.stopElevatorCommand());
-        setDefaultCommand(wrist, wrist.stopWristCommand());
-        setDefaultCommand(clockArm, clockArm.stopArmCommand());
+        setDefaultCommand(elevator, elevator.stopCommand());
+        setDefaultCommand(wrist, wrist.stopCommand());
+        setDefaultCommand(clockArm, clockArm.stopCommand());
         setDefaultCommand(intake, intake.stopIntakeCommand());
 
     }
@@ -231,16 +230,16 @@ public class RobotContainer {
         );
 
         //------------------------------ OPERATOR POSITION COMMANDS ------------------------------//
-        PRIME_L1.onTrue(scoring.setPosition(ElevatorPositions.L1));
-        PRIME_L2.onTrue(scoring.setPosition(ElevatorPositions.L2));
-        PRIME_L3.onTrue(scoring.setPosition(ElevatorPositions.L3));
-        PRIME_L4.onTrue(scoring.setPosition(ElevatorPositions.L4));
+        PRIME_L1.onTrue(scoring.setPosition(ElevatorPositions.L1).ignoringDisable(true));
+        PRIME_L2.onTrue(scoring.setPosition(ElevatorPositions.L2).ignoringDisable(true));
+        PRIME_L3.onTrue(scoring.setPosition(ElevatorPositions.L3).ignoringDisable(true));
+        PRIME_L4.onTrue(scoring.setPosition(ElevatorPositions.L4).ignoringDisable(true));
 
-        PRIME_PROCESSOR.onTrue(scoring.setPosition(ElevatorPositions.PROCESSOR));
-        PRIME_L2_ALGAE.onTrue(scoring.setPosition(ElevatorPositions.L2_ALGAE));
-        PRIME_L3_ALGAE.onTrue(scoring.setPosition(ElevatorPositions.L3_ALGAE));
-        PRIME_NET.onTrue(scoring.setPosition(ElevatorPositions.NET));
-        ALGAE_INTAKE.onTrue(scoring.setPosition(ElevatorPositions.GROUND_ALGAE));
+        PRIME_PROCESSOR.onTrue(scoring.setPosition(ElevatorPositions.PROCESSOR).ignoringDisable(true));
+        PRIME_L2_ALGAE.onTrue(scoring.setPosition(ElevatorPositions.L2_ALGAE).ignoringDisable(true));
+        PRIME_L3_ALGAE.onTrue(scoring.setPosition(ElevatorPositions.L3_ALGAE).ignoringDisable(true));
+        PRIME_NET.onTrue(scoring.setPosition(ElevatorPositions.NET).ignoringDisable(true));
+        ALGAE_INTAKE.onTrue(scoring.setPosition(ElevatorPositions.GROUND_ALGAE).ignoringDisable(true));
 
         MODE_SWITCH_ALGAE.onTrue(Commands.runOnce(()->{
             isCoralMode=false; 
@@ -252,12 +251,12 @@ public class RobotContainer {
             Logger.recordOutput(Constants.SHARED.LOG_FOLDER + "/isCoralMode", isCoralMode);
         }, new Subsystem[0]));
 
-        ALIGN_LEFT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left, ScoreLevels.Level1)));
-        ALIGN_RIGHT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right, ScoreLevels.Level1)));
+        ALIGN_LEFT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left)));
+        ALIGN_RIGHT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right)));
 
         //------------------------------ DRIVER COMMANDS ------------------------------//
 
-        STOW.whileTrue(scoring.stowCommand());
+        STOW.whileTrue(scoring.goToSpecifiedPosition(ElevatorPositions.STOW));
         GO_TO_POSITION.whileTrue(scoring.goToPosition()).onFalse(scoring.stopAllCommand());
 
         INTAKE.whileTrue(scoring.intakeCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf));

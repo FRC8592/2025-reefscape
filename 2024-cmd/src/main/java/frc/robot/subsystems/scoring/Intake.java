@@ -37,7 +37,7 @@ public class Intake extends SubsystemBase {
     }
 
     public boolean robotHasCoral(){
-        return  !intakeSensor.get();
+        return intakeSensor.get();
         
     }
 

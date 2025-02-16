@@ -50,21 +50,12 @@ public class ScoreCoral extends SubsystemBase {
     
     //These enums are for the setPosition() method that will set the coral scoring level and its respective direction
 
-    public enum ScoreLevels{
-        Level1,
-        Level2,
-        Level3,
-        Level4,
-    };
-
     public enum LeftOrRight{
         Left,
         Right
     };
 
     private LeftOrRight direction = LeftOrRight.Left;
-    private ScoreLevels level = ScoreLevels.Level1;
-    private int heartbeat = 0;
 
     public ScoreCoral(Swerve swerve) {
         this.swerve = swerve;
@@ -208,11 +199,9 @@ public class ScoreCoral extends SubsystemBase {
     }
 
 
-    public void setPosition(LeftOrRight leftOrRight, ScoreLevels scoreLevel){
+    public void setPosition(LeftOrRight leftOrRight){
        direction = leftOrRight;
-       level = scoreLevel;
        SmartDashboard.putString("direction", direction.name());
-       SmartDashboard.putString("Level", level.name());
     }
 
     /**

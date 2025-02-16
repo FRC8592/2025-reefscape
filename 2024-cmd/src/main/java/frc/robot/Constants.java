@@ -119,6 +119,11 @@ public final class Constants {
 
     }
 
+    public final class SCORING {
+    
+        public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Scoring/";
+    }
+
     
     public final class SWERVE {
         public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Swerve/";
@@ -243,10 +248,10 @@ public final class Constants {
 
         public static final double EXTENSION_POSITION_TOLERANCE = 1.0;
 
-        public static final int ELEVATOR_CURRENT_LIMIT = 80;//amps
+        public static final int ELEVATOR_CURRENT_LIMIT = 40;//amps
 
         public static final double ELEVATOR_MAX_ACCELERATION = 300;
-        public static final double ELEVATOR_MAX_VELOCITY = 100;
+        public static final double ELEVATOR_MAX_VELOCITY = 10;
 
         public static final double ELEVATOR_POSITION_P = 3.5;
         public static final double ELEVATOR_POSITION_I = 0;
@@ -271,10 +276,10 @@ public final class Constants {
 
         public static final double CLOCK_ARM_POSITION_TOLERANCE = 2.0;
 
-        public static final int ARM_CURRENT_LIMIT = 80;//amps
+        public static final int ARM_CURRENT_LIMIT = 40;//amps
 
         public static final double ARM_MAX_ACCELERATION = 300;
-        public static final double ARM_MAX_VELOCITY = 100;
+        public static final double ARM_MAX_VELOCITY = 10;
 
         public static final double ARM_P = 3;
         public static final double ARM_I = 0;
@@ -294,10 +299,10 @@ public final class Constants {
 
         public static final double WRIST_POSITION_TOLERANCE = 2.0;
 
-        public static final int WRIST_CURRENT_LIMIT = 80;//amps
+        public static final int WRIST_CURRENT_LIMIT = 20;//amps
 
         public static final double WRIST_MAX_ACCELERATION = 300;
-        public static final double WRIST_MAX_VELOCITY = 100;
+        public static final double WRIST_MAX_VELOCITY = 10;
 
         public static final double WRIST_P = 3;
         public static final double WRIST_I = 0;

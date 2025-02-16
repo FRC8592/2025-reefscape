@@ -48,7 +48,7 @@ public class Elevator extends SubsystemBase{
         leftExtensionMotor.configureMotionMagic(ELEVATOR.ELEVATOR_MAX_ACCELERATION, ELEVATOR.ELEVATOR_MAX_VELOCITY);
 
 
-        SmartDashboard.putData("Elevator PID", positionPid);
+        //SmartDashboard.putData("Elevator PID", positionPid);
 
         setPercentOutput(0);
         targetExtension = 0;
@@ -56,11 +56,11 @@ public class Elevator extends SubsystemBase{
 
 
 
-    public double getExtensionPositionInches(){
+    public double getInches(){
         return rotationsToInches(leftExtensionMotor.getRotations());
     }
 
-    public void setExtensionPositionInches(double targetInches){
+    public void setInches(double targetInches){
         targetExtension = targetInches;
     }
 
@@ -77,31 +77,32 @@ public class Elevator extends SubsystemBase{
     }
     
     public boolean atPosition(){
-        return Utils.isWithin(getExtensionPositionInches(), targetExtension, ELEVATOR.EXTENSION_POSITION_TOLERANCE);
+        return Utils.isWithin(getInches(), targetExtension, ELEVATOR.EXTENSION_POSITION_TOLERANCE);
     }
 
-    public Command setExtensionPositionCommand(DoubleSupplier targetExtension){
-        return this.run(()-> setExtensionPositionInches(targetExtension.getAsDouble()));
+    public Command setInchesCommand(DoubleSupplier targetExtension){
+        return this.run(()-> setInches(targetExtension.getAsDouble()));
     }
 
-    public Command setExtensionPercentOutputCommand(double power) {
+    public Command setPercentOutputCommand(double power) {
         return this.run(() -> setPercentOutput(power));
     }
 
-    public Command stopElevatorCommand() {
+    public Command stopCommand() {
         return this.runOnce(() -> setPercentOutput(0));
     }
 
     @Override
     public void periodic(){
         leftExtensionMotor.setPosition(inchesToRotations(targetExtension));
-        SmartDashboard.putNumber("Extension|CurrentInches", getExtensionPositionInches());
+        SmartDashboard.putNumber("Extension|CurrentInches", getInches());
         SmartDashboard.putNumber("Extension|TargetInches ", targetExtension);
         SmartDashboard.putNumber("Extension|TargetExtentionInRot", inchesToRotations(targetExtension));
         SmartDashboard.putBoolean("Extension|AtPosition", atPosition());
         SmartDashboard.putNumber("Extension|AppliedVoltage", leftExtensionMotor.getVoltage());
         SmartDashboard.putNumber("Extension|CurrentVelocity", leftExtensionMotor.getVelocityRPM());
-        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"Extension|CurrentInches", getExtensionPositionInches());
+
+        Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"Extension|CurrentInches", getInches());
         Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"Extension|TargetInches ", targetExtension);
         Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"Extension|TargetExtentionInRot", inchesToRotations(targetExtension));
         Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"Extension|AtPosition", atPosition());

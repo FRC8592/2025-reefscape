@@ -27,7 +27,7 @@ public class ClockArm extends SubsystemBase{
         targetArmDegrees = 0.0;
 
         clockArmMotor.setIdleMode(IdleMode.kCoast);
-        clockArmMotor.setPositionSoftLimit(armDegreesToMotorRotations(ARM.ARM_ANGLE_DEGREES_MIN), armDegreesToMotorRotations(ARM.ARM_ANGLE_DEGREES_MAX));
+        clockArmMotor.setPositionSoftLimit(degreesToMotorRotations(ARM.ARM_ANGLE_DEGREES_MIN), degreesToMotorRotations(ARM.ARM_ANGLE_DEGREES_MAX));
         clockArmMotor.setCurrentLimit(ARM.ARM_CURRENT_LIMIT);
 
         clockArmMotor.withGains(positionPid);
@@ -35,15 +35,15 @@ public class ClockArm extends SubsystemBase{
         clockArmMotor.configureMotionMagic(ARM.ARM_MAX_ACCELERATION, ARM.ARM_MAX_VELOCITY);
     }
 
-    public void setArmPositionDegrees(double degrees){
+    public void setDegrees(double degrees){
         targetArmDegrees = degrees;
     }
 
-    public double getArmPositionDegrees(){
-        return motorRotationsToArmDegrees(clockArmMotor.getRotations());
+    public double getDegrees(){
+        return motorRotationsToDegrees(clockArmMotor.getRotations());
     }
 
-    public double getTargetArmPositionDegrees(){
+    public double getTargetPositionDegrees(){
         return targetArmDegrees;
     }
 
@@ -52,36 +52,36 @@ public class ClockArm extends SubsystemBase{
     }
 
     public boolean atPosition(){
-        return Utils.isWithin(getArmPositionDegrees(), targetArmDegrees, ARM.CLOCK_ARM_POSITION_TOLERANCE);
+        return Utils.isWithin(getDegrees(), targetArmDegrees, ARM.CLOCK_ARM_POSITION_TOLERANCE);
     }
 
-    public double motorRotationsToArmDegrees(double rotations){
+    public double motorRotationsToDegrees(double rotations){
         return (rotations*ARM.CLOCK_ARM_GEAR_RATIO*360);
     }
 
-    public double armDegreesToMotorRotations(double degrees){
+    public double degreesToMotorRotations(double degrees){
         return ((degrees/360.0)/ARM.CLOCK_ARM_GEAR_RATIO);
     }
 
-    public Command setArmPercentOutputCommand(double power) {
+    public Command setPercentOutputCommand(double power) {
         return this.run(() -> setPercentOutput(power));
     }
     
-    public Command stopArmCommand() {
-        return setArmPercentOutputCommand(0);
+    public Command stopCommand() {
+        return setPercentOutputCommand(0);
     }
 
-    public Command setArmPositionCommand(DoubleSupplier degrees){
-        return this.run(()-> setArmPositionDegrees(degrees.getAsDouble()));
+    public Command setDegreesCommand(DoubleSupplier degrees){
+        return this.run(()-> setDegrees(degrees.getAsDouble()));
     }
 
     @Override
     public void periodic(){
-        clockArmMotor.setPosition(armDegreesToMotorRotations(targetArmDegrees));
-        SmartDashboard.putNumber("ClockArm|CurrentDegrees", getArmPositionDegrees());
+        clockArmMotor.setPosition(degreesToMotorRotations(targetArmDegrees));
+        SmartDashboard.putNumber("ClockArm|CurrentDegrees", getDegrees());
         SmartDashboard.putNumber("ClockArm|TargetDegrees", targetArmDegrees);
         SmartDashboard.putBoolean("ClockArm|AtPosition", atPosition());
-        Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"ClockArm|CurrentDegrees ", getArmPositionDegrees());
+        Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"ClockArm|CurrentDegrees ", getDegrees());
         Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"ClockArm|TargetDegrees", targetArmDegrees);
         Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"ClockArm|AtPosition", atPosition());
     }

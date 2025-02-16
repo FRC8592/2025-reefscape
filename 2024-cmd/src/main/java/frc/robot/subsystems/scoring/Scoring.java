@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.SCORING;
 import frc.robot.commands.proxies.WaitUntilCommand;
 
 public class Scoring extends SubsystemBase {
@@ -19,16 +20,17 @@ public class Scoring extends SubsystemBase {
     private Wrist wrist;
     private Intake intake;
 
-    private static ElevatorPositions targetPosition;
+    private static ElevatorPositions scoringTargetPosition;
+    private static ElevatorPositions userSelectedPosition;
 
     public static enum ElevatorPositions {
-        L1(11.8, 0, 144),
-        // elevator front: , back: , arm: , wrist: 
-        L2(14.4, 12, 133),
+        L1(12.7, -19.4, 195.0),
+        // elevator front: , back: , arm: , wrist:
+        L2(11.0, -20.2, 168.0),
         // front: , back: , arm: , wrist: 
-        L3(0, 172, 155),
+        L3(0, 139.0, 201.5),
         // front: , back: , arm: , wrist: 
-        L4(19.5, 175, 135),
+        L4(19.5, 147.9, 195.7),
         // front: , back: , arm: , wrist: 
         GROUND_ALGAE(0, 0, 0),
         STARTING(0, 0, 0),
@@ -55,7 +57,8 @@ public class Scoring extends SubsystemBase {
         this.wrist = wrist;
         this.intake = intake;
 
-        targetPosition = ElevatorPositions.STARTING;
+        scoringTargetPosition = ElevatorPositions.STARTING;
+        userSelectedPosition = ElevatorPositions.STARTING;
 
     }
 
@@ -63,28 +66,31 @@ public class Scoring extends SubsystemBase {
         return Commands.runOnce(()->{
             Logger.recordOutput(Constants.SHARED.LOG_FOLDER + "/targetPosition", eposition.toString());
             SmartDashboard.putString("targetPosition", eposition.toString());
-            targetPosition = eposition;
+            userSelectedPosition = eposition;
         }, new Subsystem[0]);
     }
 
     public Command goToPosition(){
-        return elevator.setExtensionPositionCommand(()->targetPosition.elevatorPos)
-        .alongWith(wrist.setWristPositionCommand(()->targetPosition.wristPos))
-        .alongWith(clockArm.setArmPositionCommand(()->targetPosition.clockArmPos));
+        return this.run(() -> {
+            scoringTargetPosition = userSelectedPosition;
+        }).until(() -> atPosition());
+        
     }
 
     public Command goToSpecifiedPosition(ElevatorPositions eposition){
-        return setPosition(targetPosition).andThen(goToPosition());
+        return setPosition(userSelectedPosition).andThen(goToPosition());
     }
 
-    public Command stowCommand(){
-        return clockArm.setArmPositionCommand(()->45).onlyIf(()-> clockArm.getTargetArmPositionDegrees() != ElevatorPositions.STOW.clockArmPos).until(()->clockArm.atPosition()) 
-        .andThen(goToSpecifiedPosition(ElevatorPositions.STOW));
+    public boolean atPosition(){
+        return elevator.atPosition()&& wrist.atPosition() && clockArm.atPosition();
     }
     
 
     public Command intakeCommand(){
-        return intake.setIntakeCommand(0.5).until(() -> intake.robotHasCoral());
+        return intake.setIntakeCommand(0.5)
+        .until(() -> intake.robotHasCoral())
+        .andThen(intake.setIntakeCommand(0.25).withTimeout(0.25))
+        .andThen(intake.stopIntakeCommand());
     }
 
     public Command outtakeCommand(){
@@ -92,7 +98,46 @@ public class Scoring extends SubsystemBase {
     }
 
     public Command stopAllCommand(){
-        return elevator.stopElevatorCommand().alongWith(wrist.stopWristCommand(), clockArm.stopArmCommand());
+        return elevator.stopCommand().alongWith(wrist.stopCommand(), clockArm.stopCommand());
     }
 
+    public void periodic () {
+        double targetElevatorPosition = scoringTargetPosition.elevatorPos;
+        double targetWristPosition = scoringTargetPosition.wristPos;
+        double targetArmPostion = scoringTargetPosition.clockArmPos;
+
+        double currentElevatorPosition = elevator.getInches();
+        double currentWristPosition = wrist.getDegrees();
+        double currentArmPosition = clockArm.getDegrees();
+
+        // Protect the collector from being smashed when heading to the stow position
+        if(scoringTargetPosition.clockArmPos < 20 && currentWristPosition > 5) {
+            targetArmPostion = 20;
+        }
+
+        //Protect the funnel from being destroyed if the wrist attempts to flip up
+        if(scoringTargetPosition.wristPos > 0 && currentArmPosition < 20){
+            targetWristPosition = 0;
+        }
+
+        //Protect the funnel from being hit by the wrist 
+        if(scoringTargetPosition.clockArmPos < 20 && currentElevatorPosition > 0.5) {
+            targetArmPostion = 20;
+        }
+
+        //Protect the funnel from being destroyed
+        if(scoringTargetPosition.elevatorPos > 0 && currentArmPosition < 20){
+            targetElevatorPosition = currentElevatorPosition;
+        }
+
+        Logger.recordOutput(SCORING.LOG_PATH+"ElevatorSetPoint", targetElevatorPosition);
+        Logger.recordOutput(SCORING.LOG_PATH+"WristSetPoint", targetWristPosition);
+        Logger.recordOutput(SCORING.LOG_PATH+"ArmSetPoint", targetArmPostion);
+
+        elevator.setInches(targetElevatorPosition);
+        wrist.setDegrees(targetWristPosition);
+        clockArm.setDegrees(targetArmPostion);
+
+        
+    }
 }
