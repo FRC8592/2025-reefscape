@@ -118,6 +118,10 @@ public class Scoring extends SubsystemBase {
                 targetWristPosition = currentWristPosition;                     // freeze the wrist.
             }
         }
+        
+        if(currentArmPosition < 20 && currentWristPosition > 5){
+            targetArmPostion = Math.max(targetArmPostion, 23);
+        }
 
         Logger.recordOutput(SCORING.LOG_PATH+"ElevatorSetPoint", targetElevatorPosition);
         Logger.recordOutput(SCORING.LOG_PATH+"WristSetPoint", targetWristPosition);
