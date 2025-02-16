@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.commands.proxies.WaitUntilCommand;
 
 public class Scoring extends SubsystemBase {
 
@@ -22,13 +21,13 @@ public class Scoring extends SubsystemBase {
     private static ElevatorPositions targetPosition;
 
     public static enum ElevatorPositions {
-        L1(11.8, 0, 144),
+        L1(11.8, 0, 180),
         // elevator front: , back: , arm: , wrist: 
-        L2(14.4, 12, 133),
+        L2(14.4, 5, 180),
         // front: , back: , arm: , wrist: 
-        L3(0, 172, 155),
+        L3(0, 160, 195),
         // front: , back: , arm: , wrist: 
-        L4(19.5, 175, 135),
+        L4(19.5, 160, 200),
         // front: , back: , arm: , wrist: 
         GROUND_ALGAE(0, 0, 0),
         STARTING(0, 0, 0),
@@ -37,6 +36,7 @@ public class Scoring extends SubsystemBase {
         L2_ALGAE(14, 30, 120),
         L3_ALGAE(3, 150, 120),
         PROCESSOR(0, 0, 0),
+        INTERMEDIATE(0, 45, 0),
         NET(0, 0, 0);
         public double elevatorPos = 0;
         public double wristPos = 0;
@@ -68,9 +68,15 @@ public class Scoring extends SubsystemBase {
     }
 
     public Command goToPosition(){
-        return elevator.setExtensionPositionCommand(()->targetPosition.elevatorPos)
-        .alongWith(wrist.setWristPositionCommand(()->targetPosition.wristPos))
-        .alongWith(clockArm.setArmPositionCommand(()->targetPosition.clockArmPos));
+        return clockArm.setArmPositionCommand(()->45)
+        .until(() -> clockArm.atPosition())
+        .unless(()-> targetPosition.equals(ElevatorPositions.STOW) || clockArm.getArmPositionDegrees() >= 45)
+        .andThen(
+            clockArm.setArmPositionCommand(()->targetPosition.clockArmPos).alongWith(
+                wrist.setWristPositionCommand(()->targetPosition.wristPos),
+                elevator.setExtensionPositionCommand(()->targetPosition.elevatorPos)
+            )
+        ).until(() -> false);
     }
 
     public Command goToSpecifiedPosition(ElevatorPositions eposition){
@@ -79,12 +85,17 @@ public class Scoring extends SubsystemBase {
 
     public Command stowCommand(){
         return clockArm.setArmPositionCommand(()->45).onlyIf(()-> clockArm.getTargetArmPositionDegrees() != ElevatorPositions.STOW.clockArmPos).until(()->clockArm.atPosition()) 
-        .andThen(goToSpecifiedPosition(ElevatorPositions.STOW));
+        .andThen(
+            wrist.setWristPositionCommand(()->ElevatorPositions.STOW.wristPos).alongWith(
+                elevator.setExtensionPositionCommand(()->ElevatorPositions.STOW.elevatorPos),
+                clockArm.setArmPositionCommand(()->20)
+            ).until(() -> elevator.atPosition() && wrist.atPosition()),
+            clockArm.setArmPositionCommand(()->ElevatorPositions.STOW.clockArmPos)
+        );
     }
     
-
     public Command intakeCommand(){
-        return intake.setIntakeCommand(0.5).until(() -> intake.robotHasCoral());
+        return intake.setIntakeCommand(0.5).alongWith(stowCommand());
     }
 
     public Command outtakeCommand(){

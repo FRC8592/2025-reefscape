@@ -258,9 +258,12 @@ public class RobotContainer {
         //------------------------------ DRIVER COMMANDS ------------------------------//
 
         STOW.whileTrue(scoring.stowCommand());
-        GO_TO_POSITION.whileTrue(scoring.goToPosition()).onFalse(scoring.stopAllCommand());
+        GO_TO_POSITION.whileTrue(scoring.goToPosition());//.onFalse(scoring.stopAllCommand());
 
         INTAKE.whileTrue(scoring.intakeCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        // .onFalse(
+        //     scoring.goToSpecifiedPosition(ElevatorPositions.L3)
+        // );
         
         SCORE.whileTrue(intake.setIntakeCommand(-0.5));
 
@@ -270,10 +273,6 @@ public class RobotContainer {
                 Set.of(swerve)
             ) 
         );
-
-
-
-
     };
 
 

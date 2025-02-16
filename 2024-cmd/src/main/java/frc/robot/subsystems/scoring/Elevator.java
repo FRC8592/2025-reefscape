@@ -89,7 +89,7 @@ public class Elevator extends SubsystemBase{
     }
 
     public Command stopElevatorCommand() {
-        return this.runOnce(() -> setPercentOutput(0));
+        return this.runOnce(() -> setPercentOutput(0)).until(() -> atPosition());
     }
 
     @Override
