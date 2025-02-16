@@ -157,9 +157,9 @@ public class RobotContainer {
         }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         
-        setDefaultCommand(elevator, elevator.stopElevatorCommand());
-        setDefaultCommand(wrist, wrist.stopWristCommand());
-        setDefaultCommand(clockArm, clockArm.stopArmCommand());
+        // setDefaultCommand(elevator, elevator.stopElevatorCommand());
+        // setDefaultCommand(wrist, wrist.stopWristCommand());
+        // setDefaultCommand(clockArm, clockArm.stopArmCommand());
         setDefaultCommand(intake, intake.stopIntakeCommand());
 
     }
