@@ -95,12 +95,6 @@ public class Elevator extends SubsystemBase{
     @Override
     public void periodic(){
         leftExtensionMotor.setPosition(inchesToRotations(targetExtension));
-        SmartDashboard.putNumber("Extension|CurrentInches", getExtensionPositionInches());
-        SmartDashboard.putNumber("Extension|TargetInches ", targetExtension);
-        SmartDashboard.putNumber("Extension|TargetExtentionInRot", inchesToRotations(targetExtension));
-        SmartDashboard.putBoolean("Extension|AtPosition", atPosition());
-        SmartDashboard.putNumber("Extension|AppliedVoltage", leftExtensionMotor.getVoltage());
-        SmartDashboard.putNumber("Extension|CurrentVelocity", leftExtensionMotor.getVelocityRPM());
         Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"Extension|CurrentInches", getExtensionPositionInches());
         Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"Extension|TargetInches ", targetExtension);
         Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"Extension|TargetExtentionInRot", inchesToRotations(targetExtension));

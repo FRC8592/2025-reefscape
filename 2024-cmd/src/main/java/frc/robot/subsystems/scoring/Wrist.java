@@ -4,7 +4,6 @@ import org.littletonrobotics.junction.Logger;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
@@ -76,9 +75,6 @@ public class Wrist extends SubsystemBase{
     @Override
     public void periodic(){
         wristMotor.setPosition(wristDegreesToMotorRotations(targetWristDegrees));
-        SmartDashboard.putNumber("Wrist|CurrentDegrees", getWristDegrees());
-        SmartDashboard.putNumber("Wrist|TargetDegrees", targetWristDegrees);
-        SmartDashboard.putBoolean("Wrist|AtPosition", atPosition());
         Logger.recordOutput(WRIST.WRIST_LOG_PATH+"Wrist|CurrentDegrees ", getWristDegrees());
         Logger.recordOutput(WRIST.WRIST_LOG_PATH+"Wrist|TargetDegrees ", targetWristDegrees);
         Logger.recordOutput(WRIST.WRIST_LOG_PATH+"Wrist|AtPosition", atPosition());

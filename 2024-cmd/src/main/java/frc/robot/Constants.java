@@ -271,7 +271,7 @@ public final class Constants {
 
         public static final double CLOCK_ARM_POSITION_TOLERANCE = 2.0;
 
-        public static final int ARM_CURRENT_LIMIT = 80;//amps
+        public static final int ARM_CURRENT_LIMIT = 80; //amps
 
         public static final double ARM_MAX_ACCELERATION = 300;
         public static final double ARM_MAX_VELOCITY = 100;

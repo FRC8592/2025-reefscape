@@ -4,7 +4,6 @@ import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
@@ -78,9 +77,6 @@ public class ClockArm extends SubsystemBase{
     @Override
     public void periodic(){
         clockArmMotor.setPosition(armDegreesToMotorRotations(targetArmDegrees));
-        SmartDashboard.putNumber("ClockArm|CurrentDegrees", getArmPositionDegrees());
-        SmartDashboard.putNumber("ClockArm|TargetDegrees", targetArmDegrees);
-        SmartDashboard.putBoolean("ClockArm|AtPosition", atPosition());
         Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"ClockArm|CurrentDegrees ", getArmPositionDegrees());
         Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"ClockArm|TargetDegrees", targetArmDegrees);
         Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"ClockArm|AtPosition", atPosition());

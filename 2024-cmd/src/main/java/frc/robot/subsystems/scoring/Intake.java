@@ -32,7 +32,7 @@ public class Intake extends SubsystemBase {
         return this.run(()->{setIntakePercentOutput(percent);});
     }
 
-    public Command stopIntakeCommand(){
+    public Command stopCommand(){
         return this.run(()->{setIntakePercentOutput(0);});
     }
 
@@ -42,7 +42,6 @@ public class Intake extends SubsystemBase {
     }
 
     public void periodic() {
-        SmartDashboard.putBoolean("Intake|HasCoral", robotHasCoral());
         Logger.recordOutput(INTAKE.LOG_PATH+"Intake|HasCoral", robotHasCoral());
     }
 }
