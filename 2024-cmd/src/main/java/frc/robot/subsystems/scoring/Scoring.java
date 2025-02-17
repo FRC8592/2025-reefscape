@@ -23,9 +23,9 @@ public class Scoring extends SubsystemBase {
     private static ElevatorPositions userSelectedPosition;
 
     public static enum ElevatorPositions {
-        L1(12.7, -19.4, 195.0),
+        L1(12.7, -19.4, 195.0), 
         // elevator front: , back: , arm: , wrist:
-        L2(11.0, -20.2, 168.0),
+        L2(11.0, -20, 168.0),
         // front: , back: , arm: , wrist: 
         L3(0, 139.0, 201.5),
         // front: , back: , arm: , wrist: 
@@ -105,32 +105,50 @@ public class Scoring extends SubsystemBase {
     public void periodic () {
         double targetElevatorPosition = scoringTargetPosition.elevatorPos;
         double targetWristPosition = scoringTargetPosition.wristPos;
-        double targetArmPostion = scoringTargetPosition.clockArmPos;
+        double targetArmPosition = scoringTargetPosition.clockArmPos;
 
         double currentElevatorPosition = elevator.getInches();
         double currentWristPosition = wrist.getDegrees();
         double currentArmPosition = clockArm.getDegrees();
 
-        // If the elevator is not at 0 position or we command it to move...
-        if(!(elevator.atPosition() && scoringTargetPosition.elevatorPos == 0)){
-            targetArmPostion = Math.max(targetArmPostion, 23);                // ask the arm to be out. Then,
-            if(currentArmPosition < 20){                                        // if the arm is in,
-                targetElevatorPosition = currentElevatorPosition;               // freeze the elevator, AND
-                targetWristPosition = currentWristPosition;                     // freeze the wrist.
-            }
-        }
-        
-        if(currentArmPosition < 20 && currentWristPosition > 5){
-            targetArmPostion = Math.max(targetArmPostion, 23);
+        // The arm can move as far back as -20 degrees when the wrist is in a scoring position and is commanded to be in one
+        if (currentWristPosition > 150 && scoringTargetPosition.wristPos > 150) {
+            targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, -20);
+        } else {
+            targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 30);
         }
 
-        Logger.recordOutput(SCORING.LOG_PATH+"ElevatorSetPoint", targetElevatorPosition);
-        Logger.recordOutput(SCORING.LOG_PATH+"WristSetPoint", targetWristPosition);
-        Logger.recordOutput(SCORING.LOG_PATH+"ArmSetPoint", targetArmPostion);
+        // When the elevator is stowed, the arm can move to the stowed position
+        if((elevator.atPosition() && scoringTargetPosition.elevatorPos == 0)){
+            targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 0);
+        }
+        // Possible conflict - elevator arm wrist: (0, 0, 0) (19.5, 147.9, 195.7); Set to thirty until elevator reaches stow. once elevator reaches stow, the wrist cant move.
+        // Wrist and arm dont move until arm is in a safe position for wrist movement
+        if (currentArmPosition < 20) {
+            targetWristPosition = currentWristPosition;
+            targetElevatorPosition = currentElevatorPosition;
+        }
+
+
+        // Logging our original target positions of scoring mechanisms
+        Logger.recordOutput(SCORING.LOG_PATH+"OriginalElevatorTarget", scoringTargetPosition.elevatorPos);
+        Logger.recordOutput(SCORING.LOG_PATH+"OriginalWristTarget", scoringTargetPosition.wristPos);
+        Logger.recordOutput(SCORING.LOG_PATH+"originalArmTarget", scoringTargetPosition.clockArmPos);
+
+        // Logging target positions of scoring mechanisms
+        Logger.recordOutput(SCORING.LOG_PATH+"TargetArmPostion", targetArmPosition);
+        Logger.recordOutput(SCORING.LOG_PATH+"TargetWristPostion", targetWristPosition);
+        Logger.recordOutput(SCORING.LOG_PATH+"TargetElevatorPostion", targetElevatorPosition);
+
+        // Logging current positions of scoring mechanisms
+        Logger.recordOutput(SCORING.LOG_PATH+"CurrentArmPostion", currentArmPosition);
+        Logger.recordOutput(SCORING.LOG_PATH+"CurrentWristPostion", currentWristPosition);
+        Logger.recordOutput(SCORING.LOG_PATH+"CurrentElevatorPostion", currentElevatorPosition);
+
 
         elevator.setInches(targetElevatorPosition);
         wrist.setDegrees(targetWristPosition);
-        clockArm.setDegrees(targetArmPostion);
+        clockArm.setDegrees(targetArmPosition);
 
         
     }

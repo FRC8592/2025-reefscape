@@ -76,7 +76,7 @@ public final class Constants {
         public static final double ROT_KI = 0;
         public static final double ROT_KD = 0.0001;
 
-        public static final double OFFSET_DEPTH = 0.50;
+        public static final double OFFSET_DEPTH = 0.30; // Drivers requested for the robot to be as close to the april tag as possible
         public static final double OFFSET_LEFT_METERS = -0.175;
         public static final double OFFSET_RIGHT_METERS = 0.175;
         public static final double ROT_OFFSET = 0d;
