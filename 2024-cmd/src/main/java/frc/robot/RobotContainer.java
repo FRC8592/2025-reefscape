@@ -82,8 +82,8 @@ public class RobotContainer {
 
     //Operator controls
 
-    private final Trigger PRIME_L1 = (coralController.button(3).or(coralController.button(4))).and(()->isCoralMode);
-    private final Trigger PRIME_L2 = (coralController.button(2).or(coralController.button(1))).and(()->isCoralMode);
+    private final Trigger PRIME_L1 = (coralController.button(2).or(coralController.button(4))).and(()->isCoralMode);
+    private final Trigger PRIME_L2 = (coralController.button(3).or(coralController.button(1))).and(()->isCoralMode);
     private final Trigger PRIME_L3 = (coralController.button(8).or(coralController.button(6))).and(()->isCoralMode);
     private final Trigger PRIME_L4 = (coralController.button(7).or(coralController.button(5))).and(()->isCoralMode);
 
@@ -157,9 +157,9 @@ public class RobotContainer {
         }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         
-        setDefaultCommand(elevator, elevator.stopElevatorCommand());
-        setDefaultCommand(wrist, wrist.stopWristCommand());
-        setDefaultCommand(clockArm, clockArm.stopArmCommand());
+        // setDefaultCommand(elevator, elevator.stopElevatorCommand());
+        // setDefaultCommand(wrist, wrist.stopWristCommand());
+        // setDefaultCommand(clockArm, clockArm.stopArmCommand());
         setDefaultCommand(intake, intake.stopCommand());
 
     }
@@ -262,7 +262,7 @@ public class RobotContainer {
 
         INTAKE.whileTrue(scoring.intakeCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
         
-        SCORE.whileTrue(intake.setIntakeCommand(-0.5));
+        SCORE.whileTrue(intake.setIntakeCommand(-0.43));
 
         ALIGN_TO_REEF.whileTrue(
             new DeferredCommand(

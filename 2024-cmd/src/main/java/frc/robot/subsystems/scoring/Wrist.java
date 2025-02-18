@@ -69,7 +69,7 @@ public class Wrist extends SubsystemBase{
     }
 
     public Command setWristPositionCommand(DoubleSupplier degrees){
-        return this.run(()-> setWristDegrees(degrees.getAsDouble()));
+        return this.run(()-> setWristDegrees(degrees.getAsDouble())).until(()->atPosition());
     }
 
     @Override

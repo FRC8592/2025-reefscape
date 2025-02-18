@@ -290,11 +290,11 @@ public final class Constants {
         public static final double WRIST_GEAR_RATIO = 1/75.0;
 
         public static final double WRIST_ANGLE_DEGREES_MIN = -45d;
-        public static final double WRIST_ANGLE_DEGREES_MAX = 155d;
+        public static final double WRIST_ANGLE_DEGREES_MAX = 220d;
 
         public static final double WRIST_POSITION_TOLERANCE = 2.0;
 
-        public static final int WRIST_CURRENT_LIMIT = 80;//amps
+        public static final int WRIST_CURRENT_LIMIT = 60;//amps
 
         public static final double WRIST_MAX_ACCELERATION = 300;
         public static final double WRIST_MAX_VELOCITY = 100;

@@ -81,7 +81,7 @@ public class Elevator extends SubsystemBase{
     }
 
     public Command setExtensionPositionCommand(DoubleSupplier targetExtension){
-        return this.run(()-> setExtensionPositionInches(targetExtension.getAsDouble()));
+        return this.run(()-> setExtensionPositionInches(targetExtension.getAsDouble())).until(()->atPosition());
     }
 
     public Command setExtensionPercentOutputCommand(double power) {

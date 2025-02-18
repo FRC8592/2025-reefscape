@@ -71,7 +71,7 @@ public class ClockArm extends SubsystemBase{
     }
 
     public Command setArmPositionCommand(DoubleSupplier degrees){
-        return this.run(()-> setArmPositionDegrees(degrees.getAsDouble()));
+        return this.run(()-> setArmPositionDegrees(degrees.getAsDouble())).until(()->atPosition());
     }
 
     @Override
