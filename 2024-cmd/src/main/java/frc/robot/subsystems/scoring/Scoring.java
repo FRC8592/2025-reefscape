@@ -5,11 +5,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
-import frc.robot.commands.proxies.WaitUntilCommand;
 
 public class Scoring extends SubsystemBase {
 
@@ -26,7 +23,7 @@ public class Scoring extends SubsystemBase {
     public static enum ElevatorPositions {
         STARTING(0, 0, 0),
         STOW(0, 0, 0),
-        L1(12.7, -19.4, 195.0), 
+        L1(12.7, -20, 195.0), 
         L2(11.0, -20, 168.0),
         L3(0, 139.0, 201.5),
         L4(19.5, 147.9, 195.7),
@@ -175,11 +172,11 @@ public class Scoring extends SubsystemBase {
         if(elevator.atPosition() && scoringTargetPosition.elevatorPos == 0 &&
            wrist.atPosition()    && scoringTargetPosition.wristPos == 0) {
             targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 0);
-        }
+        } 
 
         // Freeze the movement of the Elevator and Wrist to prevent damage if the arm is in too far.  This will normally
         // happen when the mechanism is leaving the stowed state, but may happen in other, unforeseen circumstances.
-        if (currentArmPosition < 20) {
+        if (currentArmPosition < 20 && scoringTargetPosition.clockArmPos > 20) {
             targetWristPosition = currentWristPosition;
             targetElevatorPosition = currentElevatorPosition;
         }
