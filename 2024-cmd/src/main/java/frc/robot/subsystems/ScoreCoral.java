@@ -4,6 +4,12 @@
 
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -12,28 +18,17 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.Trajectory.State;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Queue;
-
-import org.littletonrobotics.junction.Logger;
-
-import frc.robot.subsystems.swerve.Swerve;
-import frc.robot.subsystems.swerve.Swerve.DriveModes;
-import frc.robot.subsystems.vision.Vision;
+import frc.robot.Constants.CORAL_ALIGN;
+import frc.robot.Constants.SHARED;
+import frc.robot.Constants.SWERVE;
 import frc.robot.Suppliers;
-import frc.robot.Constants.*;
 import frc.robot.commands.largecommands.FollowPathCommand;
+import frc.robot.subsystems.swerve.Swerve;
 
 public class ScoreCoral extends SubsystemBase {
 
@@ -132,7 +127,7 @@ public class ScoreCoral extends SubsystemBase {
 
         Pose2d robotPose = swerve.getCurrentPosition();
         List<Pose2d> waypoints = new ArrayList<Pose2d>();
-        Pose2d targetTagPosition = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tag).get().toPose2d();
+        Pose2d targetTagPosition = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(tag).get().toPose2d();
 
         targetTagPosition = generateScoringPose(targetTagPosition, direction);
 
@@ -197,13 +192,13 @@ public class ScoreCoral extends SubsystemBase {
         List<Double> distances = new ArrayList<Double>();
         for (int i = 0; i < tags.length; i++) {
             
-            Pose2d tagpos = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tags[i]).get().toPose2d();
+            Pose2d tagpos = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(tags[i]).get().toPose2d();
             distances.add(Math.sqrt(Math.pow(robotPose.getX()-tagpos.getX(), 2) + Math.pow(robotPose.getY()-tagpos.getY(), 2)));
 
         }
 
         int tagID = tags[distances.indexOf(Collections.min(distances))];
-        Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/SelectedTag", AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tagID).get().toPose2d());
+        Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/SelectedTag", AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(tagID).get().toPose2d());
         return tagID;
     }
 
