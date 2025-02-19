@@ -10,15 +10,20 @@ public class ThreeCoralLeftAuto extends AutoCommand{
         super(
             //TODO: add intake and outtake commands.
             new FollowPathCommand(getChoreoTrajectory("LeftToERight"), Suppliers.robotRunningOnRed)
-            .alongWith(scoring.goToSpecifiedPosition(ElevatorPositions.L4)),
+            .alongWith(scoring.goToSpecifiedPosition(ElevatorPositions.L4))
+            .andThen(scoring.outtakeCommand()),
             new FollowPathCommand(getChoreoTrajectory("ERightToHPLeft"), Suppliers.robotRunningOnRed)
-            .alongWith(scoring.stowCommand()),
+            .alongWith(scoring.stowCommand())
+            .andThen(scoring.intakeCommand()),
             new FollowPathCommand(getChoreoTrajectory("HPLeftToFLeft"), Suppliers.robotRunningOnRed)
-            .alongWith(scoring.goToSpecifiedPosition(ElevatorPositions.L4)),
+            .alongWith(scoring.goToSpecifiedPosition(ElevatorPositions.L4))
+            .andThen(scoring.outtakeCommand()),
             new FollowPathCommand(getChoreoTrajectory("FLeftToHPLeft"), Suppliers.robotRunningOnRed)
-            .alongWith(scoring.stowCommand()),
+            .alongWith(scoring.stowCommand())
+            .andThen(scoring.intakeCommand()),
             new FollowPathCommand(getChoreoTrajectory("HPLeftToFRight"), Suppliers.robotRunningOnRed)
-            .alongWith(scoring.goToSpecifiedPosition(ElevatorPositions.L4)),
+            .alongWith(scoring.goToSpecifiedPosition(ElevatorPositions.L4))
+            .andThen(scoring.outtakeCommand()),
             new FollowPathCommand(getChoreoTrajectory("FRightBackUp"), Suppliers.robotRunningOnRed)
             .andThen(scoring.stowCommand())
         );

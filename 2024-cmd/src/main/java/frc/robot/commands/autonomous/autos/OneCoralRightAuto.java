@@ -10,7 +10,8 @@ public class OneCoralRightAuto extends AutoCommand{
         super(
             //TODO: add intake and outtake commands.
             new FollowPathCommand(getChoreoTrajectory("RightToCLeft"), Suppliers.robotRunningOnRed)
-            .alongWith(scoring.goToSpecifiedPosition(ElevatorPositions.L4)),
+            .alongWith(scoring.goToSpecifiedPosition(ElevatorPositions.L4))
+            .andThen(scoring.outtakeCommand()),
             new FollowPathCommand(getChoreoTrajectory("CLeftBackUp"), Suppliers.robotRunningOnRed)
             .andThen(scoring.stowCommand())
         );
