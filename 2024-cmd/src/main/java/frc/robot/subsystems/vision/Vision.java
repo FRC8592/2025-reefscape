@@ -30,7 +30,7 @@ import frc.robot.Robot;
 
 public class Vision extends SubsystemBase{
     PhotonCamera camera = new PhotonCamera("Arducam_OV9782_B");
-    AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
+    AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField();
     PhotonPoseEstimator estimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, CORAL_ALIGN.CAMERA_OFFSETS);
 
     boolean targetVisible = false;
