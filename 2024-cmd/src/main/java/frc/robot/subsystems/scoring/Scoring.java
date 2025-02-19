@@ -23,10 +23,10 @@ public class Scoring extends SubsystemBase {
     public static enum ElevatorPositions {
         STARTING(0, 0, 0),
         STOW(0, 0, 0),
-        L1(12.7, -20, 195.0), 
+        L1(12.7, -20, 168.0), 
         L2(11.0, -20, 168.0),
-        L3(0, 139.0, 201.5),
-        L4(19.5, 147.9, 195.7),
+        L3(0, 149.0, 196.5),
+        L4(19.5, 157.9, 195.7),
 
         GROUND_ALGAE(0, 0, 0),  // TODO: set algae positions
         L2_ALGAE(14, 30, 120),  // TODO: set algae positions
@@ -176,7 +176,9 @@ public class Scoring extends SubsystemBase {
 
         // Freeze the movement of the Elevator and Wrist to prevent damage if the arm is in too far.  This will normally
         // happen when the mechanism is leaving the stowed state, but may happen in other, unforeseen circumstances.
-        if (currentArmPosition < 20 && scoringTargetPosition.clockArmPos > 20) {
+
+        // TODO: Find a way to exclude -20 degrees from the elevator safety
+        if (currentArmPosition < 20 && scoringTargetPosition.clockArmPos != 0) {
             targetWristPosition = currentWristPosition;
             targetElevatorPosition = currentElevatorPosition;
         }

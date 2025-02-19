@@ -261,7 +261,7 @@ public class RobotContainer {
 
         INTAKE.whileTrue(scoring.intakeCommand()).onFalse(intake.stopIntakeCommand());
         
-        SCORE.whileTrue(intake.setIntakeCommand(-0.5));
+        SCORE.whileTrue(intake.setIntakeCommand(-0.5)).onFalse(intake.stopIntakeCommand());
 
         ALIGN_TO_REEF.whileTrue(
             new DeferredCommand(
