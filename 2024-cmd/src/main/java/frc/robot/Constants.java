@@ -87,19 +87,19 @@ public final class Constants {
 
         public static final Transform3d CAMERA_OFFSETS = new Transform3d(new Translation3d(-0.14, -0.17, 0.245), new Rotation3d(0, Math.toRadians(-12), 0));
 
-        public static final Pose3d SOUTH_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(18).get();
-        public static final Pose3d SOUTH_WEST_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(19).get();
-        public static final Pose3d NORTH_WEST_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(20).get();
-        public static final Pose3d NORTH_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(21).get();
-        public static final Pose3d NORTH_EAST_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(22).get();
-        public static final Pose3d SOUTH_EAST_BLUE_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(17).get();
+        public static final Pose3d SOUTH_BLUE_POSE = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(18).get();
+        public static final Pose3d SOUTH_WEST_BLUE_POSE = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(19).get();
+        public static final Pose3d NORTH_WEST_BLUE_POSE = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(20).get();
+        public static final Pose3d NORTH_BLUE_POSE = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(21).get();
+        public static final Pose3d NORTH_EAST_BLUE_POSE = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(22).get();
+        public static final Pose3d SOUTH_EAST_BLUE_POSE = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(17).get();
 
-        public static final Pose3d SOUTH_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(7).get();
-        public static final Pose3d SOUTH_WEST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(6).get();
-        public static final Pose3d NORTH_WEST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(11).get();
-        public static final Pose3d NORTH_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(10).get();
-        public static final Pose3d NORTH_EAST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(9).get();
-        public static final Pose3d SOUTH_EAST_RED_POSE = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(8).get();
+        public static final Pose3d SOUTH_RED_POSE = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(7).get();
+        public static final Pose3d SOUTH_WEST_RED_POSE = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(6).get();
+        public static final Pose3d NORTH_WEST_RED_POSE = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(11).get();
+        public static final Pose3d NORTH_RED_POSE = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(10).get();
+        public static final Pose3d NORTH_EAST_RED_POSE = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(9).get();
+        public static final Pose3d SOUTH_EAST_RED_POSE = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(8).get();
     
         public static final int[] BLUE_REEF_TAGS = {17, 18, 19, 20, 21, 22};
         public static final int[] RED_REEF_TAGS = {6, 7, 8, 9, 10, 11};
@@ -250,7 +250,7 @@ public final class Constants {
 
         public static final int ELEVATOR_CURRENT_LIMIT = 40;//amps
 
-        public static final double ELEVATOR_MAX_ACCELERATION = 400;
+        public static final double ELEVATOR_MAX_ACCELERATION = 300;
         public static final double ELEVATOR_MAX_VELOCITY = 75;
 
         public static final double ELEVATOR_POSITION_P = 3.5;
@@ -278,7 +278,7 @@ public final class Constants {
 
         public static final int ARM_CURRENT_LIMIT = 40;//amps
 
-        public static final double ARM_MAX_ACCELERATION = 400;
+        public static final double ARM_MAX_ACCELERATION = 300;
         public static final double ARM_MAX_VELOCITY = 100;
 
         public static final double ARM_P = 3;
@@ -301,7 +301,7 @@ public final class Constants {
 
         public static final int WRIST_CURRENT_LIMIT = 20;//amps
 
-        public static final double WRIST_MAX_ACCELERATION = 400;
+        public static final double WRIST_MAX_ACCELERATION = 300;
         public static final double WRIST_MAX_VELOCITY = 100;
 
         public static final double WRIST_P = 3;

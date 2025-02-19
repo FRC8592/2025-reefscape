@@ -123,7 +123,7 @@ public class ScoreCoral extends SubsystemBase {
 
         Pose2d robotPose = swerve.getCurrentPosition();
         List<Pose2d> waypoints = new ArrayList<Pose2d>();
-        Pose2d targetTagPosition = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tag).get().toPose2d();
+        Pose2d targetTagPosition = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(tag).get().toPose2d();
 
         targetTagPosition = generateScoringPose(targetTagPosition, direction);
 
@@ -188,13 +188,13 @@ public class ScoreCoral extends SubsystemBase {
         List<Double> distances = new ArrayList<Double>();
         for (int i = 0; i < tags.length; i++) {
             
-            Pose2d tagpos = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tags[i]).get().toPose2d();
+            Pose2d tagpos = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(tags[i]).get().toPose2d();
             distances.add(Math.sqrt(Math.pow(robotPose.getX()-tagpos.getX(), 2) + Math.pow(robotPose.getY()-tagpos.getY(), 2)));
 
         }
 
         int tagID = tags[distances.indexOf(Collections.min(distances))];
-        Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/SelectedTag", AprilTagFields.k2025Reefscape.loadAprilTagLayoutField().getTagPose(tagID).get().toPose2d());
+        Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/SelectedTag", AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(tagID).get().toPose2d());
         return tagID;
     }
 

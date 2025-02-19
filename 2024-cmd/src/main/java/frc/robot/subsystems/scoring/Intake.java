@@ -33,12 +33,14 @@ public class Intake extends SubsystemBase {
     }
 
     public Command stopIntakeCommand(){
-        return this.run(()->{setIntakePercentOutput(0);});
+        return this.runOnce(()->{
+            setIntakePercentOutput(0);
+        });
     }
 
     public boolean robotHasCoral(){
         return intakeSensor.get();
-        
+    
     }
 
     public void periodic() {
