@@ -257,11 +257,11 @@ public class RobotContainer {
         //------------------------------ DRIVER COMMANDS ------------------------------//
 
         STOW.whileTrue(scoring.goToSpecifiedPosition(ElevatorPositions.STOW));
-        GO_TO_POSITION.whileTrue(scoring.goToPosition());//.onFalse(scoring.stopAllCommand());
+        GO_TO_POSITION.whileTrue(scoring.goToPosition()).onFalse(scoring.stopAllCommand());
 
-        INTAKE.whileTrue(scoring.intakeCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        INTAKE.whileTrue(scoring.intakeCommand()).onFalse(intake.stopIntakeCommand());
         
-        SCORE.whileTrue(intake.setIntakeCommand(-0.5));
+        SCORE.whileTrue(intake.setIntakeCommand(-0.5)).onFalse(intake.stopIntakeCommand());
 
         ALIGN_TO_REEF.whileTrue(
             new DeferredCommand(

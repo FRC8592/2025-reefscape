@@ -66,7 +66,9 @@ public class Wrist extends SubsystemBase{
     }
 
     public Command stopCommand(){
-        return setPercentOutputCommand(0);
+        return this.runOnce(() -> {
+            setDegrees(getDegrees());
+        });
     }
 
     public Command setDegreesCommand(DoubleSupplier degrees){
