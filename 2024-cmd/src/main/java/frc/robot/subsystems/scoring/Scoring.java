@@ -160,8 +160,15 @@ public class Scoring extends SubsystemBase {
         //
         if (currentWristPosition > 150 && scoringTargetPosition.wristPos > 150) {
             targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, -20);
+           
+
         } else {
             targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 30);
+
+            if (currentArmPosition < 20 && scoringTargetPosition.clockArmPos != 0) {
+                targetWristPosition = currentWristPosition;
+                targetElevatorPosition = currentElevatorPosition;
+            }
         }
 
         // The arm can move into the stowed (0) position ONLY when the elevator is at the stowed (0) position AND
@@ -178,10 +185,7 @@ public class Scoring extends SubsystemBase {
         // happen when the mechanism is leaving the stowed state, but may happen in other, unforeseen circumstances.
 
         // TODO: Find a way to exclude -20 degrees from the elevator safety
-        if (currentArmPosition < 20 && scoringTargetPosition.clockArmPos != 0) {
-            targetWristPosition = currentWristPosition;
-            targetElevatorPosition = currentElevatorPosition;
-        }
+        
 
         // Logging the original target positions of scoring mechanisms
         Logger.recordOutput(SCORING.LOG_PATH+"OriginalElevatorTarget", scoringTargetPosition.elevatorPos);

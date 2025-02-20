@@ -251,7 +251,7 @@ public final class Constants {
         public static final int ELEVATOR_CURRENT_LIMIT = 40;//amps
 
         public static final double ELEVATOR_MAX_ACCELERATION = 300;
-        public static final double ELEVATOR_MAX_VELOCITY = 75;
+        public static final double ELEVATOR_MAX_VELOCITY = 37.5; //formerly 75
 
         public static final double ELEVATOR_POSITION_P = 3.5;
         public static final double ELEVATOR_POSITION_I = 0;
@@ -279,7 +279,7 @@ public final class Constants {
         public static final int ARM_CURRENT_LIMIT = 40;//amps
 
         public static final double ARM_MAX_ACCELERATION = 300;
-        public static final double ARM_MAX_VELOCITY = 100;
+        public static final double ARM_MAX_VELOCITY = 50; //previously 100
 
         public static final double ARM_P = 3;
         public static final double ARM_I = 0;
@@ -302,7 +302,7 @@ public final class Constants {
         public static final int WRIST_CURRENT_LIMIT = 20;//amps
 
         public static final double WRIST_MAX_ACCELERATION = 300;
-        public static final double WRIST_MAX_VELOCITY = 100;
+        public static final double WRIST_MAX_VELOCITY = 50; //used to be 100
 
         public static final double WRIST_P = 3;
         public static final double WRIST_I = 0;
