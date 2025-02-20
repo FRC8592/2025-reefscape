@@ -168,7 +168,6 @@ public class Swerve extends SubsystemBase {
      * Define whatever direction the robot is facing as forward
      */
     public void resetHeading(){
-        // TODO: implement something that allows the commented code to work
         swerve.resetHeading();
     }
 
@@ -176,7 +175,6 @@ public class Swerve extends SubsystemBase {
      * Get the current robot yaw as a Rotation2d
      */
     public Rotation2d getYaw() {
-        // TODO: implement something that allows the commented code to work
         return swerve.getYaw();
     }
 

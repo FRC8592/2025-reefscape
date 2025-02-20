@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Robot;
 import frc.robot.Suppliers;
+import frc.robot.commands.autonomous.autos.AllAlgaeAuto;
 import frc.robot.commands.autonomous.autos.FourCoralLeftAuto;
 import frc.robot.commands.autonomous.autos.FourCoralRightAuto;
 import frc.robot.commands.autonomous.autos.OneCoralLeftAuto;
@@ -55,16 +56,17 @@ public final class AutoManager {
         // TODO: Add autos here
         // autoCommands.add(new LeftSideLeaveSLAuto());
         autoCommands.add(new FourCoralLeftAuto());
-        autoCommands.add(new ThreeCoralLeftAuto());
-        autoCommands.add(new TwoCoralLeftAuto());
-        autoCommands.add(new OneCoralLeftAuto());
+        // autoCommands.add(new ThreeCoralLeftAuto());
+        // autoCommands.add(new TwoCoralLeftAuto());
+        // autoCommands.add(new OneCoralLeftAuto());
 
-        autoCommands.add(new FourCoralRightAuto());
-        autoCommands.add(new ThreeCoralRightAuto());
-        autoCommands.add(new TwoCoralRightAuto());
+        // autoCommands.add(new FourCoralRightAuto());
+        // autoCommands.add(new ThreeCoralRightAuto());
+        // autoCommands.add(new TwoCoralRightAuto());
         autoCommands.add(new OneCoralRightAuto());
 
-        autoCommands.add(new OneCoralOneAlgaeMiddleAuto());
+        // autoCommands.add(new OneCoralOneAlgaeMiddleAuto());
+        autoCommands.add(new AllAlgaeAuto());
 
         autoChooser = new SendableChooser<>();
         
