@@ -65,7 +65,7 @@ public class RobotContainer {
 
     private boolean isCoralMode = true;
 
-    //private final Trigger ENABLED = new Trigger(() -> DriverStation.isEnabled());
+    private final Trigger ENABLED = new Trigger(() -> DriverStation.isEnabled());
 
     private final Trigger INTAKE = driverController.leftTrigger();
     private final Trigger SCORE = driverController.rightTrigger();
@@ -166,13 +166,16 @@ public class RobotContainer {
 
     }
 
-
     //Any commands that are reused a lot but can't go in a separate class go here
 
     /**
      * Configure all button bindings
      */
     private void configureBindings() {
+
+        ENABLED.onTrue(
+            scoring.stopAllCommand()
+        );
 
         //------------------------------ SWERVE COMMANDS ------------------------------//
         SLOW_MODE.onTrue(

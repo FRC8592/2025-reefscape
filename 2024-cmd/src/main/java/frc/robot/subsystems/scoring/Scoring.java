@@ -160,7 +160,8 @@ public class Scoring extends SubsystemBase {
         //
         if (currentWristPosition > 150 && scoringTargetPosition.wristPos > 150) {
             targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, -20);
-           
+            //Aims to make the arm move before the elevator moves while going from L2 to L3
+            targetElevatorPosition = Math.max(currentElevatorPosition, 11);
 
         } else {
             targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 30);
