@@ -7,16 +7,22 @@ import java.util.function.Consumer;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.ctre.phoenix6.swerve.jni.SwerveJNI;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import frc.robot.subsystems.swerve.ctreswerve.CommandSwerveDrivetrain;
-import frc.robot.subsystems.swerve.ctreswerve.TunerConstants;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.subsystems.swerve.riptideswerve.RiptideDrivetrain;
+import frc.robot.Constants.SHARED;
+import frc.robot.subsystems.swerve.perryswerve.PerryConstants;
+import frc.robot.subsystems.swerve.riptideswerve.RiptideConstants;
 
 public class CTRESwerveWrapper {
-    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private double MaxSpeed = RiptideConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
     /* Setting up bindings for necessary control of the swerve drive platform */
@@ -28,7 +34,7 @@ public class CTRESwerveWrapper {
     private final SwerveRequest.RobotCentric robotRelative = new SwerveRequest.RobotCentric()
         .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
        
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final SwerveDrivetrain<TalonFX, TalonFX, CANcoder> drivetrain = SHARED.IS_RIPTIDE?RiptideConstants.createDrivetrain():PerryConstants.createDrivetrain();
 
     public void drive(ChassisSpeeds speeds, boolean driveFieldRelative) {
         if (driveFieldRelative) {
@@ -64,7 +70,7 @@ public class CTRESwerveWrapper {
     }
 
     public void periodic(){
-        drivetrain.periodic();
+        ((Subsystem)drivetrain).periodic();
     }
 
     public void registerTelemetry(Consumer<SwerveDriveState> driveState){

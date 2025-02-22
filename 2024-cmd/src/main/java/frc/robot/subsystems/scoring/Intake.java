@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
 // import frc.robot.helpers.SparkFlexControl;
 import frc.robot.helpers.motor.NewtonMotor;
+import frc.robot.helpers.motor.NewtonMotor.IdleMode;
 import frc.robot.helpers.motor.talonfx.KrakenX60Motor;
 
 public class Intake extends SubsystemBase {
@@ -18,6 +19,7 @@ public class Intake extends SubsystemBase {
     public Intake() {
         intakeMotor = new KrakenX60Motor(CAN.INTAKE_MOTOR_CAN_ID, true);
         intakeSensor = new DigitalInput(INTAKE.INTAKE_BEAM_BREAK_DIGITAL_ID);
+        intakeMotor.setIdleMode(IdleMode.kBrake);
     }
 
     public void setIntakePercentOutput(double percent){

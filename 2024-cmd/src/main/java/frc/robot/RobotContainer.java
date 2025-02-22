@@ -84,20 +84,20 @@ public class RobotContainer {
 
     //Operator controls
 
-    private final Trigger PRIME_L1 = (coralController.button(3).or(coralController.button(4))).and(()->isCoralMode);
-    private final Trigger PRIME_L2 = (coralController.button(2).or(coralController.button(1))).and(()->isCoralMode);
-    private final Trigger PRIME_L3 = (coralController.button(8).or(coralController.button(6))).and(()->isCoralMode);
-    private final Trigger PRIME_L4 = (coralController.button(7).or(coralController.button(5))).and(()->isCoralMode);
+    private final Trigger PRIME_L4 = (coralController.button(5).or(coralController.button(7))).and(()->isCoralMode);
+    private final Trigger PRIME_L3 = (coralController.button(6).or(coralController.button(8))).and(()->isCoralMode);
+    private final Trigger PRIME_L2 = (coralController.button(4).or(coralController.button(3))).and(()->isCoralMode);
+    private final Trigger PRIME_L1 = (coralController.button(1).or(coralController.button(2))).and(()->isCoralMode);
 
     private final Trigger ALIGN_RIGHT = (coralController.button(2).or(coralController.button(3)).or(coralController.button(8)).or(coralController.button(7))).and(()->isCoralMode);
     private final Trigger ALIGN_LEFT = (coralController.button(1).or(coralController.button(4)).or(coralController.button(6)).or(coralController.button(5))).and(()->isCoralMode);
 
     private final Trigger ALIGN_CENTER = (coralController.button(2).or(coralController.button(3)).or(coralController.button(8)).or(coralController.button(7))).and(()->!isCoralMode);
     
-    private final Trigger PRIME_PROCESSOR = coralController.button(4).and(()->!isCoralMode);
-    private final Trigger PRIME_L2_ALGAE = coralController.button(1).and(()->!isCoralMode);
-    private final Trigger PRIME_L3_ALGAE = coralController.button(6).and(()->!isCoralMode);
-    private final Trigger PRIME_NET = coralController.button(5).and(()->!isCoralMode);
+    private final Trigger PRIME_PROCESSOR = coralController.button(1).or(coralController.button(2)).and(()->!isCoralMode);
+    private final Trigger PRIME_L2_ALGAE = (coralController.button(4).or(coralController.button(3))).and(()->!isCoralMode);
+    private final Trigger PRIME_L3_ALGAE = (coralController.button(6).or(coralController.button(8))).and(()->!isCoralMode);
+    private final Trigger PRIME_NET = (coralController.button(5).or(coralController.button(7))).and(()->!isCoralMode);
 
     private final Trigger ALGAE_INTAKE = coralController.button(3).and(()->!isCoralMode);
     // private final Trigger GROUND_INTAKE = coralController.button();
@@ -138,11 +138,11 @@ public class RobotContainer {
      * Pass subsystems everywhere they're needed
      */
     private void passSubsystems(){
-        AutoManager.addSubsystems(swerve);
-        AutoCommand.addSubsystems(swerve);
-        LargeCommand.addSubsystems(swerve);
+        AutoManager.addSubsystems(swerve, scoring);
+        AutoCommand.addSubsystems(swerve, scoring);
+        LargeCommand.addSubsystems(swerve, scoring);
         NewtonCommands.addSubsystems(swerve, scoring);
-        Suppliers.addSubsystems(swerve);
+        Suppliers.addSubsystems(swerve, scoring);
     }
 
     /**
@@ -236,16 +236,16 @@ public class RobotContainer {
         );
 
         //------------------------------ OPERATOR POSITION COMMANDS ------------------------------//
-        PRIME_L1.onTrue(scoring.setPosition(ElevatorPositions.L1).ignoringDisable(true));
-        PRIME_L2.onTrue(scoring.setPosition(ElevatorPositions.L2).ignoringDisable(true));
-        PRIME_L3.onTrue(scoring.setPosition(ElevatorPositions.L3).ignoringDisable(true));
-        PRIME_L4.onTrue(scoring.setPosition(ElevatorPositions.L4).ignoringDisable(true));
+        PRIME_L1.onTrue(scoring.setUserPosition(ElevatorPositions.L1).ignoringDisable(true));
+        PRIME_L2.onTrue(scoring.setUserPosition(ElevatorPositions.L2).ignoringDisable(true));
+        PRIME_L3.onTrue(scoring.setUserPosition(ElevatorPositions.L3).ignoringDisable(true));
+        PRIME_L4.onTrue(scoring.setUserPosition(ElevatorPositions.L4).ignoringDisable(true));
 
-        PRIME_PROCESSOR.onTrue(scoring.setPosition(ElevatorPositions.PROCESSOR).ignoringDisable(true));
-        PRIME_L2_ALGAE.onTrue(scoring.setPosition(ElevatorPositions.L2_ALGAE).ignoringDisable(true));
-        PRIME_L3_ALGAE.onTrue(scoring.setPosition(ElevatorPositions.L3_ALGAE).ignoringDisable(true));
-        PRIME_NET.onTrue(scoring.setPosition(ElevatorPositions.NET).ignoringDisable(true));
-        ALGAE_INTAKE.onTrue(scoring.setPosition(ElevatorPositions.GROUND_ALGAE).ignoringDisable(true));
+        PRIME_PROCESSOR.onTrue(scoring.setUserPosition(ElevatorPositions.PROCESSOR).ignoringDisable(true));
+        PRIME_L2_ALGAE.onTrue(scoring.setUserPosition(ElevatorPositions.L2_ALGAE).ignoringDisable(true));
+        PRIME_L3_ALGAE.onTrue(scoring.setUserPosition(ElevatorPositions.L3_ALGAE).ignoringDisable(true));
+        PRIME_NET.onTrue(scoring.setUserPosition(ElevatorPositions.NET).ignoringDisable(true));
+        ALGAE_INTAKE.onTrue(scoring.setUserPosition(ElevatorPositions.GROUND_ALGAE).ignoringDisable(true));
 
         MODE_SWITCH_ALGAE.onTrue(Commands.runOnce(()->{
             isCoralMode=false; 
@@ -262,12 +262,12 @@ public class RobotContainer {
 
         //------------------------------ DRIVER COMMANDS ------------------------------//
 
-        STOW.whileTrue(scoring.goToSpecifiedPosition(ElevatorPositions.STOW));
-        GO_TO_POSITION.whileTrue(scoring.goToPosition()).onFalse(scoring.stopAllCommand());
+        STOW.whileTrue(scoring.goToPosition(ElevatorPositions.STOW));
+        GO_TO_POSITION.whileTrue(scoring.applyUserPosition()).onFalse(scoring.stopAllCommand());
 
-        INTAKE.whileTrue(scoring.intakeCommand()).onFalse(intake.stopIntakeCommand());
+        INTAKE.whileTrue(new DeferredCommand(() -> scoring.intakeCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
         
-        SCORE.whileTrue(intake.setIntakeCommand(-0.5)).onFalse(intake.stopIntakeCommand());
+        SCORE.whileTrue(new DeferredCommand(() -> scoring.outtakeCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
 
         ALIGN_TO_REEF.whileTrue(
             new DeferredCommand(

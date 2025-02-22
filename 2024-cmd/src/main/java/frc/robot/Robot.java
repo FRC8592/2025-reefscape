@@ -44,6 +44,11 @@ public class Robot extends LoggedRobot {
 
     public GenericHID coralController = new GenericHID(0);
 
+    public enum CurrentRobot{
+        RIPTIDE,
+        PERRY
+    }
+
     /**
      * This function is run when the robot is first started up and should be used
      * for any

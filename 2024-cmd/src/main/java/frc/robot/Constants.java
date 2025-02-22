@@ -7,10 +7,13 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import frc.robot.Robot.CurrentRobot;
 
 public final class Constants {
     public final class SHARED {
         public static final String LOG_FOLDER = "CustomLogs";
+        public static final CurrentRobot CURRENT_ROBOT = CurrentRobot.RIPTIDE;
+        public static final boolean IS_RIPTIDE = CURRENT_ROBOT == CurrentRobot.RIPTIDE;
     }
     public final class CONVERSIONS {
         public static final double METERS_SECOND_TO_TICKS_TALONFX = ((2048 * 6.75 * 60) / (200 * Math.PI * 0.0508));
@@ -48,7 +51,7 @@ public final class Constants {
     }
 
     public final class CAN {
-        public static final int INTAKE_MOTOR_CAN_ID = 12;
+        public static final int INTAKE_MOTOR_CAN_ID = 45;
         public static final int PDH_CAN_ID = 1;
 
         public static final int BACK_EXTENSION_MOTOR_CAN_ID = 44;
@@ -85,7 +88,11 @@ public final class Constants {
 
         public static final int MAX_LOCK_LOSS_TICKS = 20;
 
-        public static final Transform3d CAMERA_OFFSETS = new Transform3d(new Translation3d(-0.14, -0.17, 0.245), new Rotation3d(0, Math.toRadians(-12), 0));
+        public static final Transform3d CAMERA_OFFSETS = (
+            SHARED.IS_RIPTIDE
+            ? /* RIPRIDE: */ new Transform3d(new Translation3d(0.225, -0.24, 0.17), new Rotation3d(0, Math.toRadians(-12), 0))
+            : /* PERRY: */   new Transform3d(new Translation3d(0.225, -0.24, 0.17), new Rotation3d(0, Math.toRadians(-12), 0))
+        );
 
         public static final Pose3d SOUTH_BLUE_POSE = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(18).get();
         public static final Pose3d SOUTH_WEST_BLUE_POSE = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(19).get();
@@ -251,19 +258,19 @@ public final class Constants {
         public static final int ELEVATOR_CURRENT_LIMIT = 40;//amps
 
         public static final double ELEVATOR_MAX_ACCELERATION = 300;
-        public static final double ELEVATOR_MAX_VELOCITY = 37.5; //formerly 75
+        public static final double ELEVATOR_MAX_VELOCITY = 75; //formerly 75
 
-        public static final double ELEVATOR_POSITION_P = 3.5;
-        public static final double ELEVATOR_POSITION_I = 0;
-        public static final double ELEVATOR_POSITION_D = 0;
-        public static final double ELEVATOR_POSITION_S = 0;
-        public static final double ELEVATOR_POSITION_V = 0;
-        public static final double ELEVATOR_POSITION_A = 0;
+        public static final double ELEVATOR_POSITION_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3.5: /*PERRY: */3.5;
+        public static final double ELEVATOR_POSITION_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
+        public static final double ELEVATOR_POSITION_D = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
+        public static final double ELEVATOR_POSITION_S = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
+        public static final double ELEVATOR_POSITION_V = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
+        public static final double ELEVATOR_POSITION_A = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
 
-        public static final double ELEVATOR_VELOCITY_P = 0.001;
-        public static final double ELEVATOR_VELOCITY_I = 0;
-        public static final double ELEVATOR_VELOCITY_D = 0;
-        public static final double ELEVATOR_VELOCITY_S = 0.1;
+        public static final double ELEVATOR_VELOCITY_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */0.001: /*PERRY: */0.001;
+        public static final double ELEVATOR_VELOCITY_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
+        public static final double ELEVATOR_VELOCITY_D = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
+        public static final double ELEVATOR_VELOCITY_S = SHARED.IS_RIPTIDE? /*RIPTIDE: */0.1: /*PERRY: */0.1;
     }
 
     public class ARM{
@@ -279,14 +286,14 @@ public final class Constants {
         public static final int ARM_CURRENT_LIMIT = 40;//amps
 
         public static final double ARM_MAX_ACCELERATION = 300;
-        public static final double ARM_MAX_VELOCITY = 50; //previously 100
+        public static final double ARM_MAX_VELOCITY = 100; //previously 100
 
-        public static final double ARM_P = 3;
-        public static final double ARM_I = 0;
-        public static final double ARM_D = 0;
-        public static final double ARM_S = 0;
-        public static final double ARM_V = 0;
-        public static final double ARM_A = 0;
+        public static final double ARM_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */3;
+        public static final double ARM_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
+        public static final double ARM_D = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
+        public static final double ARM_S = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
+        public static final double ARM_V = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
+        public static final double ARM_A = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
     }
 
     public class WRIST{
@@ -295,21 +302,21 @@ public final class Constants {
         public static final double WRIST_GEAR_RATIO = 1/75.0;
 
         public static final double WRIST_ANGLE_DEGREES_MIN = -45d;
-        public static final double WRIST_ANGLE_DEGREES_MAX = 205d;
+        public static final double WRIST_ANGLE_DEGREES_MAX = 220d;
 
         public static final double WRIST_POSITION_TOLERANCE = 2.0;
 
-        public static final int WRIST_CURRENT_LIMIT = 20;//amps
+        public static final int WRIST_CURRENT_LIMIT = 60;//amps
 
         public static final double WRIST_MAX_ACCELERATION = 300;
-        public static final double WRIST_MAX_VELOCITY = 50; //used to be 100
+        public static final double WRIST_MAX_VELOCITY = 100; //used to be 100
 
-        public static final double WRIST_P = 3;
-        public static final double WRIST_I = 0;
-        public static final double WRIST_D = 0;
-        public static final double WRIST_S = 0;
-        public static final double WRIST_V = 0;
-        public static final double WRIST_A = 0;
+        public static final double WRIST_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */3;
+        public static final double WRIST_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
+        public static final double WRIST_D = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
+        public static final double WRIST_S = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
+        public static final double WRIST_V = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
+        public static final double WRIST_A = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
     }
 
 }

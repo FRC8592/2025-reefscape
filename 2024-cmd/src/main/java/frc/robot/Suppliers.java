@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants.*;
 import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.scoring.Scoring;
 import edu.wpi.first.util.WPISerializable;
 
 /**
@@ -50,9 +51,10 @@ public final class Suppliers {
     }
 
     private static Swerve swerve;
-
-    public static void addSubsystems(Swerve swerve){
+    private static Scoring scoring;
+    public static void addSubsystems(Swerve swerve, Scoring scoring){
         Suppliers.swerve = swerve;
+        Suppliers.scoring = scoring;
     }
 
     /**

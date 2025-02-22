@@ -21,28 +21,32 @@ public class Scoring extends SubsystemBase {
     private static ElevatorPositions userSelectedPosition;
 
     public static enum ElevatorPositions {
-        STARTING(0, 0, 0),
-        STOW(0, 0, 0),
-        L1(12.7, -20, 168.0), 
-        L2(11.0, -20, 168.0),
-        L3(0, 149.0, 196.5),
-        L4(19.5, 157.9, 195.7),
-
-        GROUND_ALGAE(0, 0, 0),  // TODO: set algae positions
-        L2_ALGAE(14, 30, 120),  // TODO: set algae positions
-        L3_ALGAE(3, 150, 120),  // TODO: set algae positions
-        PROCESSOR(0, 0, 0),     // TODO: set processor position
-        NET(0, 0, 0);           // TODO: set net position
+        L1(14.4, 5, 175, -0.43, 0.75),
+        L2(11.8, 0, 180, -0.2, 0.75),
+        L3(0, 165, 195, -0.43, 0.75),
+        L4(19.5, 160, 200, -0.43, 0.75),
+        GROUND_ALGAE(0, 0, 0, 0.5, -0.75),
+        STOW(0, 0, 0, 0.5, 0.75),
+        STOW_WITH_CORAL(0, 0, 20, 0.5, 0.75),
+        L2_ALGAE(0, 50, 120, 0.5, -0.75),
+        L3_ALGAE(3, 120, 160, 0.5, -0.75),
+        PROCESSOR(0, 0, 0, -0.3, 0.75),
+        NET(19.4, 150, 120, 1
+        , -0.75);
 
         public double elevatorPos = 0;
         public double wristPos = 0;
         public double clockArmPos = 0;
+        public double outtakeSpeed = 0;
+        public double intakeSpeed = 0;
         
-        private ElevatorPositions(double elevator, double clockArm, double wrist) {
-            elevatorPos = elevator;
-            clockArmPos =  clockArm;
-            wristPos = wrist;
-        }
+        private  ElevatorPositions(double elevator, double clockArm, double wrist, double outtakeSpeed, double intakeSpeed) {
+            this.elevatorPos = elevator;
+            this.wristPos = wrist;
+            this.clockArmPos =  clockArm;
+            this.outtakeSpeed = outtakeSpeed;
+            this.intakeSpeed = intakeSpeed;
+          }
     }
 
 
@@ -52,44 +56,26 @@ public class Scoring extends SubsystemBase {
         this.wrist = wrist;
         this.intake = intake;
 
-        scoringTargetPosition = ElevatorPositions.STARTING;
-        userSelectedPosition = ElevatorPositions.STARTING;
+        scoringTargetPosition = ElevatorPositions.STOW;
+        userSelectedPosition = ElevatorPositions.STOW;
     }
 
-
-    /** 
-     * Set a future position for the scoring mechanism that will be triggered when {@Link #goToPosition()} is called.
-     * @param eposition A position for the elevator, arm, and wrist as defined in {@Code ElevatorPositions}
-     */
-    public Command setPosition(ElevatorPositions eposition){
-        return Commands.runOnce(()->{
-            userSelectedPosition = eposition;
-
-            Logger.recordOutput(SHARED.LOG_FOLDER + "/targetPosition", eposition.toString());
-            SmartDashboard.putString("targetPosition", eposition.toString());
+    public Command setUserPosition(ElevatorPositions position){
+        return this.runOnce(() -> {
+            userSelectedPosition = position;
         });
     }
 
-    /**
-     * Command the scoring mechanisms to move to a position previously set with {@Code #setPosition()}.
-     * @return
-     */
-    public Command goToPosition(){
-        Logger.recordOutput(SCORING.LOG_PATH + "goToPosition", true);
-
-        return this.run(() -> {
+    public Command applyUserPosition(){
+        return this.runOnce(() -> {
             scoringTargetPosition = userSelectedPosition;
-        }).until(() -> atPosition());
+        });
     }
 
-
-    /**
-     * Immediately begin moving the scoring mechanisms to the specified position.
-     * @param eposition A position for the elevator, arm, and wrist as defined in {@Code ElevatorPositions}
-     * @return
-     */
-    public Command goToSpecifiedPosition(ElevatorPositions eposition){
-        return setPosition(eposition).andThen(goToPosition());
+    public Command goToPosition(ElevatorPositions position){
+        return this.runOnce(() -> {
+            scoringTargetPosition = position;
+        });
     }
 
 
@@ -107,10 +93,11 @@ public class Scoring extends SubsystemBase {
      * @return
      */
     public Command intakeCommand(){
-        return intake.setIntakeCommand(0.5)
-        .until(() -> intake.robotHasCoral())
-        .andThen(intake.setIntakeCommand(0.25).withTimeout(0.25))
-        .andThen(intake.stopIntakeCommand());
+        return intake.setIntakeCommand(scoringTargetPosition.intakeSpeed);
+    }
+
+    public Command intakeUntilHasCoralCommand(){
+        return intake.setIntakeCommand(scoringTargetPosition.intakeSpeed).until(() -> intake.robotHasCoral());
     }
 
 
@@ -121,7 +108,7 @@ public class Scoring extends SubsystemBase {
      * @return
      */
     public Command outtakeCommand(){
-        return intake.setIntakeCommand(-0.5).withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
+        return intake.setIntakeCommand(scoringTargetPosition.outtakeSpeed).withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
     }
 
     /**
@@ -160,8 +147,11 @@ public class Scoring extends SubsystemBase {
         //
         if (currentWristPosition > 150 && scoringTargetPosition.wristPos > 150) {
             targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, -20);
+
             //Aims to make the arm move before the elevator moves while going from L2 to L3
-            targetElevatorPosition = Math.max(currentElevatorPosition, 11);
+            if(!clockArm.atPosition() && !wrist.atPosition()){
+                targetElevatorPosition = currentElevatorPosition;
+            }
 
         } else {
             targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 30);
@@ -180,7 +170,7 @@ public class Scoring extends SubsystemBase {
         if(elevator.atPosition() && scoringTargetPosition.elevatorPos == 0 &&
            wrist.atPosition()    && scoringTargetPosition.wristPos == 0) {
             targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 0);
-        } 
+        }
 
         // Freeze the movement of the Elevator and Wrist to prevent damage if the arm is in too far.  This will normally
         // happen when the mechanism is leaving the stowed state, but may happen in other, unforeseen circumstances.
@@ -203,9 +193,12 @@ public class Scoring extends SubsystemBase {
         Logger.recordOutput(SCORING.LOG_PATH+"CurrentWristPostion", currentWristPosition);
         Logger.recordOutput(SCORING.LOG_PATH+"CurrentElevatorPostion", currentElevatorPosition);
 
+        Logger.recordOutput(SCORING.LOG_PATH+"UserSelectedPosition", userSelectedPosition);
+        Logger.recordOutput(SCORING.LOG_PATH+"TargetPosition", scoringTargetPosition);
+
         // Command the position of the Elevator, Arm, and Wrist mechanisms
         elevator.setInches(targetElevatorPosition);
         wrist.setDegrees(targetWristPosition);
-        clockArm.setDegrees(targetArmPosition);        
+        clockArm.setDegrees(targetArmPosition);
     }
 }

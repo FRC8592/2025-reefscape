@@ -1,5 +1,5 @@
 {
- "name":"FourCoralAuto",
+ "name":"AutoPaths",
  "version":1,
  "type":"Swerve",
  "variables":{
@@ -9,27 +9,27 @@
  "config":{
   "frontLeft":{
    "x":{
-    "exp":"11 in",
-    "val":0.2794
+    "exp":"11.75 in",
+    "val":0.29845
    },
    "y":{
-    "exp":"11 in",
-    "val":0.2794
+    "exp":"11.75 in",
+    "val":0.29845
    }
   },
   "backLeft":{
    "x":{
-    "exp":"-11 in",
-    "val":-0.2794
+    "exp":"-11.75 in",
+    "val":-0.29845
    },
    "y":{
-    "exp":"11 in",
-    "val":0.2794
+    "exp":"11.75 in",
+    "val":0.29845
    }
   },
   "mass":{
-   "exp":"150 lbs",
-   "val":68.0388555
+   "exp":"125 lbs",
+   "val":56.69904625
   },
   "inertia":{
    "exp":"6 kg m ^ 2",
@@ -57,16 +57,16 @@
   },
   "bumper":{
    "front":{
-    "exp":"16 in",
-    "val":0.4064
+    "exp":"18.25 in",
+    "val":0.46355
    },
    "side":{
-    "exp":"16 in",
-    "val":0.4064
+    "exp":"18.25 in",
+    "val":0.46355
    },
    "back":{
-    "exp":"16 in",
-    "val":0.4064
+    "exp":"18.25 in",
+    "val":0.46355
    }
   },
   "differentialTrackWidth":{

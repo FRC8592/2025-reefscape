@@ -12,12 +12,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Robot;
 import frc.robot.Suppliers;
-import frc.robot.commands.autonomous.autos.FourCoralAuto;
-import frc.robot.commands.autonomous.autos.LeftSideLeaveSLAuto;
-import frc.robot.commands.autonomous.autos.ThreeCoralAuto;
-import frc.robot.commands.autonomous.autos.TwoCoralAuto;
+import frc.robot.commands.autonomous.autos.*;
 import frc.robot.commands.proxies.*;
 import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.scoring.Scoring;
 
 /**
  * General class for autonomous management (loading autos, sending the chooser, getting the
@@ -25,10 +23,10 @@ import frc.robot.subsystems.swerve.Swerve;
  */
 public final class AutoManager {
     private static Swerve swerve;
-    // private static Intake intake;
-    public static void addSubsystems(Swerve swerve){
+    private static Scoring scoring;
+    public static void addSubsystems(Swerve swerve, Scoring scoring){
         AutoManager.swerve = swerve;
-        // AutoManager.intake = intake;
+        AutoManager.scoring = scoring;
     }
 
     private static SendableChooser<AutoCommand> autoChooser;
@@ -48,10 +46,17 @@ public final class AutoManager {
 
         // autoCommands.add(new ExampleAuto());
         // TODO: Add autos here
-        autoCommands.add(new LeftSideLeaveSLAuto());
-        autoCommands.add(new TwoCoralAuto());
-        autoCommands.add(new ThreeCoralAuto());
-        autoCommands.add(new FourCoralAuto());
+        autoCommands.add(new AllAlgaeAuto());
+        autoCommands.add(new FourCoralLeftAuto());
+        autoCommands.add(new FourCoralRightAuto());
+        autoCommands.add(new OneCoralLeftAuto());
+        autoCommands.add(new OneCoralRightAuto());
+        autoCommands.add(new OneCoralOneAlgaeMiddleAuto());
+        autoCommands.add(new ThreeCoralLeftAuto());
+        autoCommands.add(new ThreeCoralRightAuto());
+        autoCommands.add(new TwoCoralLeftAuto());
+        autoCommands.add(new TwoCoralRightAuto());
+
 
         autoChooser = new SendableChooser<>();
         
