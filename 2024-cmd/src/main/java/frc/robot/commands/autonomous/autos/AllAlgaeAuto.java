@@ -3,16 +3,23 @@ package frc.robot.commands.autonomous.autos;
 import frc.robot.Suppliers;
 import frc.robot.commands.autonomous.AutoCommand;
 import frc.robot.commands.largecommands.FollowPathCommand;
+import frc.robot.subsystems.scoring.Scoring.ElevatorPositions;
 
 public class AllAlgaeAuto extends AutoCommand{
     public AllAlgaeAuto(){
         super(
-            new FollowPathCommand(getChoreoTrajectory("RemoveAlgaeC"), Suppliers.robotRunningOnRed),
-            new FollowPathCommand(getChoreoTrajectory("RemoveAlgaeB"), Suppliers.robotRunningOnRed),
-            new FollowPathCommand(getChoreoTrajectory("RemoveAlgaeA"), Suppliers.robotRunningOnRed)
+            new FollowPathCommand(getChoreoTrajectory("LeftToCMid"), Suppliers.robotRunningOnRed)
+                .alongWith(scoring.setUserPosition(ElevatorPositions.getL3Algae()))
+                .andThen(scoring.intakeCommand()),
+            new FollowPathCommand(getChoreoTrajectory("CMidToBMid"), Suppliers.robotRunningOnRed)
+                .alongWith(scoring.setUserPosition(ElevatorPositions.getL2Algae()))
+                .andThen(scoring.intakeCommand()),
+            new FollowPathCommand(getChoreoTrajectory("BMidToAMid"), Suppliers.robotRunningOnRed)
+            .alongWith(scoring.setUserPosition(ElevatorPositions.getL3Algae()))
+            .andThen(scoring.intakeCommand())
         );
 
-        setStartStateFromChoreoTrajectory("RemoveAlgaeC");
+        setStartStateFromChoreoTrajectory("LeftToCMid");
 
     }
 }
