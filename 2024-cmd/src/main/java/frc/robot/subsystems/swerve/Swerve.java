@@ -255,6 +255,10 @@ public class Swerve extends SubsystemBase {
         return out;
     }
 
+    public ChassisSpeeds getCurrentSpeeds(){
+        return swerve.getCurrentSpeeds();
+    }
+
     /**
      * Process joystick inputs for human control
      *

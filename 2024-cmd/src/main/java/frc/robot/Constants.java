@@ -13,7 +13,7 @@ import frc.robot.Robot.CurrentRobot;
 public final class Constants {
     public final class SHARED {
         public static final String LOG_FOLDER = "CustomLogs";
-        public static final CurrentRobot CURRENT_ROBOT = CurrentRobot.RIPTIDE;
+        public static final CurrentRobot CURRENT_ROBOT = CurrentRobot.PERRY;
         public static final boolean IS_RIPTIDE = CURRENT_ROBOT == CurrentRobot.RIPTIDE;
     }
     public final class CONVERSIONS {
@@ -93,6 +93,10 @@ public final class Constants {
             SHARED.IS_RIPTIDE
             ? /* RIPRIDE: */ new Transform3d(new Translation3d(0.21, 0.215, 0.17), new Rotation3d(0, Math.toRadians(-12), 0))
             : /* PERRY: */   new Transform3d(new Translation3d(0.21, 0.215, 0.17), new Rotation3d(0, Math.toRadians(-12), 0))
+        );
+
+        public static final String CAMERA_NAME = (
+            SHARED.IS_RIPTIDE ? "Arducam_OV9072_B" : "Arducam_OV9072_D"
         );
 
         public static final Pose3d SOUTH_BLUE_POSE = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(18).get();

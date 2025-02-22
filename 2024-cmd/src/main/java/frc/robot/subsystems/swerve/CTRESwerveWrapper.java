@@ -34,7 +34,7 @@ public class CTRESwerveWrapper {
     private final SwerveRequest.RobotCentric robotRelative = new SwerveRequest.RobotCentric()
         .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
        
-    public final SwerveDrivetrain<TalonFX, TalonFX, CANcoder> drivetrain = SHARED.IS_RIPTIDE?RiptideConstants.createDrivetrain():PerryConstants.createDrivetrain();
+    private final SwerveDrivetrain<TalonFX, TalonFX, CANcoder> drivetrain = SHARED.IS_RIPTIDE?RiptideConstants.createDrivetrain():PerryConstants.createDrivetrain();
 
     public void drive(ChassisSpeeds speeds, boolean driveFieldRelative) {
         if (driveFieldRelative) {
@@ -79,5 +79,9 @@ public class CTRESwerveWrapper {
 
     public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds) {
         drivetrain.addVisionMeasurement(visionRobotPoseMeters, timestampSeconds);
+    }
+
+    public ChassisSpeeds getCurrentSpeeds(){
+        return drivetrain.getState().Speeds;
     }
 }

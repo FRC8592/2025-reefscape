@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -133,12 +134,26 @@ public class ScoreCoral extends SubsystemBase {
         double deltaPosition[] = {targetTagPositionOffset.getX()-robotPose.getX(), targetTagPositionOffset.getY()-robotPose.getY()};
         
         //trick the path generator into thinking the robot is always pointing at the tag
+        // Pose2d robotPose2 = (
+        //     swerve.getCurrentSpeeds().equals(new ChassisSpeeds())
+        //     ? new Pose2d(robotPose.getTranslation(), Rotation2d.fromRadians(Math.atan2(deltaPosition[1],deltaPosition[0])))
+        //     : new Pose2d(
+        //         robotPose.getTranslation(),
+        //         Rotation2d.fromRadians(Math.atan2(swerve.getCurrentSpeeds().vyMetersPerSecond, swerve.getCurrentSpeeds().vxMetersPerSecond))
+        //     )
+        // );
         Pose2d robotPose2 = new Pose2d(robotPose.getTranslation(), Rotation2d.fromRadians(Math.atan2(deltaPosition[1],deltaPosition[0])));
        
-        //create basic tank drive trajectory
+        //create basic tank drive trajectoryswerve
         waypoints.add(robotPose2);
         waypoints.add(targetTagPositionOffset);
-        final Trajectory traj = TrajectoryGenerator.generateTrajectory(waypoints, SWERVE.PATH_FOLLOW_TRAJECTORY_CONFIG);
+        TrajectoryConfig config = SWERVE.PATH_FOLLOW_TRAJECTORY_CONFIG.setStartVelocity(
+            Math.sqrt(
+                Math.pow(swerve.getCurrentSpeeds().vxMetersPerSecond, 2)
+                +Math.pow(swerve.getCurrentSpeeds().vxMetersPerSecond, 2)
+            )
+        );
+        final Trajectory traj = TrajectoryGenerator.generateTrajectory(waypoints, config);
 
         List<Pose2d> path = new ArrayList<Pose2d>();
         List<State> wp = new ArrayList<State>();
