@@ -11,6 +11,8 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.subsystems.swerve.*;
+import frc.robot.commands.NewtonCommands;
+import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.scoring.Scoring;
 
 /**
@@ -19,9 +21,12 @@ import frc.robot.subsystems.scoring.Scoring;
 public class AutoCommand extends WrapperCommand{
     protected static Swerve swerve;
     protected static Scoring scoring;
-    public static void addSubsystems(Swerve swerve, Scoring scoring){
+    protected static LEDs leds;
+    
+    public static void addSubsystems(Swerve swerve, Scoring scoring, LEDs leds){
         AutoCommand.swerve = swerve;
         AutoCommand.scoring = scoring;
+        AutoCommand.leds = leds;
     }
 
     /**

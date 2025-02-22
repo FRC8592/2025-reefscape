@@ -12,9 +12,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Robot;
 import frc.robot.Suppliers;
+import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.autos.*;
 import frc.robot.commands.proxies.*;
 import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.scoring.Scoring;
 
 /**
@@ -24,11 +26,13 @@ import frc.robot.subsystems.scoring.Scoring;
 public final class AutoManager {
     private static Swerve swerve;
     private static Scoring scoring;
-    public static void addSubsystems(Swerve swerve, Scoring scoring){
+    private static LEDs leds;
+    
+    public static void addSubsystems(Swerve swerve, Scoring scoring, LEDs leds){
         AutoManager.swerve = swerve;
         AutoManager.scoring = scoring;
+        AutoManager.leds = leds;
     }
-
     private static SendableChooser<AutoCommand> autoChooser;
     private static ArrayList<AutoCommand> autoCommands = new ArrayList<>();
 

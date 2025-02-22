@@ -21,18 +21,31 @@ public class Scoring extends SubsystemBase {
     private static ElevatorPositions userSelectedPosition;
 
     public static enum ElevatorPositions {
-        L1(14.4, 5, 175, -0.43, 0.75),
-        L2(11.8, 0, 180, -0.2, 0.75),
-        L3(0, 165, 195, -0.43, 0.75),
-        L4(19.5, 160, 200, -0.43, 0.75),
-        GROUND_ALGAE(0, 0, 0, 0.5, -0.75),
-        STOW(0, 0, 0, 0.5, 0.75),
-        STOW_WITH_CORAL(0, 0, 20, 0.5, 0.75),
-        L2_ALGAE(0, 50, 120, 0.5, -0.75),
-        L3_ALGAE(3, 120, 160, 0.5, -0.75),
-        PROCESSOR(0, 0, 0, -0.3, 0.75),
-        NET(19.4, 150, 120, 1
-        , -0.75);
+        L1_RIPTIDE(14.4, 5, 175, -0.43, 0.75),
+        L2_RIPTIDE(11.8, 0, 180, -0.2, 0.75),
+        L3_RIPTIDE(0, 165, 195, -0.43, 0.75),
+        L4_RIPTIDE(19.5, 160, 200, -0.43, 0.75),
+        GROUND_ALGAE_RIPTIDE(0, 0, 0, 0.5, -0.75),
+        STOW_RIPTIDE(0, 0, 0, 0.5, 0.75),
+        STOW_WITH_CORAL_RIPTIDE(0, 0, 20, 0.5, 0.75),
+        L2_ALGAE_RIPTIDE(0, 50, 120, 0.5, -0.75),
+        L3_ALGAE_RIPTIDE(3, 120, 160, 0.5, -0.75),
+        PROCESSOR_RIPTIDE(0, 0, 0, -0.3, 0.75),
+        NET_RIPTIDE(19.4, 150, 120, 1, -0.75),
+
+        L1_PERRY(14.4, 5, 175, -0.43, 0.75),
+        L2_PERRY(11.8, 0, 180, -0.2, 0.75),
+        L3_PERRY(0, 165, 195, -0.43, 0.75),
+        L4_PERRY(19.5, 160, 200, -0.43, 0.75),
+        GROUND_ALGAE_PERRY(0, 0, 0, 0.5, -0.75),
+        STOW_PERRY(0, 0, 0, 0.5, 0.75),
+        STOW_WITH_CORAL_PERRY(0, 0, 20, 0.5, 0.75),
+        L2_ALGAE_PERRY(0, 50, 120, 0.5, -0.75),
+        L3_ALGAE_PERRY(3, 120, 160, 0.5, -0.75),
+        PROCESSOR_PERRY(0, 0, 0, -0.3, 0.75),
+        NET_PERRY(19.4, 150, 120, 1, -0.75),
+
+        STOP(0,0,0,0,0),;
 
         public double elevatorPos = 0;
         public double wristPos = 0;
@@ -46,7 +59,18 @@ public class Scoring extends SubsystemBase {
             this.clockArmPos =  clockArm;
             this.outtakeSpeed = outtakeSpeed;
             this.intakeSpeed = intakeSpeed;
-          }
+        }
+        public static ElevatorPositions getL1(){return SHARED.IS_RIPTIDE?ElevatorPositions.L1_RIPTIDE:ElevatorPositions.L1_PERRY;}
+        public static ElevatorPositions getL2(){return SHARED.IS_RIPTIDE?ElevatorPositions.L2_RIPTIDE:ElevatorPositions.L2_PERRY;}
+        public static ElevatorPositions getL3(){return SHARED.IS_RIPTIDE?ElevatorPositions.L3_RIPTIDE:ElevatorPositions.L3_PERRY;}
+        public static ElevatorPositions getL4(){return SHARED.IS_RIPTIDE?ElevatorPositions.L4_RIPTIDE:ElevatorPositions.L4_PERRY;}
+        public static ElevatorPositions getGroundAlgae(){return SHARED.IS_RIPTIDE?ElevatorPositions.GROUND_ALGAE_RIPTIDE:ElevatorPositions.GROUND_ALGAE_PERRY;}
+        public static ElevatorPositions getStow(){return SHARED.IS_RIPTIDE?ElevatorPositions.STOW_RIPTIDE:ElevatorPositions.STOW_PERRY;}
+        public static ElevatorPositions getL2Algae(){return SHARED.IS_RIPTIDE?ElevatorPositions.L2_ALGAE_RIPTIDE:ElevatorPositions.L2_ALGAE_PERRY;}
+        public static ElevatorPositions getL3Algae(){return SHARED.IS_RIPTIDE?ElevatorPositions.L3_ALGAE_RIPTIDE:ElevatorPositions.L3_ALGAE_PERRY;}
+        public static ElevatorPositions getProcessor(){return SHARED.IS_RIPTIDE?ElevatorPositions.PROCESSOR_RIPTIDE:ElevatorPositions.PROCESSOR_PERRY;}
+        public static ElevatorPositions getNet(){return SHARED.IS_RIPTIDE?ElevatorPositions.NET_RIPTIDE:ElevatorPositions.NET_PERRY;}
+        public static ElevatorPositions stopped(){return ElevatorPositions.STOP;}
     }
 
 
@@ -56,8 +80,8 @@ public class Scoring extends SubsystemBase {
         this.wrist = wrist;
         this.intake = intake;
 
-        scoringTargetPosition = ElevatorPositions.STOW;
-        userSelectedPosition = ElevatorPositions.STOW;
+        scoringTargetPosition = SHARED.IS_RIPTIDE?ElevatorPositions.STOW_RIPTIDE:ElevatorPositions.STOW_PERRY;
+        userSelectedPosition = SHARED.IS_RIPTIDE?ElevatorPositions.STOW_RIPTIDE:ElevatorPositions.STOW_PERRY;
     }
 
     public Command setUserPosition(ElevatorPositions position){
@@ -128,77 +152,76 @@ public class Scoring extends SubsystemBase {
     // Implment safety features to preven these mechanisms from doing damage to the robot
     //
     public void periodic () {
+        if(scoringTargetPosition != ElevatorPositions.STOP){
+            // Get the commanded position for each mechanism
+            double targetElevatorPosition = scoringTargetPosition.elevatorPos;
+            double targetWristPosition = scoringTargetPosition.wristPos;
+            double targetArmPosition = scoringTargetPosition.clockArmPos;
 
-        // Get the commanded position for each mechanism
-        double targetElevatorPosition = scoringTargetPosition.elevatorPos;
-        double targetWristPosition = scoringTargetPosition.wristPos;
-        double targetArmPosition = scoringTargetPosition.clockArmPos;
+            // Get the current position for each mechanism
+            double currentElevatorPosition = elevator.getInches();
+            double currentWristPosition = wrist.getDegrees();
+            double currentArmPosition = clockArm.getDegrees();
 
-        // Get the current position for each mechanism
-        double currentElevatorPosition = elevator.getInches();
-        double currentWristPosition = wrist.getDegrees();
-        double currentArmPosition = clockArm.getDegrees();
+            //
+            // Allow the arm to move as far back as -20 degrees when the wrist is rotated outward to the scoring position.
+            //
+            // Check to see if the wrist scoring position is the currently commanded position.  If not, push the arm out
+            // to 30 degrees to allow the wrist to rotate (probably inward) without damaging anything.
+            //
+            if (currentWristPosition > 150 && scoringTargetPosition.wristPos > 150) {
+                targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, -20);
 
-        //
-        // Allow the arm to move as far back as -20 degrees when the wrist is rotated outward to the scoring position.
-        //
-        // Check to see if the wrist scoring position is the currently commanded position.  If not, push the arm out
-        // to 30 degrees to allow the wrist to rotate (probably inward) without damaging anything.
-        //
-        if (currentWristPosition > 150 && scoringTargetPosition.wristPos > 150) {
-            targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, -20);
+                //Aims to make the arm move before the elevator moves while going from L2 to L3
+                if(!clockArm.atPosition() && !wrist.atPosition()){
+                    targetElevatorPosition = currentElevatorPosition;
+                }
 
-            //Aims to make the arm move before the elevator moves while going from L2 to L3
-            if(!clockArm.atPosition() && !wrist.atPosition()){
-                targetElevatorPosition = currentElevatorPosition;
+            } else {
+                targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 30);
+
+                if (currentArmPosition < 20 && scoringTargetPosition.clockArmPos != 0) {
+                    targetWristPosition = currentWristPosition;
+                    targetElevatorPosition = currentElevatorPosition;
+                }
             }
 
-        } else {
-            targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 30);
-
-            if (currentArmPosition < 20 && scoringTargetPosition.clockArmPos != 0) {
-                targetWristPosition = currentWristPosition;
-                targetElevatorPosition = currentElevatorPosition;
+            // The arm can move into the stowed (0) position ONLY when the elevator is at the stowed (0) position AND
+            // The wrist is at the stowed (0) position AND neither the elevator nor wrist are commanded to move elsewhere.
+            //
+            // This logic overrides the targetArmPosition set in previous statements to allow the arm to stow.  The order
+            // of these statements is important
+            if(elevator.atPosition() && scoringTargetPosition.elevatorPos == 0 &&
+            wrist.atPosition()    && scoringTargetPosition.wristPos == 0) {
+                targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 0);
             }
+
+            // Freeze the movement of the Elevator and Wrist to prevent damage if the arm is in too far.  This will normally
+            // happen when the mechanism is leaving the stowed state, but may happen in other, unforeseen circumstances.
+
+            // TODO: Find a way to exclude -20 degrees from the elevator safety
+            
+            Logger.recordOutput(SCORING.LOG_PATH+"TargetArmPostion", targetArmPosition);
+            Logger.recordOutput(SCORING.LOG_PATH+"TargetWristPostion", targetWristPosition);
+            Logger.recordOutput(SCORING.LOG_PATH+"TargetElevatorPostion", targetElevatorPosition);
+    
+            // Logging the current positions of scoring mechanisms
+            Logger.recordOutput(SCORING.LOG_PATH+"CurrentArmPostion", currentArmPosition);
+            Logger.recordOutput(SCORING.LOG_PATH+"CurrentWristPostion", currentWristPosition);
+            Logger.recordOutput(SCORING.LOG_PATH+"CurrentElevatorPostion", currentElevatorPosition);
+            
+            // Command the position of the Elevator, Arm, and Wrist mechanisms
+            elevator.setInches(targetElevatorPosition);
+            wrist.setDegrees(targetWristPosition);
+            clockArm.setDegrees(targetArmPosition);
         }
-
-        // The arm can move into the stowed (0) position ONLY when the elevator is at the stowed (0) position AND
-        // The wrist is at the stowed (0) position AND neither the elevator nor wrist are commanded to move elsewhere.
-        //
-        // This logic overrides the targetArmPosition set in previous statements to allow the arm to stow.  The order
-        // of these statements is important
-        if(elevator.atPosition() && scoringTargetPosition.elevatorPos == 0 &&
-           wrist.atPosition()    && scoringTargetPosition.wristPos == 0) {
-            targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 0);
-        }
-
-        // Freeze the movement of the Elevator and Wrist to prevent damage if the arm is in too far.  This will normally
-        // happen when the mechanism is leaving the stowed state, but may happen in other, unforeseen circumstances.
-
-        // TODO: Find a way to exclude -20 degrees from the elevator safety
-        
-
-        // Logging the original target positions of scoring mechanisms
         Logger.recordOutput(SCORING.LOG_PATH+"OriginalElevatorTarget", scoringTargetPosition.elevatorPos);
         Logger.recordOutput(SCORING.LOG_PATH+"OriginalWristTarget", scoringTargetPosition.wristPos);
         Logger.recordOutput(SCORING.LOG_PATH+"OriginalArmTarget", scoringTargetPosition.clockArmPos);
 
         // Logging the potentially modified target positions of scoring mechanisms
-        Logger.recordOutput(SCORING.LOG_PATH+"TargetArmPostion", targetArmPosition);
-        Logger.recordOutput(SCORING.LOG_PATH+"TargetWristPostion", targetWristPosition);
-        Logger.recordOutput(SCORING.LOG_PATH+"TargetElevatorPostion", targetElevatorPosition);
-
-        // Logging the current positions of scoring mechanisms
-        Logger.recordOutput(SCORING.LOG_PATH+"CurrentArmPostion", currentArmPosition);
-        Logger.recordOutput(SCORING.LOG_PATH+"CurrentWristPostion", currentWristPosition);
-        Logger.recordOutput(SCORING.LOG_PATH+"CurrentElevatorPostion", currentElevatorPosition);
 
         Logger.recordOutput(SCORING.LOG_PATH+"UserSelectedPosition", userSelectedPosition);
         Logger.recordOutput(SCORING.LOG_PATH+"TargetPosition", scoringTargetPosition);
-
-        // Command the position of the Elevator, Arm, and Wrist mechanisms
-        elevator.setInches(targetElevatorPosition);
-        wrist.setDegrees(targetWristPosition);
-        clockArm.setDegrees(targetArmPosition);
     }
 }

@@ -10,16 +10,16 @@ public class TwoCoralRightAuto extends AutoCommand{
         super(
             //TODO: add intake and outtake commands.
             new FollowPathCommand(getChoreoTrajectory("RightToCLeft"), Suppliers.robotRunningOnRed)
-            .alongWith(scoring.goToPosition(ElevatorPositions.L4))
+            .alongWith(scoring.goToPosition(ElevatorPositions.getL4()))
             .andThen(scoring.outtakeCommand()),
             new FollowPathCommand(getChoreoTrajectory("CLeftToHPRight"), Suppliers.robotRunningOnRed)
-            .alongWith(scoring.goToPosition(ElevatorPositions.STOW))
+            .alongWith(scoring.goToPosition(ElevatorPositions.getStow()))
             .andThen(scoring.intakeUntilHasCoralCommand()),
             new FollowPathCommand(getChoreoTrajectory("HPRightToBLeft"), Suppliers.robotRunningOnRed)
-            .alongWith(scoring.goToPosition(ElevatorPositions.L4))
+            .alongWith(scoring.goToPosition(ElevatorPositions.getL4()))
             .andThen(scoring.outtakeCommand()),
             new FollowPathCommand(getChoreoTrajectory("BLeftBackUp"), Suppliers.robotRunningOnRed)
-            .andThen(scoring.goToPosition(ElevatorPositions.STOW))
+            .andThen(scoring.goToPosition(ElevatorPositions.getStow()))
         );
 
         setStartStateFromChoreoTrajectory("RightToCLeft");

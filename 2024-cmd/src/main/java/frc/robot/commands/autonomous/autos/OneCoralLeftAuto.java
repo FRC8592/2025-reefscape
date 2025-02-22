@@ -9,10 +9,10 @@ public class OneCoralLeftAuto extends AutoCommand{
     public OneCoralLeftAuto(){
         super(
             new FollowPathCommand(getChoreoTrajectory("LeftToERight"), Suppliers.robotRunningOnRed)
-            .alongWith(scoring.goToPosition(ElevatorPositions.L4))
+            .alongWith(scoring.goToPosition(ElevatorPositions.getL4()))
             .andThen(scoring.outtakeCommand()),
             new FollowPathCommand(getChoreoTrajectory("ERightBackUp"), Suppliers.robotRunningOnRed)
-            .andThen(scoring.goToPosition(ElevatorPositions.STOW))           
+            .andThen(scoring.goToPosition(ElevatorPositions.getStow()))           
         );
 
         setStartStateFromChoreoTrajectory("LeftToERight");

@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import static edu.wpi.first.units.Units.Newton;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.DoubleSupplier;
@@ -8,12 +10,15 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.*;
 import frc.robot.commands.largecommands.FollowPathCommand;
 import frc.robot.Constants.INTAKE;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.scoring.*;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
@@ -21,11 +26,12 @@ import frc.robot.subsystems.swerve.Swerve.DriveModes;
 public final class NewtonCommands {
     private static Swerve swerve;
     private static Scoring scoring;
+    private static LEDs leds;
     
-    public static void addSubsystems(Swerve swerve, Scoring scoring){
+    public static void addSubsystems(Swerve swerve, Scoring scoring, LEDs leds){
         NewtonCommands.swerve = swerve;
         NewtonCommands.scoring = scoring;
-
+        NewtonCommands.leds = leds;
     }
 
     /**
@@ -50,75 +56,10 @@ public final class NewtonCommands {
             swerve.drive(processed, DriveModes.AUTOMATIC);
         });
     }
-    // command for taking in coral
-    // public static Command intakeCommand(){
-    //     return intake.run(()-> {
-    //         intake.runInnerMotor(INTAKE.INNER_MOTOR_INTAKE_VELOCITY);
-    //     });
-    // }
-    // // command for release coral for scoring
-    // public static Command outtakeCommand() {
-    //     return intake.run(() -> {
-    //         intake.runInnerMotor(INTAKE.INNER_MOTOR_OUTAKE_VELOCITY);
-    //     });
-    // }
 
-    public static Command primeL1Command(){
-        return Commands.none();
+    public static Command setLEDsCommand(Color color){
+        return leds.runOnce(() -> leds.setColor(color));
     }
-
-    public static Command primeL2Command(){
-        return Commands.none();
-    }
-
-    public static Command primeL3Command(){
-        return Commands.none();
-    }
-
-    public static Command primeL4Command(){
-        return Commands.none();
-    }
-
-    public static Command groundIntakeCommand(){
-        return Commands.none();
-    }
-
-    public static Command stowCommand(){
-        return Commands.none();
-    }
-
-    public static Command primeL2AlgaeCommand(){
-        return Commands.none();
-    }
-
-    public static Command primeL3AlgaeCommand(){
-        return Commands.none();
-    }
-
-    public static Command goToPrimePositionCommand(){
-        return Commands.none();
-    }
-
-    public static Command primeProcessorCommand(){
-        return Commands.none();
-    }
-
-    public static Command primeNetCommand(){
-        return Commands.none();
-    }
-
-
-    /**
-     * Currently Commands.none(). Update this comment when the command is added.
-     *
-     * @param position
-     * @return Commands.none()
-     */
-
-    /**
-     * Command to stop the intake and stow the pivot to REST position
-     * @return the command
-     */
 }
 
 

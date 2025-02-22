@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.Robot.CurrentRobot;
 
 public final class Constants {
@@ -79,7 +80,7 @@ public final class Constants {
         public static final double ROT_KI = 0;
         public static final double ROT_KD = 0.0001;
 
-        public static final double OFFSET_DEPTH = 0.30; // Drivers requested for the robot to be as close to the april tag as possible
+        public static final double OFFSET_DEPTH = 0.45; // Drivers requested for the robot to be as close to the april tag as possible
         public static final double OFFSET_LEFT_METERS = -0.175;
         public static final double OFFSET_RIGHT_METERS = 0.175;
         public static final double ROT_OFFSET = 0d;
@@ -90,8 +91,8 @@ public final class Constants {
 
         public static final Transform3d CAMERA_OFFSETS = (
             SHARED.IS_RIPTIDE
-            ? /* RIPRIDE: */ new Transform3d(new Translation3d(0.225, -0.24, 0.17), new Rotation3d(0, Math.toRadians(-12), 0))
-            : /* PERRY: */   new Transform3d(new Translation3d(0.225, -0.24, 0.17), new Rotation3d(0, Math.toRadians(-12), 0))
+            ? /* RIPRIDE: */ new Transform3d(new Translation3d(0.21, 0.215, 0.17), new Rotation3d(0, Math.toRadians(-12), 0))
+            : /* PERRY: */   new Transform3d(new Translation3d(0.21, 0.215, 0.17), new Rotation3d(0, Math.toRadians(-12), 0))
         );
 
         public static final Pose3d SOUTH_BLUE_POSE = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(18).get();
@@ -250,15 +251,15 @@ public final class Constants {
         public static final double EXTENSION_GEAR_RATIO = 0.25;
         public static final double EXTENSION_DRUM_DIAMTER_INCHES = 1.0;
 
-        public static final double EXTENSION_INCHES_MAX = 19.5; //this is in inches
-        public static final double EXTENSION_INCHES_MIN = 0.5;
+        public static final double EXTENSION_INCHES_MAX = SHARED.IS_RIPTIDE?19.5:19.5; //this is in inches
+        public static final double EXTENSION_INCHES_MIN = SHARED.IS_RIPTIDE?0.5:0.5;
 
         public static final double EXTENSION_POSITION_TOLERANCE = 1.0;
 
         public static final int ELEVATOR_CURRENT_LIMIT = 40;//amps
 
         public static final double ELEVATOR_MAX_ACCELERATION = 300;
-        public static final double ELEVATOR_MAX_VELOCITY = 75; //formerly 75
+        public static final double ELEVATOR_MAX_VELOCITY = 15; //formerly 75
 
         public static final double ELEVATOR_POSITION_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3.5: /*PERRY: */3.5;
         public static final double ELEVATOR_POSITION_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
@@ -278,15 +279,15 @@ public final class Constants {
         
         public static final double CLOCK_ARM_GEAR_RATIO = 1/180.0;
 
-        public static final double ARM_ANGLE_DEGREES_MIN = -20.0;
-        public static final double ARM_ANGLE_DEGREES_MAX = 180.0;
+        public static final double ARM_ANGLE_DEGREES_MIN = SHARED.IS_RIPTIDE?-20:-20;
+        public static final double ARM_ANGLE_DEGREES_MAX = SHARED.IS_RIPTIDE?180:180;
 
         public static final double CLOCK_ARM_POSITION_TOLERANCE = 2.0;
 
         public static final int ARM_CURRENT_LIMIT = 40;//amps
 
         public static final double ARM_MAX_ACCELERATION = 300;
-        public static final double ARM_MAX_VELOCITY = 100; //previously 100
+        public static final double ARM_MAX_VELOCITY = 20; //previously 100
 
         public static final double ARM_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */3;
         public static final double ARM_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
@@ -301,15 +302,15 @@ public final class Constants {
 
         public static final double WRIST_GEAR_RATIO = 1/75.0;
 
-        public static final double WRIST_ANGLE_DEGREES_MIN = -45d;
-        public static final double WRIST_ANGLE_DEGREES_MAX = 220d;
+        public static final double WRIST_ANGLE_DEGREES_MIN = SHARED.IS_RIPTIDE?-45d:-45d;
+        public static final double WRIST_ANGLE_DEGREES_MAX = SHARED.IS_RIPTIDE?220:220;
 
         public static final double WRIST_POSITION_TOLERANCE = 2.0;
 
         public static final int WRIST_CURRENT_LIMIT = 60;//amps
 
         public static final double WRIST_MAX_ACCELERATION = 300;
-        public static final double WRIST_MAX_VELOCITY = 100; //used to be 100
+        public static final double WRIST_MAX_VELOCITY = 20; //used to be 100
 
         public static final double WRIST_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */3;
         public static final double WRIST_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
@@ -317,6 +318,13 @@ public final class Constants {
         public static final double WRIST_S = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
         public static final double WRIST_V = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
         public static final double WRIST_A = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
+    }
+
+    public final class LEDS{
+        public static final Color TEAL = new Color(0, 64, 192);
+        public static final Color ORANGE = new Color(192, 64, 0);
+        public static final Color WHITE = new Color(255, 255, 255);
+        public static final Color OFF = new Color(0, 0, 0);
     }
 
 }

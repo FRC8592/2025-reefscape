@@ -10,15 +10,15 @@ public class OneCoralOneAlgaeMiddleAuto extends AutoCommand{
         super(
             //TODO: add intake and outtake commands.
             new FollowPathCommand(getChoreoTrajectory("MiddleToDRight"), Suppliers.robotRunningOnRed)
-            .alongWith(scoring.goToPosition(ElevatorPositions.L4))
+            .alongWith(scoring.goToPosition(ElevatorPositions.getL4()))
             .andThen(scoring.outtakeCommand()),
             new FollowPathCommand(getChoreoTrajectory("DRightToMiddle"), Suppliers.robotRunningOnRed)
-            .alongWith(scoring.goToPosition(ElevatorPositions.L2_ALGAE))
+            .alongWith(scoring.goToPosition(ElevatorPositions.getL2Algae()))
             .andThen(scoring.intakeUntilHasCoralCommand()),         
             new FollowPathCommand(getChoreoTrajectory("MiddleToDMiddle"), Suppliers.robotRunningOnRed)
             .andThen(scoring.outtakeCommand()),
             new FollowPathCommand(getChoreoTrajectory("DMiddleBackUp"), Suppliers.robotRunningOnRed)
-            .andThen(scoring.goToPosition(ElevatorPositions.STOW))                       
+            .andThen(scoring.goToPosition(ElevatorPositions.getStow()))                       
         );
 
         setStartStateFromChoreoTrajectory("MiddleToDRight");

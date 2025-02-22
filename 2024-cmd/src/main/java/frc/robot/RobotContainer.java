@@ -14,6 +14,7 @@ import org.littletonrobotics.junction.Logger;
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
+import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.OdometryUpdates;
 import frc.robot.subsystems.ScoreCoral;
 import frc.robot.subsystems.ScoreCoral.LeftOrRight;
@@ -55,6 +56,7 @@ public class RobotContainer {
     private final Elevator elevator;
     private final Wrist wrist;
     private final Intake intake;
+    private final LEDs leds;
    
     private ScoreCoral scoreCoral;
     private OdometryUpdates odometryUpdates;
@@ -81,6 +83,8 @@ public class RobotContainer {
     private final Trigger STOW = driverController.x();
     private final Trigger GO_TO_POSITION = driverController.a();
     private final Trigger ALIGN_TO_REEF = driverController.leftBumper();
+
+    private final Trigger LED_TEST = driverController.b();
 
     //Operator controls
 
@@ -124,6 +128,7 @@ public class RobotContainer {
         wrist = new Wrist();
         elevator = new Elevator();
         intake = new Intake();
+        leds = new LEDs();
         
         scoring = new Scoring(elevator, clockArm, wrist, intake);
 
@@ -138,11 +143,11 @@ public class RobotContainer {
      * Pass subsystems everywhere they're needed
      */
     private void passSubsystems(){
-        AutoManager.addSubsystems(swerve, scoring);
-        AutoCommand.addSubsystems(swerve, scoring);
-        LargeCommand.addSubsystems(swerve, scoring);
-        NewtonCommands.addSubsystems(swerve, scoring);
-        Suppliers.addSubsystems(swerve, scoring);
+        AutoManager.addSubsystems(swerve, scoring, leds);
+        AutoCommand.addSubsystems(swerve, scoring, leds);
+        LargeCommand.addSubsystems(swerve, scoring, leds);
+        NewtonCommands.addSubsystems(swerve, scoring, leds);
+        Suppliers.addSubsystems(swerve, scoring, leds);
     }
 
     /**
@@ -174,7 +179,7 @@ public class RobotContainer {
     private void configureBindings() {
 
         ENABLED.onTrue(
-            scoring.stopAllCommand()
+            scoring.goToPosition(ElevatorPositions.stopped()).andThen(scoring.stopAllCommand())
         );
 
         //------------------------------ SWERVE COMMANDS ------------------------------//
@@ -236,16 +241,16 @@ public class RobotContainer {
         );
 
         //------------------------------ OPERATOR POSITION COMMANDS ------------------------------//
-        PRIME_L1.onTrue(scoring.setUserPosition(ElevatorPositions.L1).ignoringDisable(true));
-        PRIME_L2.onTrue(scoring.setUserPosition(ElevatorPositions.L2).ignoringDisable(true));
-        PRIME_L3.onTrue(scoring.setUserPosition(ElevatorPositions.L3).ignoringDisable(true));
-        PRIME_L4.onTrue(scoring.setUserPosition(ElevatorPositions.L4).ignoringDisable(true));
+        PRIME_L1.onTrue(scoring.setUserPosition(ElevatorPositions.getL1()).ignoringDisable(true));
+        PRIME_L2.onTrue(scoring.setUserPosition(ElevatorPositions.getL2()).ignoringDisable(true));
+        PRIME_L3.onTrue(scoring.setUserPosition(ElevatorPositions.getL3()).ignoringDisable(true));
+        PRIME_L4.onTrue(scoring.setUserPosition(ElevatorPositions.getL4()).ignoringDisable(true));
 
-        PRIME_PROCESSOR.onTrue(scoring.setUserPosition(ElevatorPositions.PROCESSOR).ignoringDisable(true));
-        PRIME_L2_ALGAE.onTrue(scoring.setUserPosition(ElevatorPositions.L2_ALGAE).ignoringDisable(true));
-        PRIME_L3_ALGAE.onTrue(scoring.setUserPosition(ElevatorPositions.L3_ALGAE).ignoringDisable(true));
-        PRIME_NET.onTrue(scoring.setUserPosition(ElevatorPositions.NET).ignoringDisable(true));
-        ALGAE_INTAKE.onTrue(scoring.setUserPosition(ElevatorPositions.GROUND_ALGAE).ignoringDisable(true));
+        PRIME_PROCESSOR.onTrue(scoring.setUserPosition(ElevatorPositions.getProcessor()).ignoringDisable(true));
+        PRIME_L2_ALGAE.onTrue(scoring.setUserPosition(ElevatorPositions.getL2Algae()).ignoringDisable(true));
+        PRIME_L3_ALGAE.onTrue(scoring.setUserPosition(ElevatorPositions.getL3Algae()).ignoringDisable(true));
+        PRIME_NET.onTrue(scoring.setUserPosition(ElevatorPositions.getNet()).ignoringDisable(true));
+        ALGAE_INTAKE.onTrue(scoring.setUserPosition(ElevatorPositions.getGroundAlgae()).ignoringDisable(true));
 
         MODE_SWITCH_ALGAE.onTrue(Commands.runOnce(()->{
             isCoralMode=false; 
@@ -262,7 +267,7 @@ public class RobotContainer {
 
         //------------------------------ DRIVER COMMANDS ------------------------------//
 
-        STOW.whileTrue(scoring.goToPosition(ElevatorPositions.STOW));
+        STOW.whileTrue(scoring.goToPosition(ElevatorPositions.getStow()));
         GO_TO_POSITION.whileTrue(scoring.applyUserPosition()).onFalse(scoring.stopAllCommand());
 
         INTAKE.whileTrue(new DeferredCommand(() -> scoring.intakeCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
@@ -276,7 +281,7 @@ public class RobotContainer {
             ) 
         );
 
-
+        LED_TEST.onTrue(setLEDsCommand(LEDS.TEAL)).onFalse(setLEDsCommand(LEDS.OFF));
 
 
     };
