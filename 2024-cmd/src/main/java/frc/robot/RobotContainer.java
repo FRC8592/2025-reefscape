@@ -14,12 +14,12 @@ import org.littletonrobotics.junction.Logger;
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
-import frc.robot.subsystems.DeepClimb;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.OdometryUpdates;
 import frc.robot.subsystems.ScoreCoral;
 import frc.robot.subsystems.ScoreCoral.LeftOrRight;
 import frc.robot.subsystems.scoring.ClockArm;
+import frc.robot.subsystems.scoring.DeepClimb;
 import frc.robot.subsystems.scoring.Elevator;
 import frc.robot.subsystems.scoring.Intake;
 import frc.robot.subsystems.scoring.Scoring;
@@ -141,7 +141,7 @@ public class RobotContainer {
         leds = new LEDs();
         deepClimb = new DeepClimb();
         
-        scoring = new Scoring(elevator, clockArm, wrist, intake);
+        scoring = new Scoring(elevator, clockArm, wrist, intake, deepClimb);
 
         passSubsystems();
         configureBindings();
@@ -303,7 +303,7 @@ public class RobotContainer {
         DEEP_CLIMB_UP.onTrue(deepClimb.setDeepClimbCommand(-0.5)).onFalse(deepClimb.setDeepClimbCommand(0));
         DEEP_CLIMB_OUTAKE.onTrue(deepClimb.setDeepClimbIntakeCommand(0.5)).onFalse(deepClimb.setDeepClimbIntakeCommand(0));
         DEEP_CLIMB_INTAKE.onTrue(deepClimb.setDeepClimbIntakeCommand(-0.75)).onFalse(deepClimb.setDeepClimbIntakeCommand(0));
-        DEEP_CLIMB_INTIALIZE.onTrue(scoring.goToPosition(ElevatorPositions.getDeepClimb()).andThen(deepClimb.setDeepClimbPositionCommand()));
+        DEEP_CLIMB_INTIALIZE.onTrue(scoring.goToPosition(ElevatorPositions.getDeepClimb()).andThen(scoring.deepClimbStartCommand()));
 
     };
 

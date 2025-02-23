@@ -333,4 +333,8 @@ public final class Constants {
         public static final Color OFF = new Color(0, 0, 0);
     }
 
+    public final class DEEP_CLIMB{
+        public static final double DEEP_CLIMB_START_POSITION = SHARED.IS_RIPTIDE? /*RIPTIDE: */-128: /*PERRY: */0;
+    }
+
 }

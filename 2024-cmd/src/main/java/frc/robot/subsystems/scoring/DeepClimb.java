@@ -1,9 +1,7 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.scoring;
 
 import org.littletonrobotics.junction.Logger;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
@@ -11,7 +9,6 @@ import frc.robot.Constants.*;
 import frc.robot.helpers.motor.NewtonMotor;
 import frc.robot.helpers.motor.NewtonMotor.IdleMode;
 import frc.robot.helpers.motor.spark.SparkFlexMotor;
-import frc.robot.helpers.motor.talonfx.KrakenX60Motor;
 
 public class DeepClimb extends SubsystemBase {
 
@@ -50,10 +47,10 @@ public class DeepClimb extends SubsystemBase {
         return this.run(()->{setDeepClimbIntakePercentOutput(percent);});
     }
 
-    public Command setDeepClimbPositionCommand(){
+    public Command setDeepClimbStartPositionCommand(){
         return setDeepClimbCommand(-0.5).until(
             () -> {
-                return deepClimbMotor.getRotations() <= -128;
+                return deepClimbMotor.getRotations() <= DEEP_CLIMB.DEEP_CLIMB_START_POSITION;
             }
         ).andThen(setDeepClimbCommand(0).withTimeout(0.1));
     }

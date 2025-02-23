@@ -1,10 +1,8 @@
 package frc.robot.subsystems.scoring;
 
 import org.littletonrobotics.junction.Logger;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
 
@@ -15,6 +13,7 @@ public class Scoring extends SubsystemBase {
     private ClockArm clockArm;
     private Wrist wrist;
     private Intake intake;
+    private DeepClimb deepClimb;
 
     // Define scoring mechanism positions for various activities
     private static ElevatorPositions scoringTargetPosition;
@@ -77,11 +76,12 @@ public class Scoring extends SubsystemBase {
     }
 
 
-    public Scoring(Elevator elevator, ClockArm arm, Wrist wrist, Intake intake){
+    public Scoring(Elevator elevator, ClockArm arm, Wrist wrist, Intake intake, DeepClimb deepClimb){
         this.elevator = elevator;
         this.clockArm = arm;
         this.wrist = wrist;
         this.intake = intake;
+        this.deepClimb = deepClimb;
 
         scoringTargetPosition = SHARED.IS_RIPTIDE?ElevatorPositions.STOW_RIPTIDE:ElevatorPositions.STOW_PERRY;
         userSelectedPosition = SHARED.IS_RIPTIDE?ElevatorPositions.STOW_RIPTIDE:ElevatorPositions.STOW_PERRY;
@@ -148,6 +148,10 @@ public class Scoring extends SubsystemBase {
     public Command stopAllCommand(){
         Logger.recordOutput(SCORING.LOG_PATH + "stopAllCmd", true);
         return elevator.stopCommand().alongWith(wrist.stopCommand(), clockArm.stopCommand());
+    }
+
+    public Command deepClimbStartCommand(){
+        return deepClimb.setDeepClimbStartPositionCommand().onlyIf(()->scoringTargetPosition == ElevatorPositions.getDeepClimb());
     }
 
 
