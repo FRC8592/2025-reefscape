@@ -18,7 +18,7 @@ public class DeepClimb extends SubsystemBase {
     NewtonMotor deepClimbIntakeMotor;
 
     public DeepClimb() {
-        deepClimbMotor = new KrakenX60Motor(CAN.DEEP_CLIMB_MOTOR_CAN_ID, true);
+        deepClimbMotor = new KrakenX60Motor(CAN.DEEP_CLIMB_MOTOR_CAN_ID, true); //TODO: add back spark flex motor
         deepClimbMotor.setIdleMode(IdleMode.kBrake);
 
         deepClimbIntakeMotor = new KrakenX60Motor(CAN.DEEP_CLIMB_INTAKE_MOTOR_CAN_ID, true);
