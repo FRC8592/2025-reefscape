@@ -194,7 +194,18 @@ public class Scoring extends SubsystemBase {
                 }
 
             } else {
-                targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 30);
+                if (currentWristPosition > 150 && currentElevatorPosition < 5) {
+                    if (currentArmPosition < 20) {
+                        targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 0);
+                        targetElevatorPosition = currentElevatorPosition;
+                    } else {
+                        targetElevatorPosition = 10;
+                        targetArmPosition = currentArmPosition;
+                    }
+                } else {
+                    targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 30);
+                }
+
 
                 if (currentArmPosition < 20 && scoringTargetPosition.clockArmPos != 0) {
                     targetWristPosition = currentWristPosition;
