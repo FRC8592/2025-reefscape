@@ -50,7 +50,7 @@ public final class AutoManager {
 
         // autoCommands.add(new ExampleAuto());
         // TODO: Add autos here
-        
+
         //autoCommands.add(new AllAlgaeAuto());
         autoCommands.add(new FourCoralLeftAuto());
         autoCommands.add(new FourCoralRightAuto());
@@ -60,7 +60,8 @@ public final class AutoManager {
         autoCommands.add(new ThreeCoralLeftAuto());
         autoCommands.add(new ThreeCoralRightAuto());
         autoCommands.add(new TwoCoralLeftAuto());
-        autoCommands.add(new TwoCoralRightAuto());
+        //autoCommands.add(new TwoCoralRightAuto());
+        autoCommands.add(new TestAuto());
 
 
         autoChooser = new SendableChooser<>();

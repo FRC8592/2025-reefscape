@@ -8,8 +8,11 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.Optional;
+import java.util.function.Supplier;
+
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
 import frc.robot.subsystems.swerve.Swerve;
@@ -31,7 +34,7 @@ public class OdometryUpdates extends SubsystemBase {
 
 
     public void periodic() {
-
+        if (RobotBase.isReal()){
         Pose2d robotPosition = new Pose2d();
         double ambiguity = -1d;
         double timeStamp = 0.0;
@@ -61,7 +64,7 @@ public class OdometryUpdates extends SubsystemBase {
         Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/OdometryPose", swerve.getCurrentPosition());
         Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/AmbiguityRatio", ambiguity);
         Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/InitialPose", initialPose);
-
+        }
     }
 
     
