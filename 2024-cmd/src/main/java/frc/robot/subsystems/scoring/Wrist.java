@@ -78,7 +78,7 @@ public class Wrist extends SubsystemBase{
 
     @Override
     public void periodic(){
-        wristMotor.setPosition(degreesToMotorRotations(targetWristDegrees));
+        // wristMotor.setPosition(degreesToMotorRotations(targetWristDegrees));
         SmartDashboard.putNumber("Wrist|CurrentDegrees", getDegrees());
         SmartDashboard.putNumber("Wrist|TargetDegrees", targetWristDegrees);
         SmartDashboard.putBoolean("Wrist|AtPosition", atPosition());

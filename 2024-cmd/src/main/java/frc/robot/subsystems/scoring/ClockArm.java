@@ -79,7 +79,7 @@ public class ClockArm extends SubsystemBase{
 
     @Override
     public void periodic(){
-        clockArmMotor.setPosition(degreesToMotorRotations(targetArmDegrees));
+        // clockArmMotor.setPosition(degreesToMotorRotations(targetArmDegrees));
         SmartDashboard.putNumber("ClockArm|CurrentDegrees", getDegrees());
         SmartDashboard.putNumber("ClockArm|TargetDegrees", targetArmDegrees);
         SmartDashboard.putBoolean("ClockArm|AtPosition", atPosition());

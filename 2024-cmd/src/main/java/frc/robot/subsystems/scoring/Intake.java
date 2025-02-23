@@ -23,7 +23,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void setIntakePercentOutput(double percent){
-        intakeMotor.setPercentOutput(percent);
+        // intakeMotor.setPercentOutput(percent);
     }
 
     public void stop() {

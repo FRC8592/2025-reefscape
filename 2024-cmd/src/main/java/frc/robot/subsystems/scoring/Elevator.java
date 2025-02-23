@@ -96,7 +96,7 @@ public class Elevator extends SubsystemBase{
 
     @Override
     public void periodic(){
-        leftExtensionMotor.setPosition(inchesToRotations(targetExtension));
+        // leftExtensionMotor.setPosition(inchesToRotations(targetExtension));
         SmartDashboard.putNumber("Extension|CurrentInches", getInches());
         SmartDashboard.putNumber("Extension|TargetInches ", targetExtension);
         SmartDashboard.putNumber("Extension|TargetExtentionInRot", inchesToRotations(targetExtension));
