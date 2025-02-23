@@ -67,7 +67,7 @@ public class RobotContainer {
 
     private boolean isCoralMode = true;
 
-    private final Trigger ENABLED = new Trigger(() -> DriverStation.isEnabled());
+    private final Trigger ENABLED = new Trigger(() -> DriverStation.isEnabled()).and(() -> DriverStation.isTeleop());
 
     private final Trigger INTAKE = driverController.leftTrigger();
     private final Trigger SCORE = driverController.rightTrigger();
