@@ -92,6 +92,7 @@ public class RobotContainer {
     private final Trigger DEEP_CLIMB_UP = driverController.pov(0);
     private final Trigger DEEP_CLIMB_INTAKE = driverController.pov(90);
     private final Trigger DEEP_CLIMB_OUTTAKE = driverController.pov(270);
+    private final Trigger DEEP_CLIMB_INTIALIZE = driverController.start();
 
     //Operator controls
 
@@ -295,6 +296,7 @@ public class RobotContainer {
         DEEP_CLIMB_UP.onTrue(deepClimb.setDeepClimbCommand(-0.5)).onFalse(deepClimb.setDeepClimbCommand(0));
         DEEP_CLIMB_INTAKE.onTrue(deepClimb.setDeepClimbIntakeCommand(0.5)).onFalse(deepClimb.setDeepClimbIntakeCommand(0));
         DEEP_CLIMB_OUTTAKE.onTrue(deepClimb.setDeepClimbIntakeCommand(-0.5)).onFalse(deepClimb.setDeepClimbIntakeCommand(0));
+        DEEP_CLIMB_INTIALIZE.onTrue(scoring.setUserPosition(ElevatorPositions.DEEP_CLIMB).andThen(scoring.applyUserPosition()));
     };
 
 

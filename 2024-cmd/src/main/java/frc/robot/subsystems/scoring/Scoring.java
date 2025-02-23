@@ -44,6 +44,7 @@ public class Scoring extends SubsystemBase {
         L3_ALGAE_PERRY(3, 120, 160, 0.5, -0.75),
         PROCESSOR_PERRY(0, 0, 0, -0.3, 0.75),
         NET_PERRY(19.4, 150, 120, 1, -0.75),
+        DEEP_CLIMB(0,100,0,0,0),
 
         STOP(0,0,0,-0.75,0.5),;
 
@@ -223,5 +224,9 @@ public class Scoring extends SubsystemBase {
 
         Logger.recordOutput(SCORING.LOG_PATH+"UserSelectedPosition", userSelectedPosition);
         Logger.recordOutput(SCORING.LOG_PATH+"TargetPosition", scoringTargetPosition);
+
+
+
+
     }
 }
