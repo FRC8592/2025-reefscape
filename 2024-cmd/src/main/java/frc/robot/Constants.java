@@ -295,7 +295,7 @@ public final class Constants {
         public static final double ARM_MAX_ACCELERATION = 300;
         public static final double ARM_MAX_VELOCITY = 75; //previously 100
 
-        public static final double ARM_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */2;
+        public static final double ARM_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */3;
         public static final double ARM_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
         public static final double ARM_D = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
         public static final double ARM_S = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
