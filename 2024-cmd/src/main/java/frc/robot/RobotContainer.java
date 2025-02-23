@@ -84,17 +84,17 @@ public class RobotContainer {
 
     private final Trigger DEEP_CLIMB_DOWN = driverController.pov(180);
     private final Trigger DEEP_CLIMB_UP = driverController.pov(0);
-    private final Trigger DEEP_CLIMB_INTAKE = driverController.pov(90);
-    private final Trigger DEEP_CLIMB_OUTTAKE = driverController.pov(270);
+    private final Trigger DEEP_CLIMB_OUTAKE = driverController.b();//driverController.pov(90);
+    private final Trigger DEEP_CLIMB_INTAKE = driverController.a();//driverController.pov(270);
     private final Trigger DEEP_CLIMB_INTIALIZE = driverController.start();
 
     private final Trigger STOW = driverController.x();
-    private final Trigger GO_TO_POSITION = driverController.a();
+    private final Trigger GO_TO_POSITION = driverController.a().and(() -> false);
     private final Trigger ALIGN_TO_REEF = driverController.leftBumper();
 
     private final Trigger MOVE_ARM_DEEP_CLIMB = driverController.start();
 
-    private final Trigger LED_TEST = driverController.b();
+    // private final Trigger LED_TEST = driverController.b();
 
     //Operator controls
 
@@ -297,13 +297,13 @@ public class RobotContainer {
             ) 
         );
 
-        LED_TEST.onTrue(setLEDsCommand(LEDS.TEAL)).onFalse(setLEDsCommand(LEDS.OFF));
+        // LED_TEST.onTrue(setLEDsCommand(LEDS.TEAL)).onFalse(setLEDsCommand(LEDS.OFF));
 
         DEEP_CLIMB_DOWN.onTrue(deepClimb.setDeepClimbCommand(0.5)).onFalse(deepClimb.setDeepClimbCommand(0));
         DEEP_CLIMB_UP.onTrue(deepClimb.setDeepClimbCommand(-0.5)).onFalse(deepClimb.setDeepClimbCommand(0));
-        DEEP_CLIMB_INTAKE.onTrue(deepClimb.setDeepClimbIntakeCommand(0.5)).onFalse(deepClimb.setDeepClimbIntakeCommand(0));
-        DEEP_CLIMB_OUTTAKE.onTrue(deepClimb.setDeepClimbIntakeCommand(-0.5)).onFalse(deepClimb.setDeepClimbIntakeCommand(0));
-        DEEP_CLIMB_INTIALIZE.onTrue(scoring.goToPosition(ElevatorPositions.getDeepClimb()));
+        DEEP_CLIMB_OUTAKE.onTrue(deepClimb.setDeepClimbIntakeCommand(0.5)).onFalse(deepClimb.setDeepClimbIntakeCommand(0));
+        DEEP_CLIMB_INTAKE.onTrue(deepClimb.setDeepClimbIntakeCommand(-0.75)).onFalse(deepClimb.setDeepClimbIntakeCommand(0));
+        DEEP_CLIMB_INTIALIZE.onTrue(scoring.goToPosition(ElevatorPositions.getDeepClimb()).andThen(deepClimb.setDeepClimbPositionCommand()));
 
     };
 

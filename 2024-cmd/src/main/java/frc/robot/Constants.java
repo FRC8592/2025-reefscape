@@ -13,7 +13,7 @@ import frc.robot.Robot.CurrentRobot;
 public final class Constants {
     public final class SHARED {
         public static final String LOG_FOLDER = "CustomLogs";
-        public static final CurrentRobot CURRENT_ROBOT = CurrentRobot.PERRY;
+        public static final CurrentRobot CURRENT_ROBOT = CurrentRobot.RIPTIDE;
         public static final boolean IS_RIPTIDE = CURRENT_ROBOT == CurrentRobot.RIPTIDE;
     }
     public final class CONVERSIONS {
@@ -186,8 +186,8 @@ public final class Constants {
         //TODO: Tone these down appropriately as per BB rules
         public static final double TRANSLATE_POWER_FAST = 1.0; 
         public static final double ROTATE_POWER_FAST = 0.75; 
-        public static final double TRANSLATE_POWER_SLOW = 0.5;
-        public static final double ROTATE_POWER_SLOW = 0.3;
+        public static final double TRANSLATE_POWER_SLOW = 0.15;
+        public static final double ROTATE_POWER_SLOW = 0.15;
 
         public static final int TRANSLATION_SMOOTHING_AMOUNT = 3;
         public static final int ROTATION_SMOOTHING_AMOUNT = 1;

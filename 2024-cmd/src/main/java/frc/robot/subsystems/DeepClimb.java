@@ -10,6 +10,7 @@ import frc.robot.Constants.*;
 // import frc.robot.helpers.SparkFlexControl;
 import frc.robot.helpers.motor.NewtonMotor;
 import frc.robot.helpers.motor.NewtonMotor.IdleMode;
+import frc.robot.helpers.motor.spark.SparkFlexMotor;
 import frc.robot.helpers.motor.talonfx.KrakenX60Motor;
 
 public class DeepClimb extends SubsystemBase {
@@ -18,10 +19,10 @@ public class DeepClimb extends SubsystemBase {
     NewtonMotor deepClimbIntakeMotor;
 
     public DeepClimb() {
-        deepClimbMotor = new KrakenX60Motor(CAN.DEEP_CLIMB_MOTOR_CAN_ID, true); //TODO: add back spark flex motor
+        deepClimbMotor = new SparkFlexMotor(CAN.DEEP_CLIMB_MOTOR_CAN_ID, true); //TODO: add back spark flex motor
         deepClimbMotor.setIdleMode(IdleMode.kBrake);
 
-        deepClimbIntakeMotor = new KrakenX60Motor(CAN.DEEP_CLIMB_INTAKE_MOTOR_CAN_ID, true);
+        deepClimbIntakeMotor = new SparkFlexMotor(CAN.DEEP_CLIMB_INTAKE_MOTOR_CAN_ID, true);
         deepClimbIntakeMotor.setIdleMode(IdleMode.kBrake);
     }
 
@@ -49,6 +50,14 @@ public class DeepClimb extends SubsystemBase {
         return this.run(()->{setDeepClimbIntakePercentOutput(percent);});
     }
 
+    public Command setDeepClimbPositionCommand(){
+        return setDeepClimbCommand(-0.5).until(
+            () -> {
+                return deepClimbMotor.getRotations() <= -128;
+            }
+        ).andThen(setDeepClimbCommand(0).withTimeout(0.1));
+    }
+
     public Command stopDeepClimbCommand(){
         return this.runOnce(()->{
             setDeepClimbPercentOutput(0);
@@ -62,6 +71,6 @@ public class DeepClimb extends SubsystemBase {
     }
 
     public void periodic() {
-        
+        Logger.recordOutput(SHARED.LOG_FOLDER+"/DeepClimb/MotorRotations", deepClimbMotor.getRotations());
     }
 }
