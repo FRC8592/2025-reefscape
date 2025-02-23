@@ -14,6 +14,7 @@ import org.littletonrobotics.junction.Logger;
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
+import frc.robot.subsystems.DeepClimb;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.OdometryUpdates;
 import frc.robot.subsystems.ScoreCoral;
@@ -57,6 +58,7 @@ public class RobotContainer {
     private final Wrist wrist;
     private final Intake intake;
     private final LEDs leds;
+    private final DeepClimb deepClimb;
    
     private ScoreCoral scoreCoral;
     private OdometryUpdates odometryUpdates;
@@ -75,16 +77,21 @@ public class RobotContainer {
     private final Trigger SLOW_MODE = driverController.rightBumper();
     private final Trigger RESET_HEADING = driverController.back();
     private final Trigger ROBOT_RELATIVE = driverController.y();
-    private final Trigger SNAP_NORTH = driverController.pov(0);
-    private final Trigger SNAP_SOUTH = driverController.pov(180);
-    private final Trigger SNAP_EAST = driverController.pov(90);
-    private final Trigger SNAP_WEST = driverController.pov(270);
+    private final Trigger SNAP_NORTH = driverController.pov(0).and(() -> false);
+    private final Trigger SNAP_SOUTH = driverController.pov(180).and(() -> false);
+    private final Trigger SNAP_EAST = driverController.pov(90).and(() -> false);
+    private final Trigger SNAP_WEST = driverController.pov(270).and(() -> false);
 
     private final Trigger STOW = driverController.x();
     private final Trigger GO_TO_POSITION = driverController.a();
     private final Trigger ALIGN_TO_REEF = driverController.leftBumper();
 
     private final Trigger LED_TEST = driverController.b();
+
+    private final Trigger DEEP_CLIMB_DOWN = driverController.pov(180);
+    private final Trigger DEEP_CLIMB_UP = driverController.pov(0);
+    private final Trigger DEEP_CLIMB_INTAKE = driverController.pov(90);
+    private final Trigger DEEP_CLIMB_OUTTAKE = driverController.pov(270);
 
     //Operator controls
 
@@ -129,6 +136,7 @@ public class RobotContainer {
         elevator = new Elevator();
         intake = new Intake();
         leds = new LEDs();
+        deepClimb = new DeepClimb();
         
         scoring = new Scoring(elevator, clockArm, wrist, intake);
 
@@ -155,13 +163,13 @@ public class RobotContainer {
      */
     private void configureDefaults(){
         // Set the swerve's default command to drive with joysticks
-        setDefaultCommand(swerve, swerve.run(() -> {
-            swerve.drive(swerve.processJoystickInputs(
-                -driverController.getLeftX(),
-                -driverController.getLeftY(),
-                -driverController.getRightX()
-            ), DriveModes.AUTOMATIC);
-        }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        // setDefaultCommand(swerve, swerve.run(() -> {
+        //     swerve.drive(swerve.processJoystickInputs(
+        //         -driverController.getLeftX(),
+        //         -driverController.getLeftY(),
+        //         -driverController.getRightX()
+        //     ), DriveModes.AUTOMATIC);
+        // }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         
         // setDefaultCommand(elevator, elevator.stopCommand());
@@ -178,112 +186,115 @@ public class RobotContainer {
      */
     private void configureBindings() {
 
-        ENABLED.onTrue(
-            scoring.goToPosition(ElevatorPositions.stopped()).andThen(scoring.stopAllCommand())
-        );
+        // ENABLED.onTrue(
+        //     scoring.goToPosition(ElevatorPositions.stopped()).andThen(scoring.stopAllCommand())
+        // );
 
         //------------------------------ SWERVE COMMANDS ------------------------------//
-        SLOW_MODE.onTrue(
-            // The Commands.runOnce (instead of swerve.runOnce) is a special case here
-            // to allow this to run while other swerve commands (the default driving
-            // command, for example) run. This is usually a horrible idea and shouldn't
-            // be used outside of special cases like this.
+        // SLOW_MODE.onTrue(
+        //     // The Commands.runOnce (instead of swerve.runOnce) is a special case here
+        //     // to allow this to run while other swerve commands (the default driving
+        //     // command, for example) run. This is usually a horrible idea and shouldn't
+        //     // be used outside of special cases like this.
 
-            // The .ignoringDisable makes sure slow mode won't get stuck on or off if
-            // the robot is disabled.
-            Commands.runOnce(() -> swerve.setSlowMode(true)).ignoringDisable(true)
-        ).onFalse(
-            Commands.runOnce(() -> swerve.setSlowMode(false)).ignoringDisable(true)
-        );
+        //     // The .ignoringDisable makes sure slow mode won't get stuck on or off if
+        //     // the robot is disabled.
+        //     Commands.runOnce(() -> swerve.setSlowMode(true)).ignoringDisable(true)
+        // ).onFalse(
+        //     Commands.runOnce(() -> swerve.setSlowMode(false)).ignoringDisable(true)
+        // );
 
-        RESET_HEADING.onTrue(
-            // Similar comment on Commands.runOnce as slow mode above
-            Commands.runOnce(() -> swerve.resetHeading())
-        );
+        // RESET_HEADING.onTrue(
+        //     // Similar comment on Commands.runOnce as slow mode above
+        //     Commands.runOnce(() -> swerve.resetHeading())
+        // );
 
-        ROBOT_RELATIVE.onTrue(
-            // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
-            Commands.runOnce(() -> swerve.setRobotRelative(true)).ignoringDisable(true)
-        ).onFalse(
-            Commands.runOnce(() -> swerve.setRobotRelative(false)).ignoringDisable(true)
-        );
+        // ROBOT_RELATIVE.onTrue(
+        //     // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
+        //     Commands.runOnce(() -> swerve.setRobotRelative(true)).ignoringDisable(true)
+        // ).onFalse(
+        //     Commands.runOnce(() -> swerve.setRobotRelative(false)).ignoringDisable(true)
+        // );
 
-        SNAP_NORTH.whileTrue(
-            swerveSnapToCommand(
-                Rotation2d.fromDegrees(0),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getLeftY()
-            )
-        );
+        // SNAP_NORTH.whileTrue(
+        //     swerveSnapToCommand(
+        //         Rotation2d.fromDegrees(0),
+        //         () -> -driverController.getLeftX(),
+        //         () -> -driverController.getLeftY()
+        //     )
+        // );
 
-        SNAP_SOUTH.whileTrue(
-            swerveSnapToCommand(
-                Rotation2d.fromDegrees(180),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getLeftY()
-            )
-        );
+        // SNAP_SOUTH.whileTrue(
+        //     swerveSnapToCommand(
+        //         Rotation2d.fromDegrees(180),
+        //         () -> -driverController.getLeftX(),
+        //         () -> -driverController.getLeftY()
+        //     )
+        // );
 
-        SNAP_EAST.whileTrue(
-            swerveSnapToCommand(
-                Rotation2d.fromDegrees(270),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getLeftY()
-            )
-        );
+        // SNAP_EAST.whileTrue(
+        //     swerveSnapToCommand(
+        //         Rotation2d.fromDegrees(270),
+        //         () -> -driverController.getLeftX(),
+        //         () -> -driverController.getLeftY()
+        //     )
+        // );
 
-        SNAP_WEST.whileTrue(
-            swerveSnapToCommand(
-                Rotation2d.fromDegrees(90),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getLeftY()
-            ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
-        );
+        // SNAP_WEST.whileTrue(
+        //     swerveSnapToCommand(
+        //         Rotation2d.fromDegrees(90),
+        //         () -> -driverController.getLeftX(),
+        //         () -> -driverController.getLeftY()
+        //     ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
+        // );
 
         //------------------------------ OPERATOR POSITION COMMANDS ------------------------------//
-        PRIME_L1.onTrue(scoring.setUserPosition(ElevatorPositions.getL1()).ignoringDisable(true));
-        PRIME_L2.onTrue(scoring.setUserPosition(ElevatorPositions.getL2()).ignoringDisable(true));
-        PRIME_L3.onTrue(scoring.setUserPosition(ElevatorPositions.getL3()).ignoringDisable(true));
-        PRIME_L4.onTrue(scoring.setUserPosition(ElevatorPositions.getL4()).ignoringDisable(true));
+        // PRIME_L1.onTrue(scoring.setUserPosition(ElevatorPositions.getL1()).ignoringDisable(true));
+        // PRIME_L2.onTrue(scoring.setUserPosition(ElevatorPositions.getL2()).ignoringDisable(true));
+        // PRIME_L3.onTrue(scoring.setUserPosition(ElevatorPositions.getL3()).ignoringDisable(true));
+        // PRIME_L4.onTrue(scoring.setUserPosition(ElevatorPositions.getL4()).ignoringDisable(true));
 
-        PRIME_PROCESSOR.onTrue(scoring.setUserPosition(ElevatorPositions.getProcessor()).ignoringDisable(true));
-        PRIME_L2_ALGAE.onTrue(scoring.setUserPosition(ElevatorPositions.getL2Algae()).ignoringDisable(true));
-        PRIME_L3_ALGAE.onTrue(scoring.setUserPosition(ElevatorPositions.getL3Algae()).ignoringDisable(true));
-        PRIME_NET.onTrue(scoring.setUserPosition(ElevatorPositions.getNet()).ignoringDisable(true));
-        ALGAE_INTAKE.onTrue(scoring.setUserPosition(ElevatorPositions.getGroundAlgae()).ignoringDisable(true));
+        // PRIME_PROCESSOR.onTrue(scoring.setUserPosition(ElevatorPositions.getProcessor()).ignoringDisable(true));
+        // PRIME_L2_ALGAE.onTrue(scoring.setUserPosition(ElevatorPositions.getL2Algae()).ignoringDisable(true));
+        // PRIME_L3_ALGAE.onTrue(scoring.setUserPosition(ElevatorPositions.getL3Algae()).ignoringDisable(true));
+        // PRIME_NET.onTrue(scoring.setUserPosition(ElevatorPositions.getNet()).ignoringDisable(true));
+        // ALGAE_INTAKE.onTrue(scoring.setUserPosition(ElevatorPositions.getGroundAlgae()).ignoringDisable(true));
 
-        MODE_SWITCH_ALGAE.onTrue(Commands.runOnce(()->{
-            isCoralMode=false; 
-            Logger.recordOutput(Constants.SHARED.LOG_FOLDER + "/isCoralMode", isCoralMode);
-        }, new Subsystem[0]));
+        // MODE_SWITCH_ALGAE.onTrue(Commands.runOnce(()->{
+        //     isCoralMode=false; 
+        //     Logger.recordOutput(Constants.SHARED.LOG_FOLDER + "/isCoralMode", isCoralMode);
+        // }, new Subsystem[0]));
 
-        MODE_SWITCH_CORAL.onTrue(Commands.runOnce(()->{
-            isCoralMode=true; 
-            Logger.recordOutput(Constants.SHARED.LOG_FOLDER + "/isCoralMode", isCoralMode);
-        }, new Subsystem[0]));
+        // MODE_SWITCH_CORAL.onTrue(Commands.runOnce(()->{
+        //     isCoralMode=true; 
+        //     Logger.recordOutput(Constants.SHARED.LOG_FOLDER + "/isCoralMode", isCoralMode);
+        // }, new Subsystem[0]));
 
-        ALIGN_LEFT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left)));
-        ALIGN_RIGHT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right)));
+        // ALIGN_LEFT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left)));
+        // ALIGN_RIGHT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right)));
 
-        //------------------------------ DRIVER COMMANDS ------------------------------//
+        // //------------------------------ DRIVER COMMANDS ------------------------------//
 
-        STOW.whileTrue(scoring.goToPosition(ElevatorPositions.getStow()));
-        GO_TO_POSITION.whileTrue(scoring.applyUserPosition()).onFalse(scoring.stopAllCommand());
+        // STOW.whileTrue(scoring.goToPosition(ElevatorPositions.getStow()));
+        // GO_TO_POSITION.whileTrue(scoring.applyUserPosition()).onFalse(scoring.stopAllCommand());
 
-        INTAKE.whileTrue(new DeferredCommand(() -> scoring.intakeCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
+        // INTAKE.whileTrue(new DeferredCommand(() -> scoring.intakeCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
         
-        SCORE.whileTrue(new DeferredCommand(() -> scoring.outtakeCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
+        // SCORE.whileTrue(new DeferredCommand(() -> scoring.outtakeCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
 
-        ALIGN_TO_REEF.whileTrue(
-            new DeferredCommand(
-                () -> scoreCoral.driveToClosestReefTag(),
-                Set.of(swerve)
-            ) 
-        );
+        // ALIGN_TO_REEF.whileTrue(
+        //     new DeferredCommand(
+        //         () -> scoreCoral.driveToClosestReefTag(),
+        //         Set.of(swerve)
+        //     ) 
+        // );
 
-        LED_TEST.onTrue(setLEDsCommand(LEDS.TEAL)).onFalse(setLEDsCommand(LEDS.OFF));
+        // LED_TEST.onTrue(setLEDsCommand(LEDS.TEAL)).onFalse(setLEDsCommand(LEDS.OFF));
 
-
+        DEEP_CLIMB_DOWN.onTrue(deepClimb.setDeepClimbCommand(0.5)).onFalse(deepClimb.setDeepClimbCommand(0));
+        DEEP_CLIMB_UP.onTrue(deepClimb.setDeepClimbCommand(-0.5)).onFalse(deepClimb.setDeepClimbCommand(0));
+        DEEP_CLIMB_INTAKE.onTrue(deepClimb.setDeepClimbIntakeCommand(0.5)).onFalse(deepClimb.setDeepClimbIntakeCommand(0));
+        DEEP_CLIMB_OUTTAKE.onTrue(deepClimb.setDeepClimbIntakeCommand(-0.5)).onFalse(deepClimb.setDeepClimbIntakeCommand(0));
     };
 
 
