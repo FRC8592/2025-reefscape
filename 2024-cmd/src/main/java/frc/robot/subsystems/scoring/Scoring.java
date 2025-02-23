@@ -32,6 +32,7 @@ public class Scoring extends SubsystemBase {
         L3_ALGAE_RIPTIDE(3, 120, 160, 0.5, -0.75),
         PROCESSOR_RIPTIDE(0, 0, 0, -0.3, 0.75),
         NET_RIPTIDE(19.4, 150, 120, 1, -0.75),
+        DEEP_CLIMB_RIPTIDE(0, 90, 0, 0, 0),
 
         L1_PERRY(14.4, 5, 175, -0.43, 0.75),
         L2_PERRY(6.8, -10, 185, -0.2, 0.75),
@@ -44,6 +45,7 @@ public class Scoring extends SubsystemBase {
         L3_ALGAE_PERRY(3, 120, 160, 0.5, -0.75),
         PROCESSOR_PERRY(0, 0, 0, -0.3, 0.75),
         NET_PERRY(19.4, 150, 120, 1, -0.75),
+        DEEP_CLIMB_PERRY(0, 90, 0, 0, 0),
 
         STOP(0,0,0,-0.75,0.5),;
 
@@ -70,6 +72,7 @@ public class Scoring extends SubsystemBase {
         public static ElevatorPositions getL3Algae(){return SHARED.IS_RIPTIDE?ElevatorPositions.L3_ALGAE_RIPTIDE:ElevatorPositions.L3_ALGAE_PERRY;}
         public static ElevatorPositions getProcessor(){return SHARED.IS_RIPTIDE?ElevatorPositions.PROCESSOR_RIPTIDE:ElevatorPositions.PROCESSOR_PERRY;}
         public static ElevatorPositions getNet(){return SHARED.IS_RIPTIDE?ElevatorPositions.NET_RIPTIDE:ElevatorPositions.NET_PERRY;}
+        public static ElevatorPositions getDeepClimb(){return SHARED.IS_RIPTIDE?ElevatorPositions.DEEP_CLIMB_RIPTIDE:ElevatorPositions.DEEP_CLIMB_PERRY;}
         public static ElevatorPositions stopped(){return ElevatorPositions.STOP;}
     }
 
@@ -101,6 +104,7 @@ public class Scoring extends SubsystemBase {
             scoringTargetPosition = position;
         });
     }
+
 
 
     /**

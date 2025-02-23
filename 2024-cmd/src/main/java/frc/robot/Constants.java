@@ -55,7 +55,7 @@ public final class Constants {
         public static final int INTAKE_MOTOR_CAN_ID = 45;
         public static final int PDH_CAN_ID = 1;
         public static final int DEEP_CLIMB_MOTOR_CAN_ID = 51;
-        public static final int DEEP_CLIMB_INTAKE_MOTOR_CAN_ID = 50;
+        public static final int DEEP_CLIMB_INTAKE_MOTOR_CAN_ID = 29;
 
         public static final int BACK_EXTENSION_MOTOR_CAN_ID = 44;
         public static final int FORWARD_EXTENSION_MOTOR_CAN_ID = 43;

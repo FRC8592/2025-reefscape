@@ -14,6 +14,7 @@ import org.littletonrobotics.junction.Logger;
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
+import frc.robot.subsystems.DeepClimb;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.OdometryUpdates;
 import frc.robot.subsystems.ScoreCoral;
@@ -57,6 +58,7 @@ public class RobotContainer {
     private final Wrist wrist;
     private final Intake intake;
     private final LEDs leds;
+    private final DeepClimb deepClimb;
    
     private ScoreCoral scoreCoral;
     private OdometryUpdates odometryUpdates;
@@ -75,14 +77,22 @@ public class RobotContainer {
     private final Trigger SLOW_MODE = driverController.rightBumper();
     private final Trigger RESET_HEADING = driverController.back();
     private final Trigger ROBOT_RELATIVE = driverController.y();
-    private final Trigger SNAP_NORTH = driverController.pov(0);
-    private final Trigger SNAP_SOUTH = driverController.pov(180);
-    private final Trigger SNAP_EAST = driverController.pov(90);
-    private final Trigger SNAP_WEST = driverController.pov(270);
+    // private final Trigger SNAP_NORTH = driverController.pov(0);
+    // private final Trigger SNAP_SOUTH = driverController.pov(180);
+    // private final Trigger SNAP_EAST = driverController.pov(90);
+    // private final Trigger SNAP_WEST = driverController.pov(270);
+
+    private final Trigger DEEP_CLIMB_DOWN = driverController.pov(180);
+    private final Trigger DEEP_CLIMB_UP = driverController.pov(0);
+    private final Trigger DEEP_CLIMB_INTAKE = driverController.pov(90);
+    private final Trigger DEEP_CLIMB_OUTTAKE = driverController.pov(270);
+    private final Trigger DEEP_CLIMB_INTIALIZE = driverController.start();
 
     private final Trigger STOW = driverController.x();
     private final Trigger GO_TO_POSITION = driverController.a();
     private final Trigger ALIGN_TO_REEF = driverController.leftBumper();
+
+    private final Trigger MOVE_ARM_DEEP_CLIMB = driverController.start();
 
     private final Trigger LED_TEST = driverController.b();
 
@@ -129,6 +139,7 @@ public class RobotContainer {
         elevator = new Elevator();
         intake = new Intake();
         leds = new LEDs();
+        deepClimb = new DeepClimb();
         
         scoring = new Scoring(elevator, clockArm, wrist, intake);
 
@@ -208,37 +219,37 @@ public class RobotContainer {
             Commands.runOnce(() -> swerve.setRobotRelative(false)).ignoringDisable(true)
         );
 
-        SNAP_NORTH.whileTrue(
-            swerveSnapToCommand(
-                Rotation2d.fromDegrees(0),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getLeftY()
-            )
-        );
+        // SNAP_NORTH.whileTrue(
+        //     swerveSnapToCommand(
+        //         Rotation2d.fromDegrees(0),
+        //         () -> -driverController.getLeftX(),
+        //         () -> -driverController.getLeftY()
+        //     )
+        // );
 
-        SNAP_SOUTH.whileTrue(
-            swerveSnapToCommand(
-                Rotation2d.fromDegrees(180),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getLeftY()
-            )
-        );
+        // SNAP_SOUTH.whileTrue(
+        //     swerveSnapToCommand(
+        //         Rotation2d.fromDegrees(180),
+        //         () -> -driverController.getLeftX(),
+        //         () -> -driverController.getLeftY()
+        //     )
+        // );
 
-        SNAP_EAST.whileTrue(
-            swerveSnapToCommand(
-                Rotation2d.fromDegrees(270),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getLeftY()
-            )
-        );
+        // SNAP_EAST.whileTrue(
+        //     swerveSnapToCommand(
+        //         Rotation2d.fromDegrees(270),
+        //         () -> -driverController.getLeftX(),
+        //         () -> -driverController.getLeftY()
+        //     )
+        // );
 
-        SNAP_WEST.whileTrue(
-            swerveSnapToCommand(
-                Rotation2d.fromDegrees(90),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getLeftY()
-            ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
-        );
+        // SNAP_WEST.whileTrue(
+        //     swerveSnapToCommand(
+        //         Rotation2d.fromDegrees(90),
+        //         () -> -driverController.getLeftX(),
+        //         () -> -driverController.getLeftY()
+        //     ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
+        // );
 
         //------------------------------ OPERATOR POSITION COMMANDS ------------------------------//
         PRIME_L1.onTrue(scoring.setUserPosition(ElevatorPositions.getL1()).ignoringDisable(true));
@@ -268,6 +279,11 @@ public class RobotContainer {
         //------------------------------ DRIVER COMMANDS ------------------------------//
 
         STOW.whileTrue(scoring.goToPosition(ElevatorPositions.getStow()));
+
+        MOVE_ARM_DEEP_CLIMB.onTrue(
+            scoring.goToPosition(ElevatorPositions.getDeepClimb())
+        );
+
         GO_TO_POSITION.whileTrue(scoring.applyUserPosition()).onFalse(scoring.stopAllCommand());
 
         INTAKE.whileTrue(new DeferredCommand(() -> scoring.intakeCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
@@ -283,6 +299,11 @@ public class RobotContainer {
 
         LED_TEST.onTrue(setLEDsCommand(LEDS.TEAL)).onFalse(setLEDsCommand(LEDS.OFF));
 
+        DEEP_CLIMB_DOWN.onTrue(deepClimb.setDeepClimbCommand(0.5)).onFalse(deepClimb.setDeepClimbCommand(0));
+        DEEP_CLIMB_UP.onTrue(deepClimb.setDeepClimbCommand(-0.5)).onFalse(deepClimb.setDeepClimbCommand(0));
+        DEEP_CLIMB_INTAKE.onTrue(deepClimb.setDeepClimbIntakeCommand(0.5)).onFalse(deepClimb.setDeepClimbIntakeCommand(0));
+        DEEP_CLIMB_OUTTAKE.onTrue(deepClimb.setDeepClimbIntakeCommand(-0.5)).onFalse(deepClimb.setDeepClimbIntakeCommand(0));
+        DEEP_CLIMB_INTIALIZE.onTrue(scoring.goToPosition(ElevatorPositions.getDeepClimb()));
 
     };
 
