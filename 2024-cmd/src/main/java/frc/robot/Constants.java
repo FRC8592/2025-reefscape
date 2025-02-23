@@ -54,8 +54,8 @@ public final class Constants {
     public final class CAN {
         public static final int INTAKE_MOTOR_CAN_ID = 45;
         public static final int PDH_CAN_ID = 1;
-        public static final int DEEP_CLIMB_MOTOR_CAN_ID = -1;
-        public static final int DEEP_CLIMB_INTAKE_MOTOR_CAN_ID = -1;
+        public static final int DEEP_CLIMB_MOTOR_CAN_ID = 51;
+        public static final int DEEP_CLIMB_INTAKE_MOTOR_CAN_ID = 50;
 
         public static final int BACK_EXTENSION_MOTOR_CAN_ID = 44;
         public static final int FORWARD_EXTENSION_MOTOR_CAN_ID = 43;
@@ -265,7 +265,7 @@ public final class Constants {
         public static final int ELEVATOR_CURRENT_LIMIT = 40;//amps
 
         public static final double ELEVATOR_MAX_ACCELERATION = 300;
-        public static final double ELEVATOR_MAX_VELOCITY = 15; //formerly 75
+        public static final double ELEVATOR_MAX_VELOCITY = 75; //formerly 75
 
         public static final double ELEVATOR_POSITION_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3.5: /*PERRY: */3.5;
         public static final double ELEVATOR_POSITION_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
@@ -293,9 +293,9 @@ public final class Constants {
         public static final int ARM_CURRENT_LIMIT = 40;//amps
 
         public static final double ARM_MAX_ACCELERATION = 300;
-        public static final double ARM_MAX_VELOCITY = 20; //previously 100
+        public static final double ARM_MAX_VELOCITY = 75; //previously 100
 
-        public static final double ARM_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */3;
+        public static final double ARM_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */2;
         public static final double ARM_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
         public static final double ARM_D = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
         public static final double ARM_S = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
@@ -316,7 +316,7 @@ public final class Constants {
         public static final int WRIST_CURRENT_LIMIT = 60;//amps
 
         public static final double WRIST_MAX_ACCELERATION = 300;
-        public static final double WRIST_MAX_VELOCITY = 20; //used to be 100
+        public static final double WRIST_MAX_VELOCITY = 75; //used to be 100
 
         public static final double WRIST_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */3;
         public static final double WRIST_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;

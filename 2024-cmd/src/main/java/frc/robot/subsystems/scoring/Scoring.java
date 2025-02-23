@@ -34,9 +34,9 @@ public class Scoring extends SubsystemBase {
         NET_RIPTIDE(19.4, 150, 120, 1, -0.75),
 
         L1_PERRY(14.4, 5, 175, -0.43, 0.75),
-        L2_PERRY(11.8, 0, 180, -0.2, 0.75),
-        L3_PERRY(0, 165, 195, -0.43, 0.75),
-        L4_PERRY(19.5, 160, 200, -0.43, 0.75),
+        L2_PERRY(6.8, -10, 185, -0.2, 0.75),
+        L3_PERRY(0, 165, 200, -0.43, 0.75),
+        L4_PERRY(19.5, 165, 205, -0.43, 0.75),
         GROUND_ALGAE_PERRY(0, 0, 0, 0.5, -0.75),
         STOW_PERRY(0, 0, 0, 0.5, 0.75),
         STOW_WITH_CORAL_PERRY(0, 0, 20, 0.5, 0.75),
@@ -45,7 +45,7 @@ public class Scoring extends SubsystemBase {
         PROCESSOR_PERRY(0, 0, 0, -0.3, 0.75),
         NET_PERRY(19.4, 150, 120, 1, -0.75),
 
-        STOP(0,0,0,0,0),;
+        STOP(0,0,0,-0.75,0.5),;
 
         public double elevatorPos = 0;
         public double wristPos = 0;

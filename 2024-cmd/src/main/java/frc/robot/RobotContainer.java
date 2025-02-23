@@ -99,8 +99,8 @@ public class RobotContainer {
     private final Trigger ALIGN_CENTER = (coralController.button(2).or(coralController.button(3)).or(coralController.button(8)).or(coralController.button(7))).and(()->!isCoralMode);
     
     private final Trigger PRIME_PROCESSOR = coralController.button(1).or(coralController.button(2)).and(()->!isCoralMode);
-    private final Trigger PRIME_L2_ALGAE = (coralController.button(4).or(coralController.button(3))).and(()->!isCoralMode);
-    private final Trigger PRIME_L3_ALGAE = (coralController.button(6).or(coralController.button(8))).and(()->!isCoralMode);
+    private final Trigger PRIME_L2_ALGAE = (coralController.button(6).or(coralController.button(3))).and(()->!isCoralMode);
+    private final Trigger PRIME_L3_ALGAE = (coralController.button(4).or(coralController.button(8))).and(()->!isCoralMode);
     private final Trigger PRIME_NET = (coralController.button(5).or(coralController.button(7))).and(()->!isCoralMode);
 
     private final Trigger ALGAE_INTAKE = coralController.button(3).and(()->!isCoralMode);
