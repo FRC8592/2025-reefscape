@@ -8,15 +8,14 @@ import frc.robot.subsystems.scoring.Scoring.ElevatorPositions;
 public class OneCoralOneAlgaeMiddleAuto extends AutoCommand{
     public OneCoralOneAlgaeMiddleAuto(){
         super(
-            //TODO: add intake and outtake commands.
             new FollowPathCommand(getChoreoTrajectory("MiddleToDRight"), Suppliers.robotRunningOnRed)
             .alongWith(scoring.goToPosition(ElevatorPositions.getL4()))
-            .andThen(scoring.outtakeCommand()),
+            .andThen(scoring.outtakeCommand().withTimeout(1)),
             new FollowPathCommand(getChoreoTrajectory("DRightToMiddle"), Suppliers.robotRunningOnRed)
             .alongWith(scoring.goToPosition(ElevatorPositions.getL2Algae()))
             .andThen(scoring.intakeUntilHasCoralCommand()),         
             new FollowPathCommand(getChoreoTrajectory("MiddleToDMiddle"), Suppliers.robotRunningOnRed)
-            .andThen(scoring.outtakeCommand()),
+            .andThen(scoring.outtakeCommand().withTimeout(1)),
             new FollowPathCommand(getChoreoTrajectory("DMiddleBackUp"), Suppliers.robotRunningOnRed)
             .andThen(scoring.goToPosition(ElevatorPositions.getStow()))                       
         );

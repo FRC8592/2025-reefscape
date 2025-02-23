@@ -8,10 +8,9 @@ import frc.robot.subsystems.scoring.Scoring.ElevatorPositions;
 public class OneCoralRightAuto extends AutoCommand{
     public OneCoralRightAuto(){
         super(
-            //TODO: add intake and outtake commands.
             new FollowPathCommand(getChoreoTrajectory("RightToCLeft"), Suppliers.robotRunningOnRed)
             .alongWith(scoring.goToPosition(ElevatorPositions.getL4()))
-            .andThen(scoring.outtakeCommand()),
+            .andThen(scoring.outtakeCommand().withTimeout(1)),
             new FollowPathCommand(getChoreoTrajectory("CLeftBackUp"), Suppliers.robotRunningOnRed)
             .andThen(scoring.goToPosition(ElevatorPositions.getStow()))
         );
