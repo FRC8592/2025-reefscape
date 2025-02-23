@@ -8,7 +8,7 @@ import frc.robot.commands.largecommands.FollowPathCommand;
 public class TestAuto extends AutoCommand{
     public TestAuto(){
         super(
-        new FollowPathCommand(getChoreoTrajectory("HPLeftToFL`eft"), Suppliers.robotRunningOnRed)
+        new FollowPathCommand(getChoreoTrajectory("HPLeftToFLeft"), Suppliers.robotRunningOnRed)
 
 
         );
