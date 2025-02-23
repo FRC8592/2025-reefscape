@@ -55,39 +55,78 @@ public class Elevator extends SubsystemBase{
     }
 
 
-
+    /**
+    * Gets the current inches of the extention by converting left motor rotations to inches. 
+    * @return Returns the current height of the elevator in inches.
+    */
     public double getInches(){
         return rotationsToInches(leftExtensionMotor.getRotations());
     }
 
+    /**
+     * Accepts the target inches and sets the target extention to the target inches.
+     * @param targetInches The desired position of the elevator in inches.
+     */
     public void setInches(double targetInches){
         targetExtension = targetInches;
     }
 
+    /**
+     * Accepts a percentage and sets the motor power to that given percentage.
+     * @param percent The percentage of power that we want the elevator to be moving at.
+     */
     public void setPercentOutput(double percent){
         leftExtensionMotor.setPercentOutput(percent);
     }
 
+    /**
+     * Converts an amount of motor rotations to extention inches.
+     * @param rotations The amount of motor rotations we want to convert to inches.
+     * @return Returns an amount of motor rotations as inches.
+     */
     private double rotationsToInches(double rotations){
         return (rotations*(ELEVATOR.EXTENSION_DRUM_DIAMTER_INCHES*Math.PI))*ELEVATOR.EXTENSION_GEAR_RATIO;
     }
 
+    /**
+     * Converts an amount of extention inches to motor rotations.
+     * @param inches The amount of inches we want to convert to rotations of the motor.
+     * @return Returns an amount of inches as motor rotations.
+     */
     private double inchesToRotations(double inches){
         return ((inches/(ELEVATOR.EXTENSION_DRUM_DIAMTER_INCHES*Math.PI))/ELEVATOR.EXTENSION_GEAR_RATIO);
     }
     
+    /**
+     * Detects whether the elevator is at its desired position and outputs it as a boolean.
+     * @return Returns whether the elevator is at its target position as a boolean.
+     */
     public boolean atPosition(){
         return Utils.isWithin(getInches(), targetExtension, ELEVATOR.EXTENSION_POSITION_TOLERANCE);
     }
 
+    /**
+     * Sets the target extention of the elevator to the target inches.
+     * @param targetExtension The desired position of the elevator in inches.
+     * @return Returns a command to set the target extention to the target inches.
+     */
     public Command setInchesCommand(DoubleSupplier targetExtension){
         return this.run(()-> setInches(targetExtension.getAsDouble()));
     }
 
+    /**
+     * Accepts a percentage and then sets the motor power to that percentage.
+     * @param power The percentage we want to set the motors power to.
+     * @return Returns a command to set the speed at which the motor moves.
+     */
     public Command setPercentOutputCommand(double power) {
         return this.run(() -> setPercentOutput(power));
     }
 
+    /**
+     * Stops the extention by setting the where it's moving to where it currently is.
+     * @return Returns a command to stop the elevator.
+     */
     public Command stopCommand() {
         return this.runOnce(() -> {
             setInches(getInches());
@@ -96,7 +135,9 @@ public class Elevator extends SubsystemBase{
 
     @Override
     public void periodic(){
+        //Moves the elevator to the target extention.
         leftExtensionMotor.setPosition(inchesToRotations(targetExtension));
+        //Logs the current extention, target extention, and whether the elevator is at position.
         SmartDashboard.putNumber("Extension|CurrentInches", getInches());
         SmartDashboard.putNumber("Extension|TargetInches ", targetExtension);
         SmartDashboard.putNumber("Extension|TargetExtentionInRot", inchesToRotations(targetExtension));

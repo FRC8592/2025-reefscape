@@ -56,7 +56,11 @@ public final class NewtonCommands {
             swerve.drive(processed, DriveModes.AUTOMATIC);
         });
     }
-
+    /**
+     * Accepts the color of the LED and sets the LED to that color
+     * @param color
+     * @return Command to set the LED's color
+     */
     public static Command setLEDsCommand(Color color){
         return leds.runOnce(() -> leds.setColor(color));
     }

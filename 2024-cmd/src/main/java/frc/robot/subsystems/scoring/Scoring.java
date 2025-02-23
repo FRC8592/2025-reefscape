@@ -83,19 +83,31 @@ public class Scoring extends SubsystemBase {
         scoringTargetPosition = SHARED.IS_RIPTIDE?ElevatorPositions.STOW_RIPTIDE:ElevatorPositions.STOW_PERRY;
         userSelectedPosition = SHARED.IS_RIPTIDE?ElevatorPositions.STOW_RIPTIDE:ElevatorPositions.STOW_PERRY;
     }
-
+    /**
+     * Accepts a scoring position and sets user selected position to the position given.
+     * @param position Position is a parameter that represents the desired position of the user.
+     * @return Command that sets the user selected position to the position.
+     */
     public Command setUserPosition(ElevatorPositions position){
         return this.runOnce(() -> {
             userSelectedPosition = position;
         });
     }
 
+    /**
+     * Sets the target position of the scoring subsystem to the position selected by the user.
+     * @return Returns a command that sets the target position to the user selected position.
+    */
     public Command applyUserPosition(){
         return this.runOnce(() -> {
             scoringTargetPosition = userSelectedPosition;
         });
     }
-
+    /**
+    * Accepts a scoring position and sets the target position to the given position.
+    * @param position Position is a parameter that represents the desired position of the user.
+    * @return Returns a command that sets the target position to the current position.
+    */
     public Command goToPosition(ElevatorPositions position){
         return this.runOnce(() -> {
             scoringTargetPosition = position;
@@ -113,13 +125,17 @@ public class Scoring extends SubsystemBase {
     
 
     /**
-     * Start the intake and run continuously until the coral sensor is tripped.
+     * Start the intake and run continuously until stopped.
      * @return
      */
     public Command intakeCommand(){
         return intake.setIntakeCommand(scoringTargetPosition.intakeSpeed);
     }
 
+    /**
+     *  Runs the intake until the robot detects that it has a coral.
+     * @return Returns a command to run the intake untill the beam brake is tripped.
+     */
     public Command intakeUntilHasCoralCommand(){
         return intake.setIntakeCommand(scoringTargetPosition.intakeSpeed).until(() -> intake.robotHasCoral());
     }
@@ -201,16 +217,18 @@ public class Scoring extends SubsystemBase {
 
             // TODO: Find a way to exclude -20 degrees from the elevator safety
             
+
+            // Logging the target position of scoring mechanisms.
             Logger.recordOutput(SCORING.LOG_PATH+"TargetArmPostion", targetArmPosition);
             Logger.recordOutput(SCORING.LOG_PATH+"TargetWristPostion", targetWristPosition);
             Logger.recordOutput(SCORING.LOG_PATH+"TargetElevatorPostion", targetElevatorPosition);
     
-            // Logging the current positions of scoring mechanisms
+            // Logging the current positions of scoring mechanisms.
             Logger.recordOutput(SCORING.LOG_PATH+"CurrentArmPostion", currentArmPosition);
             Logger.recordOutput(SCORING.LOG_PATH+"CurrentWristPostion", currentWristPosition);
             Logger.recordOutput(SCORING.LOG_PATH+"CurrentElevatorPostion", currentElevatorPosition);
             
-            // Command the position of the Elevator, Arm, and Wrist mechanisms
+            // Command the position of the Elevator, Arm, and Wrist mechanisms.
             elevator.setInches(targetElevatorPosition);
             wrist.setDegrees(targetWristPosition);
             clockArm.setDegrees(targetArmPosition);

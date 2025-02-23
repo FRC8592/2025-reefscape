@@ -140,30 +140,58 @@ public class Vision extends SubsystemBase{
         visionSim.update(Robot.FIELD.getRobotPose());
     }
 
+    /**
+     * Gets the target X of the camera.
+     * @return Returns the target X of the camera.
+     */
     public double getTargetX(){
         return targetX;
     }
 
+    /**
+     * Gets the target Y of the camera.
+     * @return Returns the target Y of the camera.
+     */
     public double getTargetY(){
         return targetY;
     }
 
+    /**
+     * Gets the target Z of the camera.
+     * @return Returns the target Z of the camera.
+     */
     public double getTargetZ(){
         return targetZ;
     }
 
+    /**
+     * Gets the target yaw of the camera.
+     * @return Returns the target yaw of the camera.
+     */
     public double getTargetYaw(){
         return targetYawRotation;
     }
 
+    /**
+     * Gets whether the cameras target is visible as a boolean.
+     * @return Returns whether the targets camera is visible as a boolean.
+     */
     public boolean getTargetVisible(){
         return targetVisible;
     }
 
+    /**
+     * Gets the pose ambiguity ratio.
+     * @return Returns the pose ambiguity ratio.
+     */
     public double getPoseAmbiguityRatio(){
         return targetAmbiguity;
     }
 
+    /**
+     * Lists the targets visible by the camera.
+     * @return Returns a list of the targets visible by the camera.
+     */
     public List<PhotonTrackedTarget> getTargets() {
         return camera.getLatestResult().getTargets();
     }
@@ -192,6 +220,10 @@ public class Vision extends SubsystemBase{
 
     }
 
+    /**
+     * Gets the current vision pose.
+     * @return Returns the current vision pose.
+     */
     public Optional<EstimatedRobotPose> getRobotPoseVision() {
        return estimator.update(camera.getLatestResult());
 
