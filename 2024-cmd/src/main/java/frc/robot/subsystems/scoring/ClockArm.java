@@ -26,7 +26,7 @@ public class ClockArm extends SubsystemBase{
         clockArmMotor = new KrakenX60Motor(CAN.CLOCK_ARM_CAN_ID);
         targetArmDegrees = 0.0;
 
-        clockArmMotor.setIdleMode(IdleMode.kBrake);
+        clockArmMotor.setIdleMode(IdleMode.kCoast);
         clockArmMotor.setPositionSoftLimit(degreesToMotorRotations(ARM.ARM_ANGLE_DEGREES_MIN), degreesToMotorRotations(ARM.ARM_ANGLE_DEGREES_MAX));
         clockArmMotor.setCurrentLimit(ARM.ARM_CURRENT_LIMIT);
 

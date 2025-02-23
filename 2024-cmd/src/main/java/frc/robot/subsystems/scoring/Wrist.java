@@ -24,12 +24,13 @@ public class Wrist extends SubsystemBase{
     
       
     
-        wristMotor = new KrakenX60Motor(CAN.WRIST_CAN_ID, true);
+        wristMotor = new KrakenX60Motor(CAN.WRIST_CAN_ID, SHARED.IS_RIPTIDE);
         targetWristDegrees = 0.0;
-    
-        wristMotor.setIdleMode(IdleMode.kBrake);
+        
+        wristMotor.setIdleMode(IdleMode.kCoast);
         wristMotor.setPositionSoftLimit(degreesToMotorRotations(WRIST.WRIST_ANGLE_DEGREES_MIN), degreesToMotorRotations(WRIST.WRIST_ANGLE_DEGREES_MAX));
         wristMotor.setCurrentLimit(WRIST.WRIST_CURRENT_LIMIT);
+        
     
         wristMotor.withGains(positionPid);
 

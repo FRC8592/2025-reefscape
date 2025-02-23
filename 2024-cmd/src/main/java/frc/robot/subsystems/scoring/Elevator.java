@@ -30,8 +30,8 @@ public class Elevator extends SubsystemBase{
         leftExtensionMotor = new KrakenX60Motor(CAN.BACK_EXTENSION_MOTOR_CAN_ID, true);
         rightExtensionMotor = new KrakenX60Motor(CAN.FORWARD_EXTENSION_MOTOR_CAN_ID);
 
-        leftExtensionMotor.setIdleMode(IdleMode.kBrake);
-        rightExtensionMotor.setIdleMode(IdleMode.kBrake);
+        leftExtensionMotor.setIdleMode(IdleMode.kCoast);
+        rightExtensionMotor.setIdleMode(IdleMode.kCoast);
 
 
         //configure right motor to be inverted and to follow L motor
