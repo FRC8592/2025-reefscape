@@ -9,29 +9,29 @@ import frc.robot.subsystems.scoring.Scoring.ElevatorPositions;
 public class FourCoralRightAuto extends AutoCommand{
     public FourCoralRightAuto(){
         super(
-            new FollowPathCommand(getChoreoTrajectory("RightToCLeft"), Suppliers.robotRunningOnRed)
-            .alongWith(scoring.goToPosition(ElevatorPositions.getL4()))
-            .andThen(scoring.outtakeCommand().withTimeout(1)),
-            new FollowPathCommand(getChoreoTrajectory("CLeftToHPRight"), Suppliers.robotRunningOnRed)
-            .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getStow())))
-            .andThen(scoring.intakeUntilHasCoralCommand()),
-            new FollowPathCommand(getChoreoTrajectory("HPRightToBRight"), Suppliers.robotRunningOnRed)
-            .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getL4())))
-            .andThen(scoring.outtakeCommand().withTimeout(1)),
-            new FollowPathCommand(getChoreoTrajectory("BRightToHPRight"), Suppliers.robotRunningOnRed)
-            .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getStow())))
-            .andThen(scoring.intakeUntilHasCoralCommand()),
-            new FollowPathCommand(getChoreoTrajectory("HPRightToBLeft"), Suppliers.robotRunningOnRed)
-            .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getL4())))
-            .andThen(scoring.outtakeCommand().withTimeout(1)),
-            new FollowPathCommand(getChoreoTrajectory("BLeftToHPRight"), Suppliers.robotRunningOnRed)
-            .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getStow())))
-            .andThen(scoring.intakeUntilHasCoralCommand()),
-            new FollowPathCommand(getChoreoTrajectory("HPRightToARight"), Suppliers.robotRunningOnRed)
-            .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getL4())))
-            .andThen(scoring.outtakeCommand().withTimeout(1)),
+            new FollowPathCommand(getChoreoTrajectory("RightToCLeft"), Suppliers.robotRunningOnRed),
+            // .alongWith(scoring.goToPosition(ElevatorPositions.getL4()))
+            // .andThen(scoring.outtakeCommand().withTimeout(1)),
+            new FollowPathCommand(getChoreoTrajectory("CLeftToHPRight"), Suppliers.robotRunningOnRed),
+            // .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getStow())))
+            // .andThen(scoring.intakeUntilHasCoralCommand()),
+            new FollowPathCommand(getChoreoTrajectory("HPRightToBRight"), Suppliers.robotRunningOnRed),
+            // .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getL4())))
+            // .andThen(scoring.outtakeCommand().withTimeout(1)),
+            new FollowPathCommand(getChoreoTrajectory("BRightToHPRight"), Suppliers.robotRunningOnRed),
+            // .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getStow())))
+            // .andThen(scoring.intakeUntilHasCoralCommand()),
+            new FollowPathCommand(getChoreoTrajectory("HPRightToBLeft"), Suppliers.robotRunningOnRed),
+            // .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getL4())))
+            // .andThen(scoring.outtakeCommand().withTimeout(1)),
+            new FollowPathCommand(getChoreoTrajectory("BLeftToHPRight"), Suppliers.robotRunningOnRed),
+            // .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getStow())))
+            // .andThen(scoring.intakeUntilHasCoralCommand()),
+            new FollowPathCommand(getChoreoTrajectory("HPRightToARight"), Suppliers.robotRunningOnRed),
+            // .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getL4())))
+            // .andThen(scoring.outtakeCommand().withTimeout(1)),
             new FollowPathCommand(getChoreoTrajectory("ARightBackUp"), Suppliers.robotRunningOnRed)
-            .andThen(scoring.goToPosition(ElevatorPositions.getStow()))
+            // .andThen(scoring.goToPosition(ElevatorPositions.getStow()))
         );
 
         setStartStateFromChoreoTrajectory("RightToCLeft");

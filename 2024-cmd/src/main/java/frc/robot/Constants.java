@@ -13,7 +13,7 @@ import frc.robot.Robot.CurrentRobot;
 public final class Constants {
     public final class SHARED {
         public static final String LOG_FOLDER = "CustomLogs";
-        public static final CurrentRobot CURRENT_ROBOT = CurrentRobot.PERRY;
+        public static final CurrentRobot CURRENT_ROBOT = CurrentRobot.RIPTIDE;
         public static final boolean IS_RIPTIDE = CURRENT_ROBOT == CurrentRobot.RIPTIDE;
     }
     public final class CONVERSIONS {
@@ -98,7 +98,7 @@ public final class Constants {
         );
 
         public static final String CAMERA_NAME = (
-            SHARED.IS_RIPTIDE ? "Arducam_OV9072_B" : "Arducam_OV9072_D"
+            SHARED.IS_RIPTIDE ? "Arducam_OV9782_B" : "Arducam_OV9072_D"
         );
 
         public static final Pose3d SOUTH_BLUE_POSE = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(18).get();
@@ -142,19 +142,19 @@ public final class Constants {
     public final class SWERVE {
         public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Swerve/";
 
-        public static final double STEER_P = 100;
-        public static final double STEER_I = 0;
-        public static final double STEER_D = 0.2;
-        public static final double STEER_S = 0;
-        public static final double STEER_V = 1.5;
-        public static final double STEER_A = 0;
+        // public static final double STEER_P = 100;
+        // public static final double STEER_I = 0;
+        // public static final double STEER_D = 0.2;
+        // public static final double STEER_S = 0;
+        // public static final double STEER_V = 1.5;
+        // public static final double STEER_A = 0;
 
-        public static final double DRIVE_P = 3;
-        public static final double DRIVE_I = 0;
-        public static final double DRIVE_D = 0;
-        public static final double DRIVE_S = 0;
-        public static final double DRIVE_V = 0;
-        public static final double DRIVE_A = 0;
+        // public static final double DRIVE_P = 3;
+        // public static final double DRIVE_I = 0;
+        // public static final double DRIVE_D = 0;
+        // public static final double DRIVE_S = 0;
+        // public static final double DRIVE_V = 0;
+        // public static final double DRIVE_A = 0;
 
         //TODO: Double check that these PID constants still work
         public static final double SNAP_TO_kP = 3.7;
@@ -227,12 +227,12 @@ public final class Constants {
         public static final double WHITE_BACK_RIGHT_Y_POSITION = -8.375;
 
         //TODO: Double check that these still work
-        public static final double PATH_FOLLOW_TRANSLATE_kP = 8d;
+        public static final double PATH_FOLLOW_TRANSLATE_kP = 12d;
         public static final double PATH_FOLLOW_TRANSLATE_kI = 0d;
         public static final double PATH_FOLLOW_TRANSLATE_kD = 0d;
 
         //TODO: Double check that these still work
-        public static final double PATH_FOLLOW_ROTATE_kP = 6d;
+        public static final double PATH_FOLLOW_ROTATE_kP = 10d;
         public static final double PATH_FOLLOW_ROTATE_kI = 0d;
         public static final double PATH_FOLLOW_ROTATE_kD = 0.1;
 
