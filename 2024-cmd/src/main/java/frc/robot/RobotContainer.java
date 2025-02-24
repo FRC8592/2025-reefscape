@@ -61,7 +61,6 @@ public class RobotContainer {
     private ScoreCoral scoreCoral;
     private OdometryUpdates odometryUpdates;
     
-
     //TODO: Add all controls here
     //Driver controls
 

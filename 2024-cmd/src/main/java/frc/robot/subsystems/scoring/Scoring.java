@@ -115,6 +115,10 @@ public class Scoring extends SubsystemBase {
         });
     }
 
+    public Command goToSpecifiedPositionCommand(ElevatorPositions position){
+        return setUserPosition(position).andThen(applyUserPosition());
+    }
+
 
     /**
      * Check to see if all scoring mechanisms are in position within tolerances specified by constants.
