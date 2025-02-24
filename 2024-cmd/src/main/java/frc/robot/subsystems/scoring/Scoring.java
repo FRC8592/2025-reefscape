@@ -33,7 +33,8 @@ public class Scoring extends SubsystemBase {
         PROCESSOR_RIPTIDE(0, 0, 0, -0.3, 0.75),
         NET_RIPTIDE(19.4, 150, 120, 1, -0.75),
 
-        L1_PERRY(14.4, 5, 175, -0.43, 0.75),
+        // L1_PERRY(14.4, 5, 175, -0.43, 0.75),
+        L1_PERRY(0, 0, 0, 0, 0),
         L2_PERRY(6.8, -10, 185, -0.2, 0.75),
         L3_PERRY(0, 165, 200, -0.43, 0.75),
         L4_PERRY(19.5, 165, 205, -0.43, 0.75),
@@ -195,13 +196,13 @@ public class Scoring extends SubsystemBase {
 
             } else {
                 if (currentWristPosition > 150 && currentElevatorPosition < 5) {
-                    if (currentArmPosition < 20) {
-                        targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 0);
-                        targetElevatorPosition = currentElevatorPosition;
-                    } else {
-                        targetElevatorPosition = 10;
-                        targetArmPosition = currentArmPosition;
-                    }
+                    // if (currentArmPosition < 20) {
+                    //     targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 0);
+                    //     targetElevatorPosition = currentElevatorPosition;
+                    // } else {
+                    //     targetElevatorPosition = 10;
+                    //     targetArmPosition = currentArmPosition;
+                    // }
                 } else {
                     targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 30);
                 }
