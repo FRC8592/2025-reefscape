@@ -214,7 +214,6 @@ public class Scoring extends SubsystemBase {
                     targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 30);
                 }
 
-
                 if (currentArmPosition < 20 && scoringTargetPosition.clockArmPos != 0) {
                     targetWristPosition = currentWristPosition;
                     targetElevatorPosition = currentElevatorPosition;
