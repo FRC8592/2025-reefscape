@@ -12,6 +12,7 @@ public class OneCoralRightAuto extends AutoCommand{
             new FollowPathCommand(getChoreoTrajectory("RightToCLeft"), Suppliers.robotRunningOnRed)
             .alongWith(scoring.goToSpecifiedPositionCommand(ElevatorPositions.getL4()))
             .andThen(intake.setIntakeCommand(-0.43).withTimeout(1)),
+            
             new FollowPathCommand(getChoreoTrajectory("CLeftBackUp"), Suppliers.robotRunningOnRed)
             .alongWith(new WaitCommand(1).andThen(scoring.goToSpecifiedPositionCommand(ElevatorPositions.getStow()))
         ));
