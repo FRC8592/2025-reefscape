@@ -216,7 +216,15 @@ public class Scoring extends SubsystemBase {
                     targetWristPosition = currentWristPosition;
                     targetElevatorPosition = currentElevatorPosition;
                 }
-            }
+            }   
+                // Moving to L3/L3: Ensure the arm reaches position before moving the wrist
+                if (scoringTargetPosition == ElevatorPositions.getL3() || scoringTargetPosition == ElevatorPositions.getL4()){
+                    if (clockArm.atPosition()) { // Only move wrist when arm is in position
+                        targetWristPosition = scoringTargetPosition.wristPos;
+                    } else {
+                        targetWristPosition = currentWristPosition; // Hold wrist position until arm is ready
+                    }
+                }
 
             // The arm can move into the stowed (0) position ONLY when the elevator is at the stowed (0) position AND
             // The wrist is at the stowed (0) position AND neither the elevator nor wrist are commanded to move elsewhere.
