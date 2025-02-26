@@ -61,6 +61,7 @@ public final class Constants {
         public static final int FORWARD_EXTENSION_MOTOR_CAN_ID = 43;
         public static final int CLOCK_ARM_CAN_ID = 41;
         public static final int WRIST_CAN_ID = 40;
+        public static final int INTAKE_BEAM_BREAK_CAN_ID = 53;
     }
 
     public final class POWER {
@@ -129,8 +130,7 @@ public final class Constants {
     
     public final class INTAKE {
         public static final String LOG_PATH = SHARED.LOG_FOLDER+"/Intake/";
-        public static final int INTAKE_BEAM_BREAK_DIGITAL_ID = 9;
-
+        public static final int INTAKE_BEAM_BREAK_THRESHOLD_MM = -1; //TODO: set this
     }
 
     public final class SCORING {

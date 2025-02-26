@@ -12,13 +12,26 @@ import frc.robot.helpers.motor.NewtonMotor;
 import frc.robot.helpers.motor.NewtonMotor.IdleMode;
 import frc.robot.helpers.motor.talonfx.KrakenX60Motor;
 
+import au.grapplerobotics.LaserCan;
+import au.grapplerobotics.interfaces.LaserCanInterface.Measurement;
+import au.grapplerobotics.ConfigurationFailedException;
+
 public class Intake extends SubsystemBase {
 
     NewtonMotor intakeMotor;
-    private DigitalInput intakeSensor;
+    // private DigitalInput intakeSensor;
+    LaserCan intakeSensor;
     public Intake() {
         intakeMotor = new KrakenX60Motor(CAN.INTAKE_MOTOR_CAN_ID, true);
-        intakeSensor = new DigitalInput(INTAKE.INTAKE_BEAM_BREAK_DIGITAL_ID);
+        // intakeSensor = new DigitalInput(INTAKE.INTAKE_BEAM_BREAK_DIGITAL_ID);
+        intakeSensor = new LaserCan(CAN.INTAKE_BEAM_BREAK_CAN_ID);
+        try {
+            intakeSensor.setRangingMode(LaserCan.RangingMode.SHORT); 
+            intakeSensor.setRegionOfInterest(new LaserCan.RegionOfInterest(8, 8, 16, 16));
+            intakeSensor.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_20MS);
+        } catch (ConfigurationFailedException e) {
+            System.err.println("Configuration failed! " + e);
+        }
         intakeMotor.setIdleMode(IdleMode.kBrake);
     }
 
@@ -61,7 +74,12 @@ public class Intake extends SubsystemBase {
      * @return Returns whether there is a coral in the intake as a boolean.
      */
     public boolean robotHasCoral(){
-        return intakeSensor.get();
+        Measurement measurement = intakeSensor.getMeasurement();
+        if (measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
+            return measurement.distance_mm < INTAKE.INTAKE_BEAM_BREAK_THRESHOLD_MM;
+        } else {
+            return false;
+        }
     
     }
 
