@@ -89,8 +89,8 @@ public class RobotContainer {
 
     private final Trigger PRIME_L4 = (coralController.button(5).or(coralController.button(7))).and(()->isCoralMode);
     private final Trigger PRIME_L3 = (coralController.button(6).or(coralController.button(8))).and(()->isCoralMode);
-    private final Trigger PRIME_L2 = (coralController.button(4).or(coralController.button(3))).and(()->isCoralMode);
-    private final Trigger PRIME_L1 = (coralController.button(1).or(coralController.button(2))).and(()->isCoralMode);
+    private final Trigger PRIME_L2 = (coralController.button(1).or(coralController.button(2))).and(()->isCoralMode);
+    private final Trigger PRIME_L1 = (coralController.button(4).or(coralController.button(3))).and(()->isCoralMode);
 
     private final Trigger ALIGN_RIGHT = (coralController.button(2).or(coralController.button(3)).or(coralController.button(8)).or(coralController.button(7))).and(()->isCoralMode);
     private final Trigger ALIGN_LEFT = (coralController.button(1).or(coralController.button(4)).or(coralController.button(6)).or(coralController.button(5))).and(()->isCoralMode);
