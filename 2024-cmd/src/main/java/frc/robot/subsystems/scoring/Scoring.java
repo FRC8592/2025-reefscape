@@ -1,10 +1,13 @@
 package frc.robot.subsystems.scoring;
 
+import java.util.Set;
+
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
 
@@ -153,7 +156,7 @@ public class Scoring extends SubsystemBase {
      * @return
      */
     public Command outtakeCommand(){
-        return intake.setIntakeCommand(scoringTargetPosition.outtakeSpeed).withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
+        return new DeferredCommand(() -> intake.setIntakeCommand(scoringTargetPosition.outtakeSpeed), Set.of(this));
     }
 
     /**
