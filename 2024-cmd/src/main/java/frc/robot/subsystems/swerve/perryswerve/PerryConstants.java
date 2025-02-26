@@ -127,7 +127,7 @@ public class PerryConstants {
     private static final int kFrontLeftDriveMotorId = 18;
     private static final int kFrontLeftSteerMotorId = 4;
     private static final int kFrontLeftEncoderId = 10;
-    private static final Angle kFrontLeftEncoderOffset = Rotations.of(0.15576171875);
+    private static final Angle kFrontLeftEncoderOffset = Rotations.of(-0.498779);
     private static final boolean kFrontLeftSteerMotorInverted = true;
     private static final boolean kFrontLeftEncoderInverted = false;
 
@@ -138,7 +138,7 @@ public class PerryConstants {
     private static final int kFrontRightDriveMotorId = 17;
     private static final int kFrontRightSteerMotorId = 9;
     private static final int kFrontRightEncoderId = 13;
-    private static final Angle kFrontRightEncoderOffset = Rotations.of(0.44921875);
+    private static final Angle kFrontRightEncoderOffset = Rotations.of(0.455322);
     private static final boolean kFrontRightSteerMotorInverted = true;
     private static final boolean kFrontRightEncoderInverted = false;
 
@@ -149,7 +149,7 @@ public class PerryConstants {
     private static final int kBackLeftDriveMotorId = 5;
     private static final int kBackLeftSteerMotorId = 6;
     private static final int kBackLeftEncoderId = 11;
-    private static final Angle kBackLeftEncoderOffset = Rotations.of(0.227783203125);
+    private static final Angle kBackLeftEncoderOffset = Rotations.of(0.230957);
     private static final boolean kBackLeftSteerMotorInverted = true;
     private static final boolean kBackLeftEncoderInverted = false;
 
@@ -160,7 +160,7 @@ public class PerryConstants {
     private static final int kBackRightDriveMotorId = 7;
     private static final int kBackRightSteerMotorId = 8;
     private static final int kBackRightEncoderId = 12;
-    private static final Angle kBackRightEncoderOffset = Rotations.of(0.386474609375);
+    private static final Angle kBackRightEncoderOffset = Rotations.of(0.350586);
     private static final boolean kBackRightSteerMotorInverted = true;
     private static final boolean kBackRightEncoderInverted = false;
 

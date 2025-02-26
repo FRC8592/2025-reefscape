@@ -35,9 +35,9 @@ public class Scoring extends SubsystemBase {
 
         // L1_PERRY(14.4, 5, 175, -0.43, 0.75),
         L1_PERRY(0, 0, 0, 0, 0),
-        L2_PERRY(6.8, -10, 185, -0.2, 0.75),
-        L3_PERRY(0, 165, 200, -0.43, 0.75), //adjust wrist down from 200
-        L4_PERRY(19.5, 155, 205, -0.43, 0.75), //arm adjusted from 165
+        L2_PERRY(6.8, 43, 185, -0.2, 0.75),
+        L3_PERRY(0, 151, 210, -0.43, 0.75), //adjust wrist down from 200
+        L4_PERRY(19.5, 155, 207, -0.43, 0.75), //arm adjusted from 165
         GROUND_ALGAE_PERRY(0, 0, 0, 0.5, -0.75),
         STOW_PERRY(0, 0, 0, 0.5, 0.75),
         STOW_WITH_CORAL_PERRY(0, 0, 20, 0.5, 0.75),
