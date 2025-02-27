@@ -268,5 +268,14 @@ public class Scoring extends SubsystemBase {
 
         Logger.recordOutput(SCORING.LOG_PATH+"UserSelectedPosition", userSelectedPosition);
         Logger.recordOutput(SCORING.LOG_PATH+"TargetPosition", scoringTargetPosition);
+
+        // These will log which position we are in for scoring
+        SmartDashboard.putBoolean("L1", userSelectedPosition == ElevatorPositions.getL1());
+        SmartDashboard.putBoolean("L2", userSelectedPosition == ElevatorPositions.getL2() || ElevatorPositions.getL2Algae() == userSelectedPosition);
+        SmartDashboard.putBoolean("L3", userSelectedPosition == ElevatorPositions.getL3() || ElevatorPositions.getL3Algae() == userSelectedPosition);
+        SmartDashboard.putBoolean("L4", userSelectedPosition == ElevatorPositions.getL4());
+
+        
+
     }
 }

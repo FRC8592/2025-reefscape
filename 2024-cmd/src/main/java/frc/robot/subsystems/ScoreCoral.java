@@ -216,7 +216,7 @@ public class ScoreCoral extends SubsystemBase {
 
     public void setPosition(LeftOrRight leftOrRight){
        direction = leftOrRight;
-       SmartDashboard.putString("direction", direction.name());
+    //    SmartDashboard.putString("direction", direction.name());
     }
 
     /**

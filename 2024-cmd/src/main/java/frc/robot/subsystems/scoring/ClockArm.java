@@ -126,9 +126,9 @@ public class ClockArm extends SubsystemBase{
         //Moves the arm to the target degrees.
         clockArmMotor.setPosition(degreesToMotorRotations(targetArmDegrees));
         //Logs the arms target degrees, current degrees, and whether the arm is at position.
-        SmartDashboard.putNumber("ClockArm|CurrentDegrees", getDegrees());
-        SmartDashboard.putNumber("ClockArm|TargetDegrees", targetArmDegrees);
-        SmartDashboard.putBoolean("ClockArm|AtPosition", atPosition());
+        // SmartDashboard.putNumber("ClockArm|CurrentDegrees", getDegrees());
+        // SmartDashboard.putNumber("ClockArm|TargetDegrees", targetArmDegrees);
+        // SmartDashboard.putBoolean("ClockArm|AtPosition", atPosition());
         Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"ClockArm|CurrentDegrees ", getDegrees());
         Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"ClockArm|TargetDegrees", targetArmDegrees);
         Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"ClockArm|AtPosition", atPosition());

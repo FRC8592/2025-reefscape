@@ -138,12 +138,12 @@ public class Elevator extends SubsystemBase{
         //Moves the elevator to the target extention.
         leftExtensionMotor.setPosition(inchesToRotations(targetExtension));
         //Logs the current extention, target extention, and whether the elevator is at position.
-        SmartDashboard.putNumber("Extension|CurrentInches", getInches());
-        SmartDashboard.putNumber("Extension|TargetInches ", targetExtension);
-        SmartDashboard.putNumber("Extension|TargetExtentionInRot", inchesToRotations(targetExtension));
-        SmartDashboard.putBoolean("Extension|AtPosition", atPosition());
-        SmartDashboard.putNumber("Extension|AppliedVoltage", leftExtensionMotor.getVoltage());
-        SmartDashboard.putNumber("Extension|CurrentVelocity", leftExtensionMotor.getVelocityRPM());
+        // SmartDashboard.putNumber("Extension|CurrentInches", getInches());
+        // SmartDashboard.putNumber("Extension|TargetInches ", targetExtension);
+        // SmartDashboard.putNumber("Extension|TargetExtentionInRot", inchesToRotations(targetExtension));
+        // SmartDashboard.putBoolean("Extension|AtPosition", atPosition());
+        // SmartDashboard.putNumber("Extension|AppliedVoltage", leftExtensionMotor.getVoltage());
+        // SmartDashboard.putNumber("Extension|CurrentVelocity", leftExtensionMotor.getVelocityRPM());
 
         Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"Extension|CurrentInches", getInches());
         Logger.recordOutput(ELEVATOR.EXTENSION_LOG_PATH+"Extension|TargetInches ", targetExtension);
