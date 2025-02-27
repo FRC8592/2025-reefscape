@@ -11,19 +11,19 @@ public class ThreeCoralLeftAuto extends AutoCommand{
         super(
             new FollowPathCommand(getChoreoTrajectory("LeftToERight"), Suppliers.robotRunningOnRed)
             .alongWith(scoring.goToPosition(ElevatorPositions.getL4()))
-            .andThen(scoring.outtakeCommand().withTimeout(1)),
+            .andThen(scoring.outtakeCoralCommand().withTimeout(1)),
             new FollowPathCommand(getChoreoTrajectory("ERightToHPLeft"), Suppliers.robotRunningOnRed)
             .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getStow())))
             .andThen(scoring.intakeUntilHasCoralCommand()),
             new FollowPathCommand(getChoreoTrajectory("HPLeftToFLeft"), Suppliers.robotRunningOnRed)
             .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getL4())))
-            .andThen(scoring.outtakeCommand().withTimeout(1)),
+            .andThen(scoring.outtakeCoralCommand().withTimeout(1)),
             new FollowPathCommand(getChoreoTrajectory("FLeftToHPLeft"), Suppliers.robotRunningOnRed)
             .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getStow())))
             .andThen(scoring.intakeUntilHasCoralCommand()),
             new FollowPathCommand(getChoreoTrajectory("HPLeftToFRight"), Suppliers.robotRunningOnRed)
             .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getL4())))
-            .andThen(scoring.outtakeCommand().withTimeout(1)),
+            .andThen(scoring.outtakeCoralCommand().withTimeout(1)),
             new FollowPathCommand(getChoreoTrajectory("FRightBackUp"), Suppliers.robotRunningOnRed)
             .andThen(scoring.goToPosition(ElevatorPositions.getStow()))
         );
