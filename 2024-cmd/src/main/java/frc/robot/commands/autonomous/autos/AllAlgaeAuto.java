@@ -10,13 +10,13 @@ public class AllAlgaeAuto extends AutoCommand{
         super(
             new FollowPathCommand(getChoreoTrajectory("LeftToCMid"), Suppliers.robotRunningOnRed)
                 .alongWith(scoring.setUserPosition(ElevatorPositions.getL3Algae()))
-                .andThen(scoring.outtakeCommand()),
+                .andThen(scoring.outtakeCoralCommand()),
             new FollowPathCommand(getChoreoTrajectory("CMidToBMid"), Suppliers.robotRunningOnRed)
                 .alongWith(scoring.setUserPosition(ElevatorPositions.getL2Algae()))
-                .andThen(scoring.outtakeCommand()),
+                .andThen(scoring.outtakeCoralCommand()),
             new FollowPathCommand(getChoreoTrajectory("BMidToAMid"), Suppliers.robotRunningOnRed)
             .alongWith(scoring.setUserPosition(ElevatorPositions.getL3Algae()))
-            .andThen(scoring.outtakeCommand())
+            .andThen(scoring.outtakeCoralCommand())
         );
 
         setStartStateFromChoreoTrajectory("LeftToCMid");

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
+import frc.robot.subsystems.DeepClimb;
 
 public class Scoring extends SubsystemBase {
 
@@ -18,12 +19,14 @@ public class Scoring extends SubsystemBase {
     private ClockArm clockArm;
     private Wrist wrist;
     private Intake intake;
+    // private DeepClimb deepclimb;
 
     // Define scoring mechanism positions for various activities
     private static ElevatorPositions scoringTargetPosition;
     private static ElevatorPositions userSelectedPosition;
 
     public static enum ElevatorPositions {
+        
         L1_RIPTIDE(14.4, 5, 175, -0.43, 0.75),
         L2_RIPTIDE(11.8, 0, 180, -0.2, 0.75),
         L3_RIPTIDE(0, 165, 195, -0.43, 0.75),
@@ -47,9 +50,10 @@ public class Scoring extends SubsystemBase {
         L2_ALGAE_PERRY(0, 50, 120, 0.5, -0.75),
         L3_ALGAE_PERRY(1.5, 120, 160, 0.5, -0.75),
         PROCESSOR_PERRY(0, 0, 0, -0.3, 0.75),
-        NET_PERRY(19.4, 150, 120, 1, -0.75),
+        NET_PERRY(19.4, 150, 95, 1, -0.75),
+        DEEP_CLIMB_PERRY(0, 90, 210, 0, 0),
 
-        STOP(0,0,0,-0.75,0.5),;
+        STOP(0,0,0,-0.75,0.5);
 
         public double elevatorPos = 0;
         public double wristPos = 0;
@@ -75,6 +79,7 @@ public class Scoring extends SubsystemBase {
         public static ElevatorPositions getProcessor(){return SHARED.IS_RIPTIDE?ElevatorPositions.PROCESSOR_RIPTIDE:ElevatorPositions.PROCESSOR_PERRY;}
         public static ElevatorPositions getNet(){return SHARED.IS_RIPTIDE?ElevatorPositions.NET_RIPTIDE:ElevatorPositions.NET_PERRY;}
         public static ElevatorPositions stopped(){return ElevatorPositions.STOP;}
+        public static ElevatorPositions getDeepClimb(){return ElevatorPositions.DEEP_CLIMB_PERRY;}
     }
 
 
@@ -155,8 +160,12 @@ public class Scoring extends SubsystemBase {
      * TODO: Block this command when the scoring mechanism is stowed
      * @return
      */
-    public Command outtakeCommand(){
+    public Command outtakeCoralCommand(){
         return new DeferredCommand(() -> intake.setIntakeCommand(scoringTargetPosition.outtakeSpeed), Set.of(this));
+    }
+
+    public Command outtakeAlgaeCommand(){
+        return new DeferredCommand(()-> intake.setIntakeCommand(1), Set.of(this));
     }
 
     /**
@@ -168,6 +177,10 @@ public class Scoring extends SubsystemBase {
     public Command stopAllCommand(){
         Logger.recordOutput(SCORING.LOG_PATH + "stopAllCmd", true);
         return elevator.stopCommand().alongWith(wrist.stopCommand(), clockArm.stopCommand());
+    }
+
+    public boolean isAtPosition(ElevatorPositions position){
+        return scoringTargetPosition == position && atPosition();
     }
 
 
@@ -241,7 +254,10 @@ public class Scoring extends SubsystemBase {
             // Freeze the movement of the Elevator and Wrist to prevent damage if the arm is in too far.  This will normally
             // happen when the mechanism is leaving the stowed state, but may happen in other, unforeseen circumstances.
 
-            // TODO: Find a way to exclude -20 degrees from the elevator safety
+            // // Deep climb safety code where the winch cannot operate inward unless the arm and such are not in the deep climb position
+            // if(scoringTargetPosition == ElevatorPositions.getDeepClimb()){
+            //     deepclimb.setDeepClimbPercentOutput(0);
+            // }
             
 
             // Logging the target position of scoring mechanisms.

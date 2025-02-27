@@ -14,6 +14,7 @@ import org.littletonrobotics.junction.Logger;
 import frc.robot.commands.NewtonCommands;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.largecommands.LargeCommand;
+import frc.robot.subsystems.DeepClimb;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.OdometryUpdates;
 import frc.robot.subsystems.ScoreCoral;
@@ -51,6 +52,7 @@ public class RobotContainer {
     private final Swerve swerve;
     private final Vision vision;
     private final Scoring scoring;
+    private final DeepClimb deepclimb;
 
     private final ClockArm clockArm;
     private final Elevator elevator;
@@ -69,21 +71,27 @@ public class RobotContainer {
     private final Trigger ENABLED = new Trigger(() -> DriverStation.isEnabled()).and(()->DriverStation.isTeleop());
 
     private final Trigger INTAKE = driverController.leftTrigger();
-    private final Trigger SCORE = driverController.rightTrigger();
+    private final Trigger SCORE_CORAL = driverController.rightTrigger().and(()->isCoralMode);
+    private final Trigger SCORE_ALGAE = driverController.rightTrigger().and(()->!isCoralMode);
 
     private final Trigger SLOW_MODE = driverController.rightBumper();
     private final Trigger RESET_HEADING = driverController.back();
     private final Trigger ROBOT_RELATIVE = driverController.y();
-    private final Trigger SNAP_NORTH = driverController.pov(0);
-    private final Trigger SNAP_SOUTH = driverController.pov(180);
-    private final Trigger SNAP_EAST = driverController.pov(90);
-    private final Trigger SNAP_WEST = driverController.pov(270);
+    // private final Trigger SNAP_NORTH = driverController.pov(0);
+    // private final Trigger SNAP_SOUTH = driverController.pov(180);
+    // private final Trigger SNAP_EAST = driverController.pov(90);
+    // private final Trigger SNAP_WEST = driverController.pov(270);
 
     private final Trigger STOW = driverController.x();
     private final Trigger GO_TO_POSITION = driverController.a();
     private final Trigger ALIGN_TO_REEF = driverController.leftBumper();
 
-    private final Trigger LED_TEST = driverController.b();
+    //private final Trigger LED_TEST = driverController.b();
+
+    private final Trigger DEEP_CLIMB = driverController.b();
+    private final Trigger WINCH_UP = driverController.pov(180);
+    private final Trigger WINCH_DOWN = driverController.pov(0);
+    private final Trigger DEEP_CLIMB_POSITION = coralController.button(8).and(()->!isCoralMode);
 
     //Operator controls
 
@@ -107,9 +115,6 @@ public class RobotContainer {
     private final Trigger MODE_SWITCH_ALGAE = coralController.button(9);
     private final Trigger MODE_SWITCH_CORAL = coralController.button(10);
 
-    
-
-
     // Helpers
     // TODO: Add instantiatable helpers here
 
@@ -127,6 +132,7 @@ public class RobotContainer {
         wrist = new Wrist();
         elevator = new Elevator();
         intake = new Intake();
+        deepclimb = new DeepClimb();
         leds = new LEDs();
         
         scoring = new Scoring(elevator, clockArm, wrist, intake);
@@ -207,40 +213,40 @@ public class RobotContainer {
             Commands.runOnce(() -> swerve.setRobotRelative(false)).ignoringDisable(true)
         );
 
-        SNAP_NORTH.whileTrue(
-            swerveSnapToCommand(
-                Rotation2d.fromDegrees(0),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getLeftY()
-            )
-        );
+        // SNAP_NORTH.whileTrue(
+        //     swerveSnapToCommand(
+        //         Rotation2d.fromDegrees(0),
+        //         () -> -driverController.getLeftX(),
+        //         () -> -driverController.getLeftY()
+        //     )
+        // );
 
-        SNAP_SOUTH.whileTrue(
-            swerveSnapToCommand(
-                Rotation2d.fromDegrees(180),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getLeftY()
-            )
-        );
+        // SNAP_SOUTH.whileTrue(
+        //     swerveSnapToCommand(
+        //         Rotation2d.fromDegrees(180),
+        //         () -> -driverController.getLeftX(),
+        //         () -> -driverController.getLeftY()
+        //     )
+        // );
 
-        SNAP_EAST.whileTrue(
-            swerveSnapToCommand(
-                Rotation2d.fromDegrees(270),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getLeftY()
-            )
-        );
+        // SNAP_EAST.whileTrue(
+        //     swerveSnapToCommand(
+        //         Rotation2d.fromDegrees(270),
+        //         () -> -driverController.getLeftX(),
+        //         () -> -driverController.getLeftY()
+        //     )
+        // );
 
-        SNAP_WEST.whileTrue(
-            swerveSnapToCommand(
-                Rotation2d.fromDegrees(90),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getLeftY()
-            ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
-        );
+        // SNAP_WEST.whileTrue(
+        //     swerveSnapToCommand(
+        //         Rotation2d.fromDegrees(90),
+        //         () -> -driverController.getLeftX(),
+        //         () -> -driverController.getLeftY()
+        //     ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
+        // );
 
         //------------------------------ OPERATOR POSITION COMMANDS ------------------------------//
-        PRIME_L1.onTrue(scoring.setUserPosition(ElevatorPositions.getL1()).ignoringDisable(true));
+        //PRIME_L1.onTrue(scoring.setUserPosition(ElevatorPositions.getL1()).ignoringDisable(true));
         PRIME_L2.onTrue(scoring.setUserPosition(ElevatorPositions.getL2()).ignoringDisable(true));
         PRIME_L3.onTrue(scoring.setUserPosition(ElevatorPositions.getL3()).ignoringDisable(true));
         PRIME_L4.onTrue(scoring.setUserPosition(ElevatorPositions.getL4()).ignoringDisable(true));
@@ -250,6 +256,7 @@ public class RobotContainer {
         PRIME_L3_ALGAE.onTrue(scoring.setUserPosition(ElevatorPositions.getL3Algae()).ignoringDisable(true));
         PRIME_NET.onTrue(scoring.setUserPosition(ElevatorPositions.getNet()).ignoringDisable(true));
         ALGAE_INTAKE.onTrue(scoring.setUserPosition(ElevatorPositions.getGroundAlgae()).ignoringDisable(true));
+        DEEP_CLIMB_POSITION.onTrue(scoring.setUserPosition(ElevatorPositions.getDeepClimb()).ignoringDisable(true));
 
         MODE_SWITCH_ALGAE.onTrue(Commands.runOnce(()->{
             isCoralMode=false; 
@@ -271,7 +278,8 @@ public class RobotContainer {
 
         INTAKE.whileTrue(new DeferredCommand(() -> scoring.intakeCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
         
-        SCORE.whileTrue(new DeferredCommand(() -> scoring.outtakeCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
+        SCORE_CORAL.whileTrue(new DeferredCommand(() -> scoring.outtakeCoralCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
+        SCORE_ALGAE.whileTrue(new DeferredCommand(() -> scoring.outtakeAlgaeCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
 
         ALIGN_TO_REEF.whileTrue(
             new DeferredCommand(
@@ -280,8 +288,19 @@ public class RobotContainer {
             ) 
         );
 
-        LED_TEST.onTrue(setLEDsCommand(LEDS.TEAL)).onFalse(setLEDsCommand(LEDS.OFF));
+        //LED_TEST.onTrue(setLEDsCommand(LEDS.TEAL)).onFalse(setLEDsCommand(LEDS.OFF));
 
+        DEEP_CLIMB.onTrue(deepclimb.setDeepClimbIntakeCommand(-0.5)).onFalse(deepclimb.setDeepClimbIntakeCommand(0));
+        WINCH_UP.whileTrue(
+            deepclimb.setDeepClimbCommand(-1).onlyIf(
+                () -> scoring.isAtPosition(ElevatorPositions.getDeepClimb())
+            )
+        ).onFalse(deepclimb.setDeepClimbCommand(0));
+        WINCH_DOWN.whileTrue(
+            deepclimb.setDeepClimbCommand(1).onlyIf(
+                () -> scoring.isAtPosition(ElevatorPositions.getDeepClimb())
+            )
+        ).onFalse(deepclimb.setDeepClimbCommand(0));
 
     };
 

@@ -2,8 +2,6 @@ package frc.robot.subsystems;
 
 import org.littletonrobotics.junction.Logger;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
@@ -18,7 +16,7 @@ public class DeepClimb extends SubsystemBase {
     NewtonMotor deepClimbIntakeMotor;
 
     public DeepClimb() {
-        deepClimbMotor = new SparkFlexMotor(CAN.DEEP_CLIMB_MOTOR_CAN_ID, true); //TODO: add back spark flex motor
+        deepClimbMotor = new SparkFlexMotor(CAN.DEEP_CLIMB_MOTOR_CAN_ID, true); 
         deepClimbMotor.setIdleMode(IdleMode.kBrake);
 
         deepClimbIntakeMotor = new SparkFlexMotor(CAN.DEEP_CLIMB_INTAKE_MOTOR_CAN_ID, true);
@@ -31,6 +29,14 @@ public class DeepClimb extends SubsystemBase {
 
     public void setDeepClimbIntakePercentOutput(double percent){
         deepClimbIntakeMotor.setPercentOutput(percent);
+    }
+
+    public Command setDeepClimbStartPositionCommand(){
+        return setDeepClimbCommand(-1).until(
+            () -> {
+                return deepClimbMotor.getRotations() <= DEEP_CLIMB.DEEP_CLIMB_START_POSITION;
+            }
+        ).andThen(setDeepClimbCommand(0).withTimeout(0.1));
     }
 
     public void stopDeepClimb() {
@@ -62,6 +68,7 @@ public class DeepClimb extends SubsystemBase {
     }
 
     public void periodic() {
-        
+        Logger.recordOutput(SHARED.LOG_FOLDER + "Winch Rotations", deepClimbMotor.getRotations());
+
     }
 }
