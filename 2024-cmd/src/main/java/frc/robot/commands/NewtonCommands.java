@@ -1,23 +1,11 @@
 package frc.robot.commands;
 
-import static edu.wpi.first.units.Units.Newton;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.*;
-import frc.robot.commands.largecommands.FollowPathCommand;
-import frc.robot.Constants.INTAKE;
-import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.scoring.*;
 import frc.robot.subsystems.swerve.Swerve;

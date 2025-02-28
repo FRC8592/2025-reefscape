@@ -4,7 +4,6 @@ import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
@@ -73,6 +72,15 @@ public class ClockArm extends SubsystemBase{
      */
     public boolean atPosition(){
         return Utils.isWithin(getDegrees(), targetArmDegrees, ARM.CLOCK_ARM_POSITION_TOLERANCE);
+    }
+
+    /**
+     * Outputs whether the arm is at it's desired position within the passed-in tolerance.
+     * @param tolerence the number of degrees the arm must be within to count as "at position."
+     * @return Returns if the arm is at position as a boolean.
+     */
+    public boolean atPosition(double tolerance){
+        return Utils.isWithin(getDegrees(), targetArmDegrees, tolerance);
     }
 
     /**

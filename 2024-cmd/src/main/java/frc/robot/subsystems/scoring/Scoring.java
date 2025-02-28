@@ -5,12 +5,9 @@ import java.util.Set;
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
-import frc.robot.subsystems.DeepClimb;
 
 public class Scoring extends SubsystemBase {
 
@@ -42,7 +39,7 @@ public class Scoring extends SubsystemBase {
         // L1_PERRY(14.4, 5, 175, -0.43, 0.75),
         L1_PERRY(0, 0, 0, 0, 0),
         L2_PERRY(6.8, 43, 185, -0.2, 0.75),
-        L3_PERRY(0, 151, 210, -0.43, 0.75), //adjust wrist down from 200
+        L3_PERRY(0, 151, 210, -0.35, 0.75), //adjust wrist down from 200
         L4_PERRY(19.5, 155, 207, -0.43, 0.75), //arm adjusted from 165
         GROUND_ALGAE_PERRY(0, 0, 0, 0.5, -0.75),
         STOW_PERRY(0, 0, 0, 0.5, 0.75),
@@ -142,7 +139,7 @@ public class Scoring extends SubsystemBase {
      * @return
      */
     public Command intakeCommand(){
-        return intake.setIntakeCommand(scoringTargetPosition.intakeSpeed);
+        return new DeferredCommand(() -> intake.setIntakeCommand(scoringTargetPosition.intakeSpeed).finallyDo(() -> {intake.stop();}), Set.of(this));
     }
 
     /**
@@ -150,7 +147,13 @@ public class Scoring extends SubsystemBase {
      * @return Returns a command to run the intake untill the beam brake is tripped.
      */
     public Command intakeUntilHasCoralCommand(){
-        return intake.setIntakeCommand(scoringTargetPosition.intakeSpeed).until(() -> intake.robotHasCoral());
+        return new DeferredCommand(() -> 
+            intake.setIntakeCommand(scoringTargetPosition.intakeSpeed)
+            .until(() -> intake.robotHasCoral())
+            .finallyDo(() -> {intake.stop();}),
+
+            Set.of(this)
+        );
     }
 
 
@@ -161,11 +164,11 @@ public class Scoring extends SubsystemBase {
      * @return
      */
     public Command outtakeCoralCommand(){
-        return new DeferredCommand(() -> intake.setIntakeCommand(scoringTargetPosition.outtakeSpeed), Set.of(this));
+        return new DeferredCommand(() -> intake.setIntakeCommand(scoringTargetPosition.outtakeSpeed).finallyDo(() -> {intake.stop();}), Set.of(this));
     }
 
     public Command outtakeAlgaeCommand(){
-        return new DeferredCommand(()-> intake.setIntakeCommand(1), Set.of(this));
+        return new DeferredCommand(()-> intake.setIntakeCommand(1).finallyDo(() -> {intake.stop();}), Set.of(this));
     }
 
     /**
@@ -234,7 +237,7 @@ public class Scoring extends SubsystemBase {
             }   
                 // Moving to L3/L3: Ensure the arm reaches position before moving the wrist
                 if (scoringTargetPosition == ElevatorPositions.getL3() || scoringTargetPosition == ElevatorPositions.getL4()){
-                    if (clockArm.atPosition()) { // Only move wrist when arm is in position
+                    if (clockArm.atPosition(40)) { // Only move wrist when arm is in position
                         targetWristPosition = scoringTargetPosition.wristPos;
                     } else {
                         targetWristPosition = currentWristPosition; // Hold wrist position until arm is ready

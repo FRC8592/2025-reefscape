@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-import com.ctre.phoenix6.swerve.jni.SwerveJNI;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveDrivetrain;
@@ -16,7 +15,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.subsystems.swerve.riptideswerve.RiptideDrivetrain;
 import frc.robot.Constants.SHARED;
 import frc.robot.subsystems.swerve.perryswerve.PerryConstants;
 import frc.robot.subsystems.swerve.riptideswerve.RiptideConstants;
