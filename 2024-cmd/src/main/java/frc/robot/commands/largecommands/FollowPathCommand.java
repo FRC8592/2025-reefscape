@@ -56,8 +56,8 @@ public class FollowPathCommand extends LargeCommand{
             SWERVE.PATH_FOLLOW_TRANSLATE_kD
         );
         this.xController.setTolerance(
-            SWERVE.PATH_FOLLOW_POSITION_TOLERANCE,
-            SWERVE.PATH_FOLLOW_VELOCITY_TOLERANCE
+            SWERVE.PATH_FOLLOW_TRANSLATE_POSITION_TOLERANCE,
+            SWERVE.PATH_FOLLOW_TRANSLATE_VELOCITY_TOLERANCE
         );
 
         this.yController = new PIDController(
@@ -66,8 +66,8 @@ public class FollowPathCommand extends LargeCommand{
             SWERVE.PATH_FOLLOW_TRANSLATE_kD
         );
         this.yController.setTolerance(
-            SWERVE.PATH_FOLLOW_POSITION_TOLERANCE,
-            SWERVE.PATH_FOLLOW_VELOCITY_TOLERANCE
+            SWERVE.PATH_FOLLOW_TRANSLATE_POSITION_TOLERANCE,
+            SWERVE.PATH_FOLLOW_TRANSLATE_VELOCITY_TOLERANCE
         );
 
         this.turnController = new ProfiledPIDController(
@@ -80,8 +80,8 @@ public class FollowPathCommand extends LargeCommand{
             )
         );
         this.turnController.setTolerance(
-            SWERVE.PATH_FOLLOW_POSITION_TOLERANCE,
-            SWERVE.PATH_FOLLOW_VELOCITY_TOLERANCE
+            SWERVE.PATH_FOLLOW_ROTATE_POSITION_TOLERANCE,
+            SWERVE.PATH_FOLLOW_ROTATE_VELOCITY_TOLERANCE
         );
         this.turnController.enableContinuousInput(-Math.PI, Math.PI);
 

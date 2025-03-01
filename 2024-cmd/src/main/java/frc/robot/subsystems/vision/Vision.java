@@ -5,25 +5,22 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+
 import org.photonvision.*;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.photonvision.estimation.TargetModel;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
-import org.photonvision.simulation.VisionTargetSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CORAL_ALIGN;
 import frc.robot.Robot;
@@ -93,7 +90,7 @@ public class Vision extends SubsystemBase{
          int targetId = 0;
          Transform3d bestCameraToTarget = new Transform3d();
          results = camera.getAllUnreadResults();
-         SmartDashboard.putBoolean("results empty", results.isEmpty());
+        //  SmartDashboard.putBoolean("results empty", results.isEmpty());
          if (!results.isEmpty()) {
              // Camera processed a new frame since last
              // Get the last one in the list.
@@ -131,9 +128,13 @@ public class Vision extends SubsystemBase{
                  }
              }
         
-         SmartDashboard.putBoolean("Vision Target Visible", targetVisible);
-         SmartDashboard.putNumber("Target ID", targetId);
-         SmartDashboard.putNumber("Target Yaw Rotation", targetYawRotation);
+        //  SmartDashboard.putBoolean("Vision Target Visible", targetVisible);
+        //  SmartDashboard.putNumber("Target ID", targetId);
+        //  SmartDashboard.putNumber("Target Yaw Rotation", targetYawRotation);
+
+        // Logs if the robot sees 1 or sees 2 tags
+        SmartDashboard.putBoolean("Has one tag", getTargets().size() > 0);
+        SmartDashboard.putBoolean("Has two tags", getTargets().size() > 1);
     }
 
     public void simulationPeriodic() {
@@ -230,9 +231,4 @@ public class Vision extends SubsystemBase{
        
         
     }
-
-    
-
-
-
 }

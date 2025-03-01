@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -15,23 +14,16 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.Trajectory.State;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.Queue;
 
 import org.littletonrobotics.junction.Logger;
 
 import frc.robot.subsystems.swerve.Swerve;
-import frc.robot.subsystems.swerve.Swerve.DriveModes;
-import frc.robot.subsystems.vision.Vision;
 import frc.robot.Suppliers;
 import frc.robot.Constants.*;
 import frc.robot.commands.largecommands.FollowPathCommand;
@@ -41,10 +33,6 @@ public class ScoreCoral extends SubsystemBase {
     public static ChassisSpeeds speedZero = new ChassisSpeeds();
 
     private Swerve swerve;
-    
-    private PIDController xController = new PIDController(CORAL_ALIGN.X_KP, CORAL_ALIGN.X_KI, CORAL_ALIGN.X_KD);
-    private PIDController yController = new PIDController(CORAL_ALIGN.Y_KP, CORAL_ALIGN.Y_KI, CORAL_ALIGN.Y_KD);
-    private PIDController rotController = new PIDController(CORAL_ALIGN.ROT_KP, CORAL_ALIGN.ROT_KI, CORAL_ALIGN.ROT_KD);
 
     //The AprilTag target taken from vision
     private Pose2d target;
@@ -216,7 +204,7 @@ public class ScoreCoral extends SubsystemBase {
 
     public void setPosition(LeftOrRight leftOrRight){
        direction = leftOrRight;
-       SmartDashboard.putString("direction", direction.name());
+    //    SmartDashboard.putString("direction", direction.name());
     }
 
     /**

@@ -11,7 +11,6 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.subsystems.swerve.*;
-import frc.robot.commands.NewtonCommands;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.scoring.Intake;
 import frc.robot.subsystems.scoring.Scoring;

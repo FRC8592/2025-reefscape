@@ -5,7 +5,6 @@
 package frc.robot;
 
 import frc.robot.Constants.*;
-import static frc.robot.commands.NewtonCommands.*;
 
 import java.util.Set;
 
@@ -28,8 +27,8 @@ import frc.robot.subsystems.scoring.Scoring.ElevatorPositions;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
 import frc.robot.subsystems.vision.Vision;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
@@ -332,5 +331,12 @@ public class RobotContainer {
             //If you want to force-allow setting a cancel-incoming default command, directly call `subsystem.setDefaultCommand()` instead
             throw new UnsupportedOperationException("Can't set a default command that cancels incoming!");
         }
+    }
+
+    public void periodic(){
+
+        //Logging if we have the coral fully or not
+        SmartDashboard.putBoolean("Coral mode", isCoralMode);
+        
     }
 }

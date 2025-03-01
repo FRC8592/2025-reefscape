@@ -4,7 +4,6 @@ import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
@@ -76,6 +75,15 @@ public class ClockArm extends SubsystemBase{
     }
 
     /**
+     * Outputs whether the arm is at it's desired position within the passed-in tolerance.
+     * @param tolerence the number of degrees the arm must be within to count as "at position."
+     * @return Returns if the arm is at position as a boolean.
+     */
+    public boolean atPosition(double tolerance){
+        return Utils.isWithin(getDegrees(), targetArmDegrees, tolerance);
+    }
+
+    /**
      * Converts an amount of motor rotations to arm degrees.
      * @param rotations The amount of arm motor rotations we want to convert to degrees.
      * @return Returns the amount of rotations we wanted to convert as degrees.
@@ -126,9 +134,9 @@ public class ClockArm extends SubsystemBase{
         //Moves the arm to the target degrees.
         clockArmMotor.setPosition(degreesToMotorRotations(targetArmDegrees));
         //Logs the arms target degrees, current degrees, and whether the arm is at position.
-        SmartDashboard.putNumber("ClockArm|CurrentDegrees", getDegrees());
-        SmartDashboard.putNumber("ClockArm|TargetDegrees", targetArmDegrees);
-        SmartDashboard.putBoolean("ClockArm|AtPosition", atPosition());
+        // SmartDashboard.putNumber("ClockArm|CurrentDegrees", getDegrees());
+        // SmartDashboard.putNumber("ClockArm|TargetDegrees", targetArmDegrees);
+        // SmartDashboard.putBoolean("ClockArm|AtPosition", atPosition());
         Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"ClockArm|CurrentDegrees ", getDegrees());
         Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"ClockArm|TargetDegrees", targetArmDegrees);
         Logger.recordOutput(ARM.CLOCK_ARM_LOG_PATH+"ClockArm|AtPosition", atPosition());

@@ -11,7 +11,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants.*;
-import frc.robot.commands.NewtonCommands;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.scoring.Scoring;

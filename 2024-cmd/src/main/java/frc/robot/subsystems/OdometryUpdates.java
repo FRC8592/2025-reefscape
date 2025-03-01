@@ -4,14 +4,11 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
@@ -47,7 +44,7 @@ public class OdometryUpdates extends SubsystemBase {
             timeStamp = robotPose.get().timestampSeconds;
 
             //if(Math.abs(ambiguity) < 0.2 && vision.getTargets().size() > 1) {
-            if(Math.abs(ambiguity) < Constants.NAVIGATION.MAX_ACCEPTABLE_AMBIGUITY) {
+            if(Math.abs(ambiguity) < Constants.NAVIGATION.MAX_ACCEPTABLE_AMBIGUITY || vision.getTargets().size() > 1) {
             
                 if (DriverStation.isDisabled()){
                     initialPose = robotPosition;
