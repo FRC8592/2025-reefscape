@@ -53,9 +53,9 @@ public class Robot extends LoggedRobot {
     @Override
     public void robotInit() {
         CanBridge.runTCP();
-        Logger.recordMetadata("Game", "Crescendo");
-        Logger.recordMetadata("Year", "2024");
-        Logger.recordMetadata("Robot", "Zenith");
+        Logger.recordMetadata("Game", "ReefScape");
+        Logger.recordMetadata("Year", "2025");
+        Logger.recordMetadata("Robot", "Perry");
         Logger.recordMetadata("Team", "8592");
 
         Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
