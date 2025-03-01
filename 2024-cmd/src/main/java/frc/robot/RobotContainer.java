@@ -88,9 +88,10 @@ public class RobotContainer {
     //private final Trigger LED_TEST = driverController.b();
 
     private final Trigger DEEP_CLIMB = driverController.b();
-    private final Trigger WINCH_UP = driverController.pov(180);
-    private final Trigger WINCH_DOWN = driverController.pov(0);
+    private final Trigger WINCH_UP = driverController.pov(0);
+    private final Trigger WINCH_DOWN = driverController.pov(180);
     private final Trigger DEEP_CLIMB_DEPLOY = driverController.pov(90);
+
     private final Trigger DEEP_CLIMB_POSITION = coralController.button(8).and(()->!isCoralMode);
 
     //Operator controls
@@ -292,19 +293,20 @@ public class RobotContainer {
 
         DEEP_CLIMB.onTrue(deepclimb.setDeepClimbIntakeCommand(-1)).onFalse(deepclimb.setDeepClimbIntakeCommand(0));
 
-        // DEEP_CLIMB_DEPLOY.onTrue(deepclimb.setDeepClimbStartPositionCommand());//.onFalse(deepclimb.setDeepClimbIntakeCommand(0));
+        DEEP_CLIMB_DEPLOY.onTrue(deepclimb.setDeepClimbStartPositionCommand());//.onFalse(deepclimb.setDeepClimbIntakeCommand(0));
 
         WINCH_UP.whileTrue(
             deepclimb.setDeepClimbCommand(-1)
-            // .onlyIf(
-            //     () -> scoring.isAtPosition(ElevatorPositions.getDeepClimb())
-            // )
+            .onlyIf(
+                () -> scoring.isAtPosition(ElevatorPositions.getDeepClimb())
+            )
         ).onFalse(deepclimb.setDeepClimbCommand(0));
         WINCH_DOWN.whileTrue(
             deepclimb.setDeepClimbCommand(1)
-            // .onlyIf(
-            //     () -> scoring.isAtPosition(ElevatorPositions.getDeepClimb())
-            // )
+            .onlyIf(
+                () 
+                -> scoring.isAtPosition(ElevatorPositions.getDeepClimb())
+            )
         ).onFalse(deepclimb.setDeepClimbCommand(0));
 
     };

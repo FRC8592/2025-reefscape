@@ -37,10 +37,9 @@ public class DeepClimb extends SubsystemBase {
     // }
 
     public Command setDeepClimbStartPositionCommand(){
-        // return setDeepClimbCommand(-1).until(
-        //     () -> deepClimbMotor.getRotations() <= DEEP_CLIMB.DEEP_CLIMB_START_POSITION
-        // ).finallyDo(() -> deepClimbMotor.setPercentOutput(0));
-        return Commands.none();
+        return this.run(()->deepClimbMotor.setPercentOutput(-1)).until(
+            () -> deepClimbMotor.getRotations() <= DEEP_CLIMB.DEEP_CLIMB_START_POSITION
+        ).finallyDo(() -> deepClimbMotor.setPercentOutput(0));
     }
 
     public void stopDeepClimb() {
@@ -52,7 +51,7 @@ public class DeepClimb extends SubsystemBase {
     }
 
     public Command setDeepClimbCommand(double percent){
-        return this.run(()->{setDeepClimbPercentOutput(percent);});
+        return this.runOnce(()->{setDeepClimbPercentOutput(percent);});
     }
 
     public Command setDeepClimbIntakeCommand(double percent){
