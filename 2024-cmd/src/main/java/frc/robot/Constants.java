@@ -132,7 +132,7 @@ public final class Constants {
         public static final double PATH_FOLLOW_TRANSLATE_POSITION_TOLERANCE = 0.01; // Meters
         public static final double PATH_FOLLOW_TRANSLATE_VELOCITY_TOLERANCE = 0.02;
 
-        public static final double PATH_FOLLOW_ROTATE_POSITION_TOLERANCE = 0.03; // Radians
+        public static final double PATH_FOLLOW_ROTATE_POSITION_TOLERANCE = 0.07; // Radians
         public static final double PATH_FOLLOW_ROTATE_VELOCITY_TOLERANCE = 0.03;
     }
 
