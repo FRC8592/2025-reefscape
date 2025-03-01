@@ -27,7 +27,7 @@ public class Scoring extends SubsystemBase {
         L1_RIPTIDE(14.4, 5, 175, -0.43, 0.75),
         L2_RIPTIDE(11.8, 0, 180, -0.2, 0.75),
         L3_RIPTIDE(0, 165, 195, -0.43, 0.75),
-        L4_RIPTIDE(19.5, 160, 200, -0.43, 0.75),
+        L4_RIPTIDE(19.5, 160, 200, -0.43, 0.75), 
         GROUND_ALGAE_RIPTIDE(0, 0, 0, 0.5, -0.75),
         STOW_RIPTIDE(0, 0, 0, 0.5, 0.75),
         STOW_WITH_CORAL_RIPTIDE(0, 0, 20, 0.5, 0.75),
@@ -38,9 +38,9 @@ public class Scoring extends SubsystemBase {
 
         // L1_PERRY(14.4, 5, 175, -0.43, 0.75),
         L1_PERRY(0, 0, 0, 0, 0),
-        L2_PERRY(6.8, 43, 185, -0.2, 0.75),
-        L3_PERRY(0, 151, 210, -0.35, 0.75), //adjust wrist down from 200
-        L4_PERRY(20, 155, 207, -0.43, 0.75), //arm adjusted from 165
+        L2_PERRY(6.8, 43, 185, -0.15, 0.75),
+        L3_PERRY(0, 151, 210, -0.25, 0.75), //adjust wrist down from 200
+        L4_PERRY(20, 155, 213, -0.33, 0.75), //arm adjusted from 165
         GROUND_ALGAE_PERRY(0, 0, 0, 0.5, -0.75),
         STOW_PERRY(0, 0, 0, 0.5, 0.75),
         // STOW_WITH_CORAL_PERRY(0, 0, 20, 0.5, 0.75),
