@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
 // import frc.robot.helpers.SparkFlexControl;
@@ -31,12 +32,15 @@ public class DeepClimb extends SubsystemBase {
         deepClimbIntakeMotor.setPercentOutput(percent);
     }
 
+    // public boolean isDeepClimbDeployed() {
+    //     return deepClimbMotor.getRotations() > DEEP_CLIMB.DEEP_CLIMB_START_POSITION;
+    // }
+
     public Command setDeepClimbStartPositionCommand(){
-        return setDeepClimbCommand(-1).until(
-            () -> {
-                return deepClimbMotor.getRotations() <= DEEP_CLIMB.DEEP_CLIMB_START_POSITION;
-            }
-        ).andThen(setDeepClimbCommand(0).withTimeout(0.1));
+        // return setDeepClimbCommand(-1).until(
+        //     () -> deepClimbMotor.getRotations() <= DEEP_CLIMB.DEEP_CLIMB_START_POSITION
+        // ).finallyDo(() -> deepClimbMotor.setPercentOutput(0));
+        return Commands.none();
     }
 
     public void stopDeepClimb() {

@@ -52,7 +52,7 @@ public final class Constants {
         public static final Transform3d CAMERA_OFFSETS = (
             SHARED.IS_RIPTIDE
             ? /* RIPRIDE: */ new Transform3d(new Translation3d(0.21, 0.215, 0.17), new Rotation3d(0, Math.toRadians(-12), 0))
-            : /* PERRY: */   new Transform3d(new Translation3d(0.17145, 0.20955, 0.2286), new Rotation3d(0, Math.toRadians(-12), 0))
+            : /* PERRY: */   new Transform3d(new Translation3d(0.17145, 0.20955, 0.2286), new Rotation3d(0, Math.toRadians(-12), Math.toRadians(-5)))
         );
 
         public static final String CAMERA_NAME = (
@@ -117,7 +117,7 @@ public final class Constants {
         public static final Rotation2d RED_PERSPECTIVE_ROTATION = Rotation2d.fromDegrees(180);
 
         //TODO: Double check that these still work
-        public static final double PATH_FOLLOW_TRANSLATE_kP = 10d; // Was 8 in the last test
+        public static final double PATH_FOLLOW_TRANSLATE_kP = 8d; // Was 8 in the last test
         public static final double PATH_FOLLOW_TRANSLATE_kI = 0d;
         public static final double PATH_FOLLOW_TRANSLATE_kD = 0d;
 
@@ -129,8 +129,8 @@ public final class Constants {
         public static final double PATH_FOLLOW_ROTATE_MAX_VELOCITY = 4 * Math.PI;
         public static final double PATH_FOLLOW_ROTATE_MAX_ACCELLERATION = 4 * Math.PI;
 
-        public static final double PATH_FOLLOW_TRANSLATE_POSITION_TOLERANCE = 0.01; // Meters
-        public static final double PATH_FOLLOW_TRANSLATE_VELOCITY_TOLERANCE = 0.01;
+        public static final double PATH_FOLLOW_TRANSLATE_POSITION_TOLERANCE = 0.02; // Meters
+        public static final double PATH_FOLLOW_TRANSLATE_VELOCITY_TOLERANCE = 0.02;
 
         public static final double PATH_FOLLOW_ROTATE_POSITION_TOLERANCE = 0.03; // Radians
         public static final double PATH_FOLLOW_ROTATE_VELOCITY_TOLERANCE = 0.03;
@@ -227,7 +227,7 @@ public final class Constants {
     }
 
     public final class DEEP_CLIMB{
-        public static final double DEEP_CLIMB_START_POSITION = 0;
+        public static final double DEEP_CLIMB_START_POSITION =-110.855;
     }
 
 }
