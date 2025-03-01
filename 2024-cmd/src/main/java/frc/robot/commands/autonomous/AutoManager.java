@@ -50,14 +50,14 @@ public final class AutoManager {
         // autoCommands.add(new ExampleAuto());
         // TODO: Add autos here
 
-        // autoCommands.add(new FourCoralLeftAuto());
+        autoCommands.add(new FourCoralLeftAuto());
         autoCommands.add(new FourCoralRightAuto());
-        // autoCommands.add(new OneCoralLeftAuto());
+        autoCommands.add(new OneCoralLeftAuto());
         autoCommands.add(new OneCoralRightAuto());
         //autoCommands.add(new OneCoralOneAlgaeMiddleAuto());
-        // autoCommands.add(new ThreeCoralLeftAuto());
+        autoCommands.add(new ThreeCoralLeftAuto());
         autoCommands.add(new ThreeCoralRightAuto());
-        // autoCommands.add(new TwoCoralLeftAuto());
+        autoCommands.add(new TwoCoralLeftAuto());
         autoCommands.add(new TwoCoralRightAuto());
         autoCommands.add(new TestAuto());
 

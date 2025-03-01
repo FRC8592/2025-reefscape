@@ -70,8 +70,8 @@ public class RobotContainer {
     private final Trigger ENABLED = new Trigger(() -> DriverStation.isEnabled()).and(()->DriverStation.isTeleop());
 
     private final Trigger INTAKE = driverController.leftTrigger();
-    private final Trigger SCORE_CORAL = driverController.rightTrigger().and(()->isCoralMode);
-    private final Trigger SCORE_ALGAE = driverController.rightTrigger().and(()->!isCoralMode);
+    private final Trigger SCORE = driverController.rightTrigger();
+    // private final Trigger SCORE_ALGAE = driverController.rightTrigger().and(()->!isCoralMode);
 
     private final Trigger SLOW_MODE = driverController.rightBumper();
     private final Trigger RESET_HEADING = driverController.back();
@@ -279,8 +279,8 @@ public class RobotContainer {
 
         INTAKE.whileTrue(new DeferredCommand(() -> scoring.intakeCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
         
-        SCORE_CORAL.whileTrue(new DeferredCommand(() -> scoring.outtakeCoralCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
-        SCORE_ALGAE.whileTrue(new DeferredCommand(() -> scoring.outtakeAlgaeCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
+        SCORE.whileTrue(new DeferredCommand(() -> scoring.outtakeCoralCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
+        // SCORE_ALGAE.whileTrue(new DeferredCommand(() -> scoring.outtakeAlgaeCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
 
         ALIGN_TO_REEF.whileTrue(
             new DeferredCommand(

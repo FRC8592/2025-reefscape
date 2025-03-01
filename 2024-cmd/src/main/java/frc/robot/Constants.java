@@ -150,7 +150,7 @@ public final class Constants {
         public static final double EXTENSION_GEAR_RATIO = 0.25;
         public static final double EXTENSION_DRUM_DIAMTER_INCHES = 1.0;
 
-        public static final double EXTENSION_INCHES_MAX = SHARED.IS_RIPTIDE?19.5:19.5; //this is in inches
+        public static final double EXTENSION_INCHES_MAX = SHARED.IS_RIPTIDE?19.5:20; //this is in inches
         public static final double EXTENSION_INCHES_MIN = SHARED.IS_RIPTIDE?0.5:0.5;
 
         public static final double EXTENSION_POSITION_TOLERANCE = 1.0;
@@ -227,7 +227,7 @@ public final class Constants {
     }
 
     public final class DEEP_CLIMB{
-        public static final double DEEP_CLIMB_START_POSITION =-110.855;
+        public static final double DEEP_CLIMB_START_POSITION =-107.855;
     }
 
 }
