@@ -129,7 +129,7 @@ public final class Constants {
         public static final double PATH_FOLLOW_ROTATE_MAX_VELOCITY = 4 * Math.PI;
         public static final double PATH_FOLLOW_ROTATE_MAX_ACCELLERATION = 4 * Math.PI;
 
-        public static final double PATH_FOLLOW_TRANSLATE_POSITION_TOLERANCE = 0.02; // Meters
+        public static final double PATH_FOLLOW_TRANSLATE_POSITION_TOLERANCE = 0.01; // Meters
         public static final double PATH_FOLLOW_TRANSLATE_VELOCITY_TOLERANCE = 0.02;
 
         public static final double PATH_FOLLOW_ROTATE_POSITION_TOLERANCE = 0.03; // Radians

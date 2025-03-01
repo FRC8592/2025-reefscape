@@ -6,8 +6,8 @@ import frc.robot.commands.autonomous.AutoCommand;
 import frc.robot.commands.largecommands.FollowPathCommand;
 import frc.robot.subsystems.scoring.Scoring.ElevatorPositions;
 
-public class TwoCoralRightAuto extends AutoCommand{
-    public TwoCoralRightAuto(){
+public class TwoCoralRedAuto extends AutoCommand{
+    public TwoCoralRedAuto(){
         super(
             new FollowPathCommand(getChoreoTrajectory("RightToCLeft"), Suppliers.robotRunningOnRed)
             .alongWith(scoring.goToSpecifiedPositionCommand(ElevatorPositions.getL4()))
