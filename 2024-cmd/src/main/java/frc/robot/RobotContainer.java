@@ -113,8 +113,8 @@ public class RobotContainer {
 
     private final Trigger ALGAE_INTAKE = coralController.button(3).and(()->!isCoralMode);
     // private final Trigger GROUND_INTAKE = coralController.button();
-    private final Trigger MODE_SWITCH_ALGAE = coralController.button(9);
-    private final Trigger MODE_SWITCH_CORAL = coralController.button(10);
+    private final Trigger MODE_SWITCH_ALGAE = coralController.button(9).or(coralController.axisGreaterThan(0, 0.1));
+    private final Trigger MODE_SWITCH_CORAL = coralController.button(10).or(coralController.axisLessThan(0, -0.1));
 
     // Helpers
     // TODO: Add instantiatable helpers here
