@@ -180,10 +180,10 @@ public class FollowPathCommand extends LargeCommand{
     }
     public boolean isFinished(){
         return ( // Only return true if enough time has elapsed, we're at the target location, and we're not using alternate movement.
-            timer.hasElapsed(trajectory.getTotalTimeSeconds())
+            (timer.hasElapsed(trajectory.getTotalTimeSeconds())
             && (drivePID.atReference() || !Robot.isReal())
             && !useAlternateRotation.getAsBoolean()
-            && !useAlternateTranslation.getAsBoolean()
+            && !useAlternateTranslation.getAsBoolean()) || timer.hasElapsed(3.5)
         );
     }
 

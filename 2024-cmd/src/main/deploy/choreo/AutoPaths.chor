@@ -3,7 +3,22 @@
  "version":1,
  "type":"Swerve",
  "variables":{
-  "expressions":{},
+  "expressions":{
+   "maxAccel":{
+    "dimension":"LinAcc",
+    "var":{
+     "exp":"2 m / s ^ 2",
+     "val":2.0
+    }
+   },
+   "maxVelo":{
+    "dimension":"LinVel",
+    "var":{
+     "exp":"3 m / s",
+     "val":3.0
+    }
+   }
+  },
   "poses":{
    "ALeft":{
     "x":{
@@ -231,16 +246,16 @@
    },
    "HPRight":{
     "x":{
-     "exp":"1.1743742227554321 m",
-     "val":1.174374222755432
+     "exp":"1.1772286891937256 m",
+     "val":1.1772286891937256
     },
     "y":{
-     "exp":"1.0150651931762695 m",
-     "val":1.0150651931762695
+     "exp":"1.0341564416885376 m",
+     "val":1.0341564416885376
     },
     "heading":{
-     "exp":"0.91560012948765 rad",
-     "val":0.91560012948765
+     "exp":"0.9428194799598598 rad",
+     "val":0.9428194799598598
     }
    },
    "LeftStart":{
