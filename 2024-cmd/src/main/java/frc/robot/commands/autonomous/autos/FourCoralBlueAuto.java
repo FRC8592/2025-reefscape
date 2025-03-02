@@ -11,7 +11,7 @@ public class FourCoralBlueAuto extends AutoCommand{
         super(
             new FollowPathCommand(getChoreoTrajectory("LeftToERight"), Suppliers.robotRunningOnRed)
             .alongWith(scoring.goToPosition(ElevatorPositions.getL4()))
-            .andThen(scoring.outtakeCoralCommand().withTimeout(1)),
+            .andThen(new WaitCommand(0.75), scoring.outtakeCoralCommand().withTimeout(0.75)),
 
             new FollowPathCommand(getChoreoTrajectory("ERightToHPLeft"), Suppliers.robotRunningOnRed)
             .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getStow())))
@@ -19,7 +19,7 @@ public class FourCoralBlueAuto extends AutoCommand{
 
             new FollowPathCommand(getChoreoTrajectory("HPLeftToFLeft"), Suppliers.robotRunningOnRed)
             .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getL4())))
-            .andThen(scoring.outtakeCoralCommand().withTimeout(1)),
+            .andThen(new WaitCommand(0.75), scoring.outtakeCoralCommand().withTimeout(0.75)),
 
             new FollowPathCommand(getChoreoTrajectory("FLeftToHPLeft"), Suppliers.robotRunningOnRed)
             .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getStow())))
@@ -27,7 +27,7 @@ public class FourCoralBlueAuto extends AutoCommand{
 
             new FollowPathCommand(getChoreoTrajectory("HPLeftToFRight"), Suppliers.robotRunningOnRed)
             .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getL4())))
-            .andThen(scoring.outtakeCoralCommand().withTimeout(1)),
+            .andThen(new WaitCommand(0.75), scoring.outtakeCoralCommand().withTimeout(0.75)),
 
             new FollowPathCommand(getChoreoTrajectory("FRightToHPLeft"), Suppliers.robotRunningOnRed)
             .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getStow())))
@@ -35,7 +35,7 @@ public class FourCoralBlueAuto extends AutoCommand{
 
             new FollowPathCommand(getChoreoTrajectory("HPLeftToALeft"), Suppliers.robotRunningOnRed)
             .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getL4())))
-            .andThen(scoring.outtakeCoralCommand().withTimeout(1)),
+            .andThen(new WaitCommand(0.75), scoring.outtakeCoralCommand().withTimeout(0.75)),
             
             new FollowPathCommand(getChoreoTrajectory("ALeftBackUp"), Suppliers.robotRunningOnRed)
             .andThen(scoring.goToPosition(ElevatorPositions.getStow()))
