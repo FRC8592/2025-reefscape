@@ -189,7 +189,7 @@ public class RobotContainer {
         );
 
         //------------------------------ SWERVE COMMANDS ------------------------------//
-        SLOW_MODE.onTrue(
+        driverController.rightBumper().onTrue(
             // The Commands.runOnce (instead of swerve.runOnce) is a special case here
             // to allow this to run while other swerve commands (the default driving
             // command, for example) run. This is usually a horrible idea and shouldn't
@@ -202,12 +202,12 @@ public class RobotContainer {
             Commands.runOnce(() -> swerve.setSlowMode(false)).ignoringDisable(true)
         );
 
-        RESET_HEADING.onTrue(
+        driverController.back().onTrue(
             // Similar comment on Commands.runOnce as slow mode above
             Commands.runOnce(() -> swerve.resetHeading())
         );
 
-        ROBOT_RELATIVE.onTrue(
+        driverController.leftBumper().onTrue(
             // Similar comment on Commands.runOnce and ignoringDisable as slow mode above
             Commands.runOnce(() -> swerve.setRobotRelative(true)).ignoringDisable(true)
         ).onFalse(
@@ -282,7 +282,7 @@ public class RobotContainer {
         SCORE.whileTrue(new DeferredCommand(() -> scoring.outtakeCoralCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
         // SCORE_ALGAE.whileTrue(new DeferredCommand(() -> scoring.outtakeAlgaeCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
 
-        ALIGN_TO_REEF.whileTrue(
+        driverController.y().whileTrue(
             new DeferredCommand(
                 () -> scoreCoral.driveToClosestReefTag(),
                 Set.of(swerve)

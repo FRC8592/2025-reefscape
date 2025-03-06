@@ -32,35 +32,34 @@ public class OdometryUpdates extends SubsystemBase {
 
     public void periodic() {
         if (RobotBase.isReal()){
-        Pose2d robotPosition = new Pose2d();
-        double ambiguity = -1d;
-        double timeStamp = 0.0;
+            Pose2d robotPosition = new Pose2d();
+            double ambiguity = -1d;
+            double timeStamp = 0.0;
 
-        Optional<EstimatedRobotPose> robotPose = vision.getRobotPoseVision();
+            Optional<EstimatedRobotPose> robotPose = vision.getRobotPoseVision();
         
-        if (robotPose.isPresent()) {
-            robotPosition = robotPose.get().estimatedPose.toPose2d();
-            ambiguity = vision.getPoseAmbiguityRatio();
-            timeStamp = robotPose.get().timestampSeconds;
+            if (robotPose.isPresent()) {
+                robotPosition = robotPose.get().estimatedPose.toPose2d();
+                ambiguity = vision.getPoseAmbiguityRatio();
+                timeStamp = robotPose.get().timestampSeconds;
 
-            //if(Math.abs(ambiguity) < 0.2 && vision.getTargets().size() > 1) {
-            if(Math.abs(ambiguity) < Constants.NAVIGATION.MAX_ACCEPTABLE_AMBIGUITY || vision.getTargets().size() > 1) {
-            
-                if (DriverStation.isDisabled()){
-                    initialPose = robotPosition;
-                    swerve.resetPose(initialPose);        
-                } else {
-                    swerve.addVisionMeasurement(robotPosition, timeStamp);
+                //if(Math.abs(ambiguity) < 0.2 && vision.getTargets().size() > 1) {
+                if(Math.abs(ambiguity) < Constants.NAVIGATION.MAX_ACCEPTABLE_AMBIGUITY || vision.getTargets().size() > 1) {
+                    if (DriverStation.isDisabled()){
+                        initialPose = robotPosition;
+                        swerve.resetPose(initialPose);        
+                    } else {
+                        swerve.addVisionMeasurement(robotPosition, timeStamp);
+                    }
                 }
+
             }
 
-        }
-
-        Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/TagsInView", vision.getTargets().size());
-        Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/VisionPose", robotPosition);
-        Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/OdometryPose", swerve.getCurrentPosition());
-        Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/AmbiguityRatio", ambiguity);
-        Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/InitialPose", initialPose);
+            Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/TagsInView", vision.getTargets().size());
+            Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/VisionPose", robotPosition);
+            Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/OdometryPose", swerve.getCurrentPosition());
+            Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/AmbiguityRatio", ambiguity);
+            Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/InitialPose", initialPose);
         }
     }
 
