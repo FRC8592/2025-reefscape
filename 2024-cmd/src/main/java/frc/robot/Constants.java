@@ -40,7 +40,7 @@ public final class Constants {
     }
 
     public final class CORAL_ALIGN {
-        public static final double OFFSET_DEPTH = 0.5; // Drivers requested for the robot to be as close to the april tag as possible
+        public static final double OFFSET_DEPTH = 0.37; // Drivers requested for the robot to be as close to the april tag as possible
         public static final double OFFSET_LEFT_METERS = -0.175;
         public static final double OFFSET_RIGHT_METERS = 0.175;
         public static final double ROT_OFFSET = 0d;
@@ -134,7 +134,7 @@ public final class Constants {
         public static final double PATH_FOLLOW_TRANSLATE_POSITION_TOLERANCE = 0.01; // Meters
         public static final double PATH_FOLLOW_TRANSLATE_VELOCITY_TOLERANCE = 0.02;
 
-        public static final double PATH_FOLLOW_ROTATE_POSITION_TOLERANCE = 0.07; // Radians
+        public static final double PATH_FOLLOW_ROTATE_POSITION_TOLERANCE = 0.05; // Radians
         public static final double PATH_FOLLOW_ROTATE_VELOCITY_TOLERANCE = 0.03;
     }
 
@@ -159,8 +159,8 @@ public final class Constants {
 
         public static final int ELEVATOR_CURRENT_LIMIT = 40;//amps
 
-        public static final double ELEVATOR_MAX_ACCELERATION = 300;
-        public static final double ELEVATOR_MAX_VELOCITY = 37.5; //formerly 75
+        public static final double ELEVATOR_MAX_ACCELERATION = 250;
+        public static final double ELEVATOR_MAX_VELOCITY = 15; //formerly 75
 
         public static final double ELEVATOR_POSITION_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3.5: /*PERRY: */3.5;
         public static final double ELEVATOR_POSITION_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
@@ -188,7 +188,7 @@ public final class Constants {
         public static final int ARM_CURRENT_LIMIT = 40;//amps
 
         public static final double ARM_MAX_ACCELERATION = 250;
-        public static final double ARM_MAX_VELOCITY = 50; //previously 100
+        public static final double ARM_MAX_VELOCITY = 15; //previously 100
 
         public static final double ARM_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */3;
         public static final double ARM_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
@@ -211,7 +211,7 @@ public final class Constants {
         public static final int WRIST_CURRENT_LIMIT = 60;//amps
 
         public static final double WRIST_MAX_ACCELERATION = 400;
-        public static final double WRIST_MAX_VELOCITY = 50; //used to be 100
+        public static final double WRIST_MAX_VELOCITY = 15; //used to be 100
 
         public static final double WRIST_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */3;
         public static final double WRIST_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
