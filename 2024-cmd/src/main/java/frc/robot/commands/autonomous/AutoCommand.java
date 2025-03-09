@@ -65,8 +65,9 @@ public class AutoCommand extends WrapperCommand{
         this.autoName = getClass().getSimpleName();
     }
 
-    protected void setAutoName(String name){
+    protected AutoCommand withAutoName(String name){
         this.autoName = name;
+        return this;
     }
 
     protected String getAutoName(){

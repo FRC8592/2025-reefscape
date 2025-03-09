@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Robot;
 import frc.robot.Suppliers;
 import frc.robot.commands.autonomous.autos.*;
+import frc.robot.commands.autonomous.autos.OmniCoralRedAuto.RedOrBlue;
 import frc.robot.commands.proxies.*;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.LEDs;
@@ -50,15 +51,21 @@ public final class AutoManager {
         // autoCommands.add(new ExampleAuto());
         // TODO: Add autos here
 
-        autoCommands.add(new FourCoralBlueAuto());
-        autoCommands.add(new FourCoralRedAuto());
-        autoCommands.add(new OneCoralBlueAuto());
-        autoCommands.add(new OneCoralRedAuto());
-        //autoCommands.add(new OneCoralOneAlgaeMiddleAuto());
-        autoCommands.add(new ThreeCoralBlueAuto());
-        autoCommands.add(new ThreeCoralRedAuto());
-        autoCommands.add(new TwoCoralBlueAuto());
-        autoCommands.add(new TwoCoralRedAuto());
+        autoCommands.add(new OmniCoralRedAuto(1, RedOrBlue.RED).withAutoName("OneCoralRedAuto"));
+        autoCommands.add(new OmniCoralRedAuto(2, RedOrBlue.RED).withAutoName("TwoCoralRedAuto"));
+        autoCommands.add(new OmniCoralRedAuto(3, RedOrBlue.RED).withAutoName("ThreeCoralRedAuto"));
+        autoCommands.add(new OmniCoralRedAuto(4, RedOrBlue.RED).withAutoName("FourCoralRedAuto"));
+
+        autoCommands.add(new OmniCoralRedAuto(1, RedOrBlue.BLUE).withAutoName("OneCoralBlueAuto"));
+        autoCommands.add(new OmniCoralRedAuto(2, RedOrBlue.BLUE).withAutoName("TwoCoralBlueAuto"));
+        autoCommands.add(new OmniCoralRedAuto(3, RedOrBlue.BLUE).withAutoName("ThreeCoralBlueAuto"));
+        autoCommands.add(new OmniCoralRedAuto(4, RedOrBlue.BLUE).withAutoName("FourCoralBlueAuto"));
+
+        // autoCommands.add(new FourCoralBlueAuto());
+        // autoCommands.add(new OneCoralBlueAuto());
+        // //autoCommands.add(new OneCoralOneAlgaeMiddleAuto());
+        // autoCommands.add(new ThreeCoralBlueAuto());
+        // autoCommands.add(new TwoCoralBlueAuto());
         autoCommands.add(new TestAuto());
 
 
