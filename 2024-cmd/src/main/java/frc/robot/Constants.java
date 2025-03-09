@@ -150,7 +150,7 @@ public final class Constants {
         public static final String EXTENSION_LOG_PATH = SHARED.LOG_FOLDER+"/Extension/";
 
         public static final double EXTENSION_GEAR_RATIO = 0.25;
-        public static final double EXTENSION_DRUM_DIAMTER_INCHES = 0.1;
+        public static final double EXTENSION_DRUM_DIAMTER_INCHES = 1;
 
         public static final double EXTENSION_INCHES_MAX = SHARED.IS_RIPTIDE?19.5:20.1; //this is in inches
         public static final double EXTENSION_INCHES_MIN = SHARED.IS_RIPTIDE?0.5:0.5;
@@ -160,7 +160,7 @@ public final class Constants {
         public static final int ELEVATOR_CURRENT_LIMIT = 40;//amps
 
         public static final double ELEVATOR_MAX_ACCELERATION = 300;
-        public static final double ELEVATOR_MAX_VELOCITY = 15; //formerly 75
+        public static final double ELEVATOR_MAX_VELOCITY = 37.5; //formerly 75
 
         public static final double ELEVATOR_POSITION_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3.5: /*PERRY: */3.5;
         public static final double ELEVATOR_POSITION_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
@@ -188,7 +188,7 @@ public final class Constants {
         public static final int ARM_CURRENT_LIMIT = 40;//amps
 
         public static final double ARM_MAX_ACCELERATION = 250;
-        public static final double ARM_MAX_VELOCITY = 100; //previously 100
+        public static final double ARM_MAX_VELOCITY = 50; //previously 100
 
         public static final double ARM_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */3;
         public static final double ARM_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
@@ -211,7 +211,7 @@ public final class Constants {
         public static final int WRIST_CURRENT_LIMIT = 60;//amps
 
         public static final double WRIST_MAX_ACCELERATION = 400;
-        public static final double WRIST_MAX_VELOCITY = 100; //used to be 100
+        public static final double WRIST_MAX_VELOCITY = 50; //used to be 100
 
         public static final double WRIST_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */3;
         public static final double WRIST_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
