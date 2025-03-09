@@ -152,15 +152,15 @@ public final class Constants {
         public static final double EXTENSION_GEAR_RATIO = 0.25;
         public static final double EXTENSION_DRUM_DIAMTER_INCHES = 1;
 
-        public static final double EXTENSION_INCHES_MAX = SHARED.IS_RIPTIDE?19.5:20.1; //this is in inches
-        public static final double EXTENSION_INCHES_MIN = SHARED.IS_RIPTIDE?0.5:0.5;
+        public static final double EXTENSION_INCHES_MAX = SHARED.IS_RIPTIDE ? /*RIPTIDE*/ 19.5: /*PERRY*/ 19.6; //this is in inches
+        public static final double EXTENSION_INCHES_MIN = SHARED.IS_RIPTIDE ? /*RIPTIDE*/ 0.5 : /*PERRY*/ 0.5;
 
         public static final double EXTENSION_POSITION_TOLERANCE = 0.1;
 
         public static final int ELEVATOR_CURRENT_LIMIT = 40;//amps
 
         public static final double ELEVATOR_MAX_ACCELERATION = 250;
-        public static final double ELEVATOR_MAX_VELOCITY = 15; //formerly 75
+        public static final double ELEVATOR_MAX_VELOCITY = 100; //formerly 100
 
         public static final double ELEVATOR_POSITION_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3.5: /*PERRY: */3.5;
         public static final double ELEVATOR_POSITION_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
@@ -180,15 +180,17 @@ public final class Constants {
         
         public static final double CLOCK_ARM_GEAR_RATIO = 1/180.0;
 
-        public static final double ARM_ANGLE_DEGREES_MIN = SHARED.IS_RIPTIDE?-20:-20;
-        public static final double ARM_ANGLE_DEGREES_MAX = SHARED.IS_RIPTIDE?180:180;
+        public static final double ARM_ANGLE_DEGREES_MIN = SHARED.IS_RIPTIDE? -2 : -2;
+        public static final double ARM_ANGLE_DEGREES_MAX = SHARED.IS_RIPTIDE? 180 : 180;
+
+        public static final double SAFE_ARM_TO_ROTATE_WRIST = SHARED.IS_RIPTIDE ? 75 : 75;
 
         public static final double CLOCK_ARM_POSITION_TOLERANCE = 2.0;
 
         public static final int ARM_CURRENT_LIMIT = 40;//amps
 
         public static final double ARM_MAX_ACCELERATION = 250;
-        public static final double ARM_MAX_VELOCITY = 15; //previously 100
+        public static final double ARM_MAX_VELOCITY = 100; //previously 100
 
         public static final double ARM_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */3;
         public static final double ARM_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
@@ -203,15 +205,15 @@ public final class Constants {
 
         public static final double WRIST_GEAR_RATIO = 1/75.0;
 
-        public static final double WRIST_ANGLE_DEGREES_MIN = SHARED.IS_RIPTIDE?-45d:-45d;
-        public static final double WRIST_ANGLE_DEGREES_MAX = SHARED.IS_RIPTIDE?220:220;
+        public static final double WRIST_ANGLE_DEGREES_MIN = SHARED.IS_RIPTIDE? -225d : -225d;
+        public static final double WRIST_ANGLE_DEGREES_MAX = SHARED.IS_RIPTIDE? 213 : 213;
 
         public static final double WRIST_POSITION_TOLERANCE = 2.0;
 
         public static final int WRIST_CURRENT_LIMIT = 60;//amps
 
         public static final double WRIST_MAX_ACCELERATION = 400;
-        public static final double WRIST_MAX_VELOCITY = 15; //used to be 100
+        public static final double WRIST_MAX_VELOCITY = 100; //used to be 100
 
         public static final double WRIST_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */3;
         public static final double WRIST_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;

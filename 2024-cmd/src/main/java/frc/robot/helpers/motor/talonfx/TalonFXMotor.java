@@ -45,10 +45,10 @@ public abstract class TalonFXMotor extends NewtonMotor {
         this.velocityOutput = new VelocityVoltage(0.0);
         this.percentOutput = new DutyCycleOut(0);
         this.motionMagicOutput = new MotionMagicVoltage(0);
-        this.percentOutput.OverrideBrakeDurNeutral = false;
-        this.positionOutput.OverrideBrakeDurNeutral = false;
-        this.velocityOutput.OverrideBrakeDurNeutral = false;
-        this.motionMagicOutput.OverrideBrakeDurNeutral = false;
+        this.percentOutput.OverrideBrakeDurNeutral = true;
+        this.positionOutput.OverrideBrakeDurNeutral = true;
+        this.velocityOutput.OverrideBrakeDurNeutral = true;
+        this.motionMagicOutput.OverrideBrakeDurNeutral = true;
        }
 
     public void configureMotionMagic(double maxAcceleration, double cruiseVelocity ){

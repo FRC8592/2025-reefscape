@@ -26,6 +26,7 @@ public class Scoring extends SubsystemBase {
 
     public static enum ElevatorPositions {
         
+        // RIPTIDE POSITIONS 
         L1_RIPTIDE(14.4, 5, 175, -0.43, 0.75),
         L2_RIPTIDE(11.8, 0, 180, -0.2, 0.75),
         L3_RIPTIDE(0, 165, 195, -0.43, 0.75),
@@ -38,15 +39,20 @@ public class Scoring extends SubsystemBase {
         PROCESSOR_RIPTIDE(0, 0, 0, -0.3, 0.75),
         NET_RIPTIDE(19.4, 150, 120, 1, -0.75),
 
-        // L1_PERRY(14.4, 5, 175, -0.43, 0.75),
 
-        L1_PERRY(13.3, 0, 107.8, 0, 0),
-        L2_PERRY(13.3, 0, 93.6, -0.15, 0.75),
+        // PERRY POSITIONS
+        START_POSITION_PERRY(0, 0, 0, 0, 0),
 
+        L1_PERRY(13.3, ARM.SAFE_ARM_TO_ROTATE_WRIST, 107.8, 0, 0),
+        // L1_PERRY(13.3, 0, 107.8, 0, 0),
+        // L2_PERRY(13.3, ARM.SAFE_ARM_TO_ROTATE_WRIST, 93.6, -0.15, 0.75),
+        // L2_PERRY(13.3, 0, 93.6, -0.15, 0.75),
 
-        L3_PERRY(0, 164, -200, -0.25, 0.75), //adjust wrist down from 200
-        L4_PERRY(19.5, 164, -200, -0.33, 0.75), //arm adjusted from 165
+        L2_PERRY(0, 164, -200, -0.25, 0.75), //might be a good L2!
 
+        L3_PERRY(0, 170, -220, -0.25, 0.75), //adjust wrist down from 200
+
+        L4_PERRY(19.5, 170, -220, -0.33, 0.75), //arm adjusted from 165
 
         GROUND_ALGAE_PERRY(0, 52, -139, 0.5, -0.75),
         STOW_ALGAE_PERRY(0,27.8, 0, 0,0),
@@ -58,7 +64,7 @@ public class Scoring extends SubsystemBase {
         NET_PERRY(19.5, 165, 43.8, 1, -0.75),
         DEEP_CLIMB_PERRY(0, 45, 0, 0, 0),
 
-        STOP(0,0,0,-0.75,0.5);
+        STOP(0,0,0, 0, 0);
 
         public double elevatorPos = 0;
         public double wristPos = 0;
@@ -215,72 +221,47 @@ public class Scoring extends SubsystemBase {
             double currentWristPosition = wrist.getDegrees();
             double currentArmPosition = clockArm.getDegrees();
 
-            //
-            // Allow the arm to move as far back as -20 degrees when the wrist is rotated outward to the scoring position.
-            //
-            // Check to see if the wrist scoring position is the currently commanded position.  If not, push the arm out
-            // to 30 degrees to allow the wrist to rotate (probably inward) without damaging anything.
-            //
-            if (currentWristPosition > 150 && scoringTargetPosition.wristPos > 150) {
-                targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, -20);
+            //anytime we're moving the wrist, the arm should be out past the wrist rotate safe constant.
+            if ( !wrist.atPosition(scoringTargetPosition.wristPos) ) {
 
-                //Aims to make the arm move before the elevator moves while going from L2 to L3
-                if(!clockArm.atPosition() && !wrist.atPosition()){
-                    targetElevatorPosition = currentElevatorPosition;
-                }
+                targetArmPosition = Math.max(ARM.SAFE_ARM_TO_ROTATE_WRIST, scoringTargetPosition.clockArmPos);
 
             }
-            else {
-                if (currentWristPosition > 150 && currentElevatorPosition < 5) {
-                    // if (currentArmPosition < 20) {
-                    //     targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 0);
-                    //     targetElevatorPosition = currentElevatorPosition;
-                    // } else {
-                    //     targetElevatorPosition = 10;
-                    //     targetArmPosition = currentArmPosition;
-                    // }
-                } else {
-                    if(currentWristPosition > 3 || currentElevatorPosition > 0.5){
-                        targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 30);
-                    }
-                }
+            
+            //if the arm is not extended, then don't move the elevator until it reaches the safe position
+            if (
+               
+                (currentArmPosition < ARM.SAFE_ARM_TO_ROTATE_WRIST-10)
 
-                if (currentArmPosition < 20 && scoringTargetPosition.clockArmPos != 0) {
-                    targetWristPosition = currentWristPosition;
-                    targetElevatorPosition = currentElevatorPosition;
-                }
-            }   
-                // Moving to L3/L3: Ensure the arm reaches position before moving the wrist
-                if (scoringTargetPosition == ElevatorPositions.getL3() || scoringTargetPosition == ElevatorPositions.getL4()){
-                    if (clockArm.atPosition(40)) { // Only move wrist when arm is in position
-                        targetWristPosition = scoringTargetPosition.wristPos;
-                    } else {
-                        targetWristPosition = currentWristPosition; // Hold wrist position until arm is ready
-                    }
-                }
+            ) {
 
-            // The arm can move into the stowed (0) position ONLY when the elevator is at the stowed (0) position AND
-            // The wrist is at the stowed (0) position AND neither the elevator nor wrist are commanded to move elsewhere.
-            //
-            // This logic overrides the targetArmPosition set in previous statements to allow the arm to stow.  The order
-            // of these statements is important
-            if(elevator.atPosition() && scoringTargetPosition.elevatorPos == 0 &&
-            wrist.atPosition()    && scoringTargetPosition.wristPos == 0) {
-                targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, 0);
+                // this is a good way to tell a system not to move.
+                // this doesn't work with the elevator as it drifts down.
+                
+                targetWristPosition = currentWristPosition;
+
+                // this is the bad way to do it
+                targetElevatorPosition = Math.round(currentElevatorPosition*5.0)/5.0;
+
             }
 
-            if(scoringTargetPosition == ElevatorPositions.getStow()){
-                if(currentWristPosition > 30){
-                    targetArmPosition = currentArmPosition;
-                }
-            }
-            // Freeze the movement of the Elevator and Wrist to prevent damage if the arm is in too far.  This will normally
-            // happen when the mechanism is leaving the stowed state, but may happen in other, unforeseen circumstances.
+            //if the wrist is not in a safe position (anywhere but down), then don't let the arm move
+            
+            // if ( (currentWristPosition < -2 || currentWristPosition > 90)) {
 
-            // // Deep climb safety code where the winch cannot operate inward unless the arm and such are not in the deep climb position
-            // if(scoringTargetPosition == ElevatorPositions.getDeepClimb()){
-            //     deepclimb.setDeepClimbPercentOutput(0);
+            //     targetArmPosition = Math.min(ARM.SAFE_ARM_TO_ROTATE_WRIST, targetArmPosition);
+
             // }
+
+            //if the wrist is not in a safe position, then don't move the elevator down.
+
+            // if ( currentWristPosition < -2 || currentWristPosition > 90 ) {
+
+            //     targetElevatorPosition = currentElevatorPosition;
+
+            // }
+
+
             
 
             // Logging the target position of scoring mechanisms.

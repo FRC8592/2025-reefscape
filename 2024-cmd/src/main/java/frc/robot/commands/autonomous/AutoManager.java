@@ -51,15 +51,15 @@ public final class AutoManager {
         // autoCommands.add(new ExampleAuto());
         // TODO: Add autos here
 
-        autoCommands.add(new OmniCoralRedAuto(1, RedOrBlue.RED).withAutoName("OneCoralRedAuto"));
-        autoCommands.add(new OmniCoralRedAuto(2, RedOrBlue.RED).withAutoName("TwoCoralRedAuto"));
-        autoCommands.add(new OmniCoralRedAuto(3, RedOrBlue.RED).withAutoName("ThreeCoralRedAuto"));
-        autoCommands.add(new OmniCoralRedAuto(4, RedOrBlue.RED).withAutoName("FourCoralRedAuto"));
+        autoCommands.add(new OmniCoralRedAuto(1, RedOrBlue.RED).withAutoName("OneCoralRedBargeAuto"));
+        autoCommands.add(new OmniCoralRedAuto(2, RedOrBlue.RED).withAutoName("TwoCoralRedBargeAuto"));
+        autoCommands.add(new OmniCoralRedAuto(3, RedOrBlue.RED).withAutoName("ThreeCoralRedBargeAuto"));
+        autoCommands.add(new OmniCoralRedAuto(4, RedOrBlue.RED).withAutoName("FourCoralRedBargeAuto"));
 
-        autoCommands.add(new OmniCoralRedAuto(1, RedOrBlue.BLUE).withAutoName("OneCoralBlueAuto"));
-        autoCommands.add(new OmniCoralRedAuto(2, RedOrBlue.BLUE).withAutoName("TwoCoralBlueAuto"));
-        autoCommands.add(new OmniCoralRedAuto(3, RedOrBlue.BLUE).withAutoName("ThreeCoralBlueAuto"));
-        autoCommands.add(new OmniCoralRedAuto(4, RedOrBlue.BLUE).withAutoName("FourCoralBlueAuto"));
+        autoCommands.add(new OmniCoralRedAuto(1, RedOrBlue.BLUE).withAutoName("OneCoralBlueBargeAuto"));
+        autoCommands.add(new OmniCoralRedAuto(2, RedOrBlue.BLUE).withAutoName("TwoCoralBlueBargeAuto"));
+        autoCommands.add(new OmniCoralRedAuto(3, RedOrBlue.BLUE).withAutoName("ThreeCoralBlueBargeAuto"));
+        autoCommands.add(new OmniCoralRedAuto(4, RedOrBlue.BLUE).withAutoName("FourCoralBlueBargeAuto"));
 
         // autoCommands.add(new FourCoralBlueAuto());
         // autoCommands.add(new OneCoralBlueAuto());

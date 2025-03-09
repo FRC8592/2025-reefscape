@@ -49,7 +49,7 @@ public class OmniCoralRedAuto extends AutoCommand{
                         getChoreoTrajectory(FIRST_CORAL_SCORE.getPathName(redOrBlue), 0),
                         Suppliers.robotRunningOnRed
                     ).withTimeout(3.25)
-                    .andThen(Commands.runOnce(() -> {scoreCoral.setPosition(Suppliers.robotRunningOnRed.getAsBoolean()?LeftOrRight.Right:LeftOrRight.Left);}))
+                    .andThen(Commands.runOnce(() -> {scoreCoral.setPosition(Suppliers.robotRunningOnRed.getAsBoolean() ? LeftOrRight.Right:LeftOrRight.Left);}))
                     .andThen(Commands.defer(() -> scoreCoral.driveToClosestReefTag(), Set.of(swerve)))
                 )
                 // While running path and DTT, raise the scoring mech to L4 position

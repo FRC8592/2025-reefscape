@@ -69,6 +69,11 @@ public class Wrist extends SubsystemBase{
         return Utils.isWithin(getDegrees(), targetWristDegrees, WRIST.WRIST_POSITION_TOLERANCE);
     }
 
+    public boolean atPosition(double wristDegrees) {
+        return Utils.isWithin(getDegrees(), wristDegrees, WRIST.WRIST_POSITION_TOLERANCE);
+
+    }
+
     /**
      * Converts an amount of motor rotations to wrist degrees.
      * @param rotations The amount of wrist motor rotations we want to convert to degrees.
