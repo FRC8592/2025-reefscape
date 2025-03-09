@@ -65,6 +65,8 @@ public final class Constants {
         public static final int[] BLUE_HPLAYER_TAGS = {12, 13};
         public static final int[] RED_HPLAYER_TAGS = {1, 2};
 
+        public static final double REJECT_SINGLE_TAG_POSE_ESTIMATE_RANGE = 1.5;
+
     }
     public final class NAVIGATION {
         public static final double MAX_ACCEPTABLE_AMBIGUITY = 0.1;
@@ -117,12 +119,12 @@ public final class Constants {
         public static final Rotation2d RED_PERSPECTIVE_ROTATION = Rotation2d.fromDegrees(180);
 
         //TODO: Double check that these still work
-        public static final double PATH_FOLLOW_TRANSLATE_kP = 8d; // Was 8 in the last test
+        public static final double PATH_FOLLOW_TRANSLATE_kP = 13d; // Was 8 in the last test
         public static final double PATH_FOLLOW_TRANSLATE_kI = 0d;
         public static final double PATH_FOLLOW_TRANSLATE_kD = 0d;
 
         //TODO: Double check that these still work
-        public static final double PATH_FOLLOW_ROTATE_kP = 10;
+        public static final double PATH_FOLLOW_ROTATE_kP = 13;
         public static final double PATH_FOLLOW_ROTATE_kI = 0d;
         public static final double PATH_FOLLOW_ROTATE_kD = 0.1;
 
@@ -148,17 +150,17 @@ public final class Constants {
         public static final String EXTENSION_LOG_PATH = SHARED.LOG_FOLDER+"/Extension/";
 
         public static final double EXTENSION_GEAR_RATIO = 0.25;
-        public static final double EXTENSION_DRUM_DIAMTER_INCHES = 1.0;
+        public static final double EXTENSION_DRUM_DIAMTER_INCHES = 0.1;
 
         public static final double EXTENSION_INCHES_MAX = SHARED.IS_RIPTIDE?19.5:20.1; //this is in inches
         public static final double EXTENSION_INCHES_MIN = SHARED.IS_RIPTIDE?0.5:0.5;
 
-        public static final double EXTENSION_POSITION_TOLERANCE = 1.0;
+        public static final double EXTENSION_POSITION_TOLERANCE = 0.1;
 
         public static final int ELEVATOR_CURRENT_LIMIT = 40;//amps
 
         public static final double ELEVATOR_MAX_ACCELERATION = 300;
-        public static final double ELEVATOR_MAX_VELOCITY = 75; //formerly 75
+        public static final double ELEVATOR_MAX_VELOCITY = 15; //formerly 75
 
         public static final double ELEVATOR_POSITION_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3.5: /*PERRY: */3.5;
         public static final double ELEVATOR_POSITION_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;

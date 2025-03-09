@@ -67,9 +67,7 @@ public final class AutoManager {
         autoChooser.setDefaultOption("DEFAULT - No auto", new AutoCommand());
         for(AutoCommand c : autoCommands){
             autoChooser.addOption(
-                c.getClass().getSimpleName()+(
-                    c.startPose == null ? " (WARNING: NO START POSE)" : ""
-                ), c
+                c.getAutoName(), c
             );
         }
         Shuffleboard.getTab("Autonomous Config").add(autoChooser);
@@ -82,24 +80,12 @@ public final class AutoManager {
      */
     public static Command getAutonomousCommand(){
         AutoCommand autoCommand = autoChooser.getSelected();
-
-        if(autoCommand.startPose == null){ // If we have no start pose, just run the auto
-            return getAutonomousInitCommand().andThen(
-                // If we don't keep this command from registering as composed,
-                // the code will crash if we try to run an auto twice without
-                // restarting robot code.
-                new MultiComposableCommand(autoCommand)
-            );
-        }
-        else{ // If we do have a starting pose, reset the odometry to that first
-            return getAutonomousInitCommand().andThen(
-                swerve.runOnce(() -> swerve.resetPose(
-                    autoCommand.startPose, Suppliers.robotRunningOnRed.getAsBoolean()
-                ))
-            ).andThen(
-                new MultiComposableCommand(autoCommand)
-            );
-        }
+        return getAutonomousInitCommand().andThen(
+            // If we don't keep this command from registering as composed,
+            // the code will crash if we try to run an auto twice without
+            // restarting robot code.
+            new MultiComposableCommand(autoCommand)
+        );
     }
 
     /**

@@ -26,6 +26,5 @@ public class TwoCoralRedAuto extends AutoCommand{
             
         );
 
-        setStartStateFromChoreoTrajectory("RightToCLeft");
     }
 }

@@ -20,6 +20,5 @@ public class OneCoralOneAlgaeMiddleAuto extends AutoCommand{
             .andThen(scoring.goToPosition(ElevatorPositions.getStow()))                       
         );
 
-        setStartStateFromChoreoTrajectory("MiddleToDRight");
     }
 }

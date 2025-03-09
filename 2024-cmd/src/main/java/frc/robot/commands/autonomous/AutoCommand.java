@@ -12,6 +12,7 @@ import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.subsystems.swerve.*;
 import frc.robot.subsystems.LEDs;
+import frc.robot.subsystems.ScoreCoral;
 import frc.robot.subsystems.scoring.Intake;
 import frc.robot.subsystems.scoring.Scoring;
 
@@ -23,12 +24,16 @@ public class AutoCommand extends WrapperCommand{
     protected static Scoring scoring;
     protected static Intake intake;
     protected static LEDs leds;
+    protected static ScoreCoral scoreCoral;
+
+    private String autoName;
     
-    public static void addSubsystems(Swerve swerve, Scoring scoring, Intake intake, LEDs leds){
+    public static void addSubsystems(Swerve swerve, Scoring scoring, Intake intake, LEDs leds, ScoreCoral scoreCoral){
         AutoCommand.swerve = swerve;
         AutoCommand.scoring = scoring;
         AutoCommand.intake = intake;
         AutoCommand.leds = leds;
+        AutoCommand.scoreCoral = scoreCoral;
     }
 
     /**
@@ -49,6 +54,7 @@ public class AutoCommand extends WrapperCommand{
      */
     protected AutoCommand(Command... commands) {
         super(Commands.sequence(commands));
+        this.autoName = getClass().getSimpleName();
     }
 
     /**
@@ -56,6 +62,15 @@ public class AutoCommand extends WrapperCommand{
      */
     protected AutoCommand(){
         super(Commands.none());
+        this.autoName = getClass().getSimpleName();
+    }
+
+    protected void setAutoName(String name){
+        this.autoName = name;
+    }
+
+    protected String getAutoName(){
+        return this.autoName;
     }
 
     /**
@@ -69,12 +84,21 @@ public class AutoCommand extends WrapperCommand{
      * located in the {@code choreo} folder in the {@code deploy} folder
      */
     protected static final Trajectory getChoreoTrajectory(String name){
+        return getChoreoTrajectory(name, -1);
+    }
+    protected static final Trajectory getChoreoTrajectory(String name, int splitIndex){
         if(cachedChoreoTrajectories.containsKey(name)){
             return cachedChoreoTrajectories.get(name);
         }
         else{
             try{
-               Trajectory wpilibTrajectory = fromChoreoPath((choreo.trajectory.Trajectory<SwerveSample>) Choreo.loadTrajectory(name).get());
+                Trajectory wpilibTrajectory;
+                if(splitIndex == -1){
+                    wpilibTrajectory = fromChoreoPath((choreo.trajectory.Trajectory<SwerveSample>) Choreo.loadTrajectory(name).get());
+                }
+                else{
+                   wpilibTrajectory = fromChoreoPath((choreo.trajectory.Trajectory<SwerveSample>) Choreo.loadTrajectory(name).get().getSplit(splitIndex).get());
+                }
             //    Trajectory wpilibTrajectory = new Trajectory();
 
                 cachedChoreoTrajectories.put(name, wpilibTrajectory);

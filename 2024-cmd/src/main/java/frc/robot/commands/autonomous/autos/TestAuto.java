@@ -12,6 +12,5 @@ public class TestAuto extends AutoCommand{
 
 
         );
-        setStartStateFromChoreoTrajectory("HPLeftToFLeft");
     }
 }

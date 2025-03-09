@@ -44,11 +44,15 @@ public class OdometryUpdates extends SubsystemBase {
             timeStamp = robotPose.get().timestampSeconds;
 
             //if(Math.abs(ambiguity) < 0.2 && vision.getTargets().size() > 1) {
-            if(Math.abs(ambiguity) < Constants.NAVIGATION.MAX_ACCEPTABLE_AMBIGUITY || vision.getTargets().size() > 1) {
-            
+            if(
+                vision.getTargets().size() > 1 || (
+                    Math.abs(ambiguity) < Constants.NAVIGATION.MAX_ACCEPTABLE_AMBIGUITY
+                    && vision.getTargets().get(0).bestCameraToTarget.getX() < CORAL_ALIGN.REJECT_SINGLE_TAG_POSE_ESTIMATE_RANGE
+                )
+            ) {
                 if (DriverStation.isDisabled()){
                     initialPose = robotPosition;
-                    swerve.resetPose(initialPose);        
+                    swerve.resetPose(initialPose);
                 } else {
                     swerve.addVisionMeasurement(robotPosition, timeStamp);
                 }
