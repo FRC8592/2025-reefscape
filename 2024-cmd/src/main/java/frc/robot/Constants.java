@@ -92,7 +92,7 @@ public final class Constants {
         public static final double SNAP_TO_kD = 0.1;
 
         public static final double MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND = 4.73;
-        public static final TrajectoryConfig PATH_FOLLOW_TRAJECTORY_CONFIG = new TrajectoryConfig(4, 2);
+        public static final TrajectoryConfig PATH_FOLLOW_TRAJECTORY_CONFIG = new TrajectoryConfig(4, 2.25);
         public static final double MAX_ROTATIONAL_VELOCITY_RADIANS_PER_SECOND = Math.toRadians(720);
 
         public static final boolean INVERT_LEFT_SIDE = false;
@@ -119,14 +119,14 @@ public final class Constants {
         public static final Rotation2d RED_PERSPECTIVE_ROTATION = Rotation2d.fromDegrees(180);
 
         //TODO: Double check that these still work
-        public static final double PATH_FOLLOW_TRANSLATE_kP = 13d; // Was 8 in the last test
+        public static final double PATH_FOLLOW_TRANSLATE_kP = 50d; // Was 8 in the last test
         public static final double PATH_FOLLOW_TRANSLATE_kI = 0d;
         public static final double PATH_FOLLOW_TRANSLATE_kD = 0d;
 
         //TODO: Double check that these still work
-        public static final double PATH_FOLLOW_ROTATE_kP = 13;
+        public static final double PATH_FOLLOW_ROTATE_kP = 15d;
         public static final double PATH_FOLLOW_ROTATE_kI = 0d;
-        public static final double PATH_FOLLOW_ROTATE_kD = 0.1;
+        public static final double PATH_FOLLOW_ROTATE_kD = 0.1d;
 
         public static final double PATH_FOLLOW_ROTATE_MAX_VELOCITY = 4 * Math.PI;
         public static final double PATH_FOLLOW_ROTATE_MAX_ACCELLERATION = 4 * Math.PI;

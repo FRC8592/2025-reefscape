@@ -21,8 +21,8 @@ public class Scoring extends SubsystemBase {
     // private DeepClimb deepclimb;
 
     // Define scoring mechanism positions for various activities
-    private static ElevatorPositions scoringTargetPosition;
-    private static ElevatorPositions userSelectedPosition;
+    private static ElevatorPositions scoringTargetPosition = ElevatorPositions.START_PERRY;
+    private static ElevatorPositions userSelectedPosition = ElevatorPositions.START_PERRY;
 
     public static enum ElevatorPositions {
         
@@ -56,15 +56,17 @@ public class Scoring extends SubsystemBase {
 
         GROUND_ALGAE_PERRY(0, 52, -139, 0.5, -0.75),
         STOW_ALGAE_PERRY(0,27.8, 0, 0,0),
-        STOW_PERRY(0, 18.5, -66.69, 0.5, 0.75),
-        // STOW_WITH_CORAL_PERRY(0, 0, 20, 0.5, 0.75),
-        L2_ALGAE_PERRY(17, 13.1, 83, 0.5, -0.75),
-        L3_ALGAE_PERRY(0, 165, 91.5, 0.5, -0.75),
+
+        STOW_PERRY(0, 18.5, -61.69, 0, 0.75),
+        START_PERRY(0, 0, 0, 0, 0),
+
+        L2_ALGAE_PERRY(17, 30, 88, 0.5, -0.75),
+        L3_ALGAE_PERRY(0, 154, 86.5, 0.5, -0.75),
         PROCESSOR_PERRY(6.1, 14.7, 92.3, 0.3, 0.75),
-        NET_PERRY(19.5, 165, 43.8, 1, -0.75),
+        NET_PERRY(19.5, 165, 20, 1, -0.75),
         DEEP_CLIMB_PERRY(0, 45, 0, 0, 0),
 
-        STOP(0,0,0, 0, 0);
+        STOP(0,0,0, 0, 0.75);
 
         public double elevatorPos = 0;
         public double wristPos = 0;
