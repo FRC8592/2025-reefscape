@@ -54,14 +54,15 @@ public class Scoring extends SubsystemBase {
 
         L4_PERRY(19.5, 170, -220, -0.33, 0.75), //arm adjusted from 165
 
+
         GROUND_ALGAE_PERRY(0, 52, -139, 0.5, -0.75),
         STOW_ALGAE_PERRY(0,27.8, 0, 0,0),
         STOW_PERRY(0, 18.5, -66.69, 0.5, 0.75),
         // STOW_WITH_CORAL_PERRY(0, 0, 20, 0.5, 0.75),
         L2_ALGAE_PERRY(17, 13.1, 83, 0.5, -0.75),
-        L3_ALGAE_PERRY(0, 165, 91.5, 0.5, -0.75),
+        L3_ALGAE_PERRY(0, 165, 96.5, 0.5, -0.75),
         PROCESSOR_PERRY(6.1, 14.7, 92.3, 0.3, 0.75),
-        NET_PERRY(19.5, 165, 43.8, 1, -0.75),
+        NET_PERRY(19.5, 165, 29.8, 1, -0.75),
         DEEP_CLIMB_PERRY(0, 45, 0, 0, 0),
 
         STOP(0,0,0, 0, 0);
