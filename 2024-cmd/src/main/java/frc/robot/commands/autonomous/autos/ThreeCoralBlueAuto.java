@@ -14,33 +14,33 @@ public class ThreeCoralBlueAuto extends AutoCommand{
     public ThreeCoralBlueAuto(){
         super(
             (
-                new FollowPathCommand(getChoreoTrajectory("LeftToERight"), Suppliers.robotRunningOnRed)
+                new FollowPathCommand(getChoreoTrajectory("LeftToERight"), Suppliers.robotRunningOnRed, "")
                 .andThen(Commands.runOnce(() -> {scoreCoral.setPosition(Suppliers.robotRunningOnRed.getAsBoolean()?LeftOrRight.Left:LeftOrRight.Right);}))
                 .andThen(Commands.defer(() -> scoreCoral.driveToClosestReefTag(), Set.of(swerve)))
             )
             .alongWith(scoring.goToPosition(ElevatorPositions.getL4()))
             .andThen(new WaitCommand(0.75), scoring.outtakeCoralCommand().withTimeout(0.75)),
-            new FollowPathCommand(getChoreoTrajectory("ERightToHPLeft"), Suppliers.robotRunningOnRed)
+            new FollowPathCommand(getChoreoTrajectory("ERightToHPLeft"), Suppliers.robotRunningOnRed, "")
             .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getStow())))
             .andThen(scoring.intakeUntilHasCoralCommand()),
             (
-                new FollowPathCommand(getChoreoTrajectory("HPLeftToFLeft"), Suppliers.robotRunningOnRed)
+                new FollowPathCommand(getChoreoTrajectory("HPLeftToFLeft"), Suppliers.robotRunningOnRed, "")
                 .andThen(Commands.runOnce(() -> {scoreCoral.setPosition(Suppliers.robotRunningOnRed.getAsBoolean()?LeftOrRight.Right:LeftOrRight.Left);}))
                 .andThen(Commands.defer(() -> scoreCoral.driveToClosestReefTag(), Set.of(swerve)))
             )
             .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getL4())))
             .andThen(new WaitCommand(0.75), scoring.outtakeCoralCommand().withTimeout(0.75)),
-            new FollowPathCommand(getChoreoTrajectory("FLeftToHPLeft"), Suppliers.robotRunningOnRed)
+            new FollowPathCommand(getChoreoTrajectory("FLeftToHPLeft"), Suppliers.robotRunningOnRed, "")
             .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getStow())))
             .andThen(scoring.intakeUntilHasCoralCommand()),
             (
-                new FollowPathCommand(getChoreoTrajectory("HPLeftToFRight"), Suppliers.robotRunningOnRed)
+                new FollowPathCommand(getChoreoTrajectory("HPLeftToFRight"), Suppliers.robotRunningOnRed, "")
                 .andThen(Commands.runOnce(() -> {scoreCoral.setPosition(Suppliers.robotRunningOnRed.getAsBoolean()?LeftOrRight.Left:LeftOrRight.Right);}))
                 .andThen(Commands.defer(() -> scoreCoral.driveToClosestReefTag(), Set.of(swerve)))
             )
             .alongWith(new WaitCommand(1).andThen(scoring.goToPosition(ElevatorPositions.getL4())))
             .andThen(new WaitCommand(0.75), scoring.outtakeCoralCommand().withTimeout(0.75)),
-            new FollowPathCommand(getChoreoTrajectory("FRightBackUp"), Suppliers.robotRunningOnRed)
+            new FollowPathCommand(getChoreoTrajectory("FRightBackUp"), Suppliers.robotRunningOnRed, "")
             .andThen(scoring.goToPosition(ElevatorPositions.getStow()))
         );
 

@@ -36,7 +36,11 @@ public final class Suppliers {
         private BooleanSupplier supplier;
         private String name;
         public LoggedBooleanSupplier(BooleanSupplier supplier, String name){this.supplier = supplier; this.name = name;}
-        public boolean getAsBoolean(){boolean b = supplier.getAsBoolean(); Logger.recordOutput(SUPPLIERS.LOG_PATH+name, b); return b;}
+        public boolean getAsBoolean(){
+            boolean b = supplier.getAsBoolean();
+            Logger.recordOutput(SUPPLIERS.LOG_PATH+name, b);
+            return b;
+        }
     }
     public static class LoggedDoubleSupplier implements DoubleSupplier{
         private DoubleSupplier supplier;

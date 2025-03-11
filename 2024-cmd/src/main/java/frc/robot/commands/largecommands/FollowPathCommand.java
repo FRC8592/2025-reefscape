@@ -17,6 +17,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import frc.robot.Constants.*;
+import frc.robot.subsystems.swerve.Swerve;
 
 public class FollowPathCommand extends LargeCommand{
     // Pathing variables
@@ -38,6 +39,8 @@ public class FollowPathCommand extends LargeCommand{
     // Whether to flip to the red side of the field
     private BooleanSupplier flip;
 
+    private double secondsPastPathEndTolerated = -1;
+
     /**
      * Command to follow a trajectory
      *
@@ -45,10 +48,12 @@ public class FollowPathCommand extends LargeCommand{
      * @param flip lambda that returns whether to mirror the path to the
      * red side of the field.
      */
-    public FollowPathCommand(Trajectory trajectory, BooleanSupplier flip){
+    public FollowPathCommand(Trajectory trajectory, BooleanSupplier flip, String commandName){
         super(swerve);
 
         this.trajectory = trajectory;
+
+        this.setName(commandName);
 
         this.xController = new PIDController(
             SWERVE.PATH_FOLLOW_TRANSLATE_kP,
@@ -120,23 +125,31 @@ public class FollowPathCommand extends LargeCommand{
      * {@code ChassisSpeeds} is ignored.
      */
     public FollowPathCommand(
-        Trajectory trajectory, BooleanSupplier flip,
+        Trajectory trajectory, BooleanSupplier flip, String commandName,
         BooleanSupplier useAlternateRotation, Supplier<Rotation2d> rotationSupplier,
         BooleanSupplier useAlternateTranslation, Supplier<ChassisSpeeds> translationSupplier
     ){
-        this(trajectory, flip);
+        this(trajectory, flip, commandName);
         this.useAlternateRotation = useAlternateRotation;
         this.alternateRotation = rotationSupplier;
         this.useAlternateRotation = useAlternateTranslation;
         this.alternateTranslation = translationSupplier;
     }
 
+    public FollowPathCommand(Trajectory trajectory, BooleanSupplier flip, String commandName, double secondsPastPathEndTolerated){
+        this(trajectory, flip, commandName);
+        this.secondsPastPathEndTolerated = secondsPastPathEndTolerated;
+    }
+
     public void initialize(){
+        Logger.recordOutput("CustomLogs/CurrentPathCommand/Name", this.getName());
+        Logger.recordOutput("CustomLogs/CurrentPathCommand/Trajectory", this.trajectory);
         timer.reset();
         timer.start();
 
         // Stop the swerve
         swerve.drive(new ChassisSpeeds());
+
     }
     public void execute(){
         // Instances of State contain information about pose, velocity, accelleration, curvature, etc.
@@ -176,14 +189,22 @@ public class FollowPathCommand extends LargeCommand{
         }
     }
     public void end(boolean interrupted){
-        swerve.drive(new ChassisSpeeds());
+        if(secondsPastPathEndTolerated == -1){
+            swerve.drive(new ChassisSpeeds());
+        }
     }
     public boolean isFinished(){
         return ( // Only return true if enough time has elapsed, we're at the target location, and we're not using alternate movement.
-            (timer.hasElapsed(trajectory.getTotalTimeSeconds())
-            && (drivePID.atReference() || !Robot.isReal())
-            && !useAlternateRotation.getAsBoolean()
-            && !useAlternateTranslation.getAsBoolean()) || timer.hasElapsed(4)
+            (
+                timer.hasElapsed(trajectory.getTotalTimeSeconds())
+                && (
+                    secondsPastPathEndTolerated != -1 || (
+                        (drivePID.atReference() || !Robot.isReal())
+                        && !useAlternateRotation.getAsBoolean()
+                        && !useAlternateTranslation.getAsBoolean()
+                    )
+                )
+            )
         );
     }
 
