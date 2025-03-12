@@ -107,6 +107,7 @@ public class Robot extends LoggedRobot {
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run(); 
+        robotContainer.periodic();
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
