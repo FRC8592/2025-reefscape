@@ -189,9 +189,7 @@ public class FollowPathCommand extends LargeCommand{
         }
     }
     public void end(boolean interrupted){
-        if(secondsPastPathEndTolerated == -1){
-            swerve.drive(new ChassisSpeeds());
-        }
+        swerve.drive(new ChassisSpeeds());
     }
     public boolean isFinished(){
         return ( // Only return true if enough time has elapsed, we're at the target location, and we're not using alternate movement.
