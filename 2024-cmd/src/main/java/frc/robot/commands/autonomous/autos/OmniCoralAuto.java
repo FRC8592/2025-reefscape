@@ -9,9 +9,9 @@ import frc.robot.commands.autonomous.AutoCommand;
 import frc.robot.commands.largecommands.FollowPathCommand;
 import frc.robot.subsystems.ScoreCoral.LeftOrRight;
 import frc.robot.subsystems.scoring.Scoring.ElevatorPositions;
-import static frc.robot.commands.autonomous.autos.OmniCoralRedAuto.Positions.*;
+import static frc.robot.commands.autonomous.autos.OmniCoralAuto.Positions.*;
 
-public class OmniCoralRedAuto extends AutoCommand{
+public class OmniCoralAuto extends AutoCommand{
     protected enum Positions{
         FIRST_CORAL_SCORE("RightToCLeft", "LeftToERight"),
         SECOND_CORAL_INTAKE("CLeftToHPRight", "ERightToHPLeft"),
@@ -40,15 +40,17 @@ public class OmniCoralRedAuto extends AutoCommand{
         RED,
         BLUE,;
     }
-    public OmniCoralRedAuto(int coralCount, RedOrBlue redOrBlue){
+    public OmniCoralAuto(int coralCount, RedOrBlue redOrBlue){
         super(
             // NOTE: DTT = drive-to-tag
             coralCount > 0 ? ( // Score the first coral if coralcount > 0
                 ( // Move from our start position to the reef, cutting the path off in the middle to activate DTT
                     new FollowPathCommand(
                         getChoreoTrajectory(FIRST_CORAL_SCORE.getPathName(redOrBlue), 0),
-                        Suppliers.robotRunningOnRed
-                    ).withTimeout(3.25)
+                        Suppliers.robotRunningOnRed,
+                        "FirstCoralScoreChoreoPath",
+                        0.5
+                    )
                     .andThen(Commands.runOnce(() -> {scoreCoral.setPosition(Suppliers.robotRunningOnRed.getAsBoolean() ? LeftOrRight.Right:LeftOrRight.Left);}))
                     .andThen(Commands.defer(() -> scoreCoral.driveToClosestReefTag(), Set.of(swerve)))
                 )
@@ -60,7 +62,7 @@ public class OmniCoralRedAuto extends AutoCommand{
 
             coralCount > 0 ? ( // Also intake the next coral if coralcount > 0
                 // Move from the reef to the human player station
-                new FollowPathCommand(getChoreoTrajectory(SECOND_CORAL_INTAKE.getPathName(redOrBlue)), Suppliers.robotRunningOnRed)
+                new FollowPathCommand(getChoreoTrajectory(SECOND_CORAL_INTAKE.getPathName(redOrBlue)), Suppliers.robotRunningOnRed, "SecondCoralIntakeChoreoPath", 0.5)
                 // While moving, stow (after waiting a moment to clear the reef)
                 .alongWith(new WaitCommand(1).andThen(scoring.goToSpecifiedPositionCommand(ElevatorPositions.getStow())))
                 // Once we're stowed and at the human player station, intake
@@ -71,8 +73,10 @@ public class OmniCoralRedAuto extends AutoCommand{
                 ( // Move from our start position to the reef, cutting the path off in the middle to activate DTT
                     new FollowPathCommand(
                         getChoreoTrajectory(SECOND_CORAL_SCORE.getPathName(redOrBlue), 0),
-                        Suppliers.robotRunningOnRed
-                    ).withTimeout(3.25)
+                        Suppliers.robotRunningOnRed,
+                        "SecondCoralScoreChoreoPath",
+                        0.5
+                    )
                     .andThen(Commands.runOnce(() -> {scoreCoral.setPosition(Suppliers.robotRunningOnRed.getAsBoolean()?LeftOrRight.Left:LeftOrRight.Right);}))
                     .andThen(Commands.defer(() -> scoreCoral.driveToClosestReefTag(), Set.of(swerve)))
                 )
@@ -84,7 +88,7 @@ public class OmniCoralRedAuto extends AutoCommand{
 
             coralCount > 1 ? ( // Intake if we scored our second coral
                 // Move from the reef to the human player station
-                new FollowPathCommand(getChoreoTrajectory(THIRD_CORAL_INTAKE.getPathName(redOrBlue)), Suppliers.robotRunningOnRed)
+                new FollowPathCommand(getChoreoTrajectory(THIRD_CORAL_INTAKE.getPathName(redOrBlue)), Suppliers.robotRunningOnRed,"ThirdCoralIntakeChoreoPath", 0.5)
                 // While moving, stow (after waiting a moment to clear the reef)
                 .alongWith(new WaitCommand(1).andThen(scoring.goToSpecifiedPositionCommand(ElevatorPositions.getStow())))
                 // Once we're stowed and at the human player station, intake
@@ -95,7 +99,9 @@ public class OmniCoralRedAuto extends AutoCommand{
                 ( // Move from our start position to the reef, cutting the path off in the middle to activate DTT
                     new FollowPathCommand(
                         getChoreoTrajectory(THIRD_CORAL_SCORE.getPathName(redOrBlue), 0),
-                        Suppliers.robotRunningOnRed
+                        Suppliers.robotRunningOnRed,
+                        "ThirdCoralScoreChoreoPath",
+                        0.5
                     )
                     .andThen(Commands.runOnce(() -> {scoreCoral.setPosition(Suppliers.robotRunningOnRed.getAsBoolean()?LeftOrRight.Right:LeftOrRight.Left);}))
                     .andThen(Commands.defer(() -> scoreCoral.driveToClosestReefTag(), Set.of(swerve)))
@@ -108,7 +114,7 @@ public class OmniCoralRedAuto extends AutoCommand{
 
             coralCount > 2 ? ( // Intake a fourth coral if we scored the third
                 // Move from the reef to the human player station
-                new FollowPathCommand(getChoreoTrajectory(FOURTH_CORAL_INTAKE.getPathName(redOrBlue)), Suppliers.robotRunningOnRed)
+                new FollowPathCommand(getChoreoTrajectory(FOURTH_CORAL_INTAKE.getPathName(redOrBlue)), Suppliers.robotRunningOnRed, "FourthCoralIntakeChoreoPath", 0.5)
                 // While moving, stow (after waiting a moment to clear the reef)
                 .alongWith(new WaitCommand(1).andThen(scoring.goToSpecifiedPositionCommand(ElevatorPositions.getStow())))
                 // Once we're stowed and at the human player station, intake
@@ -119,7 +125,9 @@ public class OmniCoralRedAuto extends AutoCommand{
                 ( // Move from our start position to the reef, cutting the path off in the middle to activate DTT
                     new FollowPathCommand(
                         getChoreoTrajectory(FOURTH_CORAL_SCORE.getPathName(redOrBlue), 0),
-                        Suppliers.robotRunningOnRed
+                        Suppliers.robotRunningOnRed,
+                        "FourthCoralScoreChoreoPath",
+                        0.5
                     )
                     .andThen(Commands.runOnce(() -> {scoreCoral.setPosition(Suppliers.robotRunningOnRed.getAsBoolean()?LeftOrRight.Left:LeftOrRight.Right);}))
                     .andThen(Commands.defer(() -> scoreCoral.driveToClosestReefTag(), Set.of(swerve)))
@@ -131,7 +139,7 @@ public class OmniCoralRedAuto extends AutoCommand{
             ):Commands.none(), // Do nothing if we aren't scoring a fourth coral
 
             coralCount > 3 ? ( // Only move back from the fourth coral's scoring position if we actually went there and scored
-                new FollowPathCommand(getChoreoTrajectory(FOURTH_CORAL_BACK_UP.getPathName(redOrBlue)), Suppliers.robotRunningOnRed)
+                new FollowPathCommand(getChoreoTrajectory(FOURTH_CORAL_BACK_UP.getPathName(redOrBlue)), Suppliers.robotRunningOnRed,"FourthCoralBackUpChoreoPath")
                 .alongWith(new WaitCommand(1).andThen(scoring.goToSpecifiedPositionCommand(ElevatorPositions.getStow())))
             ):Commands.none()
         );

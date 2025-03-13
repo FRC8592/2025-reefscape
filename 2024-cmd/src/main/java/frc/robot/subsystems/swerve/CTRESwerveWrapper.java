@@ -4,6 +4,8 @@ import static edu.wpi.first.units.Units.*;
 
 import java.util.function.Consumer;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -16,6 +18,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants.SHARED;
+import frc.robot.Constants.SWERVE;
 import frc.robot.subsystems.swerve.perryswerve.PerryConstants;
 import frc.robot.subsystems.swerve.riptideswerve.RiptideConstants;
 
@@ -35,6 +38,7 @@ public class CTRESwerveWrapper {
     private final SwerveDrivetrain<TalonFX, TalonFX, CANcoder> drivetrain = SHARED.IS_RIPTIDE?RiptideConstants.createDrivetrain():PerryConstants.createDrivetrain();
 
     public void drive(ChassisSpeeds speeds, boolean driveFieldRelative) {
+        Logger.recordOutput(SWERVE.LOG_PATH+"SwerveTargetSpeeds", speeds);
         if (driveFieldRelative) {
             drivetrain.setControl(
                 fieldRelative.withVelocityX(speeds.vxMetersPerSecond) 

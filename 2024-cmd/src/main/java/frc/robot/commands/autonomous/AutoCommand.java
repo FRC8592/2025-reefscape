@@ -88,6 +88,7 @@ public class AutoCommand extends WrapperCommand{
         return getChoreoTrajectory(name, -1);
     }
     protected static final Trajectory getChoreoTrajectory(String name, int splitIndex){
+        System.out.println("Grabbed path "+name);
         if(cachedChoreoTrajectories.containsKey(name)){
             return cachedChoreoTrajectories.get(name);
         }

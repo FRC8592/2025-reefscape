@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -36,6 +37,7 @@ public class ScoreCoral extends SubsystemBase {
 
     //The AprilTag target taken from vision
     private Pose2d target;
+    int heartbeat = 0;
     
     //These enums are for the setPosition() method that will set the coral scoring level and its respective direction
 
@@ -177,12 +179,14 @@ public class ScoreCoral extends SubsystemBase {
 
         //Render the path to PathPlanner
         Logger.recordOutput(SHARED.LOG_FOLDER+"/Scorecoral/GeneratedPath", path.toArray(new Pose2d[0]));
+                
 
         //Run path
-        return new FollowPathCommand(upTraj, () -> false);
+        return new FollowPathCommand(upTraj, () -> false, "DriveToReef", 0.5);
+
+
 
     }
-
 
     public int getClosestTag(int[] tags) {
         Pose2d robotPose = swerve.getCurrentPosition();
@@ -203,6 +207,9 @@ public class ScoreCoral extends SubsystemBase {
 
 
     public void setPosition(LeftOrRight leftOrRight){
+        heartbeat++;
+        Logger.recordOutput("CustomLogs/ScoreCoral/LeftOrRight", leftOrRight.name());
+        Logger.recordOutput("CustomLogs/ScoreCoral/LeftOrRightHeartbeat", heartbeat);
        direction = leftOrRight;
     //    SmartDashboard.putString("direction", direction.name());
     }

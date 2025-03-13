@@ -9,11 +9,12 @@ import java.util.ArrayList;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Robot;
 import frc.robot.Suppliers;
 import frc.robot.commands.autonomous.autos.*;
-import frc.robot.commands.autonomous.autos.OmniCoralRedAuto.RedOrBlue;
+import frc.robot.commands.autonomous.autos.OmniCoralAuto.RedOrBlue;
 import frc.robot.commands.proxies.*;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.LEDs;
@@ -51,15 +52,15 @@ public final class AutoManager {
         // autoCommands.add(new ExampleAuto());
         // TODO: Add autos here
 
-        autoCommands.add(new OmniCoralRedAuto(1, RedOrBlue.RED).withAutoName("OneCoralRedBargeAuto"));
-        autoCommands.add(new OmniCoralRedAuto(2, RedOrBlue.RED).withAutoName("TwoCoralRedBargeAuto"));
-        autoCommands.add(new OmniCoralRedAuto(3, RedOrBlue.RED).withAutoName("ThreeCoralRedBargeAuto"));
-        autoCommands.add(new OmniCoralRedAuto(4, RedOrBlue.RED).withAutoName("FourCoralRedBargeAuto"));
+        autoCommands.add(new OmniCoralAuto(1, RedOrBlue.RED).withAutoName("OneCoralRedBargeAuto"));
+        autoCommands.add(new OmniCoralAuto(2, RedOrBlue.RED).withAutoName("TwoCoralRedBargeAuto"));
+        autoCommands.add(new OmniCoralAuto(3, RedOrBlue.RED).withAutoName("ThreeCoralRedBargeAuto"));
+        autoCommands.add(new OmniCoralAuto(4, RedOrBlue.RED).withAutoName("FourCoralRedBargeAuto"));
 
-        autoCommands.add(new OmniCoralRedAuto(1, RedOrBlue.BLUE).withAutoName("OneCoralBlueBargeAuto"));
-        autoCommands.add(new OmniCoralRedAuto(2, RedOrBlue.BLUE).withAutoName("TwoCoralBlueBargeAuto"));
-        autoCommands.add(new OmniCoralRedAuto(3, RedOrBlue.BLUE).withAutoName("ThreeCoralBlueBargeAuto"));
-        autoCommands.add(new OmniCoralRedAuto(4, RedOrBlue.BLUE).withAutoName("FourCoralBlueBargeAuto"));
+        autoCommands.add(new OmniCoralAuto(1, RedOrBlue.BLUE).withAutoName("OneCoralBlueBargeAuto"));
+        autoCommands.add(new OmniCoralAuto(2, RedOrBlue.BLUE).withAutoName("TwoCoralBlueBargeAuto"));
+        autoCommands.add(new OmniCoralAuto(3, RedOrBlue.BLUE).withAutoName("ThreeCoralBlueBargeAuto"));
+        autoCommands.add(new OmniCoralAuto(4, RedOrBlue.BLUE).withAutoName("FourCoralBlueBargeAuto"));
 
         // autoCommands.add(new FourCoralBlueAuto());
         // autoCommands.add(new OneCoralBlueAuto());
@@ -102,11 +103,7 @@ public final class AutoManager {
      */
     private static Command getAutonomousInitCommand(){
         return new ParallelCommandGroup(
-            swerve.runOnce(() -> {
-                swerve.stop();
-                swerve.resetHeading();
-            })
-            // TODO: Add any other commands that need to be run on autonomous init here
+            Commands.none()
         );
     }
 
