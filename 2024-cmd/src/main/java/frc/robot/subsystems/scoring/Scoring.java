@@ -3,6 +3,9 @@ package frc.robot.subsystems.scoring;
 import java.util.Set;
 
 import org.littletonrobotics.junction.Logger;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
@@ -10,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
 import frc.robot.Constants.*;
+import frc.robot.subsystems.LEDs;
 
 public class Scoring extends SubsystemBase {
 
@@ -23,6 +27,8 @@ public class Scoring extends SubsystemBase {
     // Define scoring mechanism positions for various activities
     private static ElevatorPositions scoringTargetPosition;
     private static ElevatorPositions userSelectedPosition;
+
+    private Timer timer = new Timer();
 
     public static enum ElevatorPositions {
         
@@ -102,6 +108,8 @@ public class Scoring extends SubsystemBase {
 
         scoringTargetPosition = SHARED.IS_RIPTIDE?ElevatorPositions.STOW_RIPTIDE:ElevatorPositions.STOW_PERRY;
         userSelectedPosition = SHARED.IS_RIPTIDE?ElevatorPositions.STOW_RIPTIDE:ElevatorPositions.STOW_PERRY;
+
+        timer.start();
     }
     /**
      * Accepts a scoring position and sets user selected position to the position given.
@@ -293,7 +301,11 @@ public class Scoring extends SubsystemBase {
         SmartDashboard.putBoolean("L2", userSelectedPosition == ElevatorPositions.getL2() || ElevatorPositions.getL2Algae() == userSelectedPosition);
         SmartDashboard.putBoolean("L3", userSelectedPosition == ElevatorPositions.getL3() || ElevatorPositions.getL3Algae() == userSelectedPosition);
         SmartDashboard.putBoolean("L4", userSelectedPosition == ElevatorPositions.getL4());
-
+        LEDs.setSolidColor(
+            intake.robotHasCoral() && (int)(timer.get()*2)%2==0
+            ? LEDS.WHITE
+            : LEDS.OFF,0
+        );
         
 
     }

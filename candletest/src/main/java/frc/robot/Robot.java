@@ -33,15 +33,17 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    
+    timer.start();
   }
 
   @Override
   public void teleopPeriodic() {
     if(((int)timer.get())%2 == 0){
+        System.out.println("LEDs disabled");
         leds.setColor(new Color(0,0,0));
     }
     else{
+        System.out.println("LEDs enabled");
         leds.setColor(new Color(255,0,0));
     }
   }
