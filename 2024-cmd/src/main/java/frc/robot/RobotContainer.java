@@ -66,6 +66,7 @@ public class RobotContainer {
     //Driver controls
 
     private boolean isCoralMode = true;
+    
 
     private final Trigger ENABLED = new Trigger(() -> DriverStation.isEnabled()).and(()->DriverStation.isTeleop());
 
@@ -346,7 +347,6 @@ public class RobotContainer {
 
         //Logging if we have the coral fully or not
         SmartDashboard.putBoolean("Coral mode", isCoralMode);
-        LEDs.setSolidColor(isCoralMode?LEDS.ORANGE:LEDS.TEAL, 1);
-        
+        LEDs.setCoralMode( isCoralMode );
     }
 }

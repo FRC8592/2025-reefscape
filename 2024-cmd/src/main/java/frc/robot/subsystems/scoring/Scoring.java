@@ -302,11 +302,7 @@ public class Scoring extends SubsystemBase {
         SmartDashboard.putBoolean("L2", userSelectedPosition == ElevatorPositions.getL2() || ElevatorPositions.getL2Algae() == userSelectedPosition);
         SmartDashboard.putBoolean("L3", userSelectedPosition == ElevatorPositions.getL3() || ElevatorPositions.getL3Algae() == userSelectedPosition);
         SmartDashboard.putBoolean("L4", userSelectedPosition == ElevatorPositions.getL4());
-        LEDs.setSolidColor(
-            intake.robotHasCoral() && (int)(timer.get()*2)%2==0
-            ? LEDS.WHITE
-            : LEDS.OFF,0
-        );
+        LEDs.setHasCoral( intake.robotHasCoral() );
         
 
     }
