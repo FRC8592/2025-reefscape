@@ -13,13 +13,14 @@ public class LEDs extends SubsystemBase {
     public LEDs(){
         CANdleConfiguration configAll = new CANdleConfiguration();
         configAll.disableWhenLOS = false;
-        configAll.stripType = LEDStripType.GRB;
+        configAll.stripType = LEDStripType.RGB;
         configAll.brightnessScalar = 1;
-        configAll.vBatOutputMode = VBatOutputMode.Modulated;
+        configAll.vBatOutputMode = VBatOutputMode.On;
+        configAll.v5Enabled = false;
         candle = new CANdle(43);
-        candle.configAllSettings(configAll, 100);
+        candle.configAllSettings(configAll, 500);
     }
     public void setColor(Color color){
-        candle.setLEDs((int)color.red, (int)color.green, (int)color.blue);
+        candle.setLEDs((int)(255*color.red), (int)(255*color.green), (int)(255*color.blue), 0, 0, 20);
     }
 }

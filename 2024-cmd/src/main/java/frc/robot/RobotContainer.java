@@ -143,6 +143,7 @@ public class RobotContainer {
         configureDefaults();
 
         AutoManager.prepare();
+        LEDs.init();
     }
 
     /**
@@ -261,12 +262,12 @@ public class RobotContainer {
 
         MODE_SWITCH_ALGAE.onTrue(Commands.runOnce(()->{
             isCoralMode=false; 
-            Logger.recordOutput(Constants.SHARED.LOG_FOLDER + "/isCoralMode", isCoralMode);
+            Logger.recordOutput(SHARED.LOG_FOLDER + "/isCoralMode", isCoralMode);
         }, new Subsystem[0]));
 
         MODE_SWITCH_CORAL.onTrue(Commands.runOnce(()->{
             isCoralMode=true; 
-            Logger.recordOutput(Constants.SHARED.LOG_FOLDER + "/isCoralMode", isCoralMode);
+            Logger.recordOutput(SHARED.LOG_FOLDER + "/isCoralMode", isCoralMode);
         }, new Subsystem[0]));
 
         ALIGN_LEFT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left)));
@@ -345,6 +346,7 @@ public class RobotContainer {
 
         //Logging if we have the coral fully or not
         SmartDashboard.putBoolean("Coral mode", isCoralMode);
+        LEDs.setSolidColor(isCoralMode?LEDS.ORANGE:LEDS.TEAL, 1);
         
     }
 }
