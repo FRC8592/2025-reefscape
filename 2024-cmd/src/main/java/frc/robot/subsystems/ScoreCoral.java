@@ -43,7 +43,16 @@ public class ScoreCoral extends SubsystemBase {
 
     public enum LeftOrRight{
         Left,
-        Right
+        Right,;
+
+        public LeftOrRight swap(){
+            if(this == LeftOrRight.Left){
+                return LeftOrRight.Right;
+            }
+            else{
+                return LeftOrRight.Left;
+            }
+        }
     };
 
     private LeftOrRight direction = LeftOrRight.Left;
@@ -86,7 +95,7 @@ public class ScoreCoral extends SubsystemBase {
     }
  
     public Command driveToClosestReefTag(){
-        if (Suppliers.robotRunningOnRed.getAsBoolean()){
+        if (Suppliers.isRedAlliance.getAsBoolean()){
             return driveToTag(getClosestTag(CORAL_ALIGN.RED_REEF_TAGS));
         }
         else {
@@ -95,7 +104,7 @@ public class ScoreCoral extends SubsystemBase {
     }
 
     public Command driveToClosestHumanPlayerStation(){
-        if (Suppliers.robotRunningOnRed.getAsBoolean()){
+        if (Suppliers.isRedAlliance.getAsBoolean()){
             return driveToTag(getClosestTag(CORAL_ALIGN.RED_HPLAYER_TAGS));
         }
         else {
@@ -140,7 +149,7 @@ public class ScoreCoral extends SubsystemBase {
         TrajectoryConfig config = SWERVE.PATH_FOLLOW_TRAJECTORY_CONFIG.setStartVelocity(
             Math.sqrt(
                 Math.pow(swerve.getCurrentSpeeds().vxMetersPerSecond, 2)
-                +Math.pow(swerve.getCurrentSpeeds().vxMetersPerSecond, 2)
+                +Math.pow(swerve.getCurrentSpeeds().vyMetersPerSecond, 2)
             )
         );
         final Trajectory traj = TrajectoryGenerator.generateTrajectory(waypoints, config);
@@ -182,7 +191,7 @@ public class ScoreCoral extends SubsystemBase {
                 
 
         //Run path
-        return new FollowPathCommand(upTraj, () -> false, "DriveToReef", 0.5);
+        return new FollowPathCommand(upTraj, () -> false, "DriveToReef", 0.5, false);
 
 
 

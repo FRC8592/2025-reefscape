@@ -40,6 +40,7 @@ public class FollowPathCommand extends LargeCommand{
     private BooleanSupplier flip;
 
     private double secondsPastPathEndTolerated = -1;
+    private boolean rollAtPathEnd = false;
 
     /**
      * Command to follow a trajectory
@@ -136,9 +137,10 @@ public class FollowPathCommand extends LargeCommand{
         this.alternateTranslation = translationSupplier;
     }
 
-    public FollowPathCommand(Trajectory trajectory, BooleanSupplier flip, String commandName, double secondsPastPathEndTolerated){
+    public FollowPathCommand(Trajectory trajectory, BooleanSupplier flip, String commandName, double secondsPastPathEndTolerated, boolean rollAtPathEnd){
         this(trajectory, flip, commandName);
         this.secondsPastPathEndTolerated = secondsPastPathEndTolerated;
+        this.rollAtPathEnd = rollAtPathEnd;
     }
 
     public void initialize(){
@@ -189,8 +191,11 @@ public class FollowPathCommand extends LargeCommand{
         }
     }
     public void end(boolean interrupted){
-        swerve.drive(new ChassisSpeeds());
+        if(!rollAtPathEnd){
+            swerve.drive(new ChassisSpeeds());
+        }
     }
+
     public boolean isFinished(){
         return ( // Only return true if enough time has elapsed, we're at the target location, and we're not using alternate movement.
             (

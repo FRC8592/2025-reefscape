@@ -8,13 +8,13 @@ import frc.robot.subsystems.scoring.Scoring.ElevatorPositions;
 public class AllAlgaeAuto extends AutoCommand{
     public AllAlgaeAuto(){
         super(
-            new FollowPathCommand(getChoreoTrajectory("LeftToCMid"), Suppliers.robotRunningOnRed, "LeftToCMid")
+            new FollowPathCommand(getChoreoTrajectory("LeftToCMid"), Suppliers.isRedAlliance, "LeftToCMid")
                 .alongWith(scoring.setUserPosition(ElevatorPositions.getL3Algae()))
                 .andThen(scoring.outtakeCoralCommand()),
-            new FollowPathCommand(getChoreoTrajectory("CMidToBMid"), Suppliers.robotRunningOnRed, "CMidToBMid")
+            new FollowPathCommand(getChoreoTrajectory("CMidToBMid"), Suppliers.isRedAlliance, "CMidToBMid")
                 .alongWith(scoring.setUserPosition(ElevatorPositions.getL2Algae()))
                 .andThen(scoring.outtakeCoralCommand()),
-            new FollowPathCommand(getChoreoTrajectory("BMidToAMid"), Suppliers.robotRunningOnRed, "BMidToAMid")
+            new FollowPathCommand(getChoreoTrajectory("BMidToAMid"), Suppliers.isRedAlliance, "BMidToAMid")
             .alongWith(scoring.setUserPosition(ElevatorPositions.getL3Algae()))
             .andThen(scoring.outtakeCoralCommand())
         );

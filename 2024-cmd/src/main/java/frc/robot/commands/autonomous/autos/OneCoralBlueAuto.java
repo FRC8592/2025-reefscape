@@ -13,13 +13,13 @@ public class OneCoralBlueAuto extends AutoCommand{
     public OneCoralBlueAuto(){
         super(
             (
-                new FollowPathCommand(getChoreoTrajectory("LeftToERight"), Suppliers.robotRunningOnRed, "")
-                .andThen(Commands.runOnce(() -> {scoreCoral.setPosition(Suppliers.robotRunningOnRed.getAsBoolean()?LeftOrRight.Left:LeftOrRight.Right);}))
+                new FollowPathCommand(getChoreoTrajectory("LeftToERight"), Suppliers.isRedAlliance, "")
+                .andThen(Commands.runOnce(() -> {scoreCoral.setPosition(Suppliers.isRedAlliance.getAsBoolean()?LeftOrRight.Left:LeftOrRight.Right);}))
                 .andThen(Commands.defer(() -> scoreCoral.driveToClosestReefTag(), Set.of(swerve)))
             )
             .alongWith(scoring.goToPosition(ElevatorPositions.getL4()))
             .andThen(scoring.outtakeCoralCommand().withTimeout(1)),
-            new FollowPathCommand(getChoreoTrajectory("ERightBackUp"), Suppliers.robotRunningOnRed, "")
+            new FollowPathCommand(getChoreoTrajectory("ERightBackUp"), Suppliers.isRedAlliance, "")
             .andThen(scoring.goToPosition(ElevatorPositions.getStow()))           
         );
 

@@ -92,6 +92,7 @@ public class Swerve extends SubsystemBase {
     public void periodic() {
         // TODO: Periodic logging
         Logger.recordOutput(SWERVE.LOG_PATH+"Current Pose", getCurrentPosition());
+        Logger.recordOutput(SWERVE.LOG_PATH+"CurrentSpeeds", getCurrentSpeeds());
         swerve.periodic();
     }
 
