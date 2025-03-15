@@ -21,7 +21,7 @@ public class LEDs {
         configAll.stripType = LEDStripType.GRB;
         configAll.brightnessScalar = 0.1;
         configAll.vBatOutputMode = VBatOutputMode.Modulated;
-        candle = new CANdle(43);
+        candle = new CANdle(43,"DriveTrain");
         candle.configAllSettings(configAll, 100);
     }
     public static void writeLEDs(){

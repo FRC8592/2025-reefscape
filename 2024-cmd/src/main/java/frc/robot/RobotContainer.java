@@ -143,6 +143,7 @@ public class RobotContainer {
         configureDefaults();
 
         AutoManager.prepare();
+        LEDs.init();
     }
 
     /**

@@ -5,8 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.util.Color;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -14,29 +12,14 @@ import edu.wpi.first.wpilibj.util.Color;
  * this project, you must also update the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
-    Timer timer = new Timer();
-    LEDs leds = new LEDs();
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
-  public Robot() {
-    timer.start();
-  }
-  
+  public Robot() {}
 
   @Override
-  public void robotPeriodic() {
-
-      if(((int)timer.get())%2 == 0){
-          System.out.println("LEDs disabled");
-          leds.setColor(new Color(0,0,0));
-      }
-      else{
-          System.out.println("LEDs enabled");
-          leds.setColor(new Color(255,0,0));
-      }
-  }
+  public void robotPeriodic() {}
 
   @Override
   public void autonomousInit() {}
@@ -45,12 +28,10 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {}
 
   @Override
-  public void teleopInit() {
-  }
+  public void teleopInit() {}
 
   @Override
-  public void teleopPeriodic() {
-  }
+  public void teleopPeriodic() {}
 
   @Override
   public void disabledInit() {}
