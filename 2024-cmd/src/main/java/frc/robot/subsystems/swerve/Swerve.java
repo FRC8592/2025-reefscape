@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import org.littletonrobotics.junction.Logger;
@@ -314,5 +315,9 @@ public class Swerve extends SubsystemBase {
 
     public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds) {
         swerve.addVisionMeasurement(visionRobotPoseMeters, timestampSeconds);
+    }
+
+    public Command getSysIDTestsPerry(){
+        return swerve.getSysIDPerry();
     }
 }

@@ -26,6 +26,7 @@ import frc.robot.subsystems.scoring.Wrist;
 import frc.robot.subsystems.scoring.Scoring.ElevatorPositions;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
+import frc.robot.subsystems.swerve.perryswerve.PerryDrivetrain;
 import frc.robot.subsystems.vision.Vision;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -81,7 +82,8 @@ public class RobotContainer {
     // private final Trigger SNAP_EAST = driverController.pov(90);
     // private final Trigger SNAP_WEST = driverController.pov(270);
 
-    private final Trigger STOW = driverController.x();
+    // private final Trigger STOW = driverController.x();
+    private final Trigger SYS_ID = driverController.x();
     private final Trigger GO_TO_POSITION = driverController.a();
     private final Trigger ALIGN_TO_REEF = driverController.leftBumper();
 
@@ -142,7 +144,7 @@ public class RobotContainer {
         configureBindings();
         configureDefaults();
 
-        AutoManager.prepare();
+        // AutoManager.prepare();
         LEDs.init();
     }
 
@@ -150,7 +152,7 @@ public class RobotContainer {
      * Pass subsystems everywhere they're needed
      */
     private void passSubsystems(){
-        AutoManager.addSubsystems(swerve, scoring, leds);
+        // AutoManager.addSubsystems(swerve, scoring, leds);
         AutoCommand.addSubsystems(swerve, scoring, intake, leds, scoreCoral);
         LargeCommand.addSubsystems(swerve, scoring, leds);
         NewtonCommands.addSubsystems(swerve, scoring, leds);
@@ -215,6 +217,10 @@ public class RobotContainer {
             Commands.runOnce(() -> swerve.setRobotRelative(false)).ignoringDisable(true)
         );
 
+        SYS_ID.onTrue(
+            swerve.getSysIDTestsPerry().withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
+        );
+
         // SNAP_NORTH.whileTrue(
         //     swerveSnapToCommand(
         //         Rotation2d.fromDegrees(0),
@@ -275,7 +281,7 @@ public class RobotContainer {
 
         //------------------------------ DRIVER COMMANDS ------------------------------//
 
-        STOW.whileTrue(scoring.goToPosition(ElevatorPositions.getStow()));
+        // STOW.whileTrue(scoring.goToPosition(ElevatorPositions.getStow()));
         GO_TO_POSITION.whileTrue(scoring.applyUserPosition()).onFalse(scoring.stopAllCommand());
 
         INTAKE.whileTrue(new DeferredCommand(() -> scoring.intakeCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
@@ -320,7 +326,8 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return AutoManager.getAutonomousCommand();
+        // return AutoManager.getAutonomousCommand();
+        return Commands.none();
     }
 
     /**

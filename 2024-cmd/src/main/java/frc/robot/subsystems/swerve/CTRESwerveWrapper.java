@@ -16,26 +16,42 @@ import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.SHARED;
 import frc.robot.Constants.SWERVE;
+import frc.robot.helpers.SysID;
 import frc.robot.subsystems.swerve.perryswerve.PerryConstants;
+import frc.robot.subsystems.swerve.perryswerve.PerryDrivetrain;
 import frc.robot.subsystems.swerve.riptideswerve.RiptideConstants;
+import frc.robot.subsystems.swerve.riptideswerve.RiptideDrivetrain;
 
 public class CTRESwerveWrapper {
     private double MaxSpeed = RiptideConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
+    
+    
+    
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric fieldRelative = new SwerveRequest.FieldCentric()
-        .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-        .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+    .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
     private final SwerveRequest.RobotCentric robotRelative = new SwerveRequest.RobotCentric()
-        .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
-       
+    .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+    
     private final SwerveDrivetrain<TalonFX, TalonFX, CANcoder> drivetrain = SHARED.IS_RIPTIDE?RiptideConstants.createDrivetrain():PerryConstants.createDrivetrain();
+
+    private SysID sysId = new SysID(drivetrain.getModule(0).getDriveMotor(), drivetrain.getModule(1).getDriveMotor(), drivetrain.getModule(2).getDriveMotor(), drivetrain.getModule(3).getDriveMotor(), "swerve", ((PerryDrivetrain)drivetrain).getSubsystem());
+
+    private SysIdRoutine routine = sysId.createSwerveRoutine(3);
 
     public void drive(ChassisSpeeds speeds, boolean driveFieldRelative) {
         Logger.recordOutput(SWERVE.LOG_PATH+"SwerveTargetSpeeds", speeds);
@@ -85,5 +101,9 @@ public class CTRESwerveWrapper {
 
     public ChassisSpeeds getCurrentSpeeds(){
         return drivetrain.getState().Speeds;
+    }
+
+    public Command getSysIDPerry(){
+        return routine.dynamic(Direction.kForward).andThen(routine.dynamic(Direction.kReverse)).andThen(routine.quasistatic(Direction.kForward)).andThen(routine.quasistatic(Direction.kReverse));
     }
 }
