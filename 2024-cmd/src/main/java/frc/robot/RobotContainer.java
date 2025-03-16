@@ -164,13 +164,13 @@ public class RobotContainer {
      */
     private void configureDefaults(){
         // Set the swerve's default command to drive with joysticks
-        setDefaultCommand(swerve, swerve.run(() -> {
-            swerve.drive(swerve.processJoystickInputs(
-                -driverController.getLeftX(),
-                -driverController.getLeftY(),
-                -driverController.getRightX()
-            ), DriveModes.AUTOMATIC);
-        }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        // setDefaultCommand(swerve, swerve.run(() -> {
+        //     swerve.drive(swerve.processJoystickInputs(
+        //         -driverController.getLeftX(),
+        //         -driverController.getLeftY(),
+        //         -driverController.getRightX()
+        //     ), DriveModes.AUTOMATIC);
+        // }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         
         // setDefaultCommand(elevator, elevator.stopCommand());
@@ -217,7 +217,7 @@ public class RobotContainer {
             Commands.runOnce(() -> swerve.setRobotRelative(false)).ignoringDisable(true)
         );
 
-        SYS_ID.onTrue(
+        SYS_ID.whileTrue(
             swerve.getSysIDTestsPerry().withInterruptBehavior(InterruptionBehavior.kCancelIncoming)
         );
 
