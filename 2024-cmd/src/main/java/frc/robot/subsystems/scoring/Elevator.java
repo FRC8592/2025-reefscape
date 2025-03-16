@@ -104,6 +104,10 @@ public class Elevator extends SubsystemBase{
         return Utils.isWithin(getInches(), targetExtension, ELEVATOR.EXTENSION_POSITION_TOLERANCE);
     }
 
+    public boolean atPosition(double elevatorInches) {
+        return Utils.isWithin(getInches(), elevatorInches, ELEVATOR.EXTENSION_POSITION_TOLERANCE);
+    }
+
     /**
      * Sets the target extention of the elevator to the target inches.
      * @param targetExtension The desired position of the elevator in inches.

@@ -230,19 +230,54 @@ public class Scoring extends SubsystemBase {
             double currentWristPosition = wrist.getDegrees();
             double currentArmPosition = clockArm.getDegrees();
 
+            // Find out which way a mechanism is moving, for arm and elevator specifically
+            boolean armMovingOut = (currentArmPosition < scoringTargetPosition.clockArmPos && !clockArm.atPosition());
+            boolean armMovingIn = (currentArmPosition > scoringTargetPosition.clockArmPos && !clockArm.atPosition());
+            boolean elevatorMovingUp = (currentElevatorPosition < scoringTargetPosition.elevatorPos && !elevator.atPosition());
+            boolean elevatorMovingDown = (currentElevatorPosition > scoringTargetPosition.elevatorPos && !elevator.atPosition());
+
+            // Defining when the wrist can and cannot move 
+            // Soft limits are defined in the constructor of Wrist.java
+
             if(currentElevatorPosition < SAFE_ELEVATOR_HEIGHT && currentArmPosition < SAFE_ARM_POS){
-                targetWristPosition = Math.max(targetWristPosition, MAX_RESTRICTED_WRIST);
-                targetWristPosition = Math.min
+                targetWristPosition = Math.min(scoringTargetPosition.wristPos, MAX_RESTRICTED_WRIST);
+                targetWristPosition = Math.max(scoringTargetPosition.wristPos, 0.0);
             }
 
+            if(currentElevatorPosition >= SAFE_ELEVATOR_HEIGHT || currentArmPosition >= SAFE_ARM_POS){
+                targetWristPosition = scoringTargetPosition.wristPos;
+            }
 
+            wrist.setDegrees(targetWristPosition);
+
+            // Defining when the arm can and cannot move 
+            // Soft limits are defined in the constructor of ClockArm.java
+            if(armMovingOut){
+                targetArmPosition = scoringTargetPosition.clockArmPos;
+            } else {
+                if(currentWristPosition > ElevatorPositions.getStow().wristPos && currentWristPosition < MAX_RESTRICTED_WRIST){
+                    targetArmPosition = scoringTargetPosition.clockArmPos;
+                } else {
+                    targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, SAFE_ARM_POS);
+                }
+            }
+
+            // Defining when the elevator can and cannot move 
+            // Soft limits are defined in the constructor of Elevator.java
+            if(currentArmPosition >= SAFE_ARM_POS){
+                targetElevatorPosition = scoringTargetPosition.elevatorPos;
+            }
+
+            if(currentWristPosition >= MAX_RESTRICTED_WRIST){
+                targetElevatorPosition = scoringTargetPosition.elevatorPos;
+            }
             
 
             // Logging the target position of scoring mechanisms.
             Logger.recordOutput(SCORING.LOG_PATH+"TargetArmPostion", targetArmPosition);
             Logger.recordOutput(SCORING.LOG_PATH+"TargetWristPostion", targetWristPosition);
             Logger.recordOutput(SCORING.LOG_PATH+"TargetElevatorPostion", targetElevatorPosition);
-    
+            
             // Logging the current positions of scoring mechanisms.
             Logger.recordOutput(SCORING.LOG_PATH+"CurrentArmPostion", currentArmPosition);
             Logger.recordOutput(SCORING.LOG_PATH+"CurrentWristPostion", currentWristPosition);
@@ -250,7 +285,6 @@ public class Scoring extends SubsystemBase {
             
             // Command the position of the Elevator, Arm, and Wrist mechanisms.
             elevator.setInches(targetElevatorPosition);
-            wrist.setDegrees(targetWristPosition);
             clockArm.setDegrees(targetArmPosition);
         }
         Logger.recordOutput(SCORING.LOG_PATH+"OriginalElevatorTarget", scoringTargetPosition.elevatorPos);
