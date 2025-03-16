@@ -230,45 +230,10 @@ public class Scoring extends SubsystemBase {
             double currentWristPosition = wrist.getDegrees();
             double currentArmPosition = clockArm.getDegrees();
 
-            //anytime we're moving the wrist, the arm should be out past the wrist rotate safe constant.
-            if ( !wrist.atPosition(scoringTargetPosition.wristPos) ) {
-
-                targetArmPosition = Math.max(ARM.SAFE_ARM_TO_ROTATE_WRIST, scoringTargetPosition.clockArmPos);
-
+            if(currentElevatorPosition < SAFE_ELEVATOR_HEIGHT && currentArmPosition < SAFE_ARM_POS){
+                targetWristPosition = Math.max(targetWristPosition, MAX_RESTRICTED_WRIST);
+                targetWristPosition = Math.min
             }
-            
-            //if the arm is not extended, then don't move the elevator until it reaches the safe position
-            if (
-               
-                (currentArmPosition < ARM.SAFE_ARM_TO_ROTATE_WRIST-10)
-
-            ) {
-
-                // this is a good way to tell a system not to move.
-                // this doesn't work with the elevator as it drifts down.
-                
-                targetWristPosition = currentWristPosition;
-
-                // this is the bad way to do it
-                targetElevatorPosition = Math.round(currentElevatorPosition*5.0)/5.0;
-
-            }
-
-            //if the wrist is not in a safe position (anywhere but down), then don't let the arm move
-            
-            // if ( (currentWristPosition < -2 || currentWristPosition > 90)) {
-
-            //     targetArmPosition = Math.min(ARM.SAFE_ARM_TO_ROTATE_WRIST, targetArmPosition);
-
-            // }
-
-            //if the wrist is not in a safe position, then don't move the elevator down.
-
-            // if ( currentWristPosition < -2 || currentWristPosition > 90 ) {
-
-            //     targetElevatorPosition = currentElevatorPosition;
-
-            // }
 
 
             
