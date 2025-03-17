@@ -160,7 +160,7 @@ public final class Constants {
         public static final int ELEVATOR_CURRENT_LIMIT = 40;//amps
 
         public static final double ELEVATOR_MAX_ACCELERATION = 250;
-        public static final double ELEVATOR_MAX_VELOCITY = 100; //formerly 100
+        public static final double ELEVATOR_MAX_VELOCITY = 75; //formerly 100
 
         public static final double ELEVATOR_POSITION_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3.5: /*PERRY: */3.5;
         public static final double ELEVATOR_POSITION_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
@@ -190,7 +190,7 @@ public final class Constants {
         public static final int ARM_CURRENT_LIMIT = 40;//amps
 
         public static final double ARM_MAX_ACCELERATION = 250;
-        public static final double ARM_MAX_VELOCITY = 100; //previously 100
+        public static final double ARM_MAX_VELOCITY = 75; //previously 100
 
         public static final double ARM_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */3;
         public static final double ARM_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
@@ -213,7 +213,7 @@ public final class Constants {
         public static final int WRIST_CURRENT_LIMIT = 60;//amps
 
         public static final double WRIST_MAX_ACCELERATION = 400;
-        public static final double WRIST_MAX_VELOCITY = 100; //used to be 100
+        public static final double WRIST_MAX_VELOCITY = 75; //used to be 100
 
         public static final double WRIST_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */3;
         public static final double WRIST_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
@@ -228,11 +228,17 @@ public final class Constants {
         public static final Color ORANGE = new Color(192, 64, 0);
         public static final Color WHITE = new Color(255, 255, 255);
         public static final Color GREEN = new Color(0,255,0);
+        public static final Color RED = new Color(255, 0, 0);
         public static final Color OFF = new Color(0, 0, 0);
-        public static final int LED_STRIP_LENGTH = 50;
+        public static final Color YELLOW = new Color(255,255,0);
+        public static final int LED_STRIP_LENGTH = 52;
+        public static final int LED_CANDLE_COUNT= 8; 
+        public static final int FULL_LED_COUNT = LED_STRIP_LENGTH+LED_CANDLE_COUNT;
     }
 
     public final class DEEP_CLIMB{
-        public static final double DEEP_CLIMB_START_POSITION =-107.855;
+        public static final double DEEP_CLIMB_GRAB_POSITION = -308;
+        public static final double DEEP_CLIMB_MAX_POSITION = -9;
+        public static final double DEEP_CLIMB_START_POSITION = 0;
     }
 }

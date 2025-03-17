@@ -23,6 +23,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CORAL_ALIGN;
+import frc.robot.subsystems.LEDs;
 import frc.robot.Robot;
 
 public class Vision extends SubsystemBase{
@@ -80,6 +81,7 @@ public class Vision extends SubsystemBase{
 
     @Override
     public void periodic(){
+        
         // Calculate drivetrain commands from Joystick values
         //  double forward = -controller.getLeftY() * Constants.Swerve.kMaxLinearSpeed;
         //  double strafe = -controller.getLeftX() * Constants.Swerve.kMaxLinearSpeed;
@@ -95,6 +97,13 @@ public class Vision extends SubsystemBase{
              // Camera processed a new frame since last
              // Get the last one in the list.
              var result = results.get(results.size() - 1);
+            if(camera.isConnected()){
+                LEDs.setHasTags(result.getTargets().size());
+            }
+
+            else{
+                LEDs.setHasTags(-1);
+            }
              targetVisible = result.hasTargets();
              if (targetVisible) {
                 // At least one AprilTag was seen by the camera
