@@ -49,7 +49,7 @@ public class Scoring extends SubsystemBase {
         // PERRY POSITIONS
         START_POSITION_PERRY(0, 0, 0, 0, 0),
 
-        L1_PERRY(13.3, ARM.SAFE_ARM_TO_ROTATE_WRIST, 107.8, 0, 0),
+        L1_PERRY(13.3, 75, 107.8, -0.125, 0.75),
         // L1_PERRY(13.3, 0, 107.8, 0, 0),
         // L2_PERRY(13.3, ARM.SAFE_ARM_TO_ROTATE_WRIST, 93.6, -0.15, 0.75),
         // L2_PERRY(13.3, 0, 93.6, -0.15, 0.75),
@@ -64,7 +64,6 @@ public class Scoring extends SubsystemBase {
         GROUND_ALGAE_PERRY(0, 52, -139, 0.5, -0.75),
         STOW_ALGAE_PERRY(0,27.8, 0, 0,0),
         STOW_PERRY(0, 18.5, -57.69, 0.5, 0.75),
-        // STOW_WITH_CORAL_PERRY(0, 0, 20, 0.5, 0.75),
         L2_ALGAE_PERRY(17, 30, 83, 0.5, -0.75),
         L3_ALGAE_PERRY(0, 135, 86.5, 0.5, -0.75),
         PROCESSOR_PERRY(6.1, 14.7, 92.3, 0.3, 0.75),
@@ -210,7 +209,7 @@ public class Scoring extends SubsystemBase {
     }
 
     public boolean isAtPosition(ElevatorPositions position){
-        return scoringTargetPosition == position && atPosition();
+        return atPosition();
     }
 
 
@@ -239,12 +238,12 @@ public class Scoring extends SubsystemBase {
             // Defining when the wrist can and cannot move 
             // Soft limits are defined in the constructor of Wrist.java
 
-            if(currentElevatorPosition < SAFE_ELEVATOR_HEIGHT && currentArmPosition < SAFE_ARM_POS){
-                targetWristPosition = Math.min(scoringTargetPosition.wristPos, MAX_RESTRICTED_WRIST);
+            if(currentElevatorPosition < SCORING.SAFE_ELEVATOR_HEIGHT && currentArmPosition < SCORING.SAFE_ARM_POS){
+                targetWristPosition = Math.min(scoringTargetPosition.wristPos, SCORING.MAX_RESTRICTED_WRIST);
                 targetWristPosition = Math.max(scoringTargetPosition.wristPos, 0.0);
             }
 
-            if(currentElevatorPosition >= SAFE_ELEVATOR_HEIGHT || currentArmPosition >= SAFE_ARM_POS){
+            if(currentElevatorPosition >= SCORING.SAFE_ELEVATOR_HEIGHT || currentArmPosition >= SCORING.SAFE_ARM_POS){
                 targetWristPosition = scoringTargetPosition.wristPos;
             }
 
@@ -255,20 +254,26 @@ public class Scoring extends SubsystemBase {
             if(armMovingOut){
                 targetArmPosition = scoringTargetPosition.clockArmPos;
             } else {
-                if(currentWristPosition > ElevatorPositions.getStow().wristPos && currentWristPosition < MAX_RESTRICTED_WRIST){
+                if(currentWristPosition > ElevatorPositions.getStow().wristPos && currentWristPosition < SCORING.MAX_RESTRICTED_WRIST){
                     targetArmPosition = scoringTargetPosition.clockArmPos;
                 } else {
-                    targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, SAFE_ARM_POS);
+                    targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, SCORING.SAFE_ARM_POS);
                 }
             }
-
-            // Defining when the elevator can and cannot move 
-            // Soft limits are defined in the constructor of Elevator.java
-            if(currentArmPosition >= SAFE_ARM_POS){
+            if(currentArmPosition >= SCORING.SAFE_ARM_POS){
+                targetWristPosition = scoringTargetPosition.wristPos;
                 targetElevatorPosition = scoringTargetPosition.elevatorPos;
             }
 
-            if(currentWristPosition >= MAX_RESTRICTED_WRIST){
+            
+
+            // Defining when the elevator can and cannot move 
+            // Soft limits are defined in the constructor of Elevator.java
+            if(currentArmPosition >= SCORING.SAFE_ARM_POS){
+                targetElevatorPosition = scoringTargetPosition.elevatorPos;
+            }
+
+            if(currentWristPosition >= SCORING.MAX_RESTRICTED_WRIST){
                 targetElevatorPosition = scoringTargetPosition.elevatorPos;
             }
             
