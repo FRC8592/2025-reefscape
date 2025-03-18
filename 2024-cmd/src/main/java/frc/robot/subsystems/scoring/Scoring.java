@@ -100,6 +100,7 @@ public class Scoring extends SubsystemBase {
         public static ElevatorPositions getNet(){return SHARED.IS_RIPTIDE?ElevatorPositions.NET_RIPTIDE:ElevatorPositions.NET_PERRY;}
         public static ElevatorPositions stopped(){return ElevatorPositions.STOP;}
         public static ElevatorPositions getDeepClimb(){return ElevatorPositions.DEEP_CLIMB_PERRY;}
+        public static ElevatorPositions getStowAlgae(){return ElevatorPositions.STOW_ALGAE_PERRY;}
     }
 
 
