@@ -162,7 +162,10 @@ public class Scoring extends SubsystemBase {
      * @return
      */
     public Command intakeCommand(){
-        return new DeferredCommand(() -> intake.setIntakeCommand(scoringTargetPosition.intakeSpeed).finallyDo(() -> {intake.stop();}), Set.of(this));
+        return new DeferredCommand(
+            () -> intake.setIntakeCommand(scoringTargetPosition.intakeSpeed).finallyDo(() -> {intake.stop();}),
+            Set.of(this, intake)
+        );
     }
 
     /**
@@ -179,7 +182,7 @@ public class Scoring extends SubsystemBase {
             .until(() -> intake.robotHasCoral())
             .finallyDo(() -> {intake.stop();}),
 
-            Set.of(this)
+            Set.of(this, intake)
         );
     }
 
@@ -191,7 +194,10 @@ public class Scoring extends SubsystemBase {
      * @return
      */
     public Command outtakeCoralCommand(){
-        return new DeferredCommand(() -> intake.setIntakeCommand(scoringTargetPosition.outtakeSpeed).finallyDo(() -> {intake.stop();}), Set.of(this));
+        return new DeferredCommand(
+            () -> intake.setIntakeCommand(scoringTargetPosition.outtakeSpeed).finallyDo(() -> {intake.stop();}),
+            Set.of(this, intake)
+        );
     }
 
     // public Command outtakeAlgaeCommand(){

@@ -171,6 +171,14 @@ public class RobotContainer {
             ), DriveModes.AUTOMATIC);
         }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
+        setDefaultCommand(
+            intake, intake.run(
+                () -> {intake.setIntakeCommand(-0.2);}
+            ).onlyIf(
+                () -> !isCoralMode
+            ).repeatedly()
+        );
+
         
         // setDefaultCommand(elevator, elevator.stopCommand());
         // setDefaultCommand(wrist, wrist.stopCommand());
@@ -295,7 +303,11 @@ public class RobotContainer {
 
         DEEP_CLIMB.onTrue(deepclimb.setDeepClimbIntakeCommand(-1)).onFalse(deepclimb.setDeepClimbIntakeCommand(0));
 
-        DEEP_CLIMB_DEPLOY.onTrue(deepclimb.setDeepClimbGrabPositionCommand());//.onFalse(deepclimb.setDeepClimbIntakeCommand(0));
+        DEEP_CLIMB_DEPLOY.onTrue(
+            scoring.goToPosition(ElevatorPositions.getDeepClimb()).andThen(
+                deepclimb.setDeepClimbGrabPositionCommand()
+            )
+        );//.onFalse(deepclimb.setDeepClimbIntakeCommand(0));
 
         WINCH_UP.whileTrue(
             deepclimb.setDeepClimbCommand(-1)
