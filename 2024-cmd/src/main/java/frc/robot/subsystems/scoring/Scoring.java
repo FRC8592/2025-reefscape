@@ -239,14 +239,19 @@ public class Scoring extends SubsystemBase {
             // Defining when the wrist can and cannot move 
             // Soft limits are defined in the constructor of Wrist.java
 
-            if(currentElevatorPosition < SCORING.SAFE_ELEVATOR_HEIGHT && currentArmPosition < SCORING.SAFE_ARM_POS){
-                targetWristPosition = Math.min(scoringTargetPosition.wristPos, SCORING.MAX_RESTRICTED_WRIST);
-                targetWristPosition = Math.max(scoringTargetPosition.wristPos, 0.0);
+            // Intending to make it not run this if going to stow and not screw up other logic NOT DONE!!!
+            if(targetArmPosition != ElevatorPositions.getStow().clockArmPos){
+                if(currentElevatorPosition < SCORING.SAFE_ELEVATOR_HEIGHT && currentArmPosition < SCORING.SAFE_ARM_POS){
+                    targetWristPosition = Math.min(scoringTargetPosition.wristPos, SCORING.MAX_RESTRICTED_WRIST);
+                    targetWristPosition = Math.max(scoringTargetPosition.wristPos, 0.0);
+                }
             }
 
             if(currentElevatorPosition >= SCORING.SAFE_ELEVATOR_HEIGHT || currentArmPosition >= SCORING.SAFE_ARM_POS){
                 targetWristPosition = scoringTargetPosition.wristPos;
             }
+
+            
 
             wrist.setDegrees(targetWristPosition);
 
@@ -276,6 +281,19 @@ public class Scoring extends SubsystemBase {
 
             if(currentWristPosition >= SCORING.MAX_RESTRICTED_WRIST){
                 targetElevatorPosition = scoringTargetPosition.elevatorPos;
+            }
+
+            if((currentElevatorPosition < SCORING.SAFE_ELEVATOR_HEIGHT &&
+                currentArmPosition < SCORING.SAFE_ARM_POS) &&
+                currentWristPosition == ElevatorPositions.getStow().wristPos){
+
+                targetElevatorPosition = currentElevatorPosition;
+                targetArmPosition = currentArmPosition;
+
+                clockArm.setDegrees(SCORING.SAFE_ARM_POS);
+
+                targetElevatorPosition = scoringTargetPosition.elevatorPos;
+                targetArmPosition = scoringTargetPosition.clockArmPos;
             }
             
 
