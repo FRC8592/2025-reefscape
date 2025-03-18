@@ -282,7 +282,7 @@ public class Scoring extends SubsystemBase {
                                                          ((currentWristPosition           > WRIST_PENALTY_ZONE_POS_MAX) &&
                                                           (scoringTargetPosition.wristPos < WRIST_PENALTY_ZONE_POS_MAX)));
     
-        boolean wristMovingThroughPenaltyZoneNegative = (((currentWristPosition           > WRIST_PENALTY_ZONE_NEG_MAX) &&
+        boolean wristMovingThroughPenaltyZoneNegative = ((currentWristPosition           > WRIST_PENALTY_ZONE_NEG_MAX) &&
                                                           (scoringTargetPosition.wristPos < WRIST_PENALTY_ZONE_NEG_MAX)) ||
                                                          ((currentWristPosition           < WRIST_PENALTY_ZONE_NEG_MIN) &&
                                                           (scoringTargetPosition.wristPos > WRIST_PENALTY_ZONE_NEG_MIN));
@@ -353,7 +353,7 @@ public class Scoring extends SubsystemBase {
         //
         if (!elevatorAllSafeHeight && !armAllSafePosition && wristTurnedDown && elevatorMovingDown) {
             targetWristPosition    = 5.0;
-            targetElevatorPosition = Math.max(ELEVATOR_POSITION_SAFE);
+            targetElevatorPosition = Math.max(ELEVATOR_POSITION_SAFE, scoringTargetPosition.elevatorPos);
         }
 
         //
