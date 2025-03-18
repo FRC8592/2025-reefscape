@@ -3,6 +3,7 @@ package frc.robot.subsystems.scoring;
 import java.util.Set;
 
 import org.littletonrobotics.junction.Logger;
+import org.photonvision.estimation.TargetModel;
 
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -231,6 +232,14 @@ public class Scoring extends SubsystemBase {
         double WRIST_PENALTY_ZONE_NEG_MIN = -340;
 
         //
+        // Constants for checking unsafe wrist positions at low elevator positions
+        //
+        double WRIST_TURNED_IN_MIN = 0.0;
+        double WRIST_TURNED_IN_MAX = 180.0;
+        double WRIST_TURNED_DOWN_MIN = -90.0;
+        double WRIST_TURNED_DOWN_MAX = 90.0;
+
+        //
         // Constants to define an ARM position at which moving the wrist to any position is safe
         //
         double ARM_POSITION_SAFE = 50.0; // Degrees
@@ -239,7 +248,8 @@ public class Scoring extends SubsystemBase {
         //
         // Constants to define an ELEVATOR position at which moving the wrist to any position is safe
         //
-        double ELEVATOR_POSITION_SAFE = 14.0; // Inches
+        double ELEVATOR_POSITION_WRIST_DANGER = 10.0; // Inches.  Below here, we can smash a wrist turned downward
+        double ELEVATOR_POSITION_SAFE = 14.0; // Inches.  Below here, we can smash a wrist turned inward
         double ELEVATOR_CHECK_SAFE    = ELEVATOR_POSITION_SAFE - 0.5; // prevent slight arm position error from blocking wrist motion
 
         //
@@ -280,6 +290,12 @@ public class Scoring extends SubsystemBase {
                                        (currentWristPosition < WRIST_PENALTY_ZONE_POS_MAX)) ||
                                       ((currentWristPosition < WRIST_PENALTY_ZONE_NEG_MAX) &&
                                        (currentWristPosition > WRIST_PENALTY_ZONE_NEG_MIN)));
+
+        //
+        // Check WRIST positions that will be unsafe at low elevator positions
+        //
+        boolean wristTurnedDown = ((currentWristPosition < WRIST_TURNED_DOWN_MIN) || (currentWristPosition > WRIST_TURNED_DOWN_MAX));
+        boolean wristTurnedIn   = ((currentWristPosition < WRIST_TURNED_IN_MIN)   || (currentWristPosition > WRIST_TURNED_IN_MAX));
 
         //                                               
         // Check to see if the ARM will move through a zone where it might exceed the extension limit
@@ -325,8 +341,20 @@ public class Scoring extends SubsystemBase {
         }
 
         //
-        // I
+        // If the wrist is turned inward and the elevator is moving down, freeze the elevator until the wrist is safe
+        //
+        if (wristTurnedIn && elevatorMovingDown && !armAllSafePosition) {
+            targetArmPosition      = Math.min(ARM_POSITION_SAFE, scoringTargetPosition.clockArmPos);       // Force the arm out
+            targetElevatorPosition = Math.round(currentElevatorPosition*5.0)/5.0; // Freeze elevator
+        }
 
+        //
+        // If the elevator is below the all safe position and moving downward, force the wrist into a safe position
+        //
+        if (!elevatorAllSafeHeight && !armAllSafePosition && wristTurnedDown && elevatorMovingDown) {
+            targetWristPosition    = 5.0;
+            targetElevatorPosition = Math.max(ELEVATOR_POSITION_SAFE);
+        }
 
         //
         // PLACE THIS CASE LAST TO PROTECT WRIST FROM DAMAGE
@@ -338,127 +366,30 @@ public class Scoring extends SubsystemBase {
             targetWristPosition    = currentWristPosition;  // Freeze the wrist
             targetArmPosition      = Math.min(ARM_POSITION_SAFE, scoringTargetPosition.clockArmPos); // Force the arm out
 
-            if (elevatorMovingDown) {}
-                targetElevatorPosition =
+            if (!clockArm.atPosition()) {
+                targetElevatorPosition = Math.round(currentElevatorPosition*5.0)/5.0;
             }
         }
 
-        //
-        // Do not allow wrist motion if the 
-
-        //
-        // Do not allow elevator motion if the wrist is not in a safe position
-        //
-
-
-
-        if(scoringTargetPosition != ElevatorPositions.STOP){
-    
-
-
-            // Elevator condition checks
-        
-
-            // Arm condition checks
-            boolean armMovingThroughPenaltyZone = ((currentArmPosition < ARM_PENALTY_ZONE_HIGH) && ())
-
-            // Find out which way a mechanism is moving, for arm and elevator specifically
-            boolean armMovingOut = (currentArmPosition < scoringTargetPosition.clockArmPos && !clockArm.atPosition());
-            boolean armMovingIn = (currentArmPosition > scoringTargetPosition.clockArmPos && !clockArm.atPosition());
-            boolean elevatorMovingUp = (currentElevatorPosition < scoringTargetPosition.elevatorPos && !elevator.atPosition());
-            boolean elevatorMovingDown = (currentElevatorPosition > scoringTargetPosition.elevatorPos && !elevator.atPosition());
-
-            // Defining when the wrist can and cannot move 
-            // Soft limits are defined in the constructor of Wrist.java
-
-            // Intending to make it not run this if going to stow and not screw up other logic NOT DONE!!!
-            if(targetArmPosition != ElevatorPositions.getStow().clockArmPos){
-                if(currentElevatorPosition < SCORING.SAFE_ELEVATOR_HEIGHT && currentArmPosition < SCORING.SAFE_ARM_POS){
-                    targetWristPosition = Math.min(scoringTargetPosition.wristPos, SCORING.MAX_RESTRICTED_WRIST);
-                    targetWristPosition = Math.max(scoringTargetPosition.wristPos, 0.0);
-                }
-            }
-
-            if(currentElevatorPosition >= SCORING.SAFE_ELEVATOR_HEIGHT || currentArmPosition >= SCORING.SAFE_ARM_POS){
-                targetWristPosition = scoringTargetPosition.wristPos;
-            }
-
-            
-
-            wrist.setDegrees(targetWristPosition);
-
-            // Defining when the arm can and cannot move 
-            // Soft limits are defined in the constructor of ClockArm.java
-            if(armMovingOut){
-                targetArmPosition = scoringTargetPosition.clockArmPos;
-            } else {
-                if(currentWristPosition > ElevatorPositions.getStow().wristPos && currentWristPosition < SCORING.MAX_RESTRICTED_WRIST){
-                    targetArmPosition = scoringTargetPosition.clockArmPos;
-                } else {
-                    targetArmPosition = Math.max(scoringTargetPosition.clockArmPos, SCORING.SAFE_ARM_POS);
-                }
-            }
-            if(currentArmPosition >= SCORING.SAFE_ARM_POS){
-                targetWristPosition = scoringTargetPosition.wristPos;
-                targetElevatorPosition = scoringTargetPosition.elevatorPos;
-            }
-
-            
-
-            // Defining when the elevator can and cannot move 
-            // Soft limits are defined in the constructor of Elevator.java
-            if(currentArmPosition >= SCORING.SAFE_ARM_POS){
-                targetElevatorPosition = scoringTargetPosition.elevatorPos;
-            }
-
-            if(currentWristPosition >= SCORING.MAX_RESTRICTED_WRIST){
-                targetElevatorPosition = scoringTargetPosition.elevatorPos;
-            }
-
-            if((currentElevatorPosition < SCORING.SAFE_ELEVATOR_HEIGHT &&
-                currentArmPosition < SCORING.SAFE_ARM_POS) &&
-                currentWristPosition == ElevatorPositions.getStow().wristPos){
-
-                targetElevatorPosition = currentElevatorPosition;
-                targetArmPosition = currentArmPosition;
-
-                clockArm.setDegrees(SCORING.SAFE_ARM_POS);
-
-                targetElevatorPosition = scoringTargetPosition.elevatorPos;
-                targetArmPosition = scoringTargetPosition.clockArmPos;
-            }
-            
-
-            // Logging the target position of scoring mechanisms.
-            Logger.recordOutput(SCORING.LOG_PATH+"TargetArmPostion", targetArmPosition);
-            Logger.recordOutput(SCORING.LOG_PATH+"TargetWristPostion", targetWristPosition);
-            Logger.recordOutput(SCORING.LOG_PATH+"TargetElevatorPostion", targetElevatorPosition);
-            
-            // Logging the current positions of scoring mechanisms.
-            Logger.recordOutput(SCORING.LOG_PATH+"CurrentArmPostion", currentArmPosition);
-            Logger.recordOutput(SCORING.LOG_PATH+"CurrentWristPostion", currentWristPosition);
-            Logger.recordOutput(SCORING.LOG_PATH+"CurrentElevatorPostion", currentElevatorPosition);
-            
-            // Command the position of the Elevator, Arm, and Wrist mechanisms.
-            elevator.setInches(targetElevatorPosition);
-            clockArm.setDegrees(targetArmPosition);
-        }
+        // Logging the original target of the scoring mechanisms
         Logger.recordOutput(SCORING.LOG_PATH+"OriginalElevatorTarget", scoringTargetPosition.elevatorPos);
         Logger.recordOutput(SCORING.LOG_PATH+"OriginalWristTarget", scoringTargetPosition.wristPos);
         Logger.recordOutput(SCORING.LOG_PATH+"OriginalArmTarget", scoringTargetPosition.clockArmPos);
 
-        // Logging the potentially modified target positions of scoring mechanisms
-
-        Logger.recordOutput(SCORING.LOG_PATH+"UserSelectedPosition", userSelectedPosition);
-        Logger.recordOutput(SCORING.LOG_PATH+"TargetPosition", scoringTargetPosition);
-
-        // These will log which position we are in for scoring
-        SmartDashboard.putBoolean("L1", userSelectedPosition == ElevatorPositions.getL1());
-        SmartDashboard.putBoolean("L2", userSelectedPosition == ElevatorPositions.getL2() || ElevatorPositions.getL2Algae() == userSelectedPosition);
-        SmartDashboard.putBoolean("L3", userSelectedPosition == ElevatorPositions.getL3() || ElevatorPositions.getL3Algae() == userSelectedPosition);
-        SmartDashboard.putBoolean("L4", userSelectedPosition == ElevatorPositions.getL4());
-        LEDs.setHasCoral( intake.robotHasCoral() );
+        // Logging the modified target position of scoring mechanisms.
+        Logger.recordOutput(SCORING.LOG_PATH+"TargetArmPostion", targetArmPosition);
+        Logger.recordOutput(SCORING.LOG_PATH+"TargetWristPostion", targetWristPosition);
+        Logger.recordOutput(SCORING.LOG_PATH+"TargetElevatorPostion", targetElevatorPosition);
         
+        // Logging the current positions of scoring mechanisms.
+        Logger.recordOutput(SCORING.LOG_PATH+"CurrentArmPostion", currentArmPosition);
+        Logger.recordOutput(SCORING.LOG_PATH+"CurrentWristPostion", currentWristPosition);
+        Logger.recordOutput(SCORING.LOG_PATH+"CurrentElevatorPostion", currentElevatorPosition);
+        
+        // Command the position of the Elevator, Arm, and Wrist mechanisms.
+        wrist.setDegrees(targetWristPosition);
+        elevator.setInches(targetElevatorPosition);
+        clockArm.setDegrees(targetArmPosition);
 
     }
 }
