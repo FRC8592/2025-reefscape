@@ -243,8 +243,9 @@ public final class Constants {
     }
 
     public final class DEEP_CLIMB{
-        public static final double DEEP_CLIMB_GRAB_POSITION = -308;
-        public static final double DEEP_CLIMB_MAX_POSITION = -9;
+        public static final double DEEP_CLIMB_GRAB_POSITION = -280;
+        public static final double DEEP_CLIMB_MAX_POSITION = -25;
         public static final double DEEP_CLIMB_START_POSITION = 0;
+        public static final double DEEP_CLIMB_HOLD_P = 0.1;
     }
 }
