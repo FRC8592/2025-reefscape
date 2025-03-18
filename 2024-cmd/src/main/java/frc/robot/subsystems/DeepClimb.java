@@ -27,19 +27,19 @@ public class DeepClimb extends SubsystemBase {
         deepClimbIntakeMotor = new SparkFlexMotor(CAN.DEEP_CLIMB_INTAKE_MOTOR_CAN_ID, true);
         deepClimbIntakeMotor.setIdleMode(IdleMode.kBrake);
 
-        deepClimbMotor.withGains(new PIDProfile().setPID(DEEP_CLIMB.DEEP_CLIMB_HOLD_P, 0, 0));
+        // deepClimbMotor.withGains(new PIDProfile().setPID(DEEP_CLIMB.DEEP_CLIMB_HOLD_P, 0, 0));
     }
 
     public void setDeepClimbPercentOutput(double percent){
-        if(percent != 0){
-            deepClimbMotor.setPercentOutput(percent);
-            motorRotationsSet = false;
-        }
-        else{
-            deepClimbMotor.setPercentOutput(percent);
-            motorRotationsSet = true;
-            motorRotations = deepClimbMotor.getRotations();
-        }
+        deepClimbMotor.setPercentOutput(percent);
+        // if(percent != 0){
+        //     motorRotationsSet = false;
+        // }
+        // else{
+        //     deepClimbMotor.setPercentOutput(percent);
+        //     motorRotationsSet = true;
+        //     motorRotations = deepClimbMotor.getRotations();
+        // }
     }
 
     public void setDeepClimbIntakePercentOutput(double percent){
@@ -92,8 +92,8 @@ public class DeepClimb extends SubsystemBase {
 
     public void periodic() {
         Logger.recordOutput(SHARED.LOG_FOLDER + "Winch Rotations", deepClimbMotor.getRotations());
-        if(motorRotationsSet){
-            deepClimbMotor.setPosition(motorRotations);
-        }
+        // if(motorRotationsSet){
+        //     deepClimbMotor.setPosition(motorRotations);
+        // }
     }
 }
