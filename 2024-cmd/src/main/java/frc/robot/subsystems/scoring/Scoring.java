@@ -47,28 +47,29 @@ public class Scoring extends SubsystemBase {
 
 
         // PERRY POSITIONS
-        START_POSITION_PERRY(0, 0, 0, 0, 0),
+        START_POSITION_PERRY(0, 0, 5, 0, 0),
 
         L1_PERRY(13.3, 75, 107.8, -0.125, 0.75),
         // L1_PERRY(13.3, 0, 107.8, 0, 0),
         // L2_PERRY(13.3, ARM.SAFE_ARM_TO_ROTATE_WRIST, 93.6, -0.15, 0.75),
         // L2_PERRY(13.3, 0, 93.6, -0.15, 0.75),
 
-        L2_PERRY(0, 164, -200, -0.25, 0.75), //might be a good L2!
+        L2_PERRY(0, 171.31, -214.16, -0.25, 0.75), //might be a good L2!
 
-        L3_PERRY(0, 170, -220, -0.25, 0.75), //adjust wrist down from 200
+        L3_PERRY(0, 170.87,-223.71,-0.25, 0.75), //adjust wrist down from 200
 
-        L4_PERRY(19.5, 170, -220, -0.33, 0.75), //arm adjusted from 165
+        L4_PERRY(19, 168, -225, -0.33, 0.75), //arm adjusted from 165
 
 
-        GROUND_ALGAE_PERRY(0, 52, -139, 0.5, -0.75),
+        GROUND_ALGAE_PERRY(0, 40, -232.4, 0.5, -0.75),
         STOW_ALGAE_PERRY(0,27.8, 0, 0,0),
-        STOW_PERRY(0, 18.5, -57.69, 0.5, 0.75),
-        L2_ALGAE_PERRY(17, 30, 83, 0.5, -0.75),
-        L3_ALGAE_PERRY(0, 135, 86.5, 0.5, -0.75),
+        STOW_PERRY(0, 21.57, -73, 0.5, 0.75),
+        // STOW_WITH_CORAL_PERRY(0, 0, 20, 0.5, 0.75),
+        L2_ALGAE_PERRY(17, 13.46, 73.88, 0.5, -0.75),
+        L3_ALGAE_PERRY(0, 137.58, 85.49, 0.5, -0.75),
         PROCESSOR_PERRY(6.1, 14.7, 92.3, 0.3, 0.75),
         NET_PERRY(19.5, 165, 29.8, 1, -0.75),
-        DEEP_CLIMB_PERRY(0, 45, 0, 0, 0),
+        DEEP_CLIMB_PERRY(0, 45, -73, 0, 0),
 
         STOP(0,0,0, 0, 0);
 

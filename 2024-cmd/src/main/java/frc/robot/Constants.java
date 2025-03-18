@@ -234,11 +234,17 @@ public final class Constants {
         public static final Color ORANGE = new Color(192, 64, 0);
         public static final Color WHITE = new Color(255, 255, 255);
         public static final Color GREEN = new Color(0,255,0);
+        public static final Color RED = new Color(255, 0, 0);
         public static final Color OFF = new Color(0, 0, 0);
-        public static final int LED_STRIP_LENGTH = 50;
+        public static final Color YELLOW = new Color(255,255,0);
+        public static final int LED_STRIP_LENGTH = 52;
+        public static final int LED_CANDLE_COUNT= 8; 
+        public static final int FULL_LED_COUNT = LED_STRIP_LENGTH+LED_CANDLE_COUNT;
     }
 
     public final class DEEP_CLIMB{
-        public static final double DEEP_CLIMB_START_POSITION =-107.855;
+        public static final double DEEP_CLIMB_GRAB_POSITION = -308;
+        public static final double DEEP_CLIMB_MAX_POSITION = -9;
+        public static final double DEEP_CLIMB_START_POSITION = 0;
     }
 }
