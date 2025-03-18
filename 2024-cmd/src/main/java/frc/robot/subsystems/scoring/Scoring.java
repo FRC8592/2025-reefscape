@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -219,16 +220,147 @@ public class Scoring extends SubsystemBase {
     // Implment safety features to preven these mechanisms from doing damage to the robot
     //
     public void periodic () {
-        if(scoringTargetPosition != ElevatorPositions.STOP){
-            // Get the commanded position for each mechanism
-            double targetElevatorPosition = scoringTargetPosition.elevatorPos;
-            double targetWristPosition = scoringTargetPosition.wristPos;
-            double targetArmPosition = scoringTargetPosition.clockArmPos;
+        //
+        // Constants for checking if the arm and wrist might exceed extension rules
+        //
+        double ARM_PENALTY_ZONE_HIGH = 135.0;
+        double ARM_PENALTY_ZONE_LOW  = 45;
+        double WRIST_PENALTY_ZONE_POS_MIN = 20;
+        double WRIST_PENALTY_ZONE_POS_MAX = 160;
+        double WRIST_PENALTY_ZONE_NEG_MAX = -200;
+        double WRIST_PENALTY_ZONE_NEG_MIN = -340;
 
-            // Get the current position for each mechanism
-            double currentElevatorPosition = elevator.getInches();
-            double currentWristPosition = wrist.getDegrees();
-            double currentArmPosition = clockArm.getDegrees();
+        //
+        // Constants to define an ARM position at which moving the wrist to any position is safe
+        //
+        double ARM_POSITION_SAFE = 50.0; // Degrees
+        double ARM_CHECK_SAFE    = ARM_POSITION_SAFE - 5.0; // Prevent a slight arm position error from blocking wrist motion
+
+        //
+        // Constants to define an ELEVATOR position at which moving the wrist to any position is safe
+        //
+        double ELEVATOR_POSITION_SAFE = 14.0; // Inches
+        double ELEVATOR_CHECK_SAFE    = ELEVATOR_POSITION_SAFE - 0.5; // prevent slight arm position error from blocking wrist motion
+
+        //
+        // Distance within which we decide that the elevator is "at position"
+        //
+        double ELEVATOR_AT_POSITION_DISTANCE = 0.25;
+
+        //
+        // Get the commanded position for each mechanism
+        //
+        double targetElevatorPosition = scoringTargetPosition.elevatorPos;
+        double targetWristPosition    = scoringTargetPosition.wristPos;
+        double targetArmPosition      = scoringTargetPosition.clockArmPos;
+    
+        //
+        // Get the current position for each mechanism
+        //
+        double currentElevatorPosition = elevator.getInches();
+        double currentWristPosition    = wrist.getDegrees();
+        double currentArmPosition      = clockArm.getDegrees();
+    
+        //
+        // Check to see if the WRIST will move through a zone where it might exceed the extension limit
+        // We have to combine this check with a check for the arm to see if the combined positions may violate the extension rules
+        //
+        // Note that the wrist can move in both positive and negative directions
+        //
+        boolean wristMovingThroughPenaltyZonePositive = (((currentWristPosition           < WRIST_PENALTY_ZONE_POS_MIN) &&
+                                                          (scoringTargetPosition.wristPos > WRIST_PENALTY_ZONE_POS_MIN)) ||
+                                                         ((currentWristPosition           > WRIST_PENALTY_ZONE_POS_MAX) &&
+                                                          (scoringTargetPosition.wristPos < WRIST_PENALTY_ZONE_POS_MAX)));
+    
+        boolean wristMovingThroughPenaltyZoneNegative = (((currentWristPosition           > WRIST_PENALTY_ZONE_NEG_MAX) &&
+                                                          (scoringTargetPosition.wristPos < WRIST_PENALTY_ZONE_NEG_MAX)) ||
+                                                         ((currentWristPosition           < WRIST_PENALTY_ZONE_NEG_MIN) &&
+                                                          (scoringTargetPosition.wristPos > WRIST_PENALTY_ZONE_NEG_MIN));
+        boolean wristInPenaltyZone = (((currentWristPosition > WRIST_PENALTY_ZONE_POS_MIN) &&
+                                       (currentWristPosition < WRIST_PENALTY_ZONE_POS_MAX)) ||
+                                      ((currentWristPosition < WRIST_PENALTY_ZONE_NEG_MAX) &&
+                                       (currentWristPosition > WRIST_PENALTY_ZONE_NEG_MIN)));
+
+        //                                               
+        // Check to see if the ARM will move through a zone where it might exceed the extension limit
+        // We have to combine this check with a check for the wrist to see if the combined positions may violate the extension rules
+        //
+        boolean armMovingThroughPenaltyZone = (((currentArmPosition                < ARM_PENALTY_ZONE_LOW) &&
+                                                (scoringTargetPosition.clockArmPos > ARM_PENALTY_ZONE_LOW)) ||
+                                               ((currentArmPosition                > ARM_PENALTY_ZONE_HIGH) &&
+                                                (scoringTargetPosition.clockArmPos < ARM_PENALTY_ZONE_HIGH)));
+        boolean armInPenaltyZone = ((currentArmPosition > ARM_PENALTY_ZONE_LOW) &&
+                                    (currentArmPosition < ARM_PENALTY_ZONE_HIGH));
+        //
+        boolean armAllSafePosition = (currentArmPosition >= ARM_CHECK_SAFE);
+
+        //
+        // Elevator position checks
+        //
+        double elevatorDistanceFromPosition = scoringTargetPosition.elevatorPos - currentElevatorPosition;
+        //
+        boolean elevatorMovingUp   = (elevatorDistanceFromPosition > ELEVATOR_AT_POSITION_DISTANCE);
+        boolean elevatorMovingDown = (elevatorDistanceFromPosition < ELEVATOR_AT_POSITION_DISTANCE);
+        //
+        boolean elevatorAllSafeHeight = (currentElevatorPosition >= ELEVATOR_CHECK_SAFE);
+
+        //
+        // All of the motion logic focuses on preventing the wrist from causing damage or from being damaged
+        //
+
+        //
+        // Prevent the wrist from moving through positions that may cause an extension penalty
+        //
+        if (armMovingThroughPenaltyZone && (wristMovingThroughPenaltyZonePositive || wristMovingThroughPenaltyZoneNegative)) {
+            targetWristPosition = currentWristPosition; // Freeze the wrist
+        }
+
+        //
+        // If the wrist is already in the extension danger zone and the arm is going to pass through that zone, move the wrist
+        // to a safe position
+        //
+        if (armMovingThroughPenaltyZone && wristInPenaltyZone) {
+            targetWristPosition = WRIST_PENALTY_ZONE_POS_MIN; // Using only this position might create delays. Todo: OPTIMIZE?                     
+            targetArmPosition   = currentArmPosition;         // Freeze the arm until the wrist is in a safe position
+        }
+
+        //
+        // I
+
+
+        //
+        // PLACE THIS CASE LAST TO PROTECT WRIST FROM DAMAGE
+        //
+        // Do not allow wrist motion if the elevator is down and the arm is in.
+        // If we need to move the wrist, we'll escape this position by forcing the arm to move out
+        //
+        if (!elevatorAllSafeHeight && !armAllSafePosition && !wrist.atPosition()) {
+            targetWristPosition    = currentWristPosition;  // Freeze the wrist
+            targetArmPosition      = Math.min(ARM_POSITION_SAFE, scoringTargetPosition.clockArmPos); // Force the arm out
+
+            if (elevatorMovingDown) {}
+                targetElevatorPosition =
+            }
+        }
+
+        //
+        // Do not allow wrist motion if the 
+
+        //
+        // Do not allow elevator motion if the wrist is not in a safe position
+        //
+
+
+
+        if(scoringTargetPosition != ElevatorPositions.STOP){
+    
+
+
+            // Elevator condition checks
+        
+
+            // Arm condition checks
+            boolean armMovingThroughPenaltyZone = ((currentArmPosition < ARM_PENALTY_ZONE_HIGH) && ())
 
             // Find out which way a mechanism is moving, for arm and elevator specifically
             boolean armMovingOut = (currentArmPosition < scoringTargetPosition.clockArmPos && !clockArm.atPosition());
