@@ -17,7 +17,7 @@ public class LEDs {
     private static CANdle candle;
     private static boolean hasCoral; 
     private static boolean coralMode;
-    private static double progressBar;
+    private static double progressBar = -1;
     private static int tagCount;
     private static boolean deepclimb;
     private static Timer timer = new Timer(); 

@@ -97,11 +97,14 @@ public class DeepClimb extends SubsystemBase {
     }
 
     public void periodic() {
+        double fliteredCurrent = filter.calculate(deepClimbIntakeMotor.getOutputCurrent());
+
         Logger.recordOutput(SHARED.LOG_FOLDER + "Motor current", deepClimbIntakeMotor.getOutputCurrent());
         Logger.recordOutput(SHARED.LOG_FOLDER + "Winch Rotations", deepClimbMotor.getRotations());
-        Logger.recordOutput(SHARED.LOG_FOLDER + "Filtered current" , filter.calculate(deepClimbIntakeMotor.getOutputCurrent()));
+        Logger.recordOutput(SHARED.LOG_FOLDER + "Filtered current" , fliteredCurrent);
         // if(motorRotationsSet){
         //     deepClimbMotor.setPosition(motorRotations);
         // }
+        LEDs.setDeepClimb(fliteredCurrent>50);
     }
 }
