@@ -234,6 +234,7 @@ public class Scoring extends SubsystemBase {
         double ARM_PENALTY_ZONE_HIGH = 135.0;
         double ARM_PENALTY_ZONE_LOW  = 45;
         double WRIST_PENALTY_ZONE_POS_MIN = 20;
+        double WRIST_PENALTY_ZONE_POS_SAFE = WRIST_PENALTY_ZONE_POS_MIN + 10;
         double WRIST_PENALTY_ZONE_POS_MAX = 160;
         double WRIST_PENALTY_ZONE_NEG_MAX = -200;
         double WRIST_PENALTY_ZONE_NEG_MIN = -340;
@@ -327,6 +328,18 @@ public class Scoring extends SubsystemBase {
         //
         boolean elevatorAllSafeHeight = (currentElevatorPosition >= ELEVATOR_CHECK_SAFE);
 
+        Logger.recordOutput(SCORING.LOG_PATH+"wristMovingThroughPenaltyZonePositive", wristMovingThroughPenaltyZonePositive);
+        Logger.recordOutput(SCORING.LOG_PATH+"wristMovingThroughPenaltyZoneNegative", wristMovingThroughPenaltyZoneNegative);
+        Logger.recordOutput(SCORING.LOG_PATH+"wristInPenaltyZone", wristInPenaltyZone);
+        Logger.recordOutput(SCORING.LOG_PATH+"wristTurnedDown", wristTurnedDown);
+        Logger.recordOutput(SCORING.LOG_PATH+"wristTurnedIn", wristTurnedIn);
+        Logger.recordOutput(SCORING.LOG_PATH+"armMovingThroughPenaltyZone", armMovingThroughPenaltyZone);
+        Logger.recordOutput(SCORING.LOG_PATH+"armInPenaltyZone", armInPenaltyZone);
+        Logger.recordOutput(SCORING.LOG_PATH+"armAllSafePosition", armAllSafePosition);
+        Logger.recordOutput(SCORING.LOG_PATH+"elevatorMovingUp", elevatorMovingUp);
+        Logger.recordOutput(SCORING.LOG_PATH+"elevatorMovingDown", elevatorMovingDown);
+        Logger.recordOutput(SCORING.LOG_PATH+"elevatorAllSafeHeight", elevatorAllSafeHeight);
+
         //
         // All of the motion logic focuses on preventing the wrist from causing damage or from being damaged
         //
@@ -343,25 +356,25 @@ public class Scoring extends SubsystemBase {
         // to a safe position
         //
         if (armMovingThroughPenaltyZone && wristInPenaltyZone) {
-            targetWristPosition = WRIST_PENALTY_ZONE_POS_MIN; // Using only this position might create delays. Todo: OPTIMIZE?                     
+            targetWristPosition = WRIST_PENALTY_ZONE_POS_SAFE; // Using only this position might create delays. Todo: OPTIMIZE?                     
             targetArmPosition   = currentArmPosition;         // Freeze the arm until the wrist is in a safe position
         }
 
         //
         // If the wrist is turned inward and the elevator is moving down, freeze the elevator until the wrist is safe
         //
-        if (wristTurnedIn && elevatorMovingDown && !armAllSafePosition) {
-            targetArmPosition      = Math.min(ARM_POSITION_SAFE, scoringTargetPosition.clockArmPos);       // Force the arm out
-            targetElevatorPosition = Math.round(currentElevatorPosition*5.0)/5.0; // Freeze elevator
-        }
+        // if (wristTurnedIn && elevatorMovingDown && !armAllSafePosition) {
+        //     targetArmPosition      = Math.min(ARM_POSITION_SAFE, scoringTargetPosition.clockArmPos);       // Force the arm out
+        //     targetElevatorPosition = Math.round(currentElevatorPosition*5.0)/5.0; // Freeze elevator
+        // }
 
         //
         // If the elevator is below the all safe position and moving downward, force the wrist into a safe position
         //
-        if (!elevatorAllSafeHeight && !armAllSafePosition && wristTurnedDown && elevatorMovingDown) {
-            targetWristPosition    = 5.0;
-            targetElevatorPosition = Math.max(ELEVATOR_POSITION_SAFE, scoringTargetPosition.elevatorPos);
-        }
+        // if (!elevatorAllSafeHeight && !armAllSafePosition && wristTurnedDown && elevatorMovingDown) {
+        //     targetWristPosition    = 5.0;
+        //     targetElevatorPosition = Math.max(ELEVATOR_POSITION_SAFE, scoringTargetPosition.elevatorPos);
+        // }
 
         //
         // PLACE THIS CASE LAST TO PROTECT WRIST FROM DAMAGE
@@ -371,7 +384,7 @@ public class Scoring extends SubsystemBase {
         //
         if (!elevatorAllSafeHeight && !armAllSafePosition && !wrist.atPosition()) {
             targetWristPosition    = currentWristPosition;  // Freeze the wrist
-            targetArmPosition      = Math.min(ARM_POSITION_SAFE, scoringTargetPosition.clockArmPos); // Force the arm out
+            targetArmPosition      = Math.max(ARM_POSITION_SAFE, scoringTargetPosition.clockArmPos); // Force the arm out
 
             if (!clockArm.atPosition()) {
                 targetElevatorPosition = Math.round(currentElevatorPosition*5.0)/5.0;
