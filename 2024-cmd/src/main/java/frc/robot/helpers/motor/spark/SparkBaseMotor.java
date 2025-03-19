@@ -166,6 +166,10 @@ public abstract class SparkBaseMotor<M extends SparkBase, C extends SparkBaseCon
         return motor.getBusVoltage();
     }
 
+    public double getOutputCurrent() {
+        return motor.getOutputCurrent();
+    }
+
     @Override
     public void resetEncoderPosition(double rotations) {
         this.encoder.setPosition(rotations);

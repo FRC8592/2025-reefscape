@@ -2,6 +2,10 @@ package frc.robot.subsystems;
 
 import org.littletonrobotics.junction.Logger;
 
+import com.revrobotics.spark.SparkFlex;
+
+import edu.wpi.first.math.filter.LinearFilter;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,9 +19,10 @@ import frc.robot.helpers.motor.spark.SparkFlexMotor;
 public class DeepClimb extends SubsystemBase {
 
     NewtonMotor deepClimbMotor;
-    NewtonMotor deepClimbIntakeMotor;
+    SparkFlexMotor deepClimbIntakeMotor;
     double motorRotations = 0;
     boolean motorRotationsSet = false;
+    LinearFilter filter = LinearFilter.movingAverage(30);
 
 
     public DeepClimb() {
@@ -26,6 +31,7 @@ public class DeepClimb extends SubsystemBase {
 
         deepClimbIntakeMotor = new SparkFlexMotor(CAN.DEEP_CLIMB_INTAKE_MOTOR_CAN_ID, true);
         deepClimbIntakeMotor.setIdleMode(IdleMode.kBrake);
+
 
         // deepClimbMotor.withGains(new PIDProfile().setPID(DEEP_CLIMB.DEEP_CLIMB_HOLD_P, 0, 0));
     }
@@ -91,7 +97,9 @@ public class DeepClimb extends SubsystemBase {
     }
 
     public void periodic() {
+        Logger.recordOutput(SHARED.LOG_FOLDER + "Motor current", deepClimbIntakeMotor.getOutputCurrent());
         Logger.recordOutput(SHARED.LOG_FOLDER + "Winch Rotations", deepClimbMotor.getRotations());
+        Logger.recordOutput(SHARED.LOG_FOLDER + "Filtered current" , filter.calculate(deepClimbIntakeMotor.getOutputCurrent()));
         // if(motorRotationsSet){
         //     deepClimbMotor.setPosition(motorRotations);
         // }
