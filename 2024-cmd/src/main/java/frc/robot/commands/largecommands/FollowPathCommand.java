@@ -163,6 +163,9 @@ public class FollowPathCommand extends LargeCommand{
 
         if(Robot.isReal()){
             Logger.recordOutput(SWERVE.LOG_PATH+"TargetPose", desiredState.poseMeters);
+            Logger.recordOutput(SWERVE.LOG_PATH+"TargetActualDifferenceX", desiredState.poseMeters.getX()-swerve.getCurrentPosition().getX());
+            Logger.recordOutput(SWERVE.LOG_PATH+"TargetActualDifferenceY", desiredState.poseMeters.getY()-swerve.getCurrentPosition().getY());
+            Logger.recordOutput(SWERVE.LOG_PATH+"TargetActualDifferenceRot", desiredState.poseMeters.getRotation().minus(swerve.getCurrentPosition().getRotation()).getDegrees());
 
             ChassisSpeeds driveSpeeds = drivePID.calculate(
                 swerve.getCurrentPosition(),
