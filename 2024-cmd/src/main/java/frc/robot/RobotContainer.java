@@ -112,6 +112,9 @@ public class RobotContainer {
     private final Trigger PRIME_L3_ALGAE = coralController.button(6).and(()->!isCoralMode);
     private final Trigger PRIME_NET = coralController.button(5).and(()->!isCoralMode);
 
+    private final Trigger GROUND_ALGAE_PERRY = coralController.button(3).and(()->!isCoralMode);
+    private final Trigger STOW_ALGAE_PERRY = coralController.button(2).and(()->!isCoralMode);
+
     private final Trigger ALGAE_INTAKE = coralController.button(3).and(()->!isCoralMode);
     // private final Trigger GROUND_INTAKE = coralController.button();
     private final Trigger MODE_SWITCH_ALGAE = coralController.button(10).or(coralController.axisGreaterThan(1, 0.1));
@@ -323,6 +326,13 @@ public class RobotContainer {
             )
         ).onFalse(deepclimb.setDeepClimbCommand(0));
 
+        GROUND_ALGAE_PERRY.onTrue(
+            scoring.goToPosition(ElevatorPositions.getGroundAlgae())
+        );
+
+        STOW_ALGAE_PERRY.onTrue(
+            scoring.goToPosition(ElevatorPositions.getStowAlgae())
+        );
     };
 
 
