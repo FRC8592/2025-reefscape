@@ -327,11 +327,11 @@ public class RobotContainer {
         ).onFalse(deepclimb.setDeepClimbCommand(0));
 
         GROUND_ALGAE_PERRY.onTrue(
-            scoring.goToPosition(ElevatorPositions.getGroundAlgae())
+            scoring.setUserPosition(ElevatorPositions.getGroundAlgae())
         );
 
         STOW_ALGAE_PERRY.onTrue(
-            scoring.goToPosition(ElevatorPositions.getStowAlgae())
+            scoring.setUserPosition(ElevatorPositions.getStowAlgae())
         );
     };
 
