@@ -176,7 +176,7 @@ public class RobotContainer {
 
         setDefaultCommand(
             intake, intake.run(
-                () -> {intake.setIntakeCommand(-0.2);}
+                () -> {intake.setIntakePercentOutput(-0.2);}
             ).onlyIf(
                 () -> !isCoralMode
             ).repeatedly()

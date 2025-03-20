@@ -149,10 +149,14 @@ public class FollowPathCommand extends LargeCommand{
         Logger.recordOutput("CustomLogs/CurrentPathCommand/Trajectory", this.trajectory);
         timer.reset();
         timer.start();
-
-        // Stop the swerve
-        swerve.drive(new ChassisSpeeds());
-
+        if(!Robot.isReal()){
+            if(flip.getAsBoolean()){
+                swerve.resetPose(flip(trajectory.sample(0)).poseMeters);
+            }
+            else{
+                swerve.resetPose(trajectory.sample(0).poseMeters);
+            }
+        }
     }
     public void execute(){
         // Instances of State contain information about pose, velocity, accelleration, curvature, etc.
@@ -164,37 +168,30 @@ public class FollowPathCommand extends LargeCommand{
             desiredState = flip(desiredState);
         }
 
-        if(Robot.isReal()){
-            Logger.recordOutput(SWERVE.LOG_PATH+"TargetPose", desiredState.poseMeters);
-            Logger.recordOutput(SWERVE.LOG_PATH+"TargetActualDifferenceX", desiredState.poseMeters.getX()-swerve.getCurrentPosition().getX());
-            Logger.recordOutput(SWERVE.LOG_PATH+"TargetActualDifferenceY", desiredState.poseMeters.getY()-swerve.getCurrentPosition().getY());
-            Logger.recordOutput(SWERVE.LOG_PATH+"TargetActualDifferenceRot", desiredState.poseMeters.getRotation().minus(swerve.getCurrentPosition().getRotation()).getDegrees());
+        Logger.recordOutput(SWERVE.LOG_PATH+"TargetPose", desiredState.poseMeters);
+        Logger.recordOutput(SWERVE.LOG_PATH+"TargetActualDifferenceX", desiredState.poseMeters.getX()-swerve.getCurrentPosition().getX());
+        Logger.recordOutput(SWERVE.LOG_PATH+"TargetActualDifferenceY", desiredState.poseMeters.getY()-swerve.getCurrentPosition().getY());
+        Logger.recordOutput(SWERVE.LOG_PATH+"TargetActualDifferenceRot", desiredState.poseMeters.getRotation().minus(swerve.getCurrentPosition().getRotation()).getDegrees());
 
-            ChassisSpeeds driveSpeeds = drivePID.calculate(
-                swerve.getCurrentPosition(),
-                desiredState,
-                desiredState.poseMeters.getRotation()
-            );
+        ChassisSpeeds driveSpeeds = drivePID.calculate(
+            swerve.getCurrentPosition(),
+            desiredState,
+            desiredState.poseMeters.getRotation()
+        );
 
-            // Override the rotation speed (NOT position target) if useAlternativeRotation
-            // returns true.
-            if(useAlternateRotation.getAsBoolean()){
-                driveSpeeds.omegaRadiansPerSecond = alternateRotation.get().getRadians();
-            }
-
-            // Same, except overriding translation only
-            if(useAlternateTranslation.getAsBoolean()){
-                driveSpeeds.vxMetersPerSecond = alternateTranslation.get().vxMetersPerSecond;
-                driveSpeeds.vyMetersPerSecond = alternateTranslation.get().vyMetersPerSecond;
-            }
-
-            swerve.drive(driveSpeeds);
+        // Override the rotation speed (NOT position target) if useAlternativeRotation
+        // returns true.
+        if(useAlternateRotation.getAsBoolean()){
+            driveSpeeds.omegaRadiansPerSecond = alternateRotation.get().getRadians();
         }
-        else{
-            // The swerve automatically sets the visible position on the simulated
-            // field, so all we have to do is set its known position
-            swerve.resetPose(desiredState.poseMeters);
+
+        // Same, except overriding translation only
+        if(useAlternateTranslation.getAsBoolean()){
+            driveSpeeds.vxMetersPerSecond = alternateTranslation.get().vxMetersPerSecond;
+            driveSpeeds.vyMetersPerSecond = alternateTranslation.get().vyMetersPerSecond;
         }
+
+        swerve.drive(driveSpeeds);
     }
     public void end(boolean interrupted){
         LEDs.setProgressBar(-1);
