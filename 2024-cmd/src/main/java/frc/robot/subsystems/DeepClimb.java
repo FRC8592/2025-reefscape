@@ -106,7 +106,7 @@ public class DeepClimb extends SubsystemBase {
         //     deepClimbMotor.setPosition(motorRotations);
         // }
         LEDs.setDeepClimb(fliteredCurrent>50);
-        if(deepClimbMotor.getVelocityRPM()>30 && 180>deepClimbMotor.getVelocityRPM()){
+        if(Math.abs(deepClimbMotor.getVelocityRPM())>30 && 180>Math.abs(deepClimbMotor.getVelocityRPM())){
             LEDs.setRainbow(true);
         }
         else{ 
