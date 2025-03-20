@@ -17,6 +17,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import frc.robot.Constants.*;
+import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.swerve.Swerve;
 
 public class FollowPathCommand extends LargeCommand{
@@ -156,6 +157,8 @@ public class FollowPathCommand extends LargeCommand{
     public void execute(){
         // Instances of State contain information about pose, velocity, accelleration, curvature, etc.
         State desiredState = trajectory.sample(timer.get());
+        LEDs.setProgressBar(timer.get()/trajectory.getTotalTimeSeconds());
+
 
         if(flip.getAsBoolean()){
             desiredState = flip(desiredState);
@@ -194,6 +197,8 @@ public class FollowPathCommand extends LargeCommand{
         }
     }
     public void end(boolean interrupted){
+        LEDs.setProgressBar(-1);
+
         if(!rollAtPathEnd){
             swerve.drive(new ChassisSpeeds());
         }
