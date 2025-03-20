@@ -20,6 +20,7 @@ public class LEDs {
     private static double progressBar = -1;
     private static int tagCount;
     private static boolean deepclimb;
+    private static boolean useRainbow;
     private static Timer timer = new Timer(); 
     private static RainbowAnimation rainbow = new RainbowAnimation(1,0.5,LEDS.FULL_LED_COUNT) ;
 
@@ -41,7 +42,10 @@ public class LEDs {
         }
 
         else{
-            if(deepclimb){
+            if (useRainbow){
+                displayRaindow();
+            }
+            else if(deepclimb){
                 displayDeepClimb();
             }
             else if(progressBar != -1){
@@ -135,9 +139,9 @@ public class LEDs {
         deepclimb = isDeepClimb;
     }
 
-    // public static void setRainbow(boolean isRainbowAnimation){
-    //     rainbowAnimation = isRainbowAnimation;
-    // }
+    public static void setRainbow(boolean isRainbowAnimation){
+        useRainbow = false; // set equal to isRainbowAnimation when ready to test
+    }
     
     
 }
