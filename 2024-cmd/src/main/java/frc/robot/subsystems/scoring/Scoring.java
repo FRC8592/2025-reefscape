@@ -56,24 +56,24 @@ public class Scoring extends SubsystemBase {
         // L2_PERRY(13.3, ARM.SAFE_ARM_TO_ROTATE_WRIST, 93.6, -0.15, 0.75),
         // L2_PERRY(13.3, 0, 93.6, -0.15, 0.75),
 
-        L2_PERRY(0, 171.31, -214.16, -0.25, 0.75), //might be a good L2!
+        L2_PERRY(18, 10, -230, -0.25, 0.75), //might be a good L2!
 
         L3_PERRY(0, 170.87,-223.71,-0.25, 0.75), //adjust wrist down from 200
 
-        L4_PERRY(19, 168, -225, -0.33, 0.75), //arm adjusted from 165
+        L4_PERRY(19.3, 168, -225, -0.33, 0.75), //arm adjusted from 165
 
 
-        GROUND_ALGAE_PERRY(0, 40, 115, 0.5, -0.75),
+        GROUND_ALGAE_PERRY(0, 35, 115, 0.5, -0.75),
         STOW_ALGAE_PERRY(0,27.8, 0, 0.5, -0.75),
         STOW_PERRY(0, 21.57, -73, 0.5, 0.75),
         // STOW_WITH_CORAL_PERRY(0, 0, 20, 0.5, 0.75),
         L2_ALGAE_PERRY(15.5, 29.46, 73.88, 0.5, -0.75),
         L3_ALGAE_PERRY(0, 137.58, 85.49, 0.5, -0.75),
-        PROCESSOR_PERRY(6.1, 14.7, 92.3, 0.3, 0.75),
-        NET_PERRY(19, 165, 24.8, 1, -0.75),
-        DEEP_CLIMB_PERRY(0, 45, -73, 0, 0),
+        PROCESSOR_PERRY(6.1, 24.7, 92.3, 0.3, 0.75),
+        NET_PERRY(19.3, 165, 10.8, 1, -0.75),
+        DEEP_CLIMB_PERRY(0, 45, -73, 15.50, 0),
 
-        STOP(0,0,0, 0, 0);
+        STOP(0,0,0, 240, 0);
 
         public double elevatorPos = 0;
         public double wristPos = 0;
@@ -240,7 +240,7 @@ public class Scoring extends SubsystemBase {
             double currentArmPosition = clockArm.getDegrees();
 
             //anytime we're moving the wrist, the arm should be out past the wrist rotate safe constant.
-            if ( !wrist.atPosition(scoringTargetPosition.wristPos) ) {
+            if ( !wrist.atPosition() ) {
 
                 targetArmPosition = Math.max(ARM.SAFE_ARM_TO_ROTATE_WRIST, scoringTargetPosition.clockArmPos);
 
@@ -287,6 +287,7 @@ public class Scoring extends SubsystemBase {
             Logger.recordOutput(SCORING.LOG_PATH+"TargetWristPostion", targetWristPosition);
             Logger.recordOutput(SCORING.LOG_PATH+"TargetElevatorPostion", targetElevatorPosition);
     
+
             // Logging the current positions of scoring mechanisms.
             Logger.recordOutput(SCORING.LOG_PATH+"CurrentArmPostion", currentArmPosition);
             Logger.recordOutput(SCORING.LOG_PATH+"CurrentWristPostion", currentWristPosition);
@@ -311,5 +312,8 @@ public class Scoring extends SubsystemBase {
         SmartDashboard.putBoolean("L2", userSelectedPosition == ElevatorPositions.getL2() || ElevatorPositions.getL2Algae() == userSelectedPosition);
         SmartDashboard.putBoolean("L3", userSelectedPosition == ElevatorPositions.getL3() || ElevatorPositions.getL3Algae() == userSelectedPosition);
         SmartDashboard.putBoolean("L4", userSelectedPosition == ElevatorPositions.getL4());
+        
+        LEDs.setHasCoral(intake.robotHasCoral());
+        
     }
 }

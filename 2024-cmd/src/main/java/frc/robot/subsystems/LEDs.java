@@ -10,7 +10,9 @@ import com.ctre.phoenix.led.RainbowAnimation;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.*;
 
 public class LEDs {
@@ -22,7 +24,9 @@ public class LEDs {
     private static boolean deepclimb;
     private static boolean useRainbow;
     private static Timer timer = new Timer(); 
-    private static RainbowAnimation rainbow = new RainbowAnimation(1,0.5,LEDS.FULL_LED_COUNT) ;
+    private static Timer ledTimer=new Timer();
+    private static RainbowAnimation rainbow = new RainbowAnimation(1,0.5,LEDS.FULL_LED_COUNT);
+    private static Trigger coralScore = new Trigger(() -> hasCoral);
 
     public static void init(){
         CANdleConfiguration configAll = new CANdleConfiguration();
@@ -34,13 +38,14 @@ public class LEDs {
         candle = new CANdle(46);
         candle.configAllSettings(configAll, 100);
         timer.start();
+
+        coralScore.onTrue(Commands.runOnce(()->ledTimer.restart()));
     }
 
     public static void writeLEDs(){
         if(DriverStation.isDisabled()){
             displayHasTagsLEDs();
         }
-
         else{
             if (useRainbow){
                 displayRaindow();
@@ -58,6 +63,9 @@ public class LEDs {
                 displayModeLEDs();
             }
 
+            if(!useRainbow){
+                candle.clearAnimation(0);
+            }
         }
     }
 
@@ -72,13 +80,16 @@ public class LEDs {
     }
 
     public static void displayHasCoralLEDs(){
-        if(hasCoral){
-            if((int)(timer.get()*3) % 2 == 0){
+        if(!ledTimer.hasElapsed(1) && ledTimer.get()!=0){
+            if((int)(timer.get()*10) % 2 == 0){
                 candle.setLEDs((int)(LEDS.WHITE.red*255),(int)(LEDS.WHITE.green*255),(int)(LEDS.WHITE.blue*255),0,LEDS.LED_CANDLE_COUNT, LEDS.FULL_LED_COUNT);  
             }
             else{
                 candle.setLEDs((int)(LEDS.OFF.red*255),(int)(LEDS.OFF.green*255),(int)(LEDS.OFF.blue*255),0,LEDS.LED_CANDLE_COUNT, LEDS.FULL_LED_COUNT);  
             }
+        }
+        else{
+            candle.setLEDs((int)(LEDS.WHITE.red*255),(int)(LEDS.WHITE.green*255),(int)(LEDS.WHITE.blue*255),0,LEDS.LED_CANDLE_COUNT, LEDS.FULL_LED_COUNT);  
         }
     }
 
@@ -112,7 +123,7 @@ public class LEDs {
     public static void displayProgressBarLEDs(){
         
         candle.setLEDs((int)(LEDS.GREEN.red*255),(int)(LEDS.GREEN.green*255),(int)(LEDS.GREEN.blue*255),0,0,(int)(LEDS.FULL_LED_COUNT * progressBar));  
-        candle.setLEDs((int)(LEDS.OFF.red*255),(int)(LEDS.OFF.green*255),(int)(LEDS.OFF.blue*255),0,(int)(LEDS.FULL_LED_COUNT * progressBar),LEDS.FULL_LED_COUNT);  
+        candle.setLEDs((int)(LEDS.RED.red*255),(int)(LEDS.RED.green*255),(int)(LEDS.RED.blue*255),0,(int)(LEDS.FULL_LED_COUNT * progressBar),LEDS.FULL_LED_COUNT);  
     }
 
     public static void displayRaindow(){
@@ -140,7 +151,7 @@ public class LEDs {
     }
 
     public static void setRainbow(boolean isRainbowAnimation){
-        useRainbow = false; // set equal to isRainbowAnimation when ready to test
+        useRainbow = isRainbowAnimation; // set equal to isRainbowAnimation when ready to test
     }
     
     

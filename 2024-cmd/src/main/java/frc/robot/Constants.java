@@ -127,7 +127,7 @@ public final class Constants {
         //TODO: Double check that these still work
         public static final double PATH_FOLLOW_TRANSLATE_kP = 13d; // Was 8 in the last test
         public static final double PATH_FOLLOW_TRANSLATE_kI = 0d;
-        public static final double PATH_FOLLOW_TRANSLATE_kD = 0d;
+        public static final double PATH_FOLLOW_TRANSLATE_kD = 0.2d;
 
         //TODO: Double check that these still work
         public static final double PATH_FOLLOW_ROTATE_kP = 13;
@@ -214,7 +214,7 @@ public final class Constants {
         public static final double WRIST_ANGLE_DEGREES_MIN = SHARED.IS_RIPTIDE? -225d : -225d;
         public static final double WRIST_ANGLE_DEGREES_MAX = SHARED.IS_RIPTIDE? 213 : 213;
 
-        public static final double WRIST_POSITION_TOLERANCE = 2.0;
+        public static final double WRIST_POSITION_TOLERANCE = 4.0;
 
         public static final int WRIST_CURRENT_LIMIT = 60;//amps
 
