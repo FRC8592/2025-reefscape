@@ -56,20 +56,20 @@ public class Scoring extends SubsystemBase {
         // L2_PERRY(13.3, ARM.SAFE_ARM_TO_ROTATE_WRIST, 93.6, -0.15, 0.75),
         // L2_PERRY(13.3, 0, 93.6, -0.15, 0.75),
 
-        L2_PERRY(18, 10, -230, -0.25, 0.75), //might be a good L2!
+        L2_PERRY(16.8, -6.5, -237, -0.25, 0.75), //might be a good L2!
 
-        L3_PERRY(0, 170.87,-223.71,-0.25, 0.75), //adjust wrist down from 200
+        L3_PERRY(0, 171, -216.5,-0.25, 0.75), //adjust wrist down from 200
 
-        L4_PERRY(19.3, 168, -225, -0.33, 0.75), //arm adjusted from 165
+        L4_PERRY(19.3, 171, -216.5, -0.33, 0.75), //arm adjusted from 165
 
 
-        GROUND_ALGAE_PERRY(0, 35, 115, 0.5, -0.75),
-        STOW_ALGAE_PERRY(0,27.8, 0, 0.5, -0.75),
-        STOW_PERRY(0, 21.57, -73, 0.5, 0.75),
+        GROUND_ALGAE_PERRY(0, 35, 128, 0.5, -0.75),
+        STOW_ALGAE_PERRY(0,11.7, 0, 0.5, -0.75),
+        STOW_PERRY(0, 13.3, -54, 0.5, 0.75),
         // STOW_WITH_CORAL_PERRY(0, 0, 20, 0.5, 0.75),
-        L2_ALGAE_PERRY(15.5, 29.46, 73.88, 0.5, -0.75),
-        L3_ALGAE_PERRY(0, 137.58, 85.49, 0.5, -0.75),
-        PROCESSOR_PERRY(6.1, 24.7, 92.3, 0.3, 0.75),
+        L2_ALGAE_PERRY(16.8, -6.5, -237, 0.5, -0.75),
+        L3_ALGAE_PERRY(0, 155, 99, 0.5, -0.75),
+        PROCESSOR_PERRY(0, 32, 92.3, 0.3, 0.75),
         NET_PERRY(19.3, 165, 10.8, 1, -0.75),
         DEEP_CLIMB_PERRY(0, 45, -73, 15.50, 0),
 
@@ -240,7 +240,7 @@ public class Scoring extends SubsystemBase {
             double currentArmPosition = clockArm.getDegrees();
 
             //anytime we're moving the wrist, the arm should be out past the wrist rotate safe constant.
-            if ( !wrist.atPosition() ) {
+            if ( !wrist.atPosition(scoringTargetPosition.wristPos) ) {
 
                 targetArmPosition = Math.max(ARM.SAFE_ARM_TO_ROTATE_WRIST, scoringTargetPosition.clockArmPos);
 
