@@ -56,7 +56,7 @@ public class Scoring extends SubsystemBase {
         // L2_PERRY(13.3, ARM.SAFE_ARM_TO_ROTATE_WRIST, 93.6, -0.15, 0.75),
         // L2_PERRY(13.3, 0, 93.6, -0.15, 0.75),
 
-        L2_PERRY(17, 9.5, 139, -0.25, 0.75), //might be a good L2!
+        L2_PERRY(18.7, 9.5, 139, -0.25, 0.75), //might be a good L2!
 
         L3_PERRY(0, 171, -216.5,-0.25, 0.75), //adjust wrist down from 200
 
