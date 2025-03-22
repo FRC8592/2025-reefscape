@@ -189,7 +189,7 @@ public final class Constants {
         public static final double ARM_ANGLE_DEGREES_MIN = SHARED.IS_RIPTIDE? -2 : -2;
         public static final double ARM_ANGLE_DEGREES_MAX = SHARED.IS_RIPTIDE? 180 : 180;
 
-        public static final double SAFE_ARM_TO_ROTATE_WRIST = SHARED.IS_RIPTIDE ? 75 : 75;
+        public static final double SAFE_ARM_TO_ROTATE_WRIST = SHARED.IS_RIPTIDE ? 75 : 50;
 
         public static final double CLOCK_ARM_POSITION_TOLERANCE = 2.0;
 

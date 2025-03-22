@@ -314,16 +314,16 @@ public class RobotContainer {
 
         WINCH_UP.whileTrue(
             deepclimb.setDeepClimbCommand(-1)
-            .onlyIf(
-                () -> scoring.isAtPosition(ElevatorPositions.getDeepClimb())
-            )
+            //  .onlyIf(
+            //      () -> scoring.isAtPosition(ElevatorPositions.getDeepClimb())
+            //  )
         ).onFalse(deepclimb.setDeepClimbCommand(0));
         WINCH_DOWN.whileTrue(
             deepclimb.setDeepClimbCommand(1)
-            .onlyIf(
-                () 
-                -> scoring.isAtPosition(ElevatorPositions.getDeepClimb())
-            )
+            // .onlyIf(
+            //     () 
+            //     -> scoring.isAtPosition(ElevatorPositions.getDeepClimb())
+            // )
         ).onFalse(deepclimb.setDeepClimbCommand(0));
 
         GROUND_ALGAE_PERRY.onTrue(
