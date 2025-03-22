@@ -214,7 +214,7 @@ public final class Constants {
         public static final double WRIST_ANGLE_DEGREES_MIN = SHARED.IS_RIPTIDE? -225d : -225d;
         public static final double WRIST_ANGLE_DEGREES_MAX = SHARED.IS_RIPTIDE? 213 : 213;
 
-        public static final double WRIST_POSITION_TOLERANCE = 4.0;
+        public static final double WRIST_POSITION_TOLERANCE = 5.0;
 
         public static final int WRIST_CURRENT_LIMIT = 60;//amps
 
