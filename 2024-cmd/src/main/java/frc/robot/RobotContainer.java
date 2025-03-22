@@ -174,13 +174,13 @@ public class RobotContainer {
             ), DriveModes.AUTOMATIC);
         }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-        setDefaultCommand(
-            intake, intake.run(
-                () -> {intake.setIntakePercentOutput(-0.2);}
-            ).onlyIf(
-                () -> !isCoralMode
-            ).repeatedly()
-        );
+        // setDefaultCommand(
+        //     intake, intake.run(
+        //         () -> {intake.setIntakePercentOutput(-0.2);}
+        //     ).onlyIf(
+        //         () -> !isCoralMode
+        //     ).repeatedly()
+        // );
 
         
         // setDefaultCommand(elevator, elevator.stopCommand());
