@@ -138,7 +138,7 @@ public class PerryConstants {
     private static final int kFrontRightDriveMotorId = 17;
     private static final int kFrontRightSteerMotorId = 9;
     private static final int kFrontRightEncoderId = 13;
-    private static final Angle kFrontRightEncoderOffset = Rotations.of(0.455322);
+    private static final Angle kFrontRightEncoderOffset = Rotations.of(0.447266);
     private static final boolean kFrontRightSteerMotorInverted = true;
     private static final boolean kFrontRightEncoderInverted = false;
 

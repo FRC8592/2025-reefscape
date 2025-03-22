@@ -178,7 +178,7 @@ public class RobotContainer {
             intake, intake.run(
                 () -> {intake.setIntakePercentOutput(-0.2);}
             ).onlyIf(
-                () -> !isCoralMode
+                () -> (!isCoralMode && !(scoring.scoringTargetPosition == ElevatorPositions.getNet()) )
             ).repeatedly()
         );
 

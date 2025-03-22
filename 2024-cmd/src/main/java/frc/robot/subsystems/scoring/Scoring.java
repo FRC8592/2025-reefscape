@@ -27,7 +27,7 @@ public class Scoring extends SubsystemBase {
     // private DeepClimb deepclimb;
 
     // Define scoring mechanism positions for various activities
-    private static ElevatorPositions scoringTargetPosition;
+    public static ElevatorPositions scoringTargetPosition;
     private static ElevatorPositions userSelectedPosition;
 
     private Timer timer = new Timer();
