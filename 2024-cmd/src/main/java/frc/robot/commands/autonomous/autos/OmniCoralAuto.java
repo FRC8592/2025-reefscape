@@ -60,7 +60,7 @@ public class OmniCoralAuto extends AutoCommand{
                         getChoreoTrajectory(FIRST_CORAL_SCORE.getPathName(redOrBlue), 0),
                         Suppliers.isRedAlliance,
                         "FirstCoralScoreChoreoPath",
-                        1.0,
+                        1.5,
                         true
                     )
                     .andThen(Commands.runOnce(() -> {scoreCoral.setPosition(FIRST_CORAL_SCORE.getLeftOrRight(redOrBlue));}))
