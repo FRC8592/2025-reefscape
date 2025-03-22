@@ -70,7 +70,7 @@ public class Scoring extends SubsystemBase {
         L2_ALGAE_PERRY(16.8, -6.5, -237, 0.5, -0.75),
         L3_ALGAE_PERRY(0, 155, 99, 0.5, -0.75),
         PROCESSOR_PERRY(0, 32, 92.3, 0.3, 0.75),
-        NET_PERRY(19.3, 165, 10.8, 1, -0.75),
+        NET_PERRY(19.3, 165, 15, 1, -0.75),
         DEEP_CLIMB_PERRY(0, 45, -73, 15.50, 0),
 
         STOP(0,0,0, 240, 0);
