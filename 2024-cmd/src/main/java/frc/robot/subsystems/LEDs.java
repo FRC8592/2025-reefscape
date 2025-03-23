@@ -25,7 +25,7 @@ public class LEDs {
     private static boolean useRainbow;
     private static Timer timer = new Timer(); 
     private static Timer ledTimer=new Timer();
-    private static RainbowAnimation rainbow = new RainbowAnimation(1,0.5,LEDS.FULL_LED_COUNT);
+    private static RainbowAnimation rainbow = new RainbowAnimation(1,3,LEDS.FULL_LED_COUNT);
     private static Trigger coralScore = new Trigger(() -> hasCoral);
 
     public static void init(){
@@ -44,7 +44,13 @@ public class LEDs {
 
     public static void writeLEDs(){
         if(DriverStation.isDisabled()){
-            displayHasTagsLEDs();
+            if(!useRainbow){
+                candle.clearAnimation(0);
+                displayHasTagsLEDs();
+            }
+            else {
+                displayRaindow();
+            }
         }
         else{
             if (useRainbow){

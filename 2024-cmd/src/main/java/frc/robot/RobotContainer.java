@@ -317,14 +317,14 @@ public class RobotContainer {
             //  .onlyIf(
             //      () -> scoring.isAtPosition(ElevatorPositions.getDeepClimb())
             //  )
-        ).onFalse(deepclimb.setDeepClimbCommand(0));
+        );//.onFalse(deepclimb.setDeepClimbCommand(0));
         WINCH_DOWN.whileTrue(
             deepclimb.setDeepClimbCommand(1)
             // .onlyIf(
             //     () 
             //     -> scoring.isAtPosition(ElevatorPositions.getDeepClimb())
             // )
-        ).onFalse(deepclimb.setDeepClimbCommand(0));
+        );//.onFalse(deepclimb.setDeepClimbCommand(0));
 
         GROUND_ALGAE_PERRY.onTrue(
             scoring.setUserPosition(ElevatorPositions.getGroundAlgae())
