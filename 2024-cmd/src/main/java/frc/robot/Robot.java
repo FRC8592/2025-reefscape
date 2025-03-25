@@ -41,6 +41,8 @@ public class Robot extends LoggedRobot {
 
     public GenericHID coralController = new GenericHID(0);
 
+    // SmartDashboard.putData(CommandScheduler.getInstance());
+
     public enum CurrentRobot{
         RIPTIDE,
         PERRY
