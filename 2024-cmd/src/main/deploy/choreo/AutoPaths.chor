@@ -4,11 +4,18 @@
  "type":"Swerve",
  "variables":{
   "expressions":{
-   "maxAccel":{
+   "MaxMechUp":{
     "dimension":"LinAcc",
     "var":{
      "exp":"2 m / s ^ 2",
      "val":2.0
+    }
+   },
+   "maxAccel":{
+    "dimension":"LinAcc",
+    "var":{
+     "exp":"3 m / s ^ 2",
+     "val":3.0
     }
    },
    "maxVelo":{
@@ -130,6 +137,20 @@
     "heading":{
      "exp":"2.088083698635843 rad",
      "val":2.088083698635843
+    }
+   },
+   "DLeft":{
+    "x":{
+     "exp":"5.810334205627441 m",
+     "val":5.810334205627441
+    },
+    "y":{
+     "exp":"4.185273170471191 m",
+     "val":4.185273170471191
+    },
+    "heading":{
+     "exp":"180 deg",
+     "val":3.141592653589793
     }
    },
    "DMid":{
