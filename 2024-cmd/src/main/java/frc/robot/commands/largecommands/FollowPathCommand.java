@@ -168,6 +168,15 @@ public class FollowPathCommand extends LargeCommand{
             desiredState = flip(desiredState);
         }
 
+        double velocityX;
+        double velocityY;
+        double angle = desiredState.poseMeters.getRotation().getRadians();
+
+        velocityX = desiredState.velocityMetersPerSecond * Math.cos(angle);
+        velocityY = desiredState.velocityMetersPerSecond * Math.sin(angle);
+
+        Logger.recordOutput(SWERVE.LOG_PATH+"VelocityX", velocityX);
+        Logger.recordOutput(SWERVE.LOG_PATH+"VelocityY", velocityY);
         Logger.recordOutput(SWERVE.LOG_PATH+"TargetPose", desiredState.poseMeters);
         Logger.recordOutput(SWERVE.LOG_PATH+"TargetActualDifferenceX", desiredState.poseMeters.getX()-swerve.getCurrentPosition().getX());
         Logger.recordOutput(SWERVE.LOG_PATH+"TargetActualDifferenceY", desiredState.poseMeters.getY()-swerve.getCurrentPosition().getY());

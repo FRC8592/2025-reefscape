@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -55,6 +56,7 @@ public class OdometryUpdates extends SubsystemBase {
                     swerve.resetPose(initialPose);
                 } else {
                     swerve.addVisionMeasurement(robotPosition, timeStamp);
+                    
                 }
             }
 
@@ -65,6 +67,7 @@ public class OdometryUpdates extends SubsystemBase {
         Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/OdometryPose", swerve.getCurrentPosition());
         Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/AmbiguityRatio", ambiguity);
         Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/InitialPose", initialPose);
+        Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/SwerveSpeed", ChassisSpeeds.fromRobotRelativeSpeeds(swerve.getCurrentSpeeds(), swerve.getYaw()));
         }
     }
 

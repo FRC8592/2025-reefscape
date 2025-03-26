@@ -38,8 +38,9 @@ public class CTRESwerveWrapper {
     private final SwerveDrivetrain<TalonFX, TalonFX, CANcoder> drivetrain = SHARED.IS_RIPTIDE?RiptideConstants.createDrivetrain():PerryConstants.createDrivetrain();
 
     public void drive(ChassisSpeeds speeds, boolean driveFieldRelative) {
-        Logger.recordOutput(SWERVE.LOG_PATH+"SwerveTargetSpeeds", speeds);
+        
         if (driveFieldRelative) {
+            Logger.recordOutput(SWERVE.LOG_PATH+"SwerveTargetSpeedsFieldRelative", speeds);
             drivetrain.setControl(
                 fieldRelative.withVelocityX(speeds.vxMetersPerSecond) 
                     .withVelocityY(speeds.vyMetersPerSecond) 
@@ -47,6 +48,7 @@ public class CTRESwerveWrapper {
             );
         }
         else {
+            Logger.recordOutput(SWERVE.LOG_PATH+"SwerveTargetSpeedsRobotRelative", speeds);
         drivetrain.setControl(
             robotRelative.withVelocityX(speeds.vxMetersPerSecond) // Drive forward with negative Y (forward)
                 .withVelocityY(speeds.vyMetersPerSecond) // Drive left with negative X (left)
