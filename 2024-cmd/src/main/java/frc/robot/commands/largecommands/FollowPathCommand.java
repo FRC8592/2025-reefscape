@@ -172,6 +172,8 @@ public class FollowPathCommand extends LargeCommand{
         Logger.recordOutput(SWERVE.LOG_PATH+"TargetActualDifferenceX", desiredState.poseMeters.getX()-swerve.getCurrentPosition().getX());
         Logger.recordOutput(SWERVE.LOG_PATH+"TargetActualDifferenceY", desiredState.poseMeters.getY()-swerve.getCurrentPosition().getY());
         Logger.recordOutput(SWERVE.LOG_PATH+"TargetActualDifferenceRot", desiredState.poseMeters.getRotation().minus(swerve.getCurrentPosition().getRotation()).getDegrees());
+        // double velocity = desiredState.
+        // Logger.recordOutput(SWERVE.LOG_PATH+"TargetVelocity", )
 
         ChassisSpeeds driveSpeeds = drivePID.calculate(
             swerve.getCurrentPosition(),
@@ -195,6 +197,7 @@ public class FollowPathCommand extends LargeCommand{
     }
     public void end(boolean interrupted){
         LEDs.setProgressBar(-1);
+        Logger.recordOutput("CustomLogs/CurrentPathCommand/Name", "None");
 
         if(!rollAtPathEnd){
             swerve.drive(new ChassisSpeeds());

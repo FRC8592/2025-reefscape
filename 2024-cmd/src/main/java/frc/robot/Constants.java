@@ -58,6 +58,9 @@ public final class Constants {
         public static final String CAMERA_NAME = (
             SHARED.IS_RIPTIDE ? "Arducam_OV9782_B" : "Arducam_OV9782_D"
         );
+        public static final String CAMERA_2_NAME = (
+            SHARED.IS_RIPTIDE ? "Arducam_OV9782_D" : "Arducam_OV9782_B"
+        );
     
         public static final int[] BLUE_REEF_TAGS = {17, 18, 19, 20, 21, 22};
         public static final int[] RED_REEF_TAGS = {6, 7, 8, 9, 10, 11};
@@ -125,12 +128,12 @@ public final class Constants {
         public static final Rotation2d RED_PERSPECTIVE_ROTATION = Rotation2d.fromDegrees(180);
 
         //TODO: Double check that these still work
-        public static final double PATH_FOLLOW_TRANSLATE_kP = 13d; // Was 8 in the last test
+        public static final double PATH_FOLLOW_TRANSLATE_kP = 8d; // Was 8 in the last test
         public static final double PATH_FOLLOW_TRANSLATE_kI = 0d;
         public static final double PATH_FOLLOW_TRANSLATE_kD = 0.2d;
 
         //TODO: Double check that these still work
-        public static final double PATH_FOLLOW_ROTATE_kP = 13;
+        public static final double PATH_FOLLOW_ROTATE_kP = 8;
         public static final double PATH_FOLLOW_ROTATE_kI = 0d;
         public static final double PATH_FOLLOW_ROTATE_kD = 0.1;
 

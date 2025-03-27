@@ -14,8 +14,8 @@
    "maxAccel":{
     "dimension":"LinAcc",
     "var":{
-     "exp":"3 m / s ^ 2",
-     "val":3.0
+     "exp":"4 m / s ^ 2",
+     "val":4.0
     }
    },
    "maxVelo":{
@@ -374,16 +374,16 @@
   },
   "bumper":{
    "front":{
-    "exp":"18.25 in",
-    "val":0.46355
+    "exp":"18 in",
+    "val":0.4572
    },
    "side":{
-    "exp":"18.25 in",
-    "val":0.46355
+    "exp":"18 in",
+    "val":0.4572
    },
    "back":{
-    "exp":"18.25 in",
-    "val":0.46355
+    "exp":"18 in",
+    "val":0.4572
    }
   },
   "differentialTrackWidth":{

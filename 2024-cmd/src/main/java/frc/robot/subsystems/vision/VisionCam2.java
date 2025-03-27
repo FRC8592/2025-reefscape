@@ -26,8 +26,8 @@ import frc.robot.Constants.CORAL_ALIGN;
 import frc.robot.subsystems.LEDs;
 import frc.robot.Robot;
 
-public class Vision extends SubsystemBase{
-    PhotonCamera camera = new PhotonCamera(CORAL_ALIGN.CAMERA_NAME);
+public class VisionCam2 extends SubsystemBase{
+    PhotonCamera camera = new PhotonCamera(CORAL_ALIGN.CAMERA_2_NAME);
     AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField();
     PhotonPoseEstimator estimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, CORAL_ALIGN.CAMERA_OFFSETS);
 
@@ -50,7 +50,7 @@ public class Vision extends SubsystemBase{
     SimCameraProperties cameraBProperties;
     PhotonCameraSim cameraSim;
 
-    public Vision(){
+    public VisionCam2(){
         visionSim = new VisionSystemSim("photonvision");
 
         visionSim.addAprilTags(aprilTagFieldLayout);
@@ -236,8 +236,5 @@ public class Vision extends SubsystemBase{
      */
     public Optional<EstimatedRobotPose> getRobotPoseVision() {
        return estimator.update(camera.getLatestResult());
-
-       
-        
     }
 }
