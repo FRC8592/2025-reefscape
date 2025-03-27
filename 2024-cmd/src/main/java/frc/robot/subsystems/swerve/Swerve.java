@@ -315,4 +315,12 @@ public class Swerve extends SubsystemBase {
     public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds) {
         swerve.addVisionMeasurement(visionRobotPoseMeters, timestampSeconds);
     }
+
+    public void setCoastMode(){
+        swerve.setCoastMode();;
+    }
+
+    public void setBrakeMode(){
+        swerve.setBrakeMode();;
+    }
 }

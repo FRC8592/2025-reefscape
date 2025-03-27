@@ -8,6 +8,8 @@ import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.ctre.phoenix6.controls.CoastOut;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveDrivetrain;
@@ -85,5 +87,39 @@ public class CTRESwerveWrapper {
 
     public ChassisSpeeds getCurrentSpeeds(){
         return drivetrain.getState().Speeds;
+    }
+
+    public void setCoastMode(){
+        DutyCycleOut dco0 = new DutyCycleOut(drivetrain.getModule(0).getDriveMotor().get());
+        DutyCycleOut dco1 = new DutyCycleOut(drivetrain.getModule(1).getDriveMotor().get());
+        DutyCycleOut dco2 = new DutyCycleOut(drivetrain.getModule(2).getDriveMotor().get());
+        DutyCycleOut dco3 = new DutyCycleOut(drivetrain.getModule(3).getDriveMotor().get());
+
+        dco0.withOverrideBrakeDurNeutral(false);
+        dco1.withOverrideBrakeDurNeutral(false);
+        dco2.withOverrideBrakeDurNeutral(false);
+        dco3.withOverrideBrakeDurNeutral(false);
+
+        drivetrain.getModule(0).getDriveMotor().setControl(dco0);
+        drivetrain.getModule(1).getDriveMotor().setControl(dco1);
+        drivetrain.getModule(2).getDriveMotor().setControl(dco2);
+        drivetrain.getModule(3).getDriveMotor().setControl(dco3);
+    }
+
+    public void setBrakeMode(){
+        DutyCycleOut dco0 = new DutyCycleOut(drivetrain.getModule(0).getDriveMotor().get());
+        DutyCycleOut dco1 = new DutyCycleOut(drivetrain.getModule(1).getDriveMotor().get());
+        DutyCycleOut dco2 = new DutyCycleOut(drivetrain.getModule(2).getDriveMotor().get());
+        DutyCycleOut dco3 = new DutyCycleOut(drivetrain.getModule(3).getDriveMotor().get());
+
+        dco0.withOverrideBrakeDurNeutral(true);
+        dco1.withOverrideBrakeDurNeutral(true);
+        dco2.withOverrideBrakeDurNeutral(true);
+        dco3.withOverrideBrakeDurNeutral(true);
+
+        drivetrain.getModule(0).getDriveMotor().setControl(dco0);
+        drivetrain.getModule(1).getDriveMotor().setControl(dco1);
+        drivetrain.getModule(2).getDriveMotor().setControl(dco2);
+        drivetrain.getModule(3).getDriveMotor().setControl(dco3);
     }
 }
