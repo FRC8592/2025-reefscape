@@ -195,6 +195,7 @@ public class FollowPathCommand extends LargeCommand{
     }
     public void end(boolean interrupted){
         LEDs.setProgressBar(-1);
+        Logger.recordOutput("CustomLogs/CurrentPathCommand/Name", "None");
 
         if(!rollAtPathEnd){
             swerve.drive(new ChassisSpeeds());
