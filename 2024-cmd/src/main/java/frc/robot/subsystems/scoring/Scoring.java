@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -29,6 +30,8 @@ public class Scoring extends SubsystemBase {
     // Define scoring mechanism positions for various activities
     public static ElevatorPositions scoringTargetPosition;
     private static ElevatorPositions userSelectedPosition;
+
+    private boolean isCoralMode = true;
 
     private Timer timer = new Timer();
 
@@ -51,7 +54,7 @@ public class Scoring extends SubsystemBase {
         // PERRY POSITIONS
         START_POSITION_PERRY(0, 0, 5, 0, 0),
 
-        L1_PERRY(13.3, 75, 107.8, -0.125, 0.75),
+        L1_PERRY(16.7, 9.5, 129, -0.25, 0.75),
         // L1_PERRY(13.3, 0, 107.8, 0, 0),
         // L2_PERRY(13.3, ARM.SAFE_ARM_TO_ROTATE_WRIST, 93.6, -0.15, 0.75),
         // L2_PERRY(13.3, 0, 93.6, -0.15, 0.75),
@@ -65,9 +68,9 @@ public class Scoring extends SubsystemBase {
 
         GROUND_ALGAE_PERRY(0, 35, 128, 0.5, -0.75),
         STOW_ALGAE_PERRY(0,11.7, 0, 0.5, -0.75),
-        STOW_PERRY(0, 13.3, -54, 0.5, 0.75),
+        STOW_PERRY(0, 13.3, -50, 0.5, 0.75),
         // STOW_WITH_CORAL_PERRY(0, 0, 20, 0.5, 0.75),
-        L2_ALGAE_PERRY(16.8, -6.5, -237, 0.5, -0.75),
+        L2_ALGAE_PERRY(16.8, 35, 99, 0.5, -0.75),
         L3_ALGAE_PERRY(0, 155, 99, 0.5, -0.75),
         PROCESSOR_PERRY(0, 32, 92.3, 0.3, 0.75),
         NET_PERRY(19.3, 165, 15, 1, -0.75),
@@ -197,10 +200,10 @@ public class Scoring extends SubsystemBase {
      * @return
      */
     public Command outtakeCoralCommand(){
-        return new DeferredCommand(
+        return Robot.isReal()?new DeferredCommand(
             () -> intake.setIntakeCommand(scoringTargetPosition.outtakeSpeed).finallyDo(() -> {intake.stop();}),
             Set.of(this, intake)
-        );
+        ):Commands.none();
     }
 
     // public Command outtakeAlgaeCommand(){
@@ -218,9 +221,26 @@ public class Scoring extends SubsystemBase {
         return elevator.stopCommand().alongWith(wrist.stopCommand(), clockArm.stopCommand());
     }
 
+    public Command setCoralMode(){
+        return Commands.runOnce(() -> {this.isCoralMode = true;});
+    }
+
+    public Command setAlgaeMode(){
+        return Commands.runOnce(() -> {this.isCoralMode = false;});
+    }
+
+    public boolean isCoralMode(){
+        return this.isCoralMode;
+    }
+
+    public boolean isAlgaeMode(){
+        return !isCoralMode();
+    }
+
     public boolean isAtPosition(ElevatorPositions position){
         return atPosition();
     }
+    
 
 
     //
@@ -314,6 +334,8 @@ public class Scoring extends SubsystemBase {
         SmartDashboard.putBoolean("L4", userSelectedPosition == ElevatorPositions.getL4());
         
         LEDs.setHasCoral(intake.robotHasCoral());
+        LEDs.setCoralMode( isCoralMode );
+        SmartDashboard.putBoolean("Coral mode", isCoralMode);
         
     }
 }

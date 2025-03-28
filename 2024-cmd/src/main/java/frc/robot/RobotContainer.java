@@ -50,7 +50,7 @@ public class RobotContainer {
     // The robot's subsystems
     private final Swerve swerve;
     private final Vision vision;
-    private final Scoring scoring;
+    private Scoring scoring = null;
     private final DeepClimb deepclimb;
 
     private final ClockArm clockArm;
@@ -58,21 +58,18 @@ public class RobotContainer {
     private final Wrist wrist;
     private final Intake intake;
     private final LEDs leds;
-   
     private ScoreCoral scoreCoral;
     private OdometryUpdates odometryUpdates;
     
     //TODO: Add all controls here
     //Driver controls
-
-    private boolean isCoralMode = true;
     
 
-    private final Trigger ENABLED = new Trigger(() -> DriverStation.isEnabled())          .     and(()->DriverStation.isTeleop());
+    private final Trigger ENABLED = new Trigger(() -> DriverStation.isEnabled()).and(()->DriverStation.isTeleop());
 
     private final Trigger INTAKE = driverController.leftTrigger();
     private final Trigger SCORE = driverController.rightTrigger();
-    // private final Trigger SCORE_ALGAE = driverController.rightTrigger().and(()->!isCoralMode);
+    // private final Trigger SCORE_ALGAE = driverController.rightTrigger().and(()->scoring.isAlgaeMode());
 
     private final Trigger SLOW_MODE = driverController.rightBumper();
     private final Trigger RESET_HEADING = driverController.back();
@@ -93,29 +90,29 @@ public class RobotContainer {
     private final Trigger WINCH_DOWN = driverController.pov(180);
     private final Trigger DEEP_CLIMB_DEPLOY = driverController.pov(90);
 
-    private final Trigger DEEP_CLIMB_POSITION = coralController.button(8).and(()->!isCoralMode);
+    private final Trigger DEEP_CLIMB_POSITION = coralController.button(8).and(()->scoring.isAlgaeMode());
 
     //Operator controls
 
-    private final Trigger PRIME_L4 = (coralController.button(5).or(coralController.button(7))).and(()->isCoralMode);
-    private final Trigger PRIME_L3 = (coralController.button(6).or(coralController.button(8))).and(()->isCoralMode);
-    private final Trigger PRIME_L2 = (coralController.button(1).or(coralController.button(2))).and(()->isCoralMode);
-    private final Trigger PRIME_L1 = (coralController.button(4).or(coralController.button(3))).and(()->isCoralMode);
+    private final Trigger PRIME_L4 = (coralController.button(5).or(coralController.button(7))).and(()->scoring.isCoralMode());
+    private final Trigger PRIME_L3 = (coralController.button(6).or(coralController.button(8))).and(()->scoring.isCoralMode());
+    private final Trigger PRIME_L2 = (coralController.button(1).or(coralController.button(2))).and(()->scoring.isCoralMode());
+    private final Trigger PRIME_L1 = (coralController.button(4).or(coralController.button(3))).and(()->scoring.isCoralMode());
 
-    private final Trigger ALIGN_RIGHT = (coralController.button(2).or(coralController.button(3)).or(coralController.button(8)).or(coralController.button(7))).and(()->isCoralMode);
-    private final Trigger ALIGN_LEFT = (coralController.button(1).or(coralController.button(4)).or(coralController.button(6)).or(coralController.button(5))).and(()->isCoralMode);
+    private final Trigger ALIGN_RIGHT = (coralController.button(2).or(coralController.button(3)).or(coralController.button(8)).or(coralController.button(7))).and(()->scoring.isCoralMode());
+    private final Trigger ALIGN_LEFT = (coralController.button(1).or(coralController.button(4)).or(coralController.button(6)).or(coralController.button(5))).and(()->scoring.isCoralMode());
 
-    // private final Trigger ALIGN_CENTER = (coralController.button(2).or(coralController.button(3)).or(coralController.button(8)).or(coralController.button(7))).and(()->!isCoralMode);
+    // private final Trigger ALIGN_CENTER = (coralController.button(2).or(coralController.button(3)).or(coralController.button(8)).or(coralController.button(7))).and(()->scoring.isAlgaeMode());
     
-    private final Trigger PRIME_PROCESSOR = coralController.button(4).and(()->!isCoralMode);
-    private final Trigger PRIME_L2_ALGAE = coralController.button(1).and(()->!isCoralMode);
-    private final Trigger PRIME_L3_ALGAE = coralController.button(6).and(()->!isCoralMode);
-    private final Trigger PRIME_NET = coralController.button(5).and(()->!isCoralMode);
+    private final Trigger PRIME_PROCESSOR = coralController.button(4).and(()->scoring.isAlgaeMode());
+    private final Trigger PRIME_L2_ALGAE = coralController.button(1).and(()->scoring.isAlgaeMode());
+    private final Trigger PRIME_L3_ALGAE = coralController.button(6).and(()->scoring.isAlgaeMode());
+    private final Trigger PRIME_NET = coralController.button(5).and(()->scoring.isAlgaeMode());
 
-    private final Trigger GROUND_ALGAE_PERRY = coralController.button(3).and(()->!isCoralMode);
-    private final Trigger STOW_ALGAE_PERRY = coralController.button(2).and(()->!isCoralMode);
+    private final Trigger GROUND_ALGAE_PERRY = coralController.button(3).and(()->scoring.isAlgaeMode());
+    private final Trigger STOW_ALGAE_PERRY = coralController.button(2).and(()->scoring.isAlgaeMode());
 
-    private final Trigger ALGAE_INTAKE = coralController.button(3).and(()->!isCoralMode);
+    private final Trigger ALGAE_INTAKE = coralController.button(3).and(()->scoring.isAlgaeMode());
     // private final Trigger GROUND_INTAKE = coralController.button();
     private final Trigger MODE_SWITCH_ALGAE = coralController.button(10).or(coralController.axisGreaterThan(1, 0.1));
     private final Trigger MODE_SWITCH_CORAL = coralController.button(13).or(coralController.axisLessThan(1, -0.1));
@@ -128,6 +125,7 @@ public class RobotContainer {
      * up button bindings, and prepares for autonomous.
      */
     public RobotContainer() {
+        LEDs.init();
         swerve = new Swerve();
         vision = new Vision();
         scoreCoral = new ScoreCoral(swerve);
@@ -141,11 +139,11 @@ public class RobotContainer {
         leds = new LEDs();
         
         scoring = new Scoring(elevator, clockArm, wrist, intake);
-
+        
         passSubsystems();
         configureBindings();
         configureDefaults();
-
+        
         AutoManager.prepare();
         LEDs.init();
     }
@@ -178,7 +176,7 @@ public class RobotContainer {
             intake, intake.run(
                 () -> {intake.setIntakePercentOutput(-0.2);}
             ).onlyIf(
-                () -> (!isCoralMode && !(scoring.scoringTargetPosition == ElevatorPositions.getNet()) )
+                () -> (scoring.isAlgaeMode() && !(scoring.scoringTargetPosition == ElevatorPositions.getNet()) )
             ).repeatedly()
         );
 
@@ -272,15 +270,9 @@ public class RobotContainer {
         ALGAE_INTAKE.onTrue(scoring.setUserPosition(ElevatorPositions.getGroundAlgae()).ignoringDisable(true));
         DEEP_CLIMB_POSITION.onTrue(scoring.setUserPosition(ElevatorPositions.getDeepClimb()).ignoringDisable(true));
 
-        MODE_SWITCH_ALGAE.onTrue(Commands.runOnce(()->{
-            isCoralMode=false; 
-            Logger.recordOutput(SHARED.LOG_FOLDER + "/isCoralMode", isCoralMode);
-        }, new Subsystem[0]));
+        MODE_SWITCH_ALGAE.onTrue(scoring.setAlgaeMode());
 
-        MODE_SWITCH_CORAL.onTrue(Commands.runOnce(()->{
-            isCoralMode=true; 
-            Logger.recordOutput(SHARED.LOG_FOLDER + "/isCoralMode", isCoralMode);
-        }, new Subsystem[0]));
+        MODE_SWITCH_CORAL.onTrue(scoring.setCoralMode());
 
         ALIGN_LEFT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left)));
         ALIGN_RIGHT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right)));
@@ -364,12 +356,5 @@ public class RobotContainer {
             //If you want to force-allow setting a cancel-incoming default command, directly call `subsystem.setDefaultCommand()` instead
             throw new UnsupportedOperationException("Can't set a default command that cancels incoming!");
         }
-    }
-
-    public void periodic(){
-
-        //Logging if we have the coral fully or not
-        SmartDashboard.putBoolean("Coral mode", isCoralMode);
-        LEDs.setCoralMode( isCoralMode );
     }
 }
