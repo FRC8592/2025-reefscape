@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -26,10 +27,10 @@ import frc.robot.Constants.CORAL_ALIGN;
 import frc.robot.subsystems.LEDs;
 import frc.robot.Robot;
 
-public class VisionCam2 extends SubsystemBase{
-    PhotonCamera camera = new PhotonCamera(CORAL_ALIGN.CAMERA_2_NAME);
+public class Vision extends SubsystemBase{
+    PhotonCamera camera;
     AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField();
-    PhotonPoseEstimator estimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, CORAL_ALIGN.CAMERA_OFFSETS);
+    PhotonPoseEstimator estimator;
 
     boolean targetVisible = false;
     double targetX = 0.0;
@@ -50,7 +51,9 @@ public class VisionCam2 extends SubsystemBase{
     SimCameraProperties cameraBProperties;
     PhotonCameraSim cameraSim;
 
-    public VisionCam2(){
+    public Vision(String camName, Transform3d camOffsets){
+        camera = new PhotonCamera(camName);
+        estimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camOffsets);
         visionSim = new VisionSystemSim("photonvision");
 
         visionSim.addAprilTags(aprilTagFieldLayout);
@@ -69,7 +72,7 @@ public class VisionCam2 extends SubsystemBase{
 
         cameraSim = new PhotonCameraSim(camera, cameraBProperties);
 
-        visionSim.addCamera(cameraSim, CORAL_ALIGN.CAMERA_OFFSETS);
+        visionSim.addCamera(cameraSim, camOffsets);
 
         visionSim.getDebugField();
 

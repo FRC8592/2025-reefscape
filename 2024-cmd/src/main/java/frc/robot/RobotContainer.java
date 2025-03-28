@@ -26,7 +26,7 @@ import frc.robot.subsystems.scoring.Wrist;
 import frc.robot.subsystems.scoring.Scoring.ElevatorPositions;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.Swerve.DriveModes;
-import frc.robot.subsystems.vision.VisionCam1;
+import frc.robot.subsystems.vision.Vision;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
@@ -49,7 +49,8 @@ public class RobotContainer {
 
     // The robot's subsystems
     private final Swerve swerve;
-    private final VisionCam1 vision;
+    private final Vision vision1;
+    private final Vision vision2;
     private Scoring scoring = null;
     private final DeepClimb deepclimb;
 
@@ -127,9 +128,10 @@ public class RobotContainer {
     public RobotContainer() {
         LEDs.init();
         swerve = new Swerve();
-        vision = new VisionCam1();
+        vision1 = new Vision(CORAL_ALIGN.CAMERA_NAME, CORAL_ALIGN.CAMERA_OFFSETS);
+        vision2 = new Vision(CORAL_ALIGN.CAMERA_2_NAME, CORAL_ALIGN.CAMERA_2_OFFSETS);
         scoreCoral = new ScoreCoral(swerve);
-        odometryUpdates = new OdometryUpdates(swerve, vision);
+        odometryUpdates = new OdometryUpdates(swerve, vision1, vision2);
         
         clockArm = new ClockArm();
         wrist = new Wrist();

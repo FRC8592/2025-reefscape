@@ -52,14 +52,17 @@ public final class Constants {
         public static final Transform3d CAMERA_OFFSETS = (
             SHARED.IS_RIPTIDE
             ? /* RIPRIDE: */ new Transform3d(new Translation3d(0.21, 0.215, 0.17), new Rotation3d(0, Math.toRadians(-12), 0))
-            : /* PERRY: */   new Transform3d(new Translation3d(0.17145, 0.20955, 0.2286), new Rotation3d(0, Math.toRadians(-12), Math.toRadians(-5)))
+            : /* PERRY: */   new Transform3d(new Translation3d(0.17145, 0.20955, 0.2286), new Rotation3d(0, Math.toRadians(-12), 0))
+        );
+        public static final Transform3d CAMERA_2_OFFSETS = (
+            new Transform3d(new Translation3d(0.215, -0.325, 0.24), new Rotation3d(0, Math.toRadians(-12), Math.toRadians(5)))
         );
 
         public static final String CAMERA_NAME = (
-            SHARED.IS_RIPTIDE ? "Arducam_OV9782_B" : "Arducam_OV9782_D"
+            "Arducam_OV9782_D"
         );
         public static final String CAMERA_2_NAME = (
-            SHARED.IS_RIPTIDE ? "Arducam_OV9782_D" : "Arducam_OV9782_B"
+            "Arducam_OV9782_B"
         );
     
         public static final int[] BLUE_REEF_TAGS = {17, 18, 19, 20, 21, 22};
