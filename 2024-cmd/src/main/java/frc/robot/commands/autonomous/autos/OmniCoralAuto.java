@@ -82,19 +82,17 @@ public class OmniCoralAuto extends AutoCommand{
                 .andThen(scoring.intakeUntilHasCoralCommand())
             ):Commands.none(), // Do not intake if coralcount < 1
 
-            OdometryUpdates.seedFromVision(),
-
             coralCount > 1 ? ( // Score the second coral if coralcount > 1
                 ( // Move from our start position to the reef, cutting the path off in the middle to activate DTT
-                    // new FollowPathCommand(
-                    //     getChoreoTrajectory(SECOND_CORAL_SCORE.getPathName(redOrBlue)),//, 0),
-                    //     Suppliers.isRedAlliance,
-                    //     "SecondCoralScoreChoreoPath",
-                    //     0.5,
-                    //     false
-                    // )
-                    Commands.none().andThen(Commands.runOnce(() -> {scoreCoral.setPosition(SECOND_CORAL_SCORE.getLeftOrRight(redOrBlue));}))
-                    .andThen(Commands.defer(() -> scoreCoral.driveToClosestReefTag(), Set.of(swerve)))
+                    new FollowPathCommand(
+                        getChoreoTrajectory(SECOND_CORAL_SCORE.getPathName(redOrBlue)),//, 0),
+                        Suppliers.isRedAlliance,
+                        "SecondCoralScoreChoreoPath",
+                        0.5,
+                        false
+                    )
+                    // Commands.none().andThen(Commands.runOnce(() -> {scoreCoral.setPosition(SECOND_CORAL_SCORE.getLeftOrRight(redOrBlue));}))
+                    // .andThen(Commands.defer(() -> scoreCoral.driveToClosestReefTag(), Set.of(swerve)))
                 )
                 // While running path and DTT, raise the scoring mech to L4 position
                 .alongWith(Commands.none().andThen(scoring.goToSpecifiedPositionCommand(ElevatorPositions.getL4())))
@@ -110,8 +108,6 @@ public class OmniCoralAuto extends AutoCommand{
                 // Once we're stowed and at the human player station, intake
                 .andThen(scoring.intakeUntilHasCoralCommand())
             ):Commands.none(), // Don't do anything if we're not doing a second coral
-
-            OdometryUpdates.seedFromVision(),
 
             coralCount > 2 ? ( // Score the third coral if coralcount > 2
                 ( // Move from our start position to the reef, cutting the path off in the middle to activate DTT
@@ -139,8 +135,6 @@ public class OmniCoralAuto extends AutoCommand{
                 // Once we're stowed and at the human player station, intake
                 .andThen(scoring.intakeUntilHasCoralCommand())
             ):Commands.none(), // If we didn't score a third coral, don't intake another one
-
-            OdometryUpdates.seedFromVision(),
 
             coralCount > 3 ? ( // If we're scoring a fourth coral
                 ( // Move from our start position to the reef, cutting the path off in the middle to activate DTT
