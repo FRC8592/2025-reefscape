@@ -65,7 +65,7 @@ public class OdometryUpdates extends SubsystemBase {
         if(useVision){
             switch (leftOrRight) {
                 case Right:
-                    if(robotPose1.isPresent() && ambiguity1 < 0.1){
+                    if(robotPose1.isPresent() && ambiguity1 < NAVIGATION.MAX_ACCEPTABLE_AMBIGUITY){
                         swerve.resetPose(robotPosition1);
                     }
                     else{
@@ -76,7 +76,7 @@ public class OdometryUpdates extends SubsystemBase {
                     break;
             
                 case Left:
-                    if(robotPose2.isPresent() && ambiguity2 < 0.1){
+                    if(robotPose2.isPresent() && ambiguity2 < NAVIGATION.MAX_ACCEPTABLE_AMBIGUITY){
                         swerve.resetPose(robotPosition2);
                     }
                     else{
