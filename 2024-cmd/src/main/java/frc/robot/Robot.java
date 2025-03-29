@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.SHARED;
 import frc.robot.subsystems.LEDs;
 import au.grapplerobotics.CanBridge;
 
@@ -44,8 +45,13 @@ public class Robot extends LoggedRobot {
     // SmartDashboard.putData(CommandScheduler.getInstance());
 
     public enum CurrentRobot{
-        RIPTIDE,
-        PERRY
+        RIPTIDE("Riptide"),
+        PERRY("Perry");
+
+        String name;
+        CurrentRobot(String name){
+            this.name = name;
+        }
     }
 
     /**
@@ -58,7 +64,7 @@ public class Robot extends LoggedRobot {
         CanBridge.runTCP();
         Logger.recordMetadata("Game", "ReefScape");
         Logger.recordMetadata("Year", "2025");
-        Logger.recordMetadata("Robot", "Perry");
+        Logger.recordMetadata("Robot", SHARED.CURRENT_ROBOT.name);
         Logger.recordMetadata("Team", "8592");
 
         Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables

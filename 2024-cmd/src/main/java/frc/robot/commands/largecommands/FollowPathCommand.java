@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import frc.robot.Constants.*;
 import frc.robot.subsystems.LEDs;
+import frc.robot.subsystems.OdometryUpdates;
 import frc.robot.subsystems.swerve.Swerve;
 
 public class FollowPathCommand extends LargeCommand{
@@ -192,6 +193,7 @@ public class FollowPathCommand extends LargeCommand{
             driveSpeeds.vxMetersPerSecond = alternateTranslation.get().vxMetersPerSecond;
             driveSpeeds.vyMetersPerSecond = alternateTranslation.get().vyMetersPerSecond;
         }
+        OdometryUpdates.setVision();
 
         swerve.drive(driveSpeeds);
     }

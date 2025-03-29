@@ -40,7 +40,7 @@ public final class Constants {
     }
 
     public final class CORAL_ALIGN {
-        public static final double OFFSET_DEPTH = 0.37; // Drivers requested for the robot to be as close to the april tag as possible
+        public static final double OFFSET_DEPTH = 0.45; // Drivers requested for the robot to be as close to the april tag as possible
         public static final double OFFSET_LEFT_METERS = -0.175;
         public static final double OFFSET_RIGHT_METERS = 0.175;
         public static final double ROT_OFFSET = 0d;
@@ -131,14 +131,23 @@ public final class Constants {
         public static final Rotation2d RED_PERSPECTIVE_ROTATION = Rotation2d.fromDegrees(180);
 
         //TODO: Double check that these still work
+        // public static final double PATH_FOLLOW_TRANSLATE_kP = 8d; // Was 8 in the last test
+        // public static final double PATH_FOLLOW_TRANSLATE_kI = 0d;
+        // public static final double PATH_FOLLOW_TRANSLATE_kD = 0.2d;
+
+        // //TODO: Double check that these still work
+        // public static final double PATH_FOLLOW_ROTATE_kP = 8;
+        // public static final double PATH_FOLLOW_ROTATE_kI = 0d;
+        // public static final double PATH_FOLLOW_ROTATE_kD = 0.1;
+
         public static final double PATH_FOLLOW_TRANSLATE_kP = 8d; // Was 8 in the last test
         public static final double PATH_FOLLOW_TRANSLATE_kI = 0d;
-        public static final double PATH_FOLLOW_TRANSLATE_kD = 0.2d;
+        public static final double PATH_FOLLOW_TRANSLATE_kD = 0d;
 
         //TODO: Double check that these still work
-        public static final double PATH_FOLLOW_ROTATE_kP = 8;
+        public static final double PATH_FOLLOW_ROTATE_kP = 12;
         public static final double PATH_FOLLOW_ROTATE_kI = 0d;
-        public static final double PATH_FOLLOW_ROTATE_kD = 0.1;
+        public static final double PATH_FOLLOW_ROTATE_kD = 0;
 
         public static final double PATH_FOLLOW_ROTATE_MAX_VELOCITY = 4 * Math.PI;
         public static final double PATH_FOLLOW_ROTATE_MAX_ACCELLERATION = 4 * Math.PI;

@@ -23,6 +23,7 @@ public class OdometryUpdates extends SubsystemBase {
     private Swerve swerve;
     private Vision vision;
     private Pose2d initialPose;
+    private static boolean useVision;
 
     public OdometryUpdates(Swerve swerve, Vision vision) {
         this.swerve = swerve;
@@ -50,7 +51,8 @@ public class OdometryUpdates extends SubsystemBase {
                     && vision.getTargets().get(0).bestCameraToTarget.getX() < CORAL_ALIGN.REJECT_SINGLE_TAG_POSE_ESTIMATE_RANGE
                 )
             ) {
-                if (DriverStation.isDisabled()){
+                if (DriverStation.isDisabled() || (useVision && Math.abs(ambiguity) < 0.1)){
+                    useVision = false;
                     initialPose = robotPosition;
                     swerve.resetPose(initialPose);
                 } else {
@@ -71,6 +73,9 @@ public class OdometryUpdates extends SubsystemBase {
     
     public void simulationPeriodic() {
 
+    }
+    public static void setVision(){
+        useVision = true;
     }
     
 }

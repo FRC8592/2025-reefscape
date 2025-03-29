@@ -23,22 +23,22 @@ import frc.robot.subsystems.swerve.perryswerve.PerryConstants;
 import frc.robot.subsystems.swerve.riptideswerve.RiptideConstants;
 
 public class CTRESwerveWrapper {
-    private double MaxSpeed = RiptideConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private double MaxSpeed = (SHARED.IS_RIPTIDE?RiptideConstants.kSpeedAt12Volts:PerryConstants.kSpeedAt12Volts).in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric fieldRelative = new SwerveRequest.FieldCentric()
-        .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-        .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+        .withDeadband(MaxSpeed * 0.03).withRotationalDeadband(MaxAngularRate * 0.03) // Add a 10% deadband
+        .withDriveRequestType(DriveRequestType.Velocity); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
     private final SwerveRequest.RobotCentric robotRelative = new SwerveRequest.RobotCentric()
-        .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+        .withDriveRequestType(DriveRequestType.Velocity);
        
     private final SwerveDrivetrain<TalonFX, TalonFX, CANcoder> drivetrain = SHARED.IS_RIPTIDE?RiptideConstants.createDrivetrain():PerryConstants.createDrivetrain();
 
     public void drive(ChassisSpeeds speeds, boolean driveFieldRelative) {
-        Logger.recordOutput(SWERVE.LOG_PATH+"SwerveTargetSpeeds", speeds);
+        Logger.recordOutput(SWERVE.LOG_PATH+"TargetSpeeds", ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getYaw()));
         if (driveFieldRelative) {
             drivetrain.setControl(
                 fieldRelative.withVelocityX(speeds.vxMetersPerSecond) 
