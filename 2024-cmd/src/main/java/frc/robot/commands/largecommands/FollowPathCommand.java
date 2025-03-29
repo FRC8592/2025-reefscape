@@ -193,7 +193,7 @@ public class FollowPathCommand extends LargeCommand{
             driveSpeeds.vxMetersPerSecond = alternateTranslation.get().vxMetersPerSecond;
             driveSpeeds.vyMetersPerSecond = alternateTranslation.get().vyMetersPerSecond;
         }
-        OdometryUpdates.setVision();
+        OdometryUpdates.setVision(scoreCoral);
 
         swerve.drive(driveSpeeds);
     }

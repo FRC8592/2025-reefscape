@@ -40,7 +40,7 @@ public final class Constants {
     }
 
     public final class CORAL_ALIGN {
-        public static final double OFFSET_DEPTH = 0.45; // Drivers requested for the robot to be as close to the april tag as possible
+        public static final double OFFSET_DEPTH = 0.40; // Drivers requested for the robot to be as close to the april tag as possible
         public static final double OFFSET_LEFT_METERS = -0.175;
         public static final double OFFSET_RIGHT_METERS = 0.175;
         public static final double ROT_OFFSET = 0d;
@@ -55,7 +55,7 @@ public final class Constants {
             : /* PERRY: */   new Transform3d(new Translation3d(0.17145, 0.20955, 0.2286), new Rotation3d(0, Math.toRadians(-12), 0))
         );
         public static final Transform3d CAMERA_2_OFFSETS = (
-            new Transform3d(new Translation3d(0.215, -0.325, 0.24), new Rotation3d(0, Math.toRadians(-12), Math.toRadians(5)))
+            new Transform3d(new Translation3d(0.215, -0.32, 0.24), new Rotation3d(0, Math.toRadians(-12), Math.toRadians(5)))
         );
 
         public static final String CAMERA_NAME = (

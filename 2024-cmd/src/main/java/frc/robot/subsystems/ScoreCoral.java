@@ -254,4 +254,7 @@ public class ScoreCoral extends SubsystemBase {
 
         
     }
+    public LeftOrRight getDirection(){
+        return this.direction;
+    }
 }

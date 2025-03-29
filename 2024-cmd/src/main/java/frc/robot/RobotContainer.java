@@ -50,6 +50,7 @@ public class RobotContainer {
     // The robot's subsystems
     private final Swerve swerve;
     private final Vision vision1;
+    private final Vision vision2;
     private Scoring scoring = null;
     private final DeepClimb deepclimb;
 
@@ -85,7 +86,7 @@ public class RobotContainer {
 
     //private final Trigger LED_TEST = driverController.b();
 
-    private final Trigger DEEP_CLIMB = driverController.b();
+    private final Trigger DEEP_CLIMB_INTAKE = driverController.b();
     private final Trigger WINCH_UP = driverController.pov(0);
     private final Trigger WINCH_DOWN = driverController.pov(180);
     private final Trigger DEEP_CLIMB_DEPLOY = driverController.pov(90);
@@ -127,9 +128,10 @@ public class RobotContainer {
     public RobotContainer() {
         LEDs.init();
         swerve = new Swerve();
-        vision1 = new Vision();
+        vision1 = new Vision(CORAL_ALIGN.CAMERA_NAME, CORAL_ALIGN.CAMERA_OFFSETS);
+        vision2 = new Vision(CORAL_ALIGN.CAMERA_2_NAME, CORAL_ALIGN.CAMERA_2_OFFSETS);
         scoreCoral = new ScoreCoral(swerve);
-        odometryUpdates = new OdometryUpdates(swerve, vision1);
+        odometryUpdates = new OdometryUpdates(swerve, vision1, vision2);
         
         clockArm = new ClockArm();
         wrist = new Wrist();
@@ -154,7 +156,7 @@ public class RobotContainer {
     private void passSubsystems(){
         AutoManager.addSubsystems(swerve, scoring, leds);
         AutoCommand.addSubsystems(swerve, scoring, intake, leds, scoreCoral);
-        LargeCommand.addSubsystems(swerve, scoring, leds);
+        LargeCommand.addSubsystems(swerve, scoring, leds, scoreCoral);
         NewtonCommands.addSubsystems(swerve, scoring, leds);
         Suppliers.addSubsystems(swerve, scoring, leds);
     }
@@ -296,7 +298,7 @@ public class RobotContainer {
 
         //LED_TEST.onTrue(setLEDsCommand(LEDS.TEAL)).onFalse(setLEDsCommand(LEDS.OFF));
 
-        DEEP_CLIMB.onTrue(deepclimb.setDeepClimbIntakeCommand(-1)).onFalse(deepclimb.setDeepClimbIntakeCommand(0));
+        DEEP_CLIMB_INTAKE.whileTrue(deepclimb.setDeepClimbIntakeCommand(-1));
 
         DEEP_CLIMB_DEPLOY.onTrue(
             scoring.goToPosition(ElevatorPositions.getDeepClimb()).andThen(

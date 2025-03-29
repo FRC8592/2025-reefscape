@@ -83,7 +83,9 @@ public class DeepClimb extends SubsystemBase {
     }
 
     public Command setDeepClimbIntakeCommand(double percent){
-        return this.run(()->{setDeepClimbIntakePercentOutput(percent);});
+        return this.run(()->{
+            setDeepClimbIntakePercentOutput(percent);
+        }).finallyDo(() -> this.setDeepClimbIntakePercentOutput(0));
     }
 
     public Command stopDeepClimbCommand(){
