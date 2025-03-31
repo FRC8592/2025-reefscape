@@ -41,8 +41,8 @@ public final class Constants {
 
     public final class CORAL_ALIGN {
         public static final double OFFSET_DEPTH = 0.40; // Drivers requested for the robot to be as close to the april tag as possible
-        public static final double OFFSET_LEFT_METERS = -0.175;
-        public static final double OFFSET_RIGHT_METERS = 0.175;
+        public static final double OFFSET_LEFT_METERS = -0.144;
+        public static final double OFFSET_RIGHT_METERS = 0.2;
         public static final double ROT_OFFSET = 0d;
         public static final double SPEED_SCALE = 1.0;
         public static final double SPEED_MAX = 0.2; // originally 0.65
@@ -71,7 +71,7 @@ public final class Constants {
         public static final int[] BLUE_HPLAYER_TAGS = {12, 13};
         public static final int[] RED_HPLAYER_TAGS = {1, 2};
 
-        public static final double REJECT_SINGLE_TAG_POSE_ESTIMATE_RANGE = 1.5;
+        public static final double REJECT_SINGLE_TAG_POSE_ESTIMATE_RANGE = 1d;
 
     }
     public final class NAVIGATION {

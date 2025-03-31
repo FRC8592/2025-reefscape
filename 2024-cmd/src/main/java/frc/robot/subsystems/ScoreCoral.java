@@ -191,7 +191,7 @@ public class ScoreCoral extends SubsystemBase {
                 
 
         //Run path
-        return new FollowPathCommand(upTraj, () -> false, "DriveToReef", 0.5, false);
+        return new FollowPathCommand(upTraj, () -> false, "DriveToReef", 0.5, false, true);
 
 
 

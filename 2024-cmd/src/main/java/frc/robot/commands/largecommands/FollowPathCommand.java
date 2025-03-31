@@ -44,6 +44,8 @@ public class FollowPathCommand extends LargeCommand{
     private double secondsPastPathEndTolerated = -1;
     private boolean rollAtPathEnd = false;
 
+    private boolean useVision = false;
+
     /**
      * Command to follow a trajectory
      *
@@ -139,7 +141,7 @@ public class FollowPathCommand extends LargeCommand{
         this.alternateTranslation = translationSupplier;
     }
 
-    public FollowPathCommand(Trajectory trajectory, BooleanSupplier flip, String commandName, double secondsPastPathEndTolerated, boolean rollAtPathEnd){
+    public FollowPathCommand(Trajectory trajectory, BooleanSupplier flip, String commandName, double secondsPastPathEndTolerated, boolean rollAtPathEnd, boolean useVision){
         this(trajectory, flip, commandName);
         this.secondsPastPathEndTolerated = secondsPastPathEndTolerated;
         this.rollAtPathEnd = rollAtPathEnd;
@@ -193,7 +195,9 @@ public class FollowPathCommand extends LargeCommand{
             driveSpeeds.vxMetersPerSecond = alternateTranslation.get().vxMetersPerSecond;
             driveSpeeds.vyMetersPerSecond = alternateTranslation.get().vyMetersPerSecond;
         }
-        OdometryUpdates.setVision(scoreCoral);
+        // if(useVision){
+        //     OdometryUpdates.setVision(scoreCoral);
+        // }
 
         swerve.drive(driveSpeeds);
     }
