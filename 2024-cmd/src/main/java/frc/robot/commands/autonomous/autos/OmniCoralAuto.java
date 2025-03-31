@@ -71,7 +71,7 @@ public class OmniCoralAuto extends AutoCommand{
                 // While running path and DTT, raise the scoring mech to L4 position
                 .alongWith(Commands.none().andThen(scoring.goToSpecifiedPositionCommand(ElevatorPositions.getL4())))
                 // Once both the path and scoring mechanism are finished, score the first coral
-                .andThen(new WaitCommand(0.25), scoring.outtakeCoralCommand().withTimeout(0.25))
+                .andThen(new WaitCommand(0.25), scoring.outtakeCoralCommand().withTimeout(0.125))
             ):Commands.none(), // Commands.none() if coralcount < 1
 
             coralCount > 0 ? ( // Also intake the next coral if coralcount > 0
@@ -99,7 +99,7 @@ public class OmniCoralAuto extends AutoCommand{
                 // While running path and DTT, raise the scoring mech to L4 position
                 .alongWith(Commands.none().andThen(scoring.goToSpecifiedPositionCommand(ElevatorPositions.getL4())))
                 // Once both the path and scoring mechanism are finished, score the first coral
-                .andThen(scoring.outtakeCoralCommand().withTimeout(0.25))
+                .andThen(scoring.outtakeCoralCommand().withTimeout(0.125))
             ):Commands.none(), // Don't do anything if coralcount < 2
 
             coralCount > 1 ? ( // Intake if we scored our second coral
@@ -127,7 +127,7 @@ public class OmniCoralAuto extends AutoCommand{
                 // While running path and DTT, raise the scoring mech to L4 position
                 .alongWith(Commands.none().andThen(scoring.goToSpecifiedPositionCommand(ElevatorPositions.getL4())))
                 // Once both the path and scoring mechanism are finished, score the first coral
-                .andThen(scoring.outtakeCoralCommand().withTimeout(0.25))
+                .andThen(scoring.outtakeCoralCommand().withTimeout(0.125))
             ):Commands.none(), // Don't do anything if we're not doing a third coral
 
             coralCount > 2 ? ( // Intake a fourth coral if we scored the third
@@ -155,7 +155,7 @@ public class OmniCoralAuto extends AutoCommand{
                 // While running path and DTT, raise the scoring mech to L4 position
                 .alongWith(Commands.none().andThen(scoring.goToSpecifiedPositionCommand(ElevatorPositions.getL4())))
                 // Once both the path and scoring mechanism are finished, score the first coral
-                .andThen(scoring.outtakeCoralCommand().withTimeout(0.25))
+                .andThen(scoring.outtakeCoralCommand().withTimeout(0.125))
             ):Commands.none(), // Do nothing if we aren't scoring a fourth coral
 
             coralCount > 3 ? ( // Only move back from the fourth coral's scoring position if we actually went there and scored
