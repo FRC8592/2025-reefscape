@@ -97,21 +97,21 @@ public class RobotContainer {
 
     private final Trigger PRIME_L4 = (coralController.button(5).or(coralController.button(7))).and(()->scoring.isCoralMode());
     private final Trigger PRIME_L3 = (coralController.button(6).or(coralController.button(8))).and(()->scoring.isCoralMode());
-    private final Trigger PRIME_L2 = (coralController.button(1).or(coralController.button(2))).and(()->scoring.isCoralMode());
-    private final Trigger PRIME_L1 = (coralController.button(4).or(coralController.button(3))).and(()->scoring.isCoralMode());
+    private final Trigger PRIME_L1 = (coralController.button(1).or(coralController.button(2))).and(()->scoring.isCoralMode());
+    private final Trigger PRIME_L2 = (coralController.button(4).or(coralController.button(3))).and(()->scoring.isCoralMode());
 
     private final Trigger ALIGN_RIGHT = (coralController.button(2).or(coralController.button(3)).or(coralController.button(8)).or(coralController.button(7))).and(()->scoring.isCoralMode());
     private final Trigger ALIGN_LEFT = (coralController.button(1).or(coralController.button(4)).or(coralController.button(6)).or(coralController.button(5))).and(()->scoring.isCoralMode());
 
     // private final Trigger ALIGN_CENTER = (coralController.button(2).or(coralController.button(3)).or(coralController.button(8)).or(coralController.button(7))).and(()->scoring.isAlgaeMode());
     
-    private final Trigger PRIME_PROCESSOR = coralController.button(4).and(()->scoring.isAlgaeMode());
-    private final Trigger PRIME_L2_ALGAE = coralController.button(1).and(()->scoring.isAlgaeMode());
+    private final Trigger PRIME_L2_ALGAE = coralController.button(4).and(()->scoring.isAlgaeMode());
+    private final Trigger PRIME_PROCESSOR = coralController.button(1).and(()->scoring.isAlgaeMode());
     private final Trigger PRIME_L3_ALGAE = coralController.button(6).and(()->scoring.isAlgaeMode());
     private final Trigger PRIME_NET = coralController.button(5).and(()->scoring.isAlgaeMode());
 
-    private final Trigger GROUND_ALGAE_PERRY = coralController.button(3).and(()->scoring.isAlgaeMode());
-    private final Trigger STOW_ALGAE_PERRY = coralController.button(2).and(()->scoring.isAlgaeMode());
+    private final Trigger STOW_ALGAE_PERRY = coralController.button(3).and(()->scoring.isAlgaeMode());
+    private final Trigger GROUND_ALGAE_PERRY = coralController.button(2).and(()->scoring.isAlgaeMode());
 
     private final Trigger ALGAE_INTAKE = coralController.button(3).and(()->scoring.isAlgaeMode());
     // private final Trigger GROUND_INTAKE = coralController.button();
@@ -260,7 +260,7 @@ public class RobotContainer {
         // );
 
         //------------------------------ OPERATOR POSITION COMMANDS ------------------------------//
-        //PRIME_L1.onTrue(scoring.setUserPosition(ElevatorPositions.getL1()).ignoringDisable(true));
+        PRIME_L1.onTrue(scoring.setUserPosition(ElevatorPositions.getL1()).ignoringDisable(true));
         PRIME_L2.onTrue(scoring.setUserPosition(ElevatorPositions.getL2()).ignoringDisable(true));
         PRIME_L3.onTrue(scoring.setUserPosition(ElevatorPositions.getL3()).ignoringDisable(true));
         PRIME_L4.onTrue(scoring.setUserPosition(ElevatorPositions.getL4()).ignoringDisable(true));

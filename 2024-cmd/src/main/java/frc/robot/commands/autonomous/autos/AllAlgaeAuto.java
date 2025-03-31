@@ -9,7 +9,8 @@ import frc.robot.subsystems.scoring.Scoring.ElevatorPositions;
 public class AllAlgaeAuto extends AutoCommand{
     public AllAlgaeAuto(){
         super(
-            scoring.setAlgaeMode(),
+            scoring.setCoralMode(),
+            scoring.goToSpecifiedPositionCommand(ElevatorPositions.getL4()),
 
             new FollowPathCommand(
                 getChoreoTrajectory("MiddleToDLeft"),
@@ -19,7 +20,6 @@ public class AllAlgaeAuto extends AutoCommand{
                 false,
                 false
             )
-            .alongWith(new WaitCommand(0.25).andThen(scoring.goToSpecifiedPositionCommand(ElevatorPositions.getL4())))
             .andThen(new WaitCommand(0.75), scoring.outtakeCoralCommand().withTimeout(0.25)),
 
             new FollowPathCommand(
@@ -42,6 +42,9 @@ public class AllAlgaeAuto extends AutoCommand{
             .alongWith(new WaitCommand(0.25).andThen(
                 scoring.goToSpecifiedPositionCommand(ElevatorPositions.getL2Algae())
             )),
+            
+            scoring.setAlgaeMode(),
+
             new FollowPathCommand(
                 getChoreoTrajectory("MiddleToDAlgae"),
                 Suppliers.isRedAlliance,
@@ -50,6 +53,7 @@ public class AllAlgaeAuto extends AutoCommand{
                 false,
                 false
             ).andThen(scoring.intakeCommand().withTimeout(2)),
+
             new FollowPathCommand(
                 getChoreoTrajectory("DAlgaeToBlueNet"),
                 Suppliers.isRedAlliance,
