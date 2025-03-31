@@ -41,8 +41,8 @@ public final class Constants {
 
     public final class CORAL_ALIGN {
         public static final double OFFSET_DEPTH = 0.40; // Drivers requested for the robot to be as close to the april tag as possible
-        public static final double OFFSET_LEFT_METERS = -0.144;
-        public static final double OFFSET_RIGHT_METERS = 0.2;
+        public static final double OFFSET_LEFT_METERS = -0.137;
+        public static final double OFFSET_RIGHT_METERS = 0.213;
         public static final double ROT_OFFSET = 0d;
         public static final double SPEED_SCALE = 1.0;
         public static final double SPEED_MAX = 0.2; // originally 0.65
