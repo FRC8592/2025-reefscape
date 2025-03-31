@@ -91,8 +91,10 @@ public class RobotContainer {
     private final Trigger WINCH_DOWN = driverController.pov(180);
     private final Trigger DEEP_CLIMB_DEPLOY = driverController.pov(90);
 
-    private final Trigger DEEP_CLIMB_POSITION = coralController.button(8).and(()->scoring.isAlgaeMode());
+    private final Trigger AUTO_SCORE = driverController.pov(270);
 
+    private final Trigger DEEP_CLIMB_POSITION = coralController.button(8).and(()->scoring.isAlgaeMode());
+    
     //Operator controls
 
     private final Trigger PRIME_L4 = (coralController.button(5).or(coralController.button(7))).and(()->scoring.isCoralMode());
@@ -118,6 +120,7 @@ public class RobotContainer {
     private final Trigger MODE_SWITCH_ALGAE = coralController.button(10).or(coralController.axisGreaterThan(1, 0.1));
     private final Trigger MODE_SWITCH_CORAL = coralController.button(13).or(coralController.axisLessThan(1, -0.1));
 
+    
     // Helpers
     // TODO: Add instantiatable helpers here
 
@@ -278,6 +281,17 @@ public class RobotContainer {
 
         ALIGN_LEFT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Left)));
         ALIGN_RIGHT.onTrue(Commands.runOnce(() -> scoreCoral.setPosition(LeftOrRight.Right)));
+
+        AUTO_SCORE.whileTrue(
+            new DeferredCommand(
+                () -> scoreCoral.driveToClosestReefTag(),
+                Set.of(swerve)
+            ).alongWith(
+                scoring.applyUserPosition()
+            ).andThen(
+                scoring.outtakeCoralCommand()
+            )
+        );
 
         //------------------------------ DRIVER COMMANDS ------------------------------//
 
