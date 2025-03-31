@@ -52,7 +52,7 @@ public final class AutoManager {
         // autoCommands.add(new ExampleAuto());
         // TODO: Add autos here
 
-        // autoCommands.add(new AllAlgaeAuto());
+        autoCommands.add(new AllAlgaeAuto());
         autoCommands.add(new OmniCoralAuto(1, RedOrBlue.RED).withAutoName("OneCoralRedBargeAuto"));
         autoCommands.add(new OmniCoralAuto(2, RedOrBlue.RED).withAutoName("TwoCoralRedBargeAuto"));
         autoCommands.add(new OmniCoralAuto(3, RedOrBlue.RED).withAutoName("ThreeCoralRedBargeAuto"));
