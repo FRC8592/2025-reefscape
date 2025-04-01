@@ -29,7 +29,7 @@ public class Scoring extends SubsystemBase {
 
     // Define scoring mechanism positions for various activities
     public static ElevatorPositions scoringTargetPosition;
-    private static ElevatorPositions userSelectedPosition;
+    public static ElevatorPositions userSelectedPosition;
 
     private boolean isCoralMode = true;
 
