@@ -282,17 +282,15 @@ public class RobotContainer {
         //------------------------------ DRIVER COMMANDS ------------------------------//
 
         STOW.whileTrue(scoring.goToPosition(ElevatorPositions.getStow()));
-        GO_TO_POSITION.whileTrue(
+        GO_TO_POSITION.onTrue(
             new ConditionalCommand(
                 scoring.goToSpecifiedPositionCommand(ElevatorPositions.getStowAlgae())
                     .andThen(new WaitUntilCommand(()->scoring.isAtPosition(ElevatorPositions.getStowAlgae())))
                     .andThen(scoring.goToSpecifiedPositionCommand(ElevatorPositions.getNet())), 
                 scoring.applyUserPosition(), 
-                ()->(Scoring.userSelectedPosition == ElevatorPositions.NET_PERRY)
+                ()->(Scoring.userSelectedPosition == ElevatorPositions.getNet())
             )
-            
-        
-        ).onFalse(scoring.stopAllCommand());
+        );
 
         INTAKE.whileTrue(new DeferredCommand(() -> scoring.intakeCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
         
