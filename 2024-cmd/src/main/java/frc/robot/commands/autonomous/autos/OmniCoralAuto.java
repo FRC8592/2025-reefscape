@@ -10,6 +10,7 @@ import frc.robot.commands.largecommands.FollowPathCommand;
 import frc.robot.subsystems.OdometryUpdates;
 import frc.robot.subsystems.ScoreCoral.LeftOrRight;
 import frc.robot.subsystems.scoring.Scoring.ElevatorPositions;
+import frc.robot.subsystems.scoring.*;
 import static frc.robot.commands.autonomous.autos.OmniCoralAuto.Positions.*;
 
 public class OmniCoralAuto extends AutoCommand{
@@ -19,9 +20,12 @@ public class OmniCoralAuto extends AutoCommand{
         SECOND_CORAL_SCORE("HPRightToBRight", LeftOrRight.Right, "HPLeftToFLeft", LeftOrRight.Left),
         THIRD_CORAL_INTAKE("BRightToHPRight", LeftOrRight.Right, "FLeftToHPLeft", LeftOrRight.Left),
         THIRD_CORAL_SCORE("HPRightToBLeft", LeftOrRight.Left, "HPLeftToFRight", LeftOrRight.Right),
+        THIRD_ALGAE_INTAKE("BAlgaeLeftBackUp", LeftOrRight.Left, "FAlgaeRightBackUp", LeftOrRight.Right),
+        THIRD_ALGAE_BACK_UP_OUTTAKE("BAlgaeBackUpAndScore", LeftOrRight.Left, "FAlgaeBackUpAndScore", LeftOrRight.Right),
         FOURTH_CORAL_INTAKE("BLeftToHPRight", LeftOrRight.Right, "FRightToHPLeft", LeftOrRight.Left),
         FOURTH_CORAL_SCORE("HPRightToARight", LeftOrRight.Right, "HPLeftToALeft", LeftOrRight.Left),
-        FOURTH_CORAL_BACK_UP("ARightBackUp", LeftOrRight.Left, "ALeftBackUp", LeftOrRight.Left)
+        FOURTH_CORAL_BACK_UP("ARightBackUp", LeftOrRight.Left, "ALeftBackUp", LeftOrRight.Left),
+        
         ;
         String red, blue;
         LeftOrRight redLeftOrRight;
@@ -130,14 +134,26 @@ public class OmniCoralAuto extends AutoCommand{
                 .andThen(scoring.outtakeCoralCommand().withTimeout(0.125))
             ):Commands.none(), // Don't do anything if we're not doing a third coral
 
-            coralCount > 2 ? ( // Intake a fourth coral if we scored the third
-                // Move from the reef to the human player station
-                new FollowPathCommand(getChoreoTrajectory(FOURTH_CORAL_INTAKE.getPathName(redOrBlue)), Suppliers.isRedAlliance, "FourthCoralIntakeChoreoPath", 0.5, false, false)
-                // While moving, stow (after waiting a moment to clear the reef)
-                .alongWith(new WaitCommand(1).andThen(scoring.goToSpecifiedPositionCommand(ElevatorPositions.getStow())))
-                // Once we're stowed and at the human player station, intake
-                .andThen(scoring.intakeUntilHasCoralCommand())
-            ):Commands.none(), // If we didn't score a third coral, don't intake another one
+            coralCount > 2 ? (
+                scoring.setAlgaeMode().andThen(
+                    new FollowPathCommand(getChoreoTrajectory(THIRD_ALGAE_INTAKE.getPathName(redOrBlue)), Suppliers.isRedAlliance, "PostThirdCoralBackUp", 0.5, false, false)
+                    .alongWith(scoring.goToPosition(ElevatorPositions.getStowAlgae())).andThen(
+                        scoring.goToPosition(ElevatorPositions.getL2Algae())
+                    ).alongWith(scoring.intakeCommand())
+                ).andThen(
+                    new FollowPathCommand(getChoreoTrajectory(THIRD_ALGAE_BACK_UP_OUTTAKE.getPathName(redOrBlue)), Suppliers.isRedAlliance, "BackUpWithAlgae", 0.5, false, false)
+                    .andThen(scoring.outtakeCoralCommand())
+                )
+            ):Commands.none(),
+
+            // coralCount > 2 ? ( // Intake a fourth coral if we scored the third
+            //     // Move from the reef to the human player station
+            //     new FollowPathCommand(getChoreoTrajectory(FOURTH_CORAL_INTAKE.getPathName(redOrBlue)), Suppliers.isRedAlliance, "FourthCoralIntakeChoreoPath", 0.5, false, false)
+            //     // While moving, stow (after waiting a moment to clear the reef)
+            //     .alongWith(new WaitCommand(1).andThen(scoring.goToSpecifiedPositionCommand(ElevatorPositions.getStow())))
+            //     // Once we're stowed and at the human player station, intake
+            //     .andThen(scoring.intakeUntilHasCoralCommand())
+            // ):Commands.none(), // If we didn't score a third coral, don't intake another one
 
             coralCount > 3 ? ( // If we're scoring a fourth coral
                 ( // Move from our start position to the reef, cutting the path off in the middle to activate DTT
