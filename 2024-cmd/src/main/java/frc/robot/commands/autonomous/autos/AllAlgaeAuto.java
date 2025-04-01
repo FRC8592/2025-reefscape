@@ -1,6 +1,7 @@
 package frc.robot.commands.autonomous.autos;
 
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Suppliers;
 import frc.robot.commands.autonomous.AutoCommand;
 import frc.robot.commands.largecommands.FollowPathCommand;
@@ -11,6 +12,7 @@ public class AllAlgaeAuto extends AutoCommand{
         super(
             scoring.setCoralMode(),
             scoring.goToSpecifiedPositionCommand(ElevatorPositions.getL4()),
+            new WaitUntilCommand(()->scoring.atPosition()),
 
             new FollowPathCommand(
                 getChoreoTrajectory("MiddleToDLeft"),

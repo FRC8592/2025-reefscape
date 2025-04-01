@@ -42,7 +42,7 @@ public final class Constants {
     public final class CORAL_ALIGN {
         public static final double OFFSET_DEPTH = 0.40; // Drivers requested for the robot to be as close to the april tag as possible
         public static final double OFFSET_LEFT_METERS = -0.137;
-        public static final double OFFSET_RIGHT_METERS = 0.213;
+        public static final double OFFSET_RIGHT_METERS = 0.213; 
         public static final double ROT_OFFSET = 0d;
         public static final double SPEED_SCALE = 1.0;
         public static final double SPEED_MAX = 0.2; // originally 0.65
@@ -104,7 +104,7 @@ public final class Constants {
         public static final double SNAP_TO_kD = 0.1;
 
         public static final double MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND = 4.73;
-        public static final TrajectoryConfig PATH_FOLLOW_TRAJECTORY_CONFIG = new TrajectoryConfig(4, 2);
+        public static final TrajectoryConfig PATH_FOLLOW_TRAJECTORY_CONFIG = new TrajectoryConfig(4.5, 3);
         public static final double MAX_ROTATIONAL_VELOCITY_RADIANS_PER_SECOND = Math.toRadians(720);
 
         public static final boolean INVERT_LEFT_SIDE = false;
