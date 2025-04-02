@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -71,10 +72,11 @@ public class Scoring extends SubsystemBase {
         STOW_PERRY(0, 13.3, -54, 0.5, 0.75),
         // STOW_WITH_CORAL_PERRY(0, 0, 20, 0.5, 0.75),
         L2_ALGAE_PERRY(16.8, 30, 99, 0.5, -0.75),
-        L3_ALGAE_PERRY(0, 145, 99, 0.5, -0.75),
+        L3_ALGAE_PERRY(0, 135, 99, 0.5, -0.75),
         PROCESSOR_PERRY(0, 32, 92.3, 0.3, 0.75),
         NET_PERRY(19.3, 165, 15, 1, -0.75),
         DEEP_CLIMB_PERRY(0, 45, -73, 15.50, 0),
+        PRE_NET(19.3, 165, 0, 1, -0.75),
 
         STOP(0,0,0, 240, 0);
 
@@ -160,6 +162,10 @@ public class Scoring extends SubsystemBase {
      */
     public boolean atPosition(){
         return elevator.atPosition()&& wrist.atPosition() && clockArm.atPosition();
+    }
+
+    public boolean atPosition(ElevatorPositions ep){
+        return elevator.atPosition(ep.elevatorPos)&& wrist.atPosition(ep.wristPos) && clockArm.atPosition(ep.clockArmPos);
     }
     
 
@@ -258,6 +264,14 @@ public class Scoring extends SubsystemBase {
             double currentElevatorPosition = elevator.getInches();
             double currentWristPosition = wrist.getDegrees();
             double currentArmPosition = clockArm.getDegrees();
+
+            if(scoringTargetPosition == ElevatorPositions.getNet() && !elevator.atPosition()){
+                targetWristPosition = -20;
+            }
+
+            if(scoringTargetPosition == ElevatorPositions.getL3Algae() && !clockArm.atPosition()){
+                targetWristPosition = currentWristPosition;
+            }
 
             //anytime we're moving the wrist, the arm should be out past the wrist rotate safe constant.
             if ( !wrist.atPosition(scoringTargetPosition.wristPos) ) {
