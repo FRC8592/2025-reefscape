@@ -39,7 +39,7 @@ public class Scoring extends SubsystemBase {
     public static enum ElevatorPositions {
         
         // RIPTIDE POSITIONS 
-        L1_RIPTIDE(14.4, 5, 175, -0.43, 0.75),
+        L1_RIPTIDE(14.4, 5, 175, -0.15, 0.75),
         L2_RIPTIDE(11.8, 0, 180, -0.2, 0.75),
         L3_RIPTIDE(0, 165, 195, -0.43, 0.75),
         L4_RIPTIDE(19.5, 160, 200, -0.43, 0.75), 
@@ -55,7 +55,7 @@ public class Scoring extends SubsystemBase {
         // PERRY POSITIONS
         START_POSITION_PERRY(0, 0, 5, 0, 0),
 
-        L1_PERRY(16.5, 9.5, 100, -0.25, 0.75),
+        L1_PERRY(3, 9.5, 100, -0.25, 0.75),
         // L1_PERRY(13.3, 0, 107.8, 0, 0),
         // L2_PERRY(13.3, ARM.SAFE_ARM_TO_ROTATE_WRIST, 93.6, -0.15, 0.75),
         // L2_PERRY(13.3, 0, 93.6, -0.15, 0.75),
