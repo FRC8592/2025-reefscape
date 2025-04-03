@@ -91,27 +91,28 @@ public class RobotContainer {
     private final Trigger WINCH_DOWN = driverController.pov(180);
     private final Trigger DEEP_CLIMB_DEPLOY = driverController.pov(90);
 
-    private final Trigger DEEP_CLIMB_POSITION = coralController.button(8).and(()->scoring.isAlgaeMode());
-
+    
     //Operator controls
-
+    
     private final Trigger PRIME_L4 = (coralController.button(5).or(coralController.button(7))).and(()->scoring.isCoralMode());
     private final Trigger PRIME_L3 = (coralController.button(6).or(coralController.button(8))).and(()->scoring.isCoralMode());
     private final Trigger PRIME_L2 = (coralController.button(1).or(coralController.button(2))).and(()->scoring.isCoralMode());
     private final Trigger PRIME_L1 = (coralController.button(4).or(coralController.button(3))).and(()->scoring.isCoralMode());
-
+    
     private final Trigger ALIGN_RIGHT = (coralController.button(2).or(coralController.button(3)).or(coralController.button(8)).or(coralController.button(7))).and(()->scoring.isCoralMode());
     private final Trigger ALIGN_LEFT = (coralController.button(1).or(coralController.button(4)).or(coralController.button(6)).or(coralController.button(5))).and(()->scoring.isCoralMode());
-
+    
     // private final Trigger ALIGN_CENTER = (coralController.button(2).or(coralController.button(3)).or(coralController.button(8)).or(coralController.button(7))).and(()->scoring.isAlgaeMode());
     
     private final Trigger PRIME_PROCESSOR = coralController.button(4).and(()->scoring.isAlgaeMode());
     private final Trigger PRIME_L2_ALGAE = coralController.button(1).and(()->scoring.isAlgaeMode());
     private final Trigger PRIME_L3_ALGAE = coralController.button(6).and(()->scoring.isAlgaeMode());
     private final Trigger PRIME_NET = coralController.button(5).and(()->scoring.isAlgaeMode());
-
+    
     private final Trigger GROUND_ALGAE_PERRY = coralController.button(3).and(()->scoring.isAlgaeMode());
     private final Trigger STOW_ALGAE_PERRY = coralController.button(2).and(()->scoring.isAlgaeMode());
+    private final Trigger DEEP_CLIMB_POSITION = coralController.button(8).and(()->scoring.isAlgaeMode());
+    private final Trigger CATAPULT_POSITION = coralController.button(7).and(()->scoring.isAlgaeMode());
 
     private final Trigger ALGAE_INTAKE = coralController.button(3).and(()->scoring.isAlgaeMode());
     // private final Trigger GROUND_INTAKE = coralController.button();
@@ -181,7 +182,6 @@ public class RobotContainer {
                 () -> (scoring.isAlgaeMode() && !(scoring.scoringTargetPosition == ElevatorPositions.getNet()) )
             ).repeatedly()
         );
-
         
         // setDefaultCommand(elevator, elevator.stopCommand());
         // setDefaultCommand(wrist, wrist.stopCommand());
@@ -198,7 +198,7 @@ public class RobotContainer {
     private void configureBindings() {
 
         ENABLED.onTrue(
-            scoring.goToPosition(ElevatorPositions.stopped()).andThen(scoring.stopAllCommand())
+            scoring.goToPosition(ElevatorPositions.stopped()).andThen(scoring.stopAllCommand()).andThen(deepclimb.setDeepClimbCommand(0))
         );
 
         //------------------------------ SWERVE COMMANDS ------------------------------//
@@ -271,6 +271,7 @@ public class RobotContainer {
         PRIME_NET.onTrue(scoring.setUserPosition(ElevatorPositions.getNet()).ignoringDisable(true));
         ALGAE_INTAKE.onTrue(scoring.setUserPosition(ElevatorPositions.getGroundAlgae()).ignoringDisable(true));
         DEEP_CLIMB_POSITION.onTrue(scoring.setUserPosition(ElevatorPositions.getDeepClimb()).ignoringDisable(true));
+        CATAPULT_POSITION.onTrue(scoring.setUserPosition(ElevatorPositions.getNetCatapult()).ignoringDisable(true));
 
         MODE_SWITCH_ALGAE.onTrue(scoring.setAlgaeMode());
 
@@ -282,15 +283,22 @@ public class RobotContainer {
         //------------------------------ DRIVER COMMANDS ------------------------------//
 
         STOW.whileTrue(scoring.goToPosition(ElevatorPositions.getStow()));
-        GO_TO_POSITION.onTrue(
-            new ConditionalCommand(
-                scoring.goToSpecifiedPositionCommand(ElevatorPositions.getStowAlgae())
-                    .andThen(new WaitUntilCommand(()->scoring.isAtPosition(ElevatorPositions.getStowAlgae())))
-                    .andThen(scoring.goToSpecifiedPositionCommand(ElevatorPositions.getNet())), 
-                scoring.applyUserPosition(), 
-                ()->(Scoring.userSelectedPosition == ElevatorPositions.getNet() && Scoring.scoringTargetPosition != ElevatorPositions.getL3Algae())
-            )
-        );
+
+        GO_TO_POSITION.onTrue(new DeferredCommand(()->{
+            if(Scoring.userSelectedPosition == ElevatorPositions.getNet() && Scoring.scoringTargetPosition != ElevatorPositions.getL3Algae()){
+                return  scoring.goToSpecifiedPositionCommand(ElevatorPositions.getStowAlgae())
+                .andThen(new WaitUntilCommand(()->scoring.isAtPosition(ElevatorPositions.getStowAlgae())))
+                .andThen(scoring.goToSpecifiedPositionCommand(ElevatorPositions.getNet()));
+
+            } else if(Scoring.userSelectedPosition == ElevatorPositions.getNetCatapult()){
+                return scoring.goToSpecifiedPositionCommand(ElevatorPositions.getNetCatapult())
+                .andThen(new WaitUntilCommand(()->(clockArm.getDegrees() > 130 && wrist.atPosition())))
+                .andThen(intake.setIntakeCommand(1));
+
+            } else {
+                return scoring.applyUserPosition();
+            }
+        }, Set.of(scoring, intake, clockArm, wrist)));
 
         INTAKE.whileTrue(new DeferredCommand(() -> scoring.intakeCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
         
@@ -336,6 +344,7 @@ public class RobotContainer {
         STOW_ALGAE_PERRY.onTrue(
             scoring.setUserPosition(ElevatorPositions.getStowAlgae())
         );
+
     };
 
 
