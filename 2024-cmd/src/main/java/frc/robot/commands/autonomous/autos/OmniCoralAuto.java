@@ -134,26 +134,26 @@ public class OmniCoralAuto extends AutoCommand{
                 .andThen(scoring.outtakeCoralCommand().withTimeout(0.125))
             ):Commands.none(), // Don't do anything if we're not doing a third coral
 
-            coralCount > 2 ? (
+            coralCount == 3 ? (
                 scoring.setAlgaeMode().andThen(
                     new FollowPathCommand(getChoreoTrajectory(THIRD_ALGAE_INTAKE.getPathName(redOrBlue)), Suppliers.isRedAlliance, "PostThirdCoralBackUp", 0.5, false, false)
-                    .alongWith(scoring.goToPosition(ElevatorPositions.getStowAlgae())).andThen(
-                        scoring.goToPosition(ElevatorPositions.getL2Algae())
-                    ).alongWith(scoring.intakeCommand())
-                ).andThen(
+                    .alongWith(scoring.goToPosition(ElevatorPositions.getStowAlgae()))
+                    .andThen(scoring.goToPosition(ElevatorPositions.getL2Algae())))
+                .andThen(scoring.intakeCommand())
+                .andThen(
                     new FollowPathCommand(getChoreoTrajectory(THIRD_ALGAE_BACK_UP_OUTTAKE.getPathName(redOrBlue)), Suppliers.isRedAlliance, "BackUpWithAlgae", 0.5, false, false)
-                    .andThen(scoring.outtakeCoralCommand())
                 )
+                .andThen(scoring.outtakeCoralCommand())
             ):Commands.none(),
 
-            // coralCount > 2 ? ( // Intake a fourth coral if we scored the third
-            //     // Move from the reef to the human player station
-            //     new FollowPathCommand(getChoreoTrajectory(FOURTH_CORAL_INTAKE.getPathName(redOrBlue)), Suppliers.isRedAlliance, "FourthCoralIntakeChoreoPath", 0.5, false, false)
-            //     // While moving, stow (after waiting a moment to clear the reef)
-            //     .alongWith(new WaitCommand(1).andThen(scoring.goToSpecifiedPositionCommand(ElevatorPositions.getStow())))
-            //     // Once we're stowed and at the human player station, intake
-            //     .andThen(scoring.intakeUntilHasCoralCommand())
-            // ):Commands.none(), // If we didn't score a third coral, don't intake another one
+            coralCount > 3 ? ( // Intake a fourth coral if we scored the third
+                // Move from the reef to the human player station
+                new FollowPathCommand(getChoreoTrajectory(FOURTH_CORAL_INTAKE.getPathName(redOrBlue)), Suppliers.isRedAlliance, "FourthCoralIntakeChoreoPath", 0.5, false, false)
+                // While moving, stow (after waiting a moment to clear the reef)
+                .alongWith(new WaitCommand(1).andThen(scoring.goToSpecifiedPositionCommand(ElevatorPositions.getStow())))
+                // Once we're stowed and at the human player station, intake
+                .andThen(scoring.intakeUntilHasCoralCommand())
+            ):Commands.none(), // If we didn't score a third coral, don't intake another one
 
             coralCount > 3 ? ( // If we're scoring a fourth coral
                 ( // Move from our start position to the reef, cutting the path off in the middle to activate DTT
