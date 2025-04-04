@@ -82,7 +82,7 @@ public final class AutoManager {
 
         // autoCommands.add(new FourCoralBlueAuto());
         // autoCommands.add(new OneCoralBlueAuto());
-        // autoCommands.add(new OneCoralOneAlgaeMiddleAuto(Alliance.Red).withAutoName("OneCoralOneAlgaeRedAllianceAuto")); // TO DO: FIX THE AUTO
+        autoCommands.add(new OneCoralOneAlgaeMiddleAuto(Alliance.Red).withAutoName("OneCoralOneAlgaeRedAllianceAuto")); // TO DO: FIX THE AUTO
         autoCommands.add(new OneCoralOneAlgaeMiddleAuto(Alliance.Blue).withAutoName("OneCoralOneAlgaeBlueAllianceAuto"));
         // autoCommands.add(new ThreeCoralBlueAuto());
         // autoCommands.add(new TwoCoralBlueAuto());
