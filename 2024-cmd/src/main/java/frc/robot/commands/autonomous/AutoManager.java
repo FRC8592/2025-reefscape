@@ -7,6 +7,7 @@ package frc.robot.commands.autonomous;
 import java.util.ArrayList;
 import java.util.Set;
 
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
 import frc.robot.Suppliers;
 import frc.robot.commands.autonomous.autos.*;
-import frc.robot.commands.autonomous.autos.OmniCoralAuto.RedOrBlue;
+import frc.robot.commands.autonomous.autos.OmniCoralAuto.Barge;
 import frc.robot.commands.proxies.*;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.LEDs;
@@ -57,23 +58,33 @@ public final class AutoManager {
         // autoCommands.add(new ExampleAuto());
         // TODO: Add autos here
 
-        autoCommands.add(new AllAlgaeAuto());
-        autoCommands.add(new OmniCoralAuto(1, RedOrBlue.RED).withAutoName("OneCoralRedBargeAuto"));
-        autoCommands.add(new OmniCoralAuto(2, RedOrBlue.RED).withAutoName("TwoCoralRedBargeAuto"));
-        autoCommands.add(new OmniCoralAuto(3, RedOrBlue.RED).withAutoName("ThreeCoralRedBargeAuto"));
-        autoCommands.add(new OmniCoralAuto(4, RedOrBlue.RED).withAutoName("FourCoralRedBargeAuto"));
+        // autoCommands.add(new AllAlgaeAuto());
+        autoCommands.add(new OmniCoralAuto(1, Barge.RED, Alliance.Red).withAutoName("OneCoralRedBargeRedAllianceAuto"));
+        autoCommands.add(new OmniCoralAuto(2, Barge.RED, Alliance.Red).withAutoName("TwoCoralRedBargeRedAllianceAuto"));
+        autoCommands.add(new OmniCoralAuto(3, Barge.RED, Alliance.Red).withAutoName("ThreeCoralRedBargeRedAllianceAuto"));
+        autoCommands.add(new OmniCoralAuto(4, Barge.RED, Alliance.Red).withAutoName("FourCoralRedBargeRedAllianceAuto"));
 
-        autoCommands.add(new OmniCoralAuto(1, RedOrBlue.BLUE).withAutoName("OneCoralBlueBargeAuto"));
-        autoCommands.add(new OmniCoralAuto(2, RedOrBlue.BLUE).withAutoName("TwoCoralBlueBargeAuto"));
-        autoCommands.add(new OmniCoralAuto(3, RedOrBlue.BLUE).withAutoName("ThreeCoralBlueBargeAuto"));
-        autoCommands.add(new OmniCoralAuto(4, RedOrBlue.BLUE).withAutoName("FourCoralBlueBargeAuto"));
+        autoCommands.add(new OmniCoralAuto(1, Barge.BLUE, Alliance.Red).withAutoName("OneCoralBlueBargeRedAllianceAuto"));
+        autoCommands.add(new OmniCoralAuto(2, Barge.BLUE, Alliance.Red).withAutoName("TwoCoralBlueBargeRedAllianceAuto"));
+        autoCommands.add(new OmniCoralAuto(3, Barge.BLUE, Alliance.Red).withAutoName("ThreeCoralBlueBargeRedAllianceAuto"));
+        autoCommands.add(new OmniCoralAuto(4, Barge.BLUE, Alliance.Red).withAutoName("FourCoralBlueBargeRedAllianceAuto"));
+
+        autoCommands.add(new OmniCoralAuto(1, Barge.RED, Alliance.Blue).withAutoName("OneCoralRedBargeBlueAllianceAuto"));
+        autoCommands.add(new OmniCoralAuto(2, Barge.RED, Alliance.Blue).withAutoName("TwoCoralRedBargeBlueAllianceAuto"));
+        autoCommands.add(new OmniCoralAuto(3, Barge.RED, Alliance.Blue).withAutoName("ThreeCoralRedBargeBlueAllianceAuto"));
+        autoCommands.add(new OmniCoralAuto(4, Barge.RED, Alliance.Blue).withAutoName("FourCoralRedBargeBlueAllianceAuto"));
+
+        autoCommands.add(new OmniCoralAuto(1, Barge.BLUE, Alliance.Blue).withAutoName("OneCoralBlueBargeBlueAllianceAuto"));
+        autoCommands.add(new OmniCoralAuto(2, Barge.BLUE, Alliance.Blue).withAutoName("TwoCoralBlueBargeBlueAllianceAuto"));
+        autoCommands.add(new OmniCoralAuto(3, Barge.BLUE, Alliance.Blue).withAutoName("ThreeCoralBlueBargeBlueAllianceAuto"));
+        autoCommands.add(new OmniCoralAuto(4, Barge.BLUE, Alliance.Blue).withAutoName("FourCoralBlueBargeBlueAllianceAuto"));
 
         // autoCommands.add(new FourCoralBlueAuto());
         // autoCommands.add(new OneCoralBlueAuto());
         // //autoCommands.add(new OneCoralOneAlgaeMiddleAuto());
         // autoCommands.add(new ThreeCoralBlueAuto());
         // autoCommands.add(new TwoCoralBlueAuto());
-        autoCommands.add(new TestAuto());
+        // autoCommands.add(new TestAuto());
 
 
         autoChooser = new SendableChooser<>();

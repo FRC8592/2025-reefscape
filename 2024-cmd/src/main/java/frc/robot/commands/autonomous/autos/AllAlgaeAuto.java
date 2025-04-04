@@ -116,7 +116,7 @@ public class AllAlgaeAuto extends AutoCommand{
             // .andThen(new WaitCommand(0.75), scoring.outtakeCoralCommand().withTimeout(0.25))
         );
 
-        setStartStateFromChoreoTrajectory("LeftToCMid");
+        setStartStateFromChoreoTrajectory("MiddleToDLeft");
 
     }
 }
