@@ -87,8 +87,8 @@ public class RobotContainer {
     //private final Trigger LED_TEST = driverController.b();
 
     private final Trigger DEEP_CLIMB_INTAKE = driverController.b();
-    private final Trigger WINCH_UP = driverController.pov(0);
-    private final Trigger WINCH_DOWN = driverController.pov(180);
+    private final Trigger WINCH_UP = driverController.pov(0).or(driverController.pov(45)).or(driverController.pov(315));
+    private final Trigger WINCH_DOWN = driverController.pov(180).or(driverController.pov(225)).or(driverController.pov(135));
     private final Trigger DEEP_CLIMB_DEPLOY = driverController.pov(90);
 
     

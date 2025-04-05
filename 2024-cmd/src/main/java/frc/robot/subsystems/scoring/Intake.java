@@ -86,5 +86,6 @@ public class Intake extends SubsystemBase {
         // Logs whether the robot has a coral or not.
         SmartDashboard.putBoolean("Intake|HasCoral", robotHasCoral());
         Logger.recordOutput(INTAKE.LOG_PATH+"Intake|HasCoral", robotHasCoral());
+        Logger.recordOutput(INTAKE.LOG_PATH+"Intake|MotorSpeed",intakeMotor.getVelocityRPM());
     }
 }
