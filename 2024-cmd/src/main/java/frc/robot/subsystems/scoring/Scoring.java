@@ -56,7 +56,7 @@ public class Scoring extends SubsystemBase {
         // PERRY POSITIONS
         START_POSITION_PERRY(0, 0, 5, 0, 0),
 
-        L1_PERRY(3, 9.5, 100, -0.15, 0.75),
+        L1_PERRY(3, 9.5, 95, -0.09, 0.75),
         // L1_PERRY(13.3, 0, 107.8, 0, 0),
         // L2_PERRY(13.3, ARM.SAFE_ARM_TO_ROTATE_WRIST, 93.6, -0.15, 0.75),
         // L2_PERRY(13.3, 0, 93.6, -0.15, 0.75),
