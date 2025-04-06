@@ -24,15 +24,15 @@ public class OdometryUpdates extends SubsystemBase {
 
     private Swerve swerve;
     private Vision vision1;
-    private Vision vision2;
+    // private Vision vision2;
     private Pose2d initialPose;
     private static boolean useVision;
     private static LeftOrRight leftOrRight;
 
-    public OdometryUpdates(Swerve swerve, Vision vision1, Vision vision2) {
+    public OdometryUpdates(Swerve swerve, Vision vision1) {
         this.swerve = swerve;
         this.vision1 = vision1;
-        this.vision2 = vision2;
+        // this.vision2 = vision2;
     }
 
 

@@ -63,7 +63,7 @@ public class Scoring extends SubsystemBase {
 
         L2_PERRY(18.7, 9.5, 139, -0.25, 0.75), //might be a good L2!
 
-        L3_PERRY(0, 171, -219.5,-0.25, 0.75), //adjust wrist down from 200
+        L3_PERRY(0, 171, -214,-0.25, 0.75), //adjust wrist down from 200
 
         L4_PERRY(19.3, 171, -213.5, -0.33, 0.75), //arm adjusted from 165
 
@@ -73,7 +73,7 @@ public class Scoring extends SubsystemBase {
         STOW_PERRY(0, 13.3, -54, 0.5, 0.75),
         // STOW_WITH_CORAL_PERRY(0, 0, 20, 0.5, 0.75),
         L2_ALGAE_PERRY(16.8, 30, 99, 0.5, -0.75),
-        L3_ALGAE_PERRY(0, 141, 99, 0.5, -0.75),
+        L3_ALGAE_PERRY(0, 141, 85, 0.5, -0.75),
         PROCESSOR_PERRY(0, 32, 92.3, 0.3, 0.75),
         NET_PERRY(19.3, 165, 15, 1, -0.75),
         DEEP_CLIMB_PERRY(0, 45, -73, 15.50, 0),
