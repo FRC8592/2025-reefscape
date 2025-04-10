@@ -4,6 +4,13 @@
  "type":"Swerve",
  "variables":{
   "expressions":{
+   "BlueNet":{
+    "dimension":"Number",
+    "var":{
+     "exp":"0",
+     "val":0.0
+    }
+   },
    "MaxMechUp":{
     "dimension":"LinAcc",
     "var":{
@@ -21,8 +28,8 @@
    "maxVelo":{
     "dimension":"LinVel",
     "var":{
-     "exp":"4.5 m / s",
-     "val":4.5
+     "exp":"3.5 m / s",
+     "val":3.5
     }
    }
   },

@@ -18,7 +18,10 @@ public class OneCoralOneAlgaeMiddleAuto extends AutoCommand{
             new FollowPathCommand(getChoreoTrajectory("MiddleToDMiddle"), Suppliers.isRedAlliance, "")
             .andThen(scoring.intakeCommand().withTimeout(1)),
             new FollowPathCommand(getChoreoTrajectory("DAlgaeTo"+color.name()+"Net"), Suppliers.isRedAlliance, "")
-            .andThen(scoring.outtakeCoralCommand())                       
+            .andThen(scoring.outtakeCoralCommand()),
+            scoring.setCoralMode(),
+            new FollowPathCommand(getChoreoTrajectory(color.name()+"NetBackUp"), Suppliers.isRedAlliance, "")
+            .alongWith(scoring.goToPosition(ElevatorPositions.getStow()))           
         );
 
     }
