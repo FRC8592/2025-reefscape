@@ -148,7 +148,7 @@ public class OdometryUpdates extends SubsystemBase {
                 if(
                     vision.getTargets().size() > 1 || (
                         Math.abs(ambiguity) < Constants.NAVIGATION.MAX_ACCEPTABLE_AMBIGUITY
-                        && vision.getTargets().get(0).bestCameraToTarget.getX() < CORAL_ALIGN.REJECT_SINGLE_TAG_POSE_ESTIMATE_RANGE
+                        && vision.getTargets().size() > 0 && vision.getTargets().get(0).bestCameraToTarget.getX() < CORAL_ALIGN.REJECT_SINGLE_TAG_POSE_ESTIMATE_RANGE
                     )
                 ) {
                     if (DriverStation.isDisabled()){
