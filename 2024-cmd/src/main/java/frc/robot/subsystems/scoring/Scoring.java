@@ -148,7 +148,7 @@ public class Scoring extends SubsystemBase {
     * @return Returns a command that sets the target position to the current position.
     */
     public Command goToPosition(ElevatorPositions position){
-        return this.runOnce(() -> {
+        return Commands.runOnce(() -> {
             scoringTargetPosition = position;
         });
     }
