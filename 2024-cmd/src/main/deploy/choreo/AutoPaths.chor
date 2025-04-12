@@ -14,8 +14,8 @@
    "MaxMechUp":{
     "dimension":"LinAcc",
     "var":{
-     "exp":"2.5 m / s ^ 2",
-     "val":2.5
+     "exp":"1.5 m / s ^ 2",
+     "val":1.5
     }
    },
    "maxAccel":{
@@ -28,8 +28,8 @@
    "maxVelo":{
     "dimension":"LinVel",
     "var":{
-     "exp":"3.5 m / s",
-     "val":3.5
+     "exp":"1.5 m / s",
+     "val":1.5
     }
    }
   },
