@@ -11,17 +11,26 @@ public class OneCoralOneAlgaeMiddleAuto extends AutoCommand{
         super(
             new FollowPathCommand(getChoreoTrajectory("MiddleToDRight"+color.name()), Suppliers.isRedAlliance, "")
             .alongWith(scoring.goToPosition(ElevatorPositions.getL4()))
-            .andThen(scoring.outtakeCoralCommand().withTimeout(1)),
+            .andThen(scoring.intakeCommand().withTimeout(0.2)),
             scoring.setAlgaeMode(),
             new FollowPathCommand(getChoreoTrajectory("DRightToMiddle"+color.name()), Suppliers.isRedAlliance, "")
-            .alongWith(scoring.goToPosition(ElevatorPositions.getL2Algae())),
+            .andThen(scoring.goToPosition(ElevatorPositions.getL2Algae())),
             new FollowPathCommand(getChoreoTrajectory("MiddleToDMiddle"), Suppliers.isRedAlliance, "")
             .andThen(scoring.intakeCommand().withTimeout(1)),
             new FollowPathCommand(getChoreoTrajectory("DAlgaeTo"+color.name()+"Net"), Suppliers.isRedAlliance, "")
-            .andThen(scoring.outtakeCoralCommand()),
-            scoring.setCoralMode(),
+            .andThen(scoring.goToPosition(ElevatorPositions.getNet()))
+            .andThen(scoring.intakeCommand().withTimeout(1))
+            .andThen(scoring.setCoralMode())
+            .andThen(scoring.goToPosition(ElevatorPositions.getStow())), 
             new FollowPathCommand(getChoreoTrajectory(color.name()+"NetBackUp"), Suppliers.isRedAlliance, "")
-            .alongWith(scoring.goToPosition(ElevatorPositions.getStow()))           
+            // .andThen(scoring.goToPosition(ElevatorPositions.getL3Algae())),
+            // new FollowPathCommand(getChoreoTrajectory("DAlgaeTo"+color.name()+"Net"), Suppliers.isRedAlliance, "")
+            // .andThen(scoring.goToPosition(ElevatorPositions.getNet()))
+            // .andThen(scoring.outtakeCoralCommand().withTimeout(1))
+            // .andThen(scoring.setCoralMode())
+            // .andThen(scoring.goToPosition(ElevatorPositions.getStow()).withTimeout(1)),
+            // new FollowPathCommand(getChoreoTrajectory(color.name()+"NetBackUp"), Suppliers.isRedAlliance, "")
+            // .alongWith(scoring.goToPosition(ElevatorPositions.getStow()))           
         );
 
     }

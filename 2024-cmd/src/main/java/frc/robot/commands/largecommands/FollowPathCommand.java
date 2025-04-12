@@ -215,11 +215,12 @@ public class FollowPathCommand extends LargeCommand{
             (
                 timer.hasElapsed(trajectory.getTotalTimeSeconds())
                 && (
-                    secondsPastPathEndTolerated != -1 || (
-                        (drivePID.atReference() || !Robot.isReal())
-                        && !useAlternateRotation.getAsBoolean()
-                        && !useAlternateTranslation.getAsBoolean()
-                    )
+                    (drivePID.atReference() || !Robot.isReal())
+                    // secondsPastPathEndTolerated != -1 || (
+                    //     (drivePID.atReference() || !Robot.isReal())
+                    //     && !useAlternateRotation.getAsBoolean()
+                    //     && !useAlternateTranslation.getAsBoolean()
+                  // )
                 )
             )
         );

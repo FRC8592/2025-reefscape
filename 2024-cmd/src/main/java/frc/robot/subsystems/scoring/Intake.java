@@ -85,7 +85,7 @@ public class Intake extends SubsystemBase {
     public void periodic() {
         // Logs whether the robot has a coral or not.
         SmartDashboard.putBoolean("Intake|HasCoral", robotHasCoral());
-        SmartDashboard.putString("Intake|CoralDistance", intakeSensor.getMeasurement().toString());
+       // SmartDashboard.putString("Intake|CoralDistance", intakeSensor.getMeasurement().toString());
         Logger.recordOutput(INTAKE.LOG_PATH+"Intake|HasCoral", robotHasCoral());
         Logger.recordOutput(INTAKE.LOG_PATH+"Intake|MotorSpeed",intakeMotor.getVelocityRPM());
     }

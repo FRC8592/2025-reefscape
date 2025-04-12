@@ -85,8 +85,8 @@ public final class AutoManager {
         autoCommands.add(new OneCoralOneAlgaeMiddleAuto(Alliance.Red).withAutoName("RedA_OneCoralOneAlgae")); // TO DO: FIX THE AUTO
         autoCommands.add(new OneCoralOneAlgaeMiddleAuto(Alliance.Blue).withAutoName("BlueA_OneCoralOneAlgae"));
 
-        autoCommands.add(new OneCoralTwoAlgaeAuto(Alliance.Red).withAutoName("RedA_OneCoralTwoAlgae"));
-        autoCommands.add(new OneCoralTwoAlgaeAuto(Alliance.Blue).withAutoName("BlueA_OneCoralTwoAlgae"));
+        autoCommands.add(new OneCoralTwoAlgaeRedAuto(Alliance.Red).withAutoName("RedA_OneCoralTwoAlgae"));
+        autoCommands.add(new OneCoralTwoAlgaeRedAuto(Alliance.Blue).withAutoName("BlueA_OneCoralTwoAlgae"));
         // autoCommands.add(new ThreeCoralBlueAuto());
         // autoCommands.add(new TwoCoralBlueAuto());
         // autoCommands.add(new TestAuto());
