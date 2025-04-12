@@ -198,7 +198,7 @@ public class RobotContainer {
     private void configureBindings() {
 
         ENABLED.onTrue(
-            scoring.goToPosition(ElevatorPositions.stopped()).andThen(scoring.stopAllCommand()).andThen(deepclimb.setDeepClimbCommand(0))
+            scoring.goToPosition(ElevatorPositions.stopped()).andThen(scoring.stopAllCommand()).andThen(deepclimb.stopDeepClimbCommand())
         );
 
         //------------------------------ SWERVE COMMANDS ------------------------------//
@@ -314,28 +314,21 @@ public class RobotContainer {
 
         //LED_TEST.onTrue(setLEDsCommand(LEDS.TEAL)).onFalse(setLEDsCommand(LEDS.OFF));
 
-        DEEP_CLIMB_INTAKE.whileTrue(deepclimb.setDeepClimbIntakeCommand(-1));
+        DEEP_CLIMB_INTAKE.whileTrue(deepclimb.runDeepClimbIntakeCommand()).onFalse(deepclimb.stopDeepClimbIntakeCommand());
+
+        WINCH_UP.whileTrue(
+            deepclimb.deployDeepClimbCommand()
+        ).onFalse(deepclimb.stopDeepClimbCommand());
+        
+        WINCH_DOWN.whileTrue(
+            deepclimb.liftDeepClimbCommand()
+        ).onFalse(deepclimb.stopDeepClimbCommand());
 
         DEEP_CLIMB_DEPLOY.onTrue(
             scoring.goToPosition(ElevatorPositions.getDeepClimb()).andThen(
-                deepclimb.setDeepClimbGrabPositionCommand()
+                deepclimb.autoDeployDeepClimbCommand()
             )
-        );//.onFalse(deepclimb.setDeepClimbIntakeCommand(0));
-
-        WINCH_UP.whileTrue(
-            deepclimb.setDeepClimbCommand(-1)
-            //  .onlyIf(
-            //      () -> scoring.isAtPosition(ElevatorPositions.getDeepClimb())
-            //  )
-        ).onFalse(deepclimb.setDeepClimbCommand(0));
-        
-        WINCH_DOWN.whileTrue(
-            deepclimb.setDeepClimbCommand(1)
-            // .onlyIf(
-            //     () 
-            //     -> scoring.isAtPosition(ElevatorPositions.getDeepClimb())
-            // )
-        ).onFalse(deepclimb.setDeepClimbCommand(0));
+        );
 
         GROUND_ALGAE_PERRY.onTrue(
             scoring.setUserPosition(ElevatorPositions.getGroundAlgae())
