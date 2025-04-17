@@ -20,7 +20,7 @@
   "waypoints":[
     {"x":{"exp":"DMid.x", "val":5.819617748260498}, "y":{"exp":"DMid.y", "val":4.037066459655762}, "heading":{"exp":"180 deg", "val":3.141592653589793}, "intervals":14, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
     {"x":{"exp":"6.121253967285156 m", "val":6.121253967285156}, "y":{"exp":"4.04509973526001 m", "val":4.04509973526001}, "heading":{"exp":"180 deg", "val":3.141592653589793}, "intervals":52, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
-    {"x":{"exp":"7.811255931854248 m", "val":7.811255931854248}, "y":{"exp":"2.801161289215088 m", "val":2.801161289215088}, "heading":{"exp":"-0.2662525830928101 rad", "val":-0.2662525830928101}, "intervals":34, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false}],
+    {"x":{"exp":"RedNet.x", "val":7.811255931854248}, "y":{"exp":"RedNet.y", "val":2.801161289215088}, "heading":{"exp":"RedNet.heading", "val":-0.2662525830928101}, "intervals":34, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false}],
   "constraints":[
     {"from":"first", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true},
     {"from":"last", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true},
