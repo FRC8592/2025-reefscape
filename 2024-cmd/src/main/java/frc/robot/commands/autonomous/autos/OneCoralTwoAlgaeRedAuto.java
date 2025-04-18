@@ -21,7 +21,7 @@ public class OneCoralTwoAlgaeRedAuto extends AutoCommand{
             scoring.setAlgaeMode(),
 
             new FollowPathCommand(getChoreoTrajectory("DRightToMiddle"+color.name()), Suppliers.isRedAlliance, "")
-            .alongWith(new WaitCommand(0.5).andThen(scoring.goToPosition(ElevatorPositions.getL2Algae()))),
+           .andThen(scoring.goToPosition(ElevatorPositions.getL2Algae())),
 
             new FollowPathCommand(getChoreoTrajectory("MiddleToDMiddle"), Suppliers.isRedAlliance, "")
             .andThen(scoring.intakeCommand().withTimeout(0.5)),
@@ -44,7 +44,7 @@ public class OneCoralTwoAlgaeRedAuto extends AutoCommand{
                     : (new FollowPathCommand(getChoreoTrajectory("BlueNetToEAlgae"), Suppliers.isRedAlliance, "").alongWith(new WaitCommand(0.5).andThen(scoring.goToPosition(ElevatorPositions.getL3Algae()))).andThen(scoring.intakeCommand().withTimeout(0.5)))
                 ),
                 Set.of(swerve)
-                
+
             ),
 
             Commands.defer(
