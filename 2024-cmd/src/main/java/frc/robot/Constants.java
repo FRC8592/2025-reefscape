@@ -40,6 +40,7 @@ public final class Constants {
     }
 
     public final class CORAL_ALIGN {
+        public static final String LOG_PATH = SHARED.LOG_FOLDER+"ScoreCoral";
         public static final double OFFSET_DEPTH = 0.40; // Drivers requested for the robot to be as close to the april tag as possible
         public static final double OFFSET_LEFT_METERS = -0.137;
         public static final double OFFSET_RIGHT_METERS = 0.213; 
@@ -52,14 +53,12 @@ public final class Constants {
         public static final Transform3d CAMERA_OFFSETS = (
             SHARED.IS_RIPTIDE
             ? /* RIPRIDE: */ new Transform3d(new Translation3d(0.21, 0.215, 0.17), new Rotation3d(0, Math.toRadians(-12), 0))
-            : /* PERRY: */   new Transform3d(new Translation3d(0.17145, 0.20955, 0.2286), new Rotation3d(0, Math.toRadians(-12), 0))
-        );
-        public static final Transform3d CAMERA_2_OFFSETS = (
-            new Transform3d(new Translation3d(0.215, -0.32, 0.24), new Rotation3d(0, Math.toRadians(-12), Math.toRadians(5)))
+            : /* PERRY: */   new Transform3d(new Translation3d(0.17145, 0.20955, 0.2286), new Rotation3d(0, Math.toRadians(-12), Math.toRadians(-2)))
         );
 
+
         public static final String CAMERA_NAME = (
-            "Arducam_OV9782_D"
+            "Arducam_OV9782_D" 
         );
         public static final String CAMERA_2_NAME = (
             "Arducam_OV9782_B"

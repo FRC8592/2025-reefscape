@@ -64,7 +64,7 @@ public class OmniCoralAuto extends AutoCommand{
                         getChoreoTrajectory(FIRST_CORAL_SCORE.getPathName(redOrBlue, color)),//, 0),
                         Suppliers.isRedAlliance,
                         "FirstCoralScoreChoreoPath",
-                        0.6,
+                        0.5,
                         false,
                         true
                     )
@@ -92,7 +92,7 @@ public class OmniCoralAuto extends AutoCommand{
                         getChoreoTrajectory(SECOND_CORAL_SCORE.getPathName(redOrBlue, color)),//, 0),
                         Suppliers.isRedAlliance,
                         "SecondCoralScoreChoreoPath",
-                        0.6,
+                        0.5,
                         false,
                         true
                     )
@@ -120,7 +120,7 @@ public class OmniCoralAuto extends AutoCommand{
                         getChoreoTrajectory(THIRD_CORAL_SCORE.getPathName(redOrBlue, color)),//, 0),
                         Suppliers.isRedAlliance,
                         "ThirdCoralScoreChoreoPath",
-                        0.6,
+                        0.5,
                         false,
                         true
                     )
@@ -148,7 +148,7 @@ public class OmniCoralAuto extends AutoCommand{
                         getChoreoTrajectory(FOURTH_CORAL_SCORE.getPathName(redOrBlue, color)),//, 0),
                         Suppliers.isRedAlliance,
                         "FourthCoralScoreChoreoPath",
-                        0.6,
+                        0.5,
                         false,
                         true
                     )

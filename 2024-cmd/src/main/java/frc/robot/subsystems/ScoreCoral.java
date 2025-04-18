@@ -62,7 +62,9 @@ public class ScoreCoral extends SubsystemBase {
     }
 
     public void periodic() {
-        
+        Pose2d closestTagPos = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField().getTagPose(getClosestTag(CORAL_ALIGN.RED_REEF_TAGS)).get().toPose2d();
+        Pose2d robotPose = swerve.getCurrentPosition();
+        Logger.recordOutput(CORAL_ALIGN.LOG_PATH+"DistanceToNearestTag", Math.sqrt(Math.pow(closestTagPos.getX()-robotPose.getX(), 2) + Math.pow(closestTagPos.getY()-robotPose.getY(), 2)));
     }
 
     public void simulationPeriodic() {
