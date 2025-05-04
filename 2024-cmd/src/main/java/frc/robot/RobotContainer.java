@@ -305,12 +305,12 @@ public class RobotContainer {
         SCORE.whileTrue(new DeferredCommand(() -> scoring.outtakeCoralCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
         // SCORE_ALGAE.whileTrue(new DeferredCommand(() -> scoring.outtakeAlgaeCommand(), Set.of(scoring))).onFalse(intake.stopIntakeCommand());
 
-        ALIGN_TO_REEF.whileTrue(
-            new DeferredCommand(
-                () -> scoreCoral.driveToClosestReefTag(),
-                Set.of(swerve)
-            ) 
-        );
+        // ALIGN_TO_REEF.whileTrue(
+        //     new DeferredCommand(
+        //         () -> scoreCoral.driveToClosestReefTag(),
+        //         Set.of(swerve)
+        //     ) 
+        // );
 
         //LED_TEST.onTrue(setLEDsCommand(LEDS.TEAL)).onFalse(setLEDsCommand(LEDS.OFF));
 
