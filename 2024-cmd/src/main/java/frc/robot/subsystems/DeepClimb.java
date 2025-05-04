@@ -40,11 +40,11 @@ public class DeepClimb extends SubsystemBase {
     }
 
     public void deployDeepClimb(){
-        deepClimbMotor.setPercentOutput(-1);
+     //   deepClimbMotor.setPercentOutput(-1);
     }
 
     public void liftDeepClimb(){
-        deepClimbMotor.setPercentOutput(1);
+     //   deepClimbMotor.setPercentOutput(1);
     }
 
     public void stopDeepClimb() {
@@ -52,7 +52,7 @@ public class DeepClimb extends SubsystemBase {
     }
 
     public void runIntake(){
-        deepClimbIntakeMotor.setPercentOutput(-1);
+     //   deepClimbIntakeMotor.setPercentOutput(-1);
     }
 
     public void stopIntake() {
