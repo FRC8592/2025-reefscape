@@ -82,7 +82,7 @@ public class RobotContainer {
 
     private final Trigger STOW = driverController.x();
     private final Trigger GO_TO_POSITION = driverController.a();
-    private final Trigger ALIGN_TO_REEF = driverController.leftBumper();
+    //private final Trigger ALIGN_TO_REEF = driverController.leftBumper();
 
     //private final Trigger LED_TEST = driverController.b();
 
