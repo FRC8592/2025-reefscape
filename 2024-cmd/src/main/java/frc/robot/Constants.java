@@ -116,7 +116,7 @@ public final class Constants {
         public static final double DRIVE_FRICTION_VOLTAGE = 0.25;
 
         //TODO: Tone these down appropriately as per BB rules
-        public static final double TRANSLATE_POWER_FAST = 0.15; 
+        public static final double TRANSLATE_POWER_FAST = 0.25; 
         public static final double ROTATE_POWER_FAST = 0.15; 
         public static final double TRANSLATE_POWER_SLOW = 0.05;
         public static final double ROTATE_POWER_SLOW = 0.05;
@@ -207,10 +207,10 @@ public final class Constants {
 
         public static final double CLOCK_ARM_POSITION_TOLERANCE = 2.0;
 
-        public static final int ARM_CURRENT_LIMIT = 20;//amps
+        public static final int ARM_CURRENT_LIMIT = 15;//amps
 
         public static final double ARM_MAX_ACCELERATION = 250;
-        public static final double ARM_MAX_VELOCITY = 15; //previously 100
+        public static final double ARM_MAX_VELOCITY = 20; //previously 100
 
         public static final double ARM_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */3;
         public static final double ARM_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
@@ -233,7 +233,7 @@ public final class Constants {
         public static final int WRIST_CURRENT_LIMIT = 15;//amps
 
         public static final double WRIST_MAX_ACCELERATION = 400;
-        public static final double WRIST_MAX_VELOCITY = 15; //used to be 100
+        public static final double WRIST_MAX_VELOCITY = 20; //used to be 100
 
         public static final double WRIST_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */3;
         public static final double WRIST_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;

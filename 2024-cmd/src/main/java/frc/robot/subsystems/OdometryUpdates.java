@@ -153,9 +153,9 @@ public class OdometryUpdates extends SubsystemBase {
                 ) {
                     if (DriverStation.isDisabled() && !robotPosition.equals(new Pose2d())){
                         initialPose = robotPosition;
-                        swerve.resetPose(initialPose);
+                        // swerve.resetPose(initialPose);
                     } else {
-                        swerve.addVisionMeasurement(robotPosition, timeStamp);
+                        // swerve.addVisionMeasurement(robotPosition, timeStamp);
                     }
                 }
     
