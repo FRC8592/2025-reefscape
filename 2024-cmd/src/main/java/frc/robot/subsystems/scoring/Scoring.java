@@ -256,6 +256,12 @@ public class Scoring extends SubsystemBase {
     // Implment safety features to preven these mechanisms from doing damage to the robot
     //
     public void periodic () {
+        isCoralMode = false;
+        if(atPosition(ElevatorPositions.NET_PERRY)){
+            LEDs.setRainbow(true);
+        }else{
+            LEDs.setRainbow(false);
+        }
         if(scoringTargetPosition != ElevatorPositions.STOP){
             // Get the commanded position for each mechanism
             double targetElevatorPosition = scoringTargetPosition.elevatorPos;
