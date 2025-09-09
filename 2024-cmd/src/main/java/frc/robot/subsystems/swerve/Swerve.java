@@ -12,13 +12,31 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import java.util.Map;
+
 import org.littletonrobotics.junction.Logger;
 
 import frc.robot.*;
 import frc.robot.helpers.*;
+import frc.robot.subsystems.swerve.Swerve.DriveModes;
 import frc.robot.Constants.*;
 
 public class Swerve extends SubsystemBase {
+
+    //Creates the widget for manually adjusting speed via a slider on Shuffleboard
+    private final GenericEntry speedScaleEntry = 
+        Shuffleboard.getTab("Swerve")
+            .add("Speed Scale", 1.0)
+            .withWidget(BuiltInWidgets.kNumberSlider)
+            .withProperties(Map.of("min", 0.1, "max", 1.0))
+            .getEntry();
+
+
+    //Accessor for the speed scale on the slider
+    public double getSpeedScale(){
+        return speedScaleEntry.getDouble(0.5); //fallback constant is 0.5
+    }
+
     /**
      * Small enum to control whether to drive robot- or field-
      * relative for {@link Swerve#drive(ChassisSpeeds, DriveModes)}
@@ -294,6 +312,8 @@ public class Swerve extends SubsystemBase {
 
         ChassisSpeeds currentSpeeds;
 
+        double speedScale = getSpeedScale(); //read slider value
+
         if (isSlowMode) {
             currentSpeeds = smoothingFilter.smooth(new ChassisSpeeds(
                 driveTranslateY * SWERVE.TRANSLATE_POWER_SLOW * SWERVE.MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND,
@@ -303,9 +323,9 @@ public class Swerve extends SubsystemBase {
         }
         else {
             currentSpeeds = smoothingFilter.smooth(new ChassisSpeeds(
-                driveTranslateY * SWERVE.TRANSLATE_POWER_FAST * SWERVE.MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND,
-                driveTranslateX * SWERVE.TRANSLATE_POWER_FAST * SWERVE.MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND,
-                driveRotate * SWERVE.ROTATE_POWER_FAST * SWERVE.MAX_ROTATIONAL_VELOCITY_RADIANS_PER_SECOND
+                driveTranslateY * SWERVE.TRANSLATE_POWER_FAST * SWERVE.MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND * speedScale,
+                driveTranslateX * SWERVE.TRANSLATE_POWER_FAST * SWERVE.MAX_TRANSLATIONAL_VELOCITY_METERS_PER_SECOND * speedScale,
+                driveRotate * SWERVE.ROTATE_POWER_FAST * SWERVE.MAX_ROTATIONAL_VELOCITY_RADIANS_PER_SECOND * speedScale
             ));
         }
 
