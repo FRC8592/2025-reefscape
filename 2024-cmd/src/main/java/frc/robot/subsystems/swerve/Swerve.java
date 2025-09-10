@@ -27,18 +27,7 @@ import frc.robot.Constants.*;
 public class Swerve extends SubsystemBase {
 
     //Creates the widget for manually adjusting speed via a slider on Shuffleboard
-    private final GenericEntry speedScaleEntry = 
-        Shuffleboard.getTab("Swerve")
-            .add("Speed Scale", 1.0)
-            .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", 0.1, "max", 1.0))
-            .getEntry();
-
-
-    //Accessor for the speed scale on the slider
-    public double getSpeedScale(){
-        return speedScaleEntry.getDouble(0.5); //fallback constant is 0.5
-    }
+    private final GenericEntry speedScaleEntry;
 
     /**
      * Small enum to control whether to drive robot- or field-
@@ -107,6 +96,18 @@ public class Swerve extends SubsystemBase {
             // Logger.recordOutput(SWERVE.LOG_PATH+"Modules/BackRight/SteerTargetAngle", moduleTargets[3].angle);
         }
         );
+
+        speedScaleEntry = 
+        Shuffleboard.getTab("Swerve")
+            .add("Speed Scale", 1.0)
+            .withWidget(BuiltInWidgets.kNumberSlider)
+            .withProperties(Map.of("min", 0.1, "max", 1.0))
+            .getEntry();
+    }
+
+    //Accessor for the speed scale on the slider
+    public double getSpeedScale(){
+        return speedScaleEntry.getDouble(0.5); //fallback constant is 0.5
     }
 
     @Override
