@@ -107,7 +107,7 @@ public class Swerve extends SubsystemBase {
 
     //Accessor for the speed scale on the slider
     public double getSpeedScale(){
-        return speedScaleEntry.getDouble(0.3); //fallback constant is 0.5
+        return speedScaleEntry.getDouble(0.5); 
     }
 
     @Override
