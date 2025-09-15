@@ -99,9 +99,9 @@ public class Swerve extends SubsystemBase {
 
         speedScaleEntry = 
         Shuffleboard.getTab("Swerve")
-            .add("Speed Scale", 1.0)
+            .add("Speed Scale", 0.5)
             .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", 0.1, "max", 0.4))
+            .withProperties(Map.of("min", 0.1, "max", 0.7))
             .getEntry();
     }
 
