@@ -180,7 +180,7 @@ public final class Constants {
         public static final int ELEVATOR_CURRENT_LIMIT = 40;//amps
 
         public static final double ELEVATOR_MAX_ACCELERATION = 175; //formerly 250
-        public static final double ELEVATOR_MAX_VELOCITY = 75; //formerly 100
+        public static final double ELEVATOR_MAX_VELOCITY = 75 ; //formerly 100
 
         public static final double ELEVATOR_POSITION_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3.5: /*PERRY: */3.5;
         public static final double ELEVATOR_POSITION_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
@@ -209,8 +209,8 @@ public final class Constants {
 
         public static final int ARM_CURRENT_LIMIT = 40;//amps
 
-        public static final double ARM_MAX_ACCELERATION = 175; //previously 250
-        public static final double ARM_MAX_VELOCITY = 75; //previously 100
+        public static final double ARM_MAX_ACCELERATION = 150; //previously 250
+        public static final double ARM_MAX_VELOCITY = 60; //previously 100
 
         public static final double ARM_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */3;
         public static final double ARM_I = SHARED.IS_RIPTIDE? /*RIPTIDE: */0: /*PERRY: */0;
@@ -232,7 +232,7 @@ public final class Constants {
 
         public static final int WRIST_CURRENT_LIMIT = 60;//amps
 
-        public static final double WRIST_MAX_ACCELERATION = 250; //used to be 400
+        public static final double WRIST_MAX_ACCELERATION = 225; //used to be 400
         public static final double WRIST_MAX_VELOCITY = 75; //used to be 100
 
         public static final double WRIST_P = SHARED.IS_RIPTIDE? /*RIPTIDE: */3: /*PERRY: */3;
