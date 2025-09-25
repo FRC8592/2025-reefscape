@@ -18,8 +18,10 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
 import frc.robot.Suppliers;
-import frc.robot.commands.autonomous.autos.*;
-import frc.robot.commands.autonomous.autos.OmniCoralAuto.Barge;
+import frc.robot.commands.autonomous.autos.TestAuto;
+import frc.robot.commands.autonomous.autos.TwoCoralBlueAuto;
+// import frc.robot.commands.autonomous.autos.*;
+// import frc.robot.commands.autonomous.autos.OmniCoralAuto.Barge;
 import frc.robot.commands.proxies.*;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.LEDs;
@@ -62,34 +64,34 @@ public final class AutoManager {
         // autoCommands.add(new OmniCoralAuto(1, Barge.RED, Alliance.Red).withAutoName("OneCoralRedBargeRedAllianceAuto"));
         // autoCommands.add(new OmniCoralAuto(2, Barge.RED, Alliance.Red).withAutoName("TwoCoralRedBargeRedAllianceAuto"));
         // autoCommands.add(new OmniCoralAuto(3, Barge.RED, Alliance.Red).withAutoName("ThreeCoralRedBargeRedAllianceAuto"));
-        autoCommands.add(new OmniCoralAuto(4, Barge.RED, Alliance.Red).withAutoName("RedA_RedB_FourCoral"));
+        // autoCommands.add(new OmniCoralAuto(4, Barge.RED, Alliance.Red).withAutoName("RedA_RedB_FourCoral"));
 
         // autoCommands.add(new OmniCoralAuto(1, Barge.BLUE, Alliance.Red).withAutoName("OneCoralBlueBargeRedAllianceAuto"));
         // autoCommands.add(new OmniCoralAuto(2, Barge.BLUE, Alliance.Red).withAutoName("TwoCoralBlueBargeRedAllianceAuto"));
         // autoCommands.add(new OmniCoralAuto(3, Barge.BLUE, Alliance.Red).withAutoName("ThreeCoralBlueBargeRedAllianceAuto"));
         
-        autoCommands.add(new OmniCoralAuto(4, Barge.BLUE, Alliance.Red).withAutoName("RedA_BlueB_FourCoral"));
+        // autoCommands.add(new OmniCoralAuto(4, Barge.BLUE, Alliance.Red).withAutoName("RedA_BlueB_FourCoral"));
 
         // autoCommands.add(new OmniCoralAuto(1, Barge.RED, Alliance.Blue).withAutoName("OneCoralRedBargeBlueAllianceAuto"));
         // autoCommands.add(new OmniCoralAuto(2, Barge.RED, Alliance.Blue).withAutoName("TwoCoralRedBargeBlueAllianceAuto"));
         // autoCommands.add(new OmniCoralAuto(3, Barge.RED, Alliance.Blue).withAutoName("ThreeCoralRedBargeBlueAllianceAuto"));
-        autoCommands.add(new OmniCoralAuto(4, Barge.RED, Alliance.Blue).withAutoName("BlueA_RedB_FourCoral"));
+        // autoCommands.add(new OmniCoralAuto(4, Barge.RED, Alliance.Blue).withAutoName("BlueA_RedB_FourCoral"));
 
         // autoCommands.add(new OmniCoralAuto(1, Barge.BLUE, Alliance.Blue).withAutoName("OneCoralBlueBargeBlueAllianceAuto"));
         // autoCommands.add(new OmniCoralAuto(2, Barge.BLUE, Alliance.Blue).withAutoName("TwoCoralBlueBargeBlueAllianceAuto"));
         // autoCommands.add(new OmniCoralAuto(3, Barge.BLUE, Alliance.Blue).withAutoName("ThreeCoralBlueBargeBlueAllianceAuto"));
-        autoCommands.add(new OmniCoralAuto(4, Barge.BLUE, Alliance.Blue).withAutoName("BlueA_BlueB_FourCoral"));
+        // autoCommands.add(new OmniCoralAuto(4, Barge.BLUE, Alliance.Blue).withAutoName("BlueA_BlueB_FourCoral"));
 
         // autoCommands.add(new FourCoralBlueAuto());
         // autoCommands.add(new OneCoralBlueAuto());
-        autoCommands.add(new OneCoralOneAlgaeMiddleAuto(Alliance.Red).withAutoName("RedA_OneCoralOneAlgae")); // TO DO: FIX THE AUTO
-        autoCommands.add(new OneCoralOneAlgaeMiddleAuto(Alliance.Blue).withAutoName("BlueA_OneCoralOneAlgae"));
+        // autoCommands.add(new OneCoralOneAlgaeMiddleAuto(Alliance.Red).withAutoName("RedA_OneCoralOneAlgae")); // TO DO: FIX THE AUTO
+        // autoCommands.add(new OneCoralOneAlgaeMiddleAuto(Alliance.Blue).withAutoName("BlueA_OneCoralOneAlgae"));
 
-        autoCommands.add(new OneCoralTwoAlgaeRedAuto(Alliance.Red).withAutoName("RedA_OneCoralTwoAlgae"));
-        autoCommands.add(new OneCoralTwoAlgaeRedAuto(Alliance.Blue).withAutoName("BlueA_OneCoralTwoAlgae"));
+        // autoCommands.add(new OneCoralTwoAlgaeRedAuto(Alliance.Red).withAutoName("RedA_OneCoralTwoAlgae"));
+        // autoCommands.add(new OneCoralTwoAlgaeRedAuto(Alliance.Blue).withAutoName("BlueA_OneCoralTwoAlgae"));
         // autoCommands.add(new ThreeCoralBlueAuto());
-        // autoCommands.add(new TwoCoralBlueAuto());
-        // autoCommands.add(new TestAuto());
+        //autoCommands.add(new TwoCoralBlueAuto());
+        autoCommands.add(new TestAuto());
 
 
         autoChooser = new SendableChooser<>();
@@ -109,12 +111,12 @@ public final class AutoManager {
      * @return the command
      */
     public static Command getAutonomousCommand(){
-        AutoCommand autoCommand = autoChooser.getSelected();
+        //AutoCommand autoCommand = autoChooser.getSelected();
         return getAutonomousInitCommand().andThen(
             // If we don't keep this command from registering as composed,
             // the code will crash if we try to run an auto twice without
             // restarting robot code.
-            new MultiComposableCommand(autoCommand)
+            new MultiComposableCommand(new TestAuto())
         );
     }
 

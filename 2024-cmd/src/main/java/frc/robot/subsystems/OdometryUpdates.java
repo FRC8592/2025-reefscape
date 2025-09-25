@@ -137,31 +137,31 @@ public class OdometryUpdates extends SubsystemBase {
             double ambiguity = -1d;
             double timeStamp = 0.0;
     
-            Optional<EstimatedRobotPose> robotPose = vision.getRobotPoseVision();
+            // Optional<EstimatedRobotPose> robotPose = vision.getRobotPoseVision();
             
-            if (robotPose.isPresent()) {
-                robotPosition = robotPose.get().estimatedPose.toPose2d();
-                ambiguity = vision.getPoseAmbiguityRatio();
-                timeStamp = robotPose.get().timestampSeconds;
+            // // if (robotPose.isPresent()) {
+            //     robotPosition = robotPose.get().estimatedPose.toPose2d();
+            //     ambiguity = vision.getPoseAmbiguityRatio();
+            //     timeStamp = robotPose.get().timestampSeconds;
     
-                //if(Math.abs(ambiguity) < 0.2 && vision.getTargets().size() > 1) {
-                if(
-                    vision.getTargets().size() > 1 || (
-                        Math.abs(ambiguity) < Constants.NAVIGATION.MAX_ACCEPTABLE_AMBIGUITY
-                        && vision.getTargets().size() > 0 && vision.getTargets().get(0).bestCameraToTarget.getX() < CORAL_ALIGN.REJECT_SINGLE_TAG_POSE_ESTIMATE_RANGE
-                    )
-                ) {
-                    if (DriverStation.isDisabled() && !robotPosition.equals(new Pose2d())){
-                        initialPose = robotPosition;
-                        swerve.resetPose(initialPose);
-                    } else {
-                        swerve.addVisionMeasurement(robotPosition, timeStamp);
-                    }
-                }
+            //     //if(Math.abs(ambiguity) < 0.2 && vision.getTargets().size() > 1) {
+            //     // if(
+            //     //     vision.getTargets().size() > 1 || (
+            //     //         Math.abs(ambiguity) < Constants.NAVIGATION.MAX_ACCEPTABLE_AMBIGUITY
+            //     //         && vision.getTargets().size() > 0 && vision.getTargets().get(0).bestCameraToTarget.getX() < CORAL_ALIGN.REJECT_SINGLE_TAG_POSE_ESTIMATE_RANGE
+            //     //     )
+            //     // ) {
+            //     //     if (DriverStation.isDisabled() && !robotPosition.equals(new Pose2d())){
+            //     //         initialPose = robotPosition;
+            //     //         swerve.resetPose(initialPose);
+            //     //     } else {
+            //     //         swerve.addVisionMeasurement(robotPosition, timeStamp);
+            //     //     }
+            //     // }
     
-            }
+            // }
 
-            Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/TagsInView1", vision1.getTargets().size());
+            // Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/TagsInView1", vision1.getTargets().size());
             Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/VisionPose1", robotPosition);
             Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/OdometryPose", swerve.getCurrentPosition());
             Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/AmbiguityRatio1", ambiguity);
