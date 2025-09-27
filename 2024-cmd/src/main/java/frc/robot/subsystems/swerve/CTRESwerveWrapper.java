@@ -19,11 +19,11 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants.SHARED;
 import frc.robot.Constants.SWERVE;
-import frc.robot.subsystems.swerve.perryswerve.PerryConstants;
+import frc.robot.subsystems.swerve.perryswerve.Former;
 import frc.robot.subsystems.swerve.riptideswerve.RiptideConstants;
 
 public class CTRESwerveWrapper {
-    private double MaxSpeed = (SHARED.IS_RIPTIDE?RiptideConstants.kSpeedAt12Volts:PerryConstants.kSpeedAt12Volts).in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private double MaxSpeed = (SHARED.IS_RIPTIDE?RiptideConstants.kSpeedAt12Volts:Former.kSpeedAt12Volts).in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
     /* Setting up bindings for necessary control of the swerve drive platform */
@@ -35,7 +35,7 @@ public class CTRESwerveWrapper {
     private final SwerveRequest.RobotCentric robotRelative = new SwerveRequest.RobotCentric()
         .withDriveRequestType(DriveRequestType.Velocity);
        
-    private final SwerveDrivetrain<TalonFX, TalonFX, CANcoder> drivetrain = SHARED.IS_RIPTIDE?RiptideConstants.createDrivetrain():PerryConstants.createDrivetrain();
+    private final SwerveDrivetrain<TalonFX, TalonFX, CANcoder> drivetrain = SHARED.IS_RIPTIDE?RiptideConstants.createDrivetrain():Former.createDrivetrain();
 
     public void drive(ChassisSpeeds speeds, boolean driveFieldRelative) {
         Logger.recordOutput(SWERVE.LOG_PATH+"TargetSpeeds", ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getYaw()));
