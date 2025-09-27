@@ -20,9 +20,9 @@
  "params":{
   "waypoints":[
     {"x":{"exp":"LeftStart.x", "val":7.131382942199707}, "y":{"exp":"LeftStart.y", "val":6.089265823364258}, "heading":{"exp":"-2.5472359667189686 rad", "val":-2.547235966718969}, "intervals":34, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
-    {"x":{"exp":"6.39332914352417 m", "val":6.39332914352417}, "y":{"exp":"6.541399002075195 m", "val":6.541399002075195}, "heading":{"exp":"0 deg", "val":0.0}, "intervals":38, "split":false, "fixTranslation":false, "fixHeading":false, "overrideIntervals":false},
-    {"x":{"exp":"5.2528533935546875 m", "val":5.2528533935546875}, "y":{"exp":"5.744836330413818 m", "val":5.744836330413818}, "heading":{"exp":"ERight.heading", "val":-2.088444947512611}, "intervals":19, "split":true, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
-    {"x":{"exp":"4.978297710418701 m", "val":4.978297710418701}, "y":{"exp":"5.255626201629639 m", "val":5.255626201629639}, "heading":{"exp":"ERight.heading", "val":-2.088444947512611}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false}],
+    {"x":{"exp":"6.286017894744873 m", "val":6.286017894744873}, "y":{"exp":"6.290013790130615 m", "val":6.290013790130615}, "heading":{"exp":"0 deg", "val":0.0}, "intervals":38, "split":false, "fixTranslation":false, "fixHeading":false, "overrideIntervals":false},
+    {"x":{"exp":"5.624299049377441 m", "val":5.624299049377441}, "y":{"exp":"5.702579975128174 m", "val":5.702579975128174}, "heading":{"exp":"ERight.heading", "val":-2.088444947512611}, "intervals":19, "split":true, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"5.258662223815918 m", "val":5.258662223815918}, "y":{"exp":"5.089122295379639 m", "val":5.089122295379639}, "heading":{"exp":"ERight.heading", "val":-2.088444947512611}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false}],
   "constraints":[
     {"from":"first", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true},
     {"from":"last", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true},
