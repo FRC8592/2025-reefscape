@@ -99,7 +99,7 @@ public class Swerve extends SubsystemBase {
 
         speedScaleEntry = 
         Shuffleboard.getTab("Swerve")
-            .add("Speed Scale", 0.5)
+            .add("Speed Scale", 1.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
             .withProperties(Map.of("min", 0.1, "max", 1.0))
             .getEntry();
@@ -107,7 +107,7 @@ public class Swerve extends SubsystemBase {
 
     //Accessor for the speed scale on the slider
     public double getSpeedScale(){
-        return speedScaleEntry.getDouble(0.5); //fallback constant is 0.5
+        return speedScaleEntry.getDouble(1.0); //fallback constant is 0.5
     }
 
     @Override
