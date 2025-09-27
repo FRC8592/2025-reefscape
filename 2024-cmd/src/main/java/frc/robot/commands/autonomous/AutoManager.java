@@ -18,7 +18,9 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
 import frc.robot.Suppliers;
-import frc.robot.commands.autonomous.autos.TestAuto;
+import frc.robot.commands.autonomous.autos.ForwardBlue;
+import frc.robot.commands.autonomous.autos.ForwardRed;
+// import frc.robot.commands.autonomous.autos.TestAuto;
 import frc.robot.commands.autonomous.autos.TwoCoralBlueAuto;
 // import frc.robot.commands.autonomous.autos.*;
 // import frc.robot.commands.autonomous.autos.OmniCoralAuto.Barge;
@@ -91,7 +93,9 @@ public final class AutoManager {
         // autoCommands.add(new OneCoralTwoAlgaeRedAuto(Alliance.Blue).withAutoName("BlueA_OneCoralTwoAlgae"));
         // autoCommands.add(new ThreeCoralBlueAuto());
         //autoCommands.add(new TwoCoralBlueAuto());
-        autoCommands.add(new TestAuto());
+        // autoCommands.add(new TestAuto());
+        autoCommands.add(new ForwardBlue());
+        autoCommands.add(new ForwardRed());
 
 
         autoChooser = new SendableChooser<>();
@@ -111,12 +115,12 @@ public final class AutoManager {
      * @return the command
      */
     public static Command getAutonomousCommand(){
-        //AutoCommand autoCommand = autoChooser.getSelected();
+        AutoCommand autoCommand = autoChooser.getSelected();
         return getAutonomousInitCommand().andThen(
             // If we don't keep this command from registering as composed,
             // the code will crash if we try to run an auto twice without
             // restarting robot code.
-            new MultiComposableCommand(new TestAuto())
+            new MultiComposableCommand(autoCommand)
         );
     }
 

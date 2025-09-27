@@ -175,7 +175,7 @@ public class RobotContainer {
             ), DriveModes.AUTOMATIC);
         }).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-        setDefaultCommand(intake, getAutonomousCommand());
+        // setDefaultCommand(intake, getAutonomousCommand());
 
         // setDefaultCommand(
         //     intake, intake.run(

@@ -5,10 +5,10 @@ import frc.robot.commands.largecommands.FollowPathCommand;
 
 
 
-public class TestAuto extends AutoCommand{
-    public TestAuto(){
+public class ForwardBlue extends AutoCommand{
+    public ForwardBlue(){
         super(
-        new FollowPathCommand(getChoreoTrajectory("HPLeftToFLeft"), Suppliers.isRedAlliance, "")
+        new FollowPathCommand(getChoreoTrajectory("MiddleToFrontBlue"), Suppliers.isRedAlliance, "")
 
 
         );
