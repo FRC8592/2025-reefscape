@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,6 +19,7 @@ import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.Constants;
 import frc.robot.Constants.*;
+import frc.robot.Suppliers;
 
 
 public class OdometryUpdates extends SubsystemBase {
@@ -32,6 +34,15 @@ public class OdometryUpdates extends SubsystemBase {
     public OdometryUpdates(Swerve swerve, Vision vision1) {
         this.swerve = swerve;
         this.vision1 = vision1;
+
+        //if on the red alliance
+        // if(Suppliers.isRedAlliance.getAsBoolean()){
+        //     swerve.resetPose(new Pose2d(11.3, 0.0, new Rotation2d()));
+        // } else { 
+        //     //if on blue alliance
+        //     swerve.resetPose(new Pose2d(0.0, 0.0, new Rotation2d()));
+        // }
+        
         // this.vision2 = vision2;
     }
 
@@ -119,23 +130,24 @@ public class OdometryUpdates extends SubsystemBase {
         //     }
         // }
         // runVision(vision2);
-        runVision(vision1);
+        // runVision(vision1);
     }
 
     
     public void simulationPeriodic() {
 
     }
+
     public static void setVision(ScoreCoral scoreCoral){
-        useVision = true;
-        leftOrRight = scoreCoral.getDirection();
+        // useVision = true;
+        // leftOrRight = scoreCoral.getDirection();
     }
 
     public void runVision(Vision vision){
-        if (RobotBase.isReal()){
-            Pose2d robotPosition = new Pose2d();
-            double ambiguity = -1d;
-            double timeStamp = 0.0;
+        // if (RobotBase.isReal()){
+        //     Pose2d robotPosition = new Pose2d();
+        //     double ambiguity = -1d;
+        //     double timeStamp = 0.0;
     
             // Optional<EstimatedRobotPose> robotPose = vision.getRobotPoseVision();
             
@@ -162,11 +174,11 @@ public class OdometryUpdates extends SubsystemBase {
             // }
 
             // Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/TagsInView1", vision1.getTargets().size());
-            Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/VisionPose1", robotPosition);
-            Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/OdometryPose", swerve.getCurrentPosition());
-            Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/AmbiguityRatio1", ambiguity);
-            Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/InitialPose", initialPose);
-        }
+            // Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/VisionPose1", robotPosition);
+            // Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/OdometryPose", swerve.getCurrentPosition());
+            // Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/AmbiguityRatio1", ambiguity);
+            // Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/InitialPose", initialPose);
+        // }
     }
     
 }
