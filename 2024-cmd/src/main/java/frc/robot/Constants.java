@@ -52,10 +52,11 @@ public final class Constants {
 
         public static final Transform3d CAMERA_OFFSETS = (
             SHARED.IS_RIPTIDE
-            ? /* RIPRIDE: */ new Transform3d(new Translation3d(0.21, 0.215, 0.17), new Rotation3d(0, Math.toRadians(-12), 0))
+            ? /* RIPRIDE: */ new Transform3d(new Translation3d(0.21, 0.18415, 0.24), new Rotation3d(0, Math.toRadians(-12), 0))
             : /* PERRY: */   new Transform3d(new Translation3d(0.17145, 0.20955, 0.2286), new Rotation3d(0, Math.toRadians(-13), Math.toRadians(-3)))
         );
 
+//7.25
 
         public static final String CAMERA_NAME = (
             "Arducam_OV9782_D" 
