@@ -28,7 +28,7 @@ import frc.robot.subsystems.LEDs;
 import frc.robot.Robot;
 
 public class Vision extends SubsystemBase{
-    // PhotonCamera camera;
+    PhotonCamera camera;
     AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025ReefscapeAndyMark.loadAprilTagLayoutField();
     PhotonPoseEstimator estimator;
 
@@ -52,34 +52,34 @@ public class Vision extends SubsystemBase{
     PhotonCameraSim cameraSim;
 
     public Vision(String camName, Transform3d camOffsets){
-        // camera = new PhotonCamera(camName);
-        // estimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camOffsets);
-        // visionSim = new VisionSystemSim("photonvision");
+        camera = new PhotonCamera(camName);
+        estimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camOffsets);
+        visionSim = new VisionSystemSim("photonvision");
 
-        // visionSim.addAprilTags(aprilTagFieldLayout);
+        visionSim.addAprilTags(aprilTagFieldLayout);
 
-        // cameraBProperties = new SimCameraProperties();
+        cameraBProperties = new SimCameraProperties();
 
-        // // A 1280 x 800 camera with a 100 degree diagonal FOV.
-        // cameraBProperties.setCalibration(1280, 800, Rotation2d.fromDegrees(100));
-        // // Approximate detection noise with average and standard deviation error in pixels.
-        // cameraBProperties.setCalibError(0.25, 0.08);
-        // // Set the camera image capture framerate (Note: this is limited by robot loop rate).
-        // cameraBProperties.setFPS(90);
-        // // The average and standard deviation in milliseconds of image data latency.
-        // cameraBProperties.setAvgLatencyMs(35);
-        // cameraBProperties.setLatencyStdDevMs(5);
+        // A 1280 x 800 camera with a 100 degree diagonal FOV.
+        cameraBProperties.setCalibration(1280, 800, Rotation2d.fromDegrees(100));
+        // Approximate detection noise with average and standard deviation error in pixels.
+        cameraBProperties.setCalibError(0.25, 0.08);
+        // Set the camera image capture framerate (Note: this is limited by robot loop rate).
+        cameraBProperties.setFPS(90);
+        // The average and standard deviation in milliseconds of image data latency.
+        cameraBProperties.setAvgLatencyMs(35);
+        cameraBProperties.setLatencyStdDevMs(5);
 
-        // cameraSim = new PhotonCameraSim(camera, cameraBProperties);
+        cameraSim = new PhotonCameraSim(camera, cameraBProperties);
 
-        // visionSim.addCamera(cameraSim, camOffsets);
+        visionSim.addCamera(cameraSim, camOffsets);
 
-        // visionSim.getDebugField();
+        visionSim.getDebugField();
 
-        // cameraSim.enableRawStream(true);
-        // cameraSim.enableProcessedStream(true);
+        cameraSim.enableRawStream(true);
+        cameraSim.enableProcessedStream(true);
 
-        // cameraSim.enableDrawWireframe(true);
+        cameraSim.enableDrawWireframe(true);
     }
 
     @Override
@@ -94,59 +94,59 @@ public class Vision extends SubsystemBase{
          
          int targetId = 0;
          Transform3d bestCameraToTarget = new Transform3d();
-        //  results = camera.getAllUnreadResults();
+         results = camera.getAllUnreadResults();
         //  SmartDashboard.putBoolean("results empty", results.isEmpty());
-        //  if (!results.isEmpty()) {
-        //      // Camera processed a new frame since last
-        //      // Get the last one in the list.
-        //      var result = results.get(results.size() - 1);
-        //     if(camera.isConnected()){
-        //         // LEDs.setHasTags(result.getTargets().size());
-        //     }
+         if (!results.isEmpty()) {
+             // Camera processed a new frame since last
+             // Get the last one in the list.
+             var result = results.get(results.size() - 1);
+            if(camera.isConnected()){
+                // LEDs.setHasTags(result.getTargets().size());
+            }
 
-        //     else{
-        //         // LEDs.setHasTags(-1);
-        //     }
-        //      targetVisible = result.hasTargets();
-        //      if (targetVisible) {
-        //         // At least one AprilTag was seen by the camera
-        //         PhotonTrackedTarget target = result.getBestTarget();
+            else{
+                // LEDs.setHasTags(-1);
+            }
+             targetVisible = result.hasTargets();
+             if (targetVisible) {
+                // At least one AprilTag was seen by the camera
+                PhotonTrackedTarget target = result.getBestTarget();
                 
-        //         targetAmbiguity = target.getPoseAmbiguity();
-        //         targetPitch = target.getPitch();
-        //         targetArea = target.getArea();
-        //         targetId = target.getFiducialId();
-        //         bestCameraToTarget = target.getBestCameraToTarget();
-        //         Rotation3d targetRotation = bestCameraToTarget.getRotation();
-        //         targetXRotation = targetRotation.getX();
-        //         targetYRotation = targetRotation.getY();
-        //         targetZRotation = targetRotation.getZ();
+                targetAmbiguity = target.getPoseAmbiguity();
+                targetPitch = target.getPitch();
+                targetArea = target.getArea();
+                targetId = target.getFiducialId();
+                bestCameraToTarget = target.getBestCameraToTarget();
+                Rotation3d targetRotation = bestCameraToTarget.getRotation();
+                targetXRotation = targetRotation.getX();
+                targetYRotation = targetRotation.getY();
+                targetZRotation = targetRotation.getZ();
 
-        //         targetYawRotation = targetRotation.getMeasureZ().baseUnitMagnitude()*(180/Math.PI);
-        //         targetPitchRotation = targetRotation.getMeasureY().baseUnitMagnitude()*(180/Math.PI);
-        //         targetRollRotation = targetRotation.getMeasureX().baseUnitMagnitude()*(180/Math.PI);
+                targetYawRotation = targetRotation.getMeasureZ().baseUnitMagnitude()*(180/Math.PI);
+                targetPitchRotation = targetRotation.getMeasureY().baseUnitMagnitude()*(180/Math.PI);
+                targetRollRotation = targetRotation.getMeasureX().baseUnitMagnitude()*(180/Math.PI);
 
-        //             if (targetYawRotation > 0){
-        //                 targetYawRotation -= 180;
-        //             }
-        //             else{
-        //                 targetYawRotation += 180;
-        //             }
+                    if (targetYawRotation > 0){
+                        targetYawRotation -= 180;
+                    }
+                    else{
+                        targetYawRotation += 180;
+                    }
                     
-        //             targetX = bestCameraToTarget.getX();
-        //             targetY = bestCameraToTarget.getY();
-        //             targetZ = bestCameraToTarget.getZ();
+                    targetX = bestCameraToTarget.getX();
+                    targetY = bestCameraToTarget.getY();
+                    targetZ = bestCameraToTarget.getZ();
                     
-        //          }
-        //      }
+                 }
+             }
         
         //  SmartDashboard.putBoolean("Vision Target Visible", targetVisible);
         //  SmartDashboard.putNumber("Target ID", targetId);
         //  SmartDashboard.putNumber("Target Yaw Rotation", targetYawRotation);
 
         // Logs if the robot sees 1 or sees 2 tags
-        // SmartDashboard.putBoolean("Has one tag", getTargets().size() > 0);
-        // SmartDashboard.putBoolean("Has two tags", getTargets().size() > 1);
+        SmartDashboard.putBoolean("Has one tag", getTargets().size() > 0);
+        SmartDashboard.putBoolean("Has two tags", getTargets().size() > 1);
     }
 
     public void simulationPeriodic() {
@@ -205,39 +205,39 @@ public class Vision extends SubsystemBase{
      * Lists the targets visible by the camera.
      * @return Returns a list of the targets visible by the camera.
      */
-    // public List<PhotonTrackedTarget> getTargets() {
-    //     return camera.getLatestResult().getTargets();
-    // }
+    public List<PhotonTrackedTarget> getTargets() {
+        return camera.getLatestResult().getTargets();
+    }
 
-    // //actually PhotonTrackedTarget
-    // public int getClosestTagID() {
+    //actually PhotonTrackedTarget
+    public int getClosestTagID() {
 
-    //     PhotonPipelineResult result = camera.getLatestResult();
-    //     if (result.hasTargets()) {
-    //         List<PhotonTrackedTarget> targets = result.getTargets();
-    //         List<Double> distances = new ArrayList<Double>();
+        PhotonPipelineResult result = camera.getLatestResult();
+        if (result.hasTargets()) {
+            List<PhotonTrackedTarget> targets = result.getTargets();
+            List<Double> distances = new ArrayList<Double>();
             
 
-    //         targets.forEach(
-    //             (target) -> {
-    //                 distances.add(Math.sqrt(Math.pow(targetX, 2) + Math.pow(targetX, 2)));
-    //             }
-    //         );
+            targets.forEach(
+                (target) -> {
+                    distances.add(Math.sqrt(Math.pow(targetX, 2) + Math.pow(targetX, 2)));
+                }
+            );
 
 
-    //         return targets.get(distances.indexOf(Collections.min(distances))).getFiducialId();
-    //     }
-    //     else {
-    //         return -1;
-    //     }
+            return targets.get(distances.indexOf(Collections.min(distances))).getFiducialId();
+        }
+        else {
+            return -1;
+        }
 
-    // }
+    }
 
     // /**
     //  * Gets the current vision pose.
     //  * @return Returns the current vision pose.
     //  */
-    // public Optional<EstimatedRobotPose> getRobotPoseVision() {
-    //    return estimator.update(camera.getLatestResult());
-    // }
+    public Optional<EstimatedRobotPose> getRobotPoseVision() {
+       return estimator.update(camera.getLatestResult());
+    }
 }

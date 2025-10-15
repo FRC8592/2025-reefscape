@@ -67,12 +67,12 @@ public class OdometryUpdates extends SubsystemBase {
         //     timeStamp1 = robotPose1.get().timestampSeconds;
 
         // }
-        // if (robotPose2.isPresent()) {
-        //     robotPosition2 = robotPose2.get().estimatedPose.toPose2d();
-        //     ambiguity2 = vision2.getPoseAmbiguityRatio();
-        //     timeStamp2 = robotPose2.get().timestampSeconds;
+        // // if (robotPose2.isPresent()) {
+        // //     robotPosition2 = robotPose2.get().estimatedPose.toPose2d();
+        // //     ambiguity2 = vision2.getPoseAmbiguityRatio();
+        // //     timeStamp2 = robotPose2.get().timestampSeconds;
 
-        // }
+        // // }
         // useVision = false;
         // if(useVision){
             
@@ -110,9 +110,9 @@ public class OdometryUpdates extends SubsystemBase {
         //         if(robotPose1.isPresent()){
         //             swerve.addVisionMeasurement(robotPosition1, timeStamp1);
         //         }
-        //         if(robotPose2.isPresent()){
-        //             swerve.addVisionMeasurement(robotPosition2, timeStamp2);
-        //         }
+        //         // if(robotPose2.isPresent()){
+        //         //     swerve.addVisionMeasurement(robotPosition2, timeStamp2);
+        //         // }
         //     }
         // }
         // if(
@@ -130,8 +130,9 @@ public class OdometryUpdates extends SubsystemBase {
         //     }
         // }
         // runVision(vision2);
-        // runVision(vision1);
+        runVision(vision1);
     }
+
 
     
     public void simulationPeriodic() {
@@ -139,46 +140,45 @@ public class OdometryUpdates extends SubsystemBase {
     }
 
     public static void setVision(ScoreCoral scoreCoral){
-        // useVision = true;
-        // leftOrRight = scoreCoral.getDirection();
+        useVision = true;
+        leftOrRight = scoreCoral.getDirection();
     }
 
     public void runVision(Vision vision){
-        // if (RobotBase.isReal()){
-        //     Pose2d robotPosition = new Pose2d();
-        //     double ambiguity = -1d;
-        //     double timeStamp = 0.0;
+        if (RobotBase.isReal()){
+            Pose2d robotPosition = new Pose2d();
+            double ambiguity = -1d;
+            double timeStamp = 0.0;
     
-            // Optional<EstimatedRobotPose> robotPose = vision.getRobotPoseVision();
+            Optional<EstimatedRobotPose> robotPose = vision.getRobotPoseVision();
             
-            // // if (robotPose.isPresent()) {
-            //     robotPosition = robotPose.get().estimatedPose.toPose2d();
-            //     ambiguity = vision.getPoseAmbiguityRatio();
-            //     timeStamp = robotPose.get().timestampSeconds;
+            if (robotPose.isPresent()) {
+                robotPosition = robotPose.get().estimatedPose.toPose2d();
+                ambiguity = vision.getPoseAmbiguityRatio();
+                timeStamp = robotPose.get().timestampSeconds;
     
-            //     //if(Math.abs(ambiguity) < 0.2 && vision.getTargets().size() > 1) {
-            //     // if(
-            //     //     vision.getTargets().size() > 1 || (
-            //     //         Math.abs(ambiguity) < Constants.NAVIGATION.MAX_ACCEPTABLE_AMBIGUITY
-            //     //         && vision.getTargets().size() > 0 && vision.getTargets().get(0).bestCameraToTarget.getX() < CORAL_ALIGN.REJECT_SINGLE_TAG_POSE_ESTIMATE_RANGE
-            //     //     )
-            //     // ) {
-            //     //     if (DriverStation.isDisabled() && !robotPosition.equals(new Pose2d())){
-            //     //         initialPose = robotPosition;
-            //     //         swerve.resetPose(initialPose);
-            //     //     } else {
-            //     //         swerve.addVisionMeasurement(robotPosition, timeStamp);
-            //     //     }
-            //     // }
+                //if(Math.abs(ambiguity) < 0.2 && vision.getTargets().size() > 1) {
+                if(
+                    vision.getTargets().size() > 1 || (
+                        Math.abs(ambiguity) < Constants.NAVIGATION.MAX_ACCEPTABLE_AMBIGUITY
+                        && vision.getTargets().size() > 0 && vision.getTargets().get(0).bestCameraToTarget.getX() < CORAL_ALIGN.REJECT_SINGLE_TAG_POSE_ESTIMATE_RANGE
+                    )
+                ) {
+                    if (DriverStation.isDisabled() && !robotPosition.equals(new Pose2d())){
+                        initialPose = robotPosition;
+                        swerve.resetPose(initialPose);
+                    } else {
+                        swerve.addVisionMeasurement(robotPosition, timeStamp);
+                    }
+                }
     
-            // }
+            }
 
-            // Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/TagsInView1", vision1.getTargets().size());
-            // Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/VisionPose1", robotPosition);
-            // Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/OdometryPose", swerve.getCurrentPosition());
-            // Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/AmbiguityRatio1", ambiguity);
-            // Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/InitialPose", initialPose);
-        // }
+            Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/TagsInView1", vision1.getTargets().size());
+            Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/VisionPose1", robotPosition);
+            Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/OdometryPose", swerve.getCurrentPosition());
+            Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/AmbiguityRatio1", ambiguity);
+            Logger.recordOutput(SHARED.LOG_FOLDER+"/Navigation/InitialPose", initialPose);
+        }
     }
-    
 }

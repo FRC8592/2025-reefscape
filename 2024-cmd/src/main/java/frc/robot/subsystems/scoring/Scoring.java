@@ -162,47 +162,47 @@ public class Scoring extends SubsystemBase {
      * Check to see if all scoring mechanisms are in position within tolerances specified by constants.
      * @return
      */
-    // public boolean atPosition(){
-    //     return elevator.atPosition()
-    //     // && wrist.atPosition() && clockArm.atPosition()
-    //     ;
-    // }
+    public boolean atPosition(){
+        return elevator.atPosition()
+        // && wrist.atPosition() && clockArm.atPosition()
+        ;
+    }
 
-    // public boolean atPosition(ElevatorPositions ep){
-    //     return elevator.atPosition(ep.elevatorPos)
-    //     // && wrist.atPosition(ep.wristPos) && clockArm.atPosition(ep.clockArmPos)
-    //     ;
-    // }
+    public boolean atPosition(ElevatorPositions ep){
+        return elevator.atPosition(ep.elevatorPos)
+        // && wrist.atPosition(ep.wristPos) && clockArm.atPosition(ep.clockArmPos)
+        ;
+    }
     
 
     /**
      * Start the intake and run continuously until stopped.
      * @return
      */
-    // public Command intakeCommand(){
-    //     return new DeferredCommand(
-    //         () -> intake.setIntakeCommand(scoringTargetPosition.intakeSpeed).finallyDo(() -> {intake.stop();}),
-    //         Set.of(this, intake)
-    //     );
-    // }
+    public Command intakeCommand(){
+        return new DeferredCommand(
+            () -> intake.setIntakeCommand(scoringTargetPosition.intakeSpeed).finallyDo(() -> {intake.stop();}),
+            Set.of(this, intake)
+        );
+    }
 
     /**
      *  Runs the intake until the robot detects that it has a coral.
      * @return Returns a command to run the intake untill the beam brake is tripped.
      */
-    // public Command intakeUntilHasCoralCommand(){
-    //     if(!Robot.isReal()){
-    //         return new WaitCommand(2);
-    //     }
+    public Command intakeUntilHasCoralCommand(){
+        if(!Robot.isReal()){
+            return new WaitCommand(2);
+        }
         
-    //     return new DeferredCommand(() -> 
-    //         intake.setIntakeCommand(scoringTargetPosition.intakeSpeed)
-    //         .until(() -> intake.robotHasCoral())
-    //         .finallyDo(() -> {intake.stop();}),
+        return new DeferredCommand(() -> 
+            intake.setIntakeCommand(scoringTargetPosition.intakeSpeed)
+            .until(() -> intake.robotHasCoral())
+            .finallyDo(() -> {intake.stop();}),
 
-    //         Set.of(this, intake)
-    //     );
-    // }
+            Set.of(this, intake)
+        );
+    }
 
 
     /**
@@ -211,16 +211,16 @@ public class Scoring extends SubsystemBase {
      * TODO: Block this command when the scoring mechanism is stowed
      * @return
      */
-    // public Command outtakeCoralCommand(){
-    //     return Robot.isReal()?new DeferredCommand(
-    //         () -> intake.setIntakeCommand(scoringTargetPosition.outtakeSpeed).finallyDo(() -> {intake.stop();}),
-    //         Set.of(this, intake)
-    //     ):Commands.none();
-    // }
+    public Command outtakeCoralCommand(){
+        return Robot.isReal()?new DeferredCommand(
+            () -> intake.setIntakeCommand(scoringTargetPosition.outtakeSpeed).finallyDo(() -> {intake.stop();}),
+            Set.of(this, intake)
+        ):Commands.none();
+    }
 
-    // public Command outtakeAlgaeCommand(){
-    //     return new DeferredCommand(()-> intake.setIntakeCommand(1).finallyDo(() -> {intake.stop();}), Set.of(this));
-    // }
+    public Command outtakeAlgaeCommand(){
+        return new DeferredCommand(()-> intake.setIntakeCommand(1).finallyDo(() -> {intake.stop();}), Set.of(this));
+    }
 
     /**
      * Stop the motion of the scoring mechanism.
@@ -228,137 +228,137 @@ public class Scoring extends SubsystemBase {
      * TODO: The stop commands should lock in the current postion, as opposed to disabling motor power.
      * @return
      */
-    // public Command stopAllCommand(){
-    //     Logger.recordOutput(SCORING.LOG_PATH + "stopAllCmd", true);
-    //     return elevator.stopCommand()
-    //     // .alongWith(wrist.stopCommand(), clockArm.stopCommand())
-    //     ;
-    // }
+    public Command stopAllCommand(){
+        Logger.recordOutput(SCORING.LOG_PATH + "stopAllCmd", true);
+        return elevator.stopCommand()
+        // .alongWith(wrist.stopCommand(), clockArm.stopCommand())
+        ;
+    }
 
-    // public Command setCoralMode(){
-    //     return Commands.runOnce(() -> {this.isCoralMode = true;});
-    // }
+    public Command setCoralMode(){
+        return Commands.runOnce(() -> {this.isCoralMode = true;});
+    }
 
-    // public Command setAlgaeMode(){
-    //     return Commands.runOnce(() -> {this.isCoralMode = false;});
-    // }
+    public Command setAlgaeMode(){
+        return Commands.runOnce(() -> {this.isCoralMode = false;});
+    }
 
-    // public boolean isCoralMode(){
-    //     return this.isCoralMode;
-    // }
+    public boolean isCoralMode(){
+        return this.isCoralMode;
+    }
 
-    // public boolean isAlgaeMode(){
-    //     return !isCoralMode();
-    // }
+    public boolean isAlgaeMode(){
+        return !isCoralMode();
+    }
 
-    // public boolean isAtPosition(ElevatorPositions position){
-    //     return atPosition();
-    // }
+    public boolean isAtPosition(ElevatorPositions position){
+        return atPosition();
+    }
     
 
 
-    // //
-    // // Update the commanded position of the Elevator, Arm, and Wrist
-    // // Implment safety features to preven these mechanisms from doing damage to the robot
-    // //
-    // public void periodic () {
-    //     if(scoringTargetPosition != ElevatorPositions.STOP){
-    //         // Get the commanded position for each mechanism
-    //         double targetElevatorPosition = scoringTargetPosition.elevatorPos;
-    //         // double targetWristPosition = scoringTargetPosition.wristPos;
-    //         // double targetArmPosition = scoringTargetPosition.clockArmPos;
+    //
+    // Update the commanded position of the Elevator, Arm, and Wrist
+    // Implment safety features to preven these mechanisms from doing damage to the robot
+    //
+    public void periodic () {
+        if(scoringTargetPosition != ElevatorPositions.STOP){
+            // Get the commanded position for each mechanism
+            double targetElevatorPosition = scoringTargetPosition.elevatorPos;
+            // double targetWristPosition = scoringTargetPosition.wristPos;
+            // double targetArmPosition = scoringTargetPosition.clockArmPos;
 
-    //         // Get the current position for each mechanism
-    //         double currentElevatorPosition = elevator.getInches();
-    //         // double currentWristPosition = wrist.getDegrees();
-    //         // double currentArmPosition = clockArm.getDegrees();
+            // Get the current position for each mechanism
+            double currentElevatorPosition = elevator.getInches();
+            // double currentWristPosition = wrist.getDegrees();
+            // double currentArmPosition = clockArm.getDegrees();
 
-    //         // if(scoringTargetPosition == ElevatorPositions.getNet() && !elevator.atPosition()){
-    //         //     targetWristPosition = -20;
-    //         // }
+            // if(scoringTargetPosition == ElevatorPositions.getNet() && !elevator.atPosition()){
+            //     targetWristPosition = -20;
+            // }
 
-    //         // if(scoringTargetPosition == ElevatorPositions.getL3Algae() && !clockArm.atPosition()){
-    //         //     targetWristPosition = currentWristPosition;
-    //         // }
+            // if(scoringTargetPosition == ElevatorPositions.getL3Algae() && !clockArm.atPosition()){
+            //     targetWristPosition = currentWristPosition;
+            // }
 
-    //         // //anytime we're moving the wrist, the arm should be out past the wrist rotate safe constant.
-    //         // if ( !wrist.atPosition(scoringTargetPosition.wristPos) ) {
+            // //anytime we're moving the wrist, the arm should be out past the wrist rotate safe constant.
+            // if ( !wrist.atPosition(scoringTargetPosition.wristPos) ) {
 
-    //         //     targetArmPosition = Math.max(ARM.SAFE_ARM_TO_ROTATE_WRIST, scoringTargetPosition.clockArmPos);
+            //     targetArmPosition = Math.max(ARM.SAFE_ARM_TO_ROTATE_WRIST, scoringTargetPosition.clockArmPos);
 
-    //         // }
+            // }
             
-    //         // //if the arm is not extended, then don't move the elevator until it reaches the safe position
-    //         // if (
+            // //if the arm is not extended, then don't move the elevator until it reaches the safe position
+            // if (
                
-    //         //     (currentArmPosition < ARM.SAFE_ARM_TO_ROTATE_WRIST-10)
+            //     (currentArmPosition < ARM.SAFE_ARM_TO_ROTATE_WRIST-10)
 
-    //         // ) {
+            // ) {
 
-    //         //     // this is a good way to tell a system not to move.
-    //         //     // this doesn't work with the elevator as it drifts down.
+            //     // this is a good way to tell a system not to move.
+            //     // this doesn't work with the elevator as it drifts down.
                 
-    //         //     targetWristPosition = currentWristPosition;
+            //     targetWristPosition = currentWristPosition;
 
-    //         //     // this is the bad way to do it
-    //         //     targetElevatorPosition = Math.round(currentElevatorPosition*5.0)/5.0;
+            //     // this is the bad way to do it
+            //     targetElevatorPosition = Math.round(currentElevatorPosition*5.0)/5.0;
 
-    //         // }
+            // }
 
-    //         //if the wrist is not in a safe position (anywhere but down), then don't let the arm move
+            //if the wrist is not in a safe position (anywhere but down), then don't let the arm move
             
-    //         // if ( (currentWristPosition < -2 || currentWristPosition > 90)) {
+            // if ( (currentWristPosition < -2 || currentWristPosition > 90)) {
 
-    //         //     targetArmPosition = Math.min(ARM.SAFE_ARM_TO_ROTATE_WRIST, targetArmPosition);
+            //     targetArmPosition = Math.min(ARM.SAFE_ARM_TO_ROTATE_WRIST, targetArmPosition);
 
-    //         // }
+            // }
 
-    //         //if the wrist is not in a safe position, then don't move the elevator down.
+            //if the wrist is not in a safe position, then don't move the elevator down.
 
-    //         // if ( currentWristPosition < -2 || currentWristPosition > 90 ) {
+            // if ( currentWristPosition < -2 || currentWristPosition > 90 ) {
 
-    //         //     targetElevatorPosition = currentElevatorPosition;
+            //     targetElevatorPosition = currentElevatorPosition;
 
-    //         // }
+            // }
 
 
             
 
-    //         // Logging the target position of scoring mechanisms.
-    //         // Logger.recordOutput(SCORING.LOG_PATH+"TargetArmPostion", targetArmPosition);
-    //         // Logger.recordOutput(SCORING.LOG_PATH+"TargetWristPostion", targetWristPosition);
-    //         Logger.recordOutput(SCORING.LOG_PATH+"TargetElevatorPostion", targetElevatorPosition);
+            // Logging the target position of scoring mechanisms.
+            // Logger.recordOutput(SCORING.LOG_PATH+"TargetArmPostion", targetArmPosition);
+            // Logger.recordOutput(SCORING.LOG_PATH+"TargetWristPostion", targetWristPosition);
+            Logger.recordOutput(SCORING.LOG_PATH+"TargetElevatorPostion", targetElevatorPosition);
     
 
-    //         // Logging the current positions of scoring mechanisms.
-    //         // Logger.recordOutput(SCORING.LOG_PATH+"CurrentArmPostion", currentArmPosition);
-    //         // Logger.recordOutput(SCORING.LOG_PATH+"CurrentWristPostion", currentWristPosition);
-    //         Logger.recordOutput(SCORING.LOG_PATH+"CurrentElevatorPostion", currentElevatorPosition);
+            // Logging the current positions of scoring mechanisms.
+            // Logger.recordOutput(SCORING.LOG_PATH+"CurrentArmPostion", currentArmPosition);
+            // Logger.recordOutput(SCORING.LOG_PATH+"CurrentWristPostion", currentWristPosition);
+            Logger.recordOutput(SCORING.LOG_PATH+"CurrentElevatorPostion", currentElevatorPosition);
             
-    //         // Command the position of the Elevator, Arm, and Wrist mechanisms.
-    //         // elevator.setInches(targetElevatorPosition);
-    //         // wrist.setDegrees(targetWristPosition);
-    //         // clockArm.setDegrees(targetArmPosition);
-    //     }
-    //     Logger.recordOutput(SCORING.LOG_PATH+"OriginalElevatorTarget", scoringTargetPosition.elevatorPos);
-    //     // Logger.recordOutput(SCORING.LOG_PATH+"OriginalWristTarget", scoringTargetPosition.wristPos);
-    //     // Logger.recordOutput(SCORING.LOG_PATH+"OriginalArmTarget", scoringTargetPosition.clockArmPos);
+            // Command the position of the Elevator, Arm, and Wrist mechanisms.
+            // elevator.setInches(targetElevatorPosition);
+            // wrist.setDegrees(targetWristPosition);
+            // clockArm.setDegrees(targetArmPosition);
+        }
+        Logger.recordOutput(SCORING.LOG_PATH+"OriginalElevatorTarget", scoringTargetPosition.elevatorPos);
+        // Logger.recordOutput(SCORING.LOG_PATH+"OriginalWristTarget", scoringTargetPosition.wristPos);
+        // Logger.recordOutput(SCORING.LOG_PATH+"OriginalArmTarget", scoringTargetPosition.clockArmPos);
 
-    //     // Logging the potentially modified target positions of scoring mechanisms
+        // Logging the potentially modified target positions of scoring mechanisms
 
-    //     Logger.recordOutput(SCORING.LOG_PATH+"UserSelectedPosition", userSelectedPosition);
-    //     Logger.recordOutput(SCORING.LOG_PATH+"TargetPosition", scoringTargetPosition);
-    //     Logger.recordOutput(SCORING.LOG_PATH+"AtPosition", atPosition());
+        Logger.recordOutput(SCORING.LOG_PATH+"UserSelectedPosition", userSelectedPosition);
+        Logger.recordOutput(SCORING.LOG_PATH+"TargetPosition", scoringTargetPosition);
+        Logger.recordOutput(SCORING.LOG_PATH+"AtPosition", atPosition());
 
-    //     // These will log which position we are in for scoring
-    //     SmartDashboard.putBoolean("L1", userSelectedPosition == ElevatorPositions.getL1());
-    //     SmartDashboard.putBoolean("L2", userSelectedPosition == ElevatorPositions.getL2() || ElevatorPositions.getL2Algae() == userSelectedPosition);
-    //     SmartDashboard.putBoolean("L3", userSelectedPosition == ElevatorPositions.getL3() || ElevatorPositions.getL3Algae() == userSelectedPosition);
-    //     SmartDashboard.putBoolean("L4", userSelectedPosition == ElevatorPositions.getL4());
+        // These will log which position we are in for scoring
+        SmartDashboard.putBoolean("L1", userSelectedPosition == ElevatorPositions.getL1());
+        SmartDashboard.putBoolean("L2", userSelectedPosition == ElevatorPositions.getL2() || ElevatorPositions.getL2Algae() == userSelectedPosition);
+        SmartDashboard.putBoolean("L3", userSelectedPosition == ElevatorPositions.getL3() || ElevatorPositions.getL3Algae() == userSelectedPosition);
+        SmartDashboard.putBoolean("L4", userSelectedPosition == ElevatorPositions.getL4());
         
-    //     // LEDs.setHasCoral(intake.robotHasCoral());
-    //     // LEDs.setCoralMode( isCoralMode );
-    //     SmartDashboard.putBoolean("Coral mode", isCoralMode);
+        // LEDs.setHasCoral(intake.robotHasCoral());
+        // LEDs.setCoralMode( isCoralMode );
+        SmartDashboard.putBoolean("Coral mode", isCoralMode);
         
-    // }
+    }
 }
