@@ -113,9 +113,9 @@ public class Scoring extends SubsystemBase {
 
     public Scoring(Elevator elevator, ClockArm arm, Wrist wrist, Intake intake){
         this.elevator = elevator;
-        // this.clockArm = arm;
-        // this.wrist = wrist;
-        // this.intake = intake;
+        this.clockArm = arm;
+        this.wrist = wrist;
+        this.intake = intake;
 
         scoringTargetPosition = SHARED.IS_RIPTIDE?ElevatorPositions.STOW_RIPTIDE:ElevatorPositions.STOW_PERRY;
         userSelectedPosition = SHARED.IS_RIPTIDE?ElevatorPositions.STOW_RIPTIDE:ElevatorPositions.STOW_PERRY;
@@ -265,80 +265,80 @@ public class Scoring extends SubsystemBase {
         if(scoringTargetPosition != ElevatorPositions.STOP){
             // Get the commanded position for each mechanism
             double targetElevatorPosition = scoringTargetPosition.elevatorPos;
-            // double targetWristPosition = scoringTargetPosition.wristPos;
-            // double targetArmPosition = scoringTargetPosition.clockArmPos;
+            double targetWristPosition = scoringTargetPosition.wristPos;
+            double targetArmPosition = scoringTargetPosition.clockArmPos;
 
             // Get the current position for each mechanism
             double currentElevatorPosition = elevator.getInches();
-            // double currentWristPosition = wrist.getDegrees();
-            // double currentArmPosition = clockArm.getDegrees();
+            double currentWristPosition = wrist.getDegrees();
+            double currentArmPosition = clockArm.getDegrees();
 
-            // if(scoringTargetPosition == ElevatorPositions.getNet() && !elevator.atPosition()){
-            //     targetWristPosition = -20;
-            // }
+            if(scoringTargetPosition == ElevatorPositions.getNet() && !elevator.atPosition()){
+                targetWristPosition = -20;
+            }
 
-            // if(scoringTargetPosition == ElevatorPositions.getL3Algae() && !clockArm.atPosition()){
-            //     targetWristPosition = currentWristPosition;
-            // }
+            if(scoringTargetPosition == ElevatorPositions.getL3Algae() && !clockArm.atPosition()){
+                targetWristPosition = currentWristPosition;
+            }
 
             // //anytime we're moving the wrist, the arm should be out past the wrist rotate safe constant.
-            // if ( !wrist.atPosition(scoringTargetPosition.wristPos) ) {
+            if ( !wrist.atPosition(scoringTargetPosition.wristPos) ) {
 
-            //     targetArmPosition = Math.max(ARM.SAFE_ARM_TO_ROTATE_WRIST, scoringTargetPosition.clockArmPos);
+                targetArmPosition = Math.max(ARM.SAFE_ARM_TO_ROTATE_WRIST, scoringTargetPosition.clockArmPos);
 
-            // }
+            }
             
             // //if the arm is not extended, then don't move the elevator until it reaches the safe position
-            // if (
+            if (
                
-            //     (currentArmPosition < ARM.SAFE_ARM_TO_ROTATE_WRIST-10)
+                (currentArmPosition < ARM.SAFE_ARM_TO_ROTATE_WRIST-10)
 
-            // ) {
+            ) {
 
-            //     // this is a good way to tell a system not to move.
-            //     // this doesn't work with the elevator as it drifts down.
+                // this is a good way to tell a system not to move.
+                // this doesn't work with the elevator as it drifts down.
                 
-            //     targetWristPosition = currentWristPosition;
+                targetWristPosition = currentWristPosition;
 
-            //     // this is the bad way to do it
-            //     targetElevatorPosition = Math.round(currentElevatorPosition*5.0)/5.0;
+                // this is the bad way to do it
+                targetElevatorPosition = Math.round(currentElevatorPosition*5.0)/5.0;
 
-            // }
+            }
 
             //if the wrist is not in a safe position (anywhere but down), then don't let the arm move
             
-            // if ( (currentWristPosition < -2 || currentWristPosition > 90)) {
+            if ( (currentWristPosition < -2 || currentWristPosition > 90)) {
 
-            //     targetArmPosition = Math.min(ARM.SAFE_ARM_TO_ROTATE_WRIST, targetArmPosition);
+                targetArmPosition = Math.min(ARM.SAFE_ARM_TO_ROTATE_WRIST, targetArmPosition);
 
-            // }
+            }
 
             //if the wrist is not in a safe position, then don't move the elevator down.
 
-            // if ( currentWristPosition < -2 || currentWristPosition > 90 ) {
+            if ( currentWristPosition < -2 || currentWristPosition > 90 ) {
 
-            //     targetElevatorPosition = currentElevatorPosition;
+                targetElevatorPosition = currentElevatorPosition;
 
-            // }
+            }
 
 
             
 
             // Logging the target position of scoring mechanisms.
-            // Logger.recordOutput(SCORING.LOG_PATH+"TargetArmPostion", targetArmPosition);
-            // Logger.recordOutput(SCORING.LOG_PATH+"TargetWristPostion", targetWristPosition);
+            Logger.recordOutput(SCORING.LOG_PATH+"TargetArmPostion", targetArmPosition);
+            Logger.recordOutput(SCORING.LOG_PATH+"TargetWristPostion", targetWristPosition);
             Logger.recordOutput(SCORING.LOG_PATH+"TargetElevatorPostion", targetElevatorPosition);
     
 
             // Logging the current positions of scoring mechanisms.
-            // Logger.recordOutput(SCORING.LOG_PATH+"CurrentArmPostion", currentArmPosition);
-            // Logger.recordOutput(SCORING.LOG_PATH+"CurrentWristPostion", currentWristPosition);
+            Logger.recordOutput(SCORING.LOG_PATH+"CurrentArmPostion", currentArmPosition);
+            Logger.recordOutput(SCORING.LOG_PATH+"CurrentWristPostion", currentWristPosition);
             Logger.recordOutput(SCORING.LOG_PATH+"CurrentElevatorPostion", currentElevatorPosition);
             
             // Command the position of the Elevator, Arm, and Wrist mechanisms.
-            // elevator.setInches(targetElevatorPosition);
-            // wrist.setDegrees(targetWristPosition);
-            // clockArm.setDegrees(targetArmPosition);
+            elevator.setInches(targetElevatorPosition);
+            wrist.setDegrees(targetWristPosition);
+            clockArm.setDegrees(targetArmPosition);
         }
         Logger.recordOutput(SCORING.LOG_PATH+"OriginalElevatorTarget", scoringTargetPosition.elevatorPos);
         // Logger.recordOutput(SCORING.LOG_PATH+"OriginalWristTarget", scoringTargetPosition.wristPos);
