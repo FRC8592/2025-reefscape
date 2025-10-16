@@ -95,7 +95,7 @@ public final class AutoManager {
         //autoCommands.add(new TwoCoralBlueAuto());
         // autoCommands.add(new TestAuto());
         autoCommands.add(new ForwardBlue());
-        autoCommands.add(new ForwardRed());
+        // autoCommands.add(new ForwardRed());
 
 
         autoChooser = new SendableChooser<>();
@@ -115,12 +115,12 @@ public final class AutoManager {
      * @return the command
      */
     public static Command getAutonomousCommand(){
-        AutoCommand autoCommand = autoChooser.getSelected();
+        // AutoCommand autoCommand = autoChooser.getSelected();
         return getAutonomousInitCommand().andThen(
             // If we don't keep this command from registering as composed,
             // the code will crash if we try to run an auto twice without
             // restarting robot code.
-            new MultiComposableCommand(autoCommand)
+            new MultiComposableCommand(new ForwardBlue())
         );
     }
 
