@@ -307,22 +307,20 @@ public class Scoring extends SubsystemBase {
 
             //if the wrist is not in a safe position (anywhere but down), then don't let the arm move
             
-            if ( (currentWristPosition < -2 || currentWristPosition > 90)) {
+            // if ( (currentWristPosition < -2 || currentWristPosition > 90)) {
 
-                targetArmPosition = Math.min(ARM.SAFE_ARM_TO_ROTATE_WRIST, targetArmPosition);
+            //     targetArmPosition = Math.min(ARM.SAFE_ARM_TO_ROTATE_WRIST, targetArmPosition);
 
-            }
+            // }
 
-            //if the wrist is not in a safe position, then don't move the elevator down.
+            // //if the wrist is not in a safe position, then don't move the elevator down.
 
-            if ( currentWristPosition < -2 || currentWristPosition > 90 ) {
+            // if ( currentWristPosition < -2 || currentWristPosition > 90 ) {
 
-                targetElevatorPosition = currentElevatorPosition;
+            //     targetElevatorPosition = currentElevatorPosition;
 
-            }
-
-
-            
+            // }]
+                       
 
             // Logging the target position of scoring mechanisms.
             Logger.recordOutput(SCORING.LOG_PATH+"TargetArmPostion", targetArmPosition);
