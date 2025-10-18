@@ -39,19 +39,17 @@ public class Scoring extends SubsystemBase {
     public static enum ElevatorPositions {
         
         // RIPTIDE POSITIONS 
-        L1_RIPTIDE(14.4, 5, 175, -0.12, 0.75),
-        L2_RIPTIDE(11.8, 0, 180, -0.2, 0.75),
-        L3_RIPTIDE(0, 165, 195, -0.43, 0.75),
+        L1_RIPTIDE(6, 9.5, -95, -0.09, 0.75),
+        L2_RIPTIDE(18.7, 9.5, -139, -0.25, 0.75),
+        L3_RIPTIDE(0, 171, 254,-0.25, 0.75),
         L4_RIPTIDE(19.5, 160, 200, -0.43, 0.75), 
-        GROUND_ALGAE_RIPTIDE(0, 0, 0, 0.5, -0.75),
-        STOW_RIPTIDE(0, 0, 0, 0.5, 0.75),
-        STOW_WITH_CORAL_RIPTIDE(0, 0, 20, 0.5, 0.75),
-        L2_ALGAE_RIPTIDE(0, 50, 120, 0.5, -0.75),
-        L3_ALGAE_RIPTIDE(3, 120, 160, 0.5, -0.75),
-        PROCESSOR_RIPTIDE(0, 0, 0, -0.3, 0.75),
-        NET_RIPTIDE(19.4, 150, 120, 1, -0.75),
-
-
+        GROUND_ALGAE_RIPTIDE(0, 33, -128, 0.5, -0.75),
+        STOW_RIPTIDE(0, 13.3, 54, 0.5, 0.75),
+        STOW_ALGAE_RIPTIDE(0,11.7, 0, 0.5, -0.75),
+        L2_ALGAE_RIPTIDE(16.8, 30, -99, 0.5, -0.75),
+        L3_ALGAE_RIPTIDE(5, 141, -85, 0.5, -0.75),
+        PROCESSOR_RIPTIDE(5, 0, 0, -0.3, 0.75),
+        NET_RIPTIDE(19.3, 165, -15, 1, -0.72),
         
         // PERRY POSITIONS
         START_POSITION_PERRY(0, 0, 5, 0, 0),
@@ -62,11 +60,8 @@ public class Scoring extends SubsystemBase {
         // L2_PERRY(13.3, 0, 93.6, -0.15, 0.75),
 
         L2_PERRY(18.7, 9.5, 139, -0.25, 0.75), //might be a good L2!
-
         L3_PERRY(0, 171, -214,-0.25, 0.75), //adjust wrist down from 200
-
         L4_PERRY(19.3, 171, -211.5, -0.33, 0.75), //arm adjusted from 165
-
 
         GROUND_ALGAE_PERRY(0, 35, 128, 0.5, -0.75),
         STOW_ALGAE_PERRY(0,11.7, 0, 0.5, -0.75),
@@ -94,19 +89,19 @@ public class Scoring extends SubsystemBase {
             this.outtakeSpeed = outtakeSpeed;
             this.intakeSpeed = intakeSpeed;
         }
-        public static ElevatorPositions getL1(){return SHARED.IS_RIPTIDE?ElevatorPositions.L1_RIPTIDE:ElevatorPositions.L1_PERRY;}
-        public static ElevatorPositions getL2(){return SHARED.IS_RIPTIDE?ElevatorPositions.L2_RIPTIDE:ElevatorPositions.L2_PERRY;}
-        public static ElevatorPositions getL3(){return SHARED.IS_RIPTIDE?ElevatorPositions.L3_RIPTIDE:ElevatorPositions.L3_PERRY;}
-        public static ElevatorPositions getL4(){return SHARED.IS_RIPTIDE?ElevatorPositions.L4_RIPTIDE:ElevatorPositions.L4_PERRY;}
-        public static ElevatorPositions getGroundAlgae(){return SHARED.IS_RIPTIDE?ElevatorPositions.GROUND_ALGAE_RIPTIDE:ElevatorPositions.GROUND_ALGAE_PERRY;}
-        public static ElevatorPositions getStow(){return SHARED.IS_RIPTIDE?ElevatorPositions.STOW_RIPTIDE:ElevatorPositions.STOW_PERRY;}
-        public static ElevatorPositions getL2Algae(){return SHARED.IS_RIPTIDE?ElevatorPositions.L2_ALGAE_RIPTIDE:ElevatorPositions.L2_ALGAE_PERRY;}
-        public static ElevatorPositions getL3Algae(){return SHARED.IS_RIPTIDE?ElevatorPositions.L3_ALGAE_RIPTIDE:ElevatorPositions.L3_ALGAE_PERRY;}
-        public static ElevatorPositions getProcessor(){return SHARED.IS_RIPTIDE?ElevatorPositions.PROCESSOR_RIPTIDE:ElevatorPositions.PROCESSOR_PERRY;}
-        public static ElevatorPositions getNet(){return SHARED.IS_RIPTIDE?ElevatorPositions.NET_RIPTIDE:ElevatorPositions.NET_PERRY;}
+        public static ElevatorPositions getL1(){return ElevatorPositions.L1_RIPTIDE;}
+        public static ElevatorPositions getL2(){return ElevatorPositions.L2_RIPTIDE;}
+        public static ElevatorPositions getL3(){return ElevatorPositions.L3_RIPTIDE;}
+        public static ElevatorPositions getL4(){return SHARED.IS_RIPTIDE?ElevatorPositions.L4_RIPTIDE:ElevatorPositions.L4_RIPTIDE;}
+        public static ElevatorPositions getGroundAlgae(){return SHARED.IS_RIPTIDE?ElevatorPositions.GROUND_ALGAE_RIPTIDE:ElevatorPositions.GROUND_ALGAE_RIPTIDE;}
+        public static ElevatorPositions getStow(){return SHARED.IS_RIPTIDE?ElevatorPositions.STOW_RIPTIDE:ElevatorPositions.STOW_RIPTIDE;}
+        public static ElevatorPositions getL2Algae(){return SHARED.IS_RIPTIDE?ElevatorPositions.L2_ALGAE_RIPTIDE:ElevatorPositions.L2_ALGAE_RIPTIDE;}
+        public static ElevatorPositions getL3Algae(){return SHARED.IS_RIPTIDE?ElevatorPositions.L3_ALGAE_RIPTIDE:ElevatorPositions.L3_ALGAE_RIPTIDE;}
+        public static ElevatorPositions getProcessor(){return SHARED.IS_RIPTIDE?ElevatorPositions.PROCESSOR_RIPTIDE:ElevatorPositions.PROCESSOR_RIPTIDE;}
+        public static ElevatorPositions getNet(){return SHARED.IS_RIPTIDE?ElevatorPositions.NET_RIPTIDE:ElevatorPositions.NET_RIPTIDE;}
         public static ElevatorPositions stopped(){return ElevatorPositions.STOP;}
         public static ElevatorPositions getDeepClimb(){return ElevatorPositions.DEEP_CLIMB_PERRY;}
-        public static ElevatorPositions getStowAlgae(){return ElevatorPositions.STOW_ALGAE_PERRY;}
+        public static ElevatorPositions getStowAlgae(){return ElevatorPositions.STOW_ALGAE_RIPTIDE;}
         public static ElevatorPositions getNetCatapult(){return ElevatorPositions.NET_CATAPULT;}
     }
 
@@ -350,8 +345,8 @@ public class Scoring extends SubsystemBase {
         SmartDashboard.putBoolean("L3", userSelectedPosition == ElevatorPositions.getL3() || ElevatorPositions.getL3Algae() == userSelectedPosition);
         SmartDashboard.putBoolean("L4", userSelectedPosition == ElevatorPositions.getL4());
         
-        LEDs.setHasCoral(intake.robotHasCoral());
-        LEDs.setCoralMode( isCoralMode );
+        // LEDs.setHasCoral(intake.robotHasCoral());
+        // LEDs.setCoralMode( isCoralMode );
         SmartDashboard.putBoolean("Coral mode", isCoralMode);
         
     }

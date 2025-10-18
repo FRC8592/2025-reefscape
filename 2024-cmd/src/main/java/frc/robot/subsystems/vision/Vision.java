@@ -101,11 +101,11 @@ public class Vision extends SubsystemBase{
              // Get the last one in the list.
              var result = results.get(results.size() - 1);
             if(camera.isConnected()){
-                LEDs.setHasTags(result.getTargets().size());
+                //LEDs.setHasTags(result.getTargets().size());
             }
 
             else{
-                LEDs.setHasTags(-1);
+                //LEDs.setHasTags(-1);
             }
              targetVisible = result.hasTargets();
              if (targetVisible) {

@@ -80,7 +80,7 @@ public class RobotContainer {
     // private final Trigger SNAP_EAST = driverController.pov(90);
     // private final Trigger SNAP_WEST = driverController.pov(270);
 
-    private final Trigger STOW = driverController.x();
+    private final Trigger STOW = driverController.x().and(() -> scoring.isCoralMode());
     private final Trigger GO_TO_POSITION = driverController.a();
     private final Trigger ALIGN_TO_REEF = driverController.leftBumper();
 
@@ -96,21 +96,23 @@ public class RobotContainer {
     
     private final Trigger PRIME_L4 = (coralController.button(5).or(coralController.button(7))).and(()->scoring.isCoralMode());
     private final Trigger PRIME_L3 = (coralController.button(6).or(coralController.button(8))).and(()->scoring.isCoralMode());
-    private final Trigger PRIME_L2 = (coralController.button(1).or(coralController.button(2))).and(()->scoring.isCoralMode());
-    private final Trigger PRIME_L1 = (coralController.button(4).or(coralController.button(3))).and(()->scoring.isCoralMode());
+    private final Trigger PRIME_L2 = (coralController.button(4).or(coralController.button(3))).and(()->scoring.isCoralMode());
+    private final Trigger PRIME_L1 = (coralController.button(1).or(coralController.button(2))).and(()->scoring.isCoralMode());
     
     private final Trigger ALIGN_RIGHT = (coralController.button(2).or(coralController.button(3)).or(coralController.button(8)).or(coralController.button(7))).and(()->scoring.isCoralMode());
     private final Trigger ALIGN_LEFT = (coralController.button(1).or(coralController.button(4)).or(coralController.button(6)).or(coralController.button(5))).and(()->scoring.isCoralMode());
     
     // private final Trigger ALIGN_CENTER = (coralController.button(2).or(coralController.button(3)).or(coralController.button(8)).or(coralController.button(7))).and(()->scoring.isAlgaeMode());
     
-    private final Trigger PRIME_PROCESSOR = coralController.button(4).and(()->scoring.isAlgaeMode());
-    private final Trigger PRIME_L2_ALGAE = coralController.button(1).and(()->scoring.isAlgaeMode());
+    private final Trigger PRIME_PROCESSOR = coralController.button(1).and(()->scoring.isAlgaeMode());
+    private final Trigger PRIME_L2_ALGAE = coralController.button(4).and(()->scoring.isAlgaeMode());
     private final Trigger PRIME_L3_ALGAE = coralController.button(6).and(()->scoring.isAlgaeMode());
     private final Trigger PRIME_NET = coralController.button(5).and(()->scoring.isAlgaeMode());
+
+    private final Trigger STOW_ALGAE_RIPTIDE = coralController.button(2).and(() -> scoring.isAlgaeMode());
     
-    private final Trigger GROUND_ALGAE_PERRY = coralController.button(3).and(()->scoring.isAlgaeMode());
-    private final Trigger STOW_ALGAE_PERRY = coralController.button(2).and(()->scoring.isAlgaeMode());
+    private final Trigger GROUND_ALGAE_PERRY = coralController.button(2).and(()->scoring.isAlgaeMode());
+    private final Trigger STOW_ALGAE_PERRY = coralController.button(3).and(()->scoring.isAlgaeMode());
     private final Trigger DEEP_CLIMB_POSITION = coralController.button(8).and(()->scoring.isAlgaeMode());
     private final Trigger CATAPULT_POSITION = coralController.button(7).and(()->scoring.isAlgaeMode());
 
@@ -129,7 +131,7 @@ public class RobotContainer {
     public RobotContainer() {
         LEDs.init();
         swerve = new Swerve();
-        vision1 = new Vision(CORAL_ALIGN.CAMERA_NAME, CORAL_ALIGN.CAMERA_OFFSETS);
+        vision1 = new Vision(CORAL_ALIGN.CAMERA_2_NAME, CORAL_ALIGN.CAMERA_OFFSETS);
         // vision2 = new Vision(CORAL_ALIGN.CAMERA_2_NAME, CORAL_ALIGN.CAMERA_2_OFFSETS);
         scoreCoral = new ScoreCoral(swerve);
         odometryUpdates = new OdometryUpdates(swerve, vision1);
@@ -166,7 +168,7 @@ public class RobotContainer {
      * Configure default commands for the subsystems
      */
     private void configureDefaults(){
-        // Set the swerve's default command to drive with joysticks
+        // Set the swerve's default command to drive with joystickss
         setDefaultCommand(swerve, swerve.run(() -> {
             swerve.drive(swerve.processJoystickInputs(
                 -driverController.getLeftX(),
@@ -198,7 +200,8 @@ public class RobotContainer {
     private void configureBindings() {
 
         ENABLED.onTrue(
-            scoring.goToPosition(ElevatorPositions.stopped()).andThen(scoring.stopAllCommand()).andThen(deepclimb.stopDeepClimbCommand())
+            scoring.goToPosition(ElevatorPositions.stopped()).andThen(scoring.stopAllCommand())
+           
         );
 
         //------------------------------ SWERVE COMMANDS ------------------------------//
@@ -314,27 +317,31 @@ public class RobotContainer {
 
         //LED_TEST.onTrue(setLEDsCommand(LEDS.TEAL)).onFalse(setLEDsCommand(LEDS.OFF));
 
-        DEEP_CLIMB_INTAKE.whileTrue(deepclimb.runDeepClimbIntakeCommand()).onFalse(deepclimb.stopDeepClimbIntakeCommand());
+        // DEEP_CLIMB_INTAKE.whileTrue(deepclimb.runDeepClimbIntakeCommand()).onFalse(deepclimb.stopDeepClimbIntakeCommand());
 
-        WINCH_UP.whileTrue(
-            deepclimb.deployDeepClimbCommand()
-        ).onFalse(deepclimb.stopDeepClimbCommand());
+        // WINCH_UP.whileTrue(
+        //     deepclimb.deployDeepClimbCommand()
+        // ).onFalse(deepclimb.stopDeepClimbCommand());
         
-        WINCH_DOWN.whileTrue(
-            deepclimb.liftDeepClimbCommand()
-        ).onFalse(deepclimb.stopDeepClimbCommand());
+        // WINCH_DOWN.whileTrue(
+        //     deepclimb.liftDeepClimbCommand()
+        // ).onFalse(deepclimb.stopDeepClimbCommand());
 
-        DEEP_CLIMB_DEPLOY.onTrue(
-            scoring.goToPosition(ElevatorPositions.getDeepClimb()).andThen(
-                deepclimb.autoDeployDeepClimbCommand()
-            )
-        );
+        // DEEP_CLIMB_DEPLOY.onTrue(
+        //     scoring.goToPosition(ElevatorPositions.getDeepClimb()).andThen(
+        //         deepclimb.autoDeployDeepClimbCommand()
+        //     )
+        // );
 
         GROUND_ALGAE_PERRY.onTrue(
             scoring.setUserPosition(ElevatorPositions.getGroundAlgae())
         );
 
         STOW_ALGAE_PERRY.onTrue(
+            scoring.setUserPosition(ElevatorPositions.getStowAlgae())
+        );
+
+        STOW_ALGAE_RIPTIDE.onTrue(
             scoring.setUserPosition(ElevatorPositions.getStowAlgae())
         );
 

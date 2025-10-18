@@ -164,7 +164,7 @@ public class FollowPathCommand extends LargeCommand{
     public void execute(){
         // Instances of State contain information about pose, velocity, accelleration, curvature, etc.
         State desiredState = trajectory.sample(timer.get());
-        LEDs.setProgressBar(timer.get()/trajectory.getTotalTimeSeconds());
+        //LEDs.setProgressBar(timer.get()/trajectory.getTotalTimeSeconds());
 
 
         if(flip.getAsBoolean()){
@@ -202,7 +202,7 @@ public class FollowPathCommand extends LargeCommand{
         swerve.drive(driveSpeeds);
     }
     public void end(boolean interrupted){
-        LEDs.setProgressBar(-1);
+        //LEDs.setProgressBar(-1);
         Logger.recordOutput("CustomLogs/CurrentPathCommand/Name", "None");
 
         if(!rollAtPathEnd){
