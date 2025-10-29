@@ -149,6 +149,11 @@ public class RobotContainer {
         
         AutoManager.prepare();
         LEDs.init();
+
+        System.out.println("***********************************");
+        System.out.println("          I AM PERRYTIDE           ");
+        System.out.println("        !!!F E A R  M E!!!         ");
+        System.out.println("***********************************");
     }
 
     /**
