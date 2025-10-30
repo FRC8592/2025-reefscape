@@ -121,7 +121,13 @@ public class Scoring extends SubsystemBase {
         userSelectedPosition = SHARED.IS_RIPTIDE?ElevatorPositions.STOW_RIPTIDE:ElevatorPositions.STOW_PERRY;
 
         timer.start();
+
+        SmartDashboard.putNumber("Elevator", 0);
+        SmartDashboard.putNumber("Arm", 0);
+        SmartDashboard.putNumber("Wrist", 0);
+    
     }
+
     /**
      * Accepts a scoring position and sets user selected position to the position given.
      * @param position Position is a parameter that represents the desired position of the user.
@@ -130,6 +136,21 @@ public class Scoring extends SubsystemBase {
     public Command setUserPosition(ElevatorPositions position){
         return this.runOnce(() -> {
             userSelectedPosition = position;
+        });
+    }
+
+    /**
+     * Accepts a scoring position from the Smart Dashboard and sets user selected position to the position given.
+     * @return Command that sets the user selected position to the position.
+     */
+    public Command setUserPositionDashboard() {
+
+        return this.runOnce(() -> {
+            userSelectedPosition.elevatorPos = SmartDashboard.getNumber("Elevator", 0);
+            userSelectedPosition.clockArmPos = SmartDashboard.getNumber("Arm", 0);
+            userSelectedPosition.wristPos    = SmartDashboard.getNumber("Wrist", 0);
+            userSelectedPosition.outtakeSpeed = - 0.75;
+
         });
     }
 
