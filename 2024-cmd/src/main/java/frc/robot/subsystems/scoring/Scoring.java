@@ -125,6 +125,8 @@ public class Scoring extends SubsystemBase {
         SmartDashboard.putNumber("Elevator", 0);
         SmartDashboard.putNumber("Arm", 0);
         SmartDashboard.putNumber("Wrist", 0);
+        SmartDashboard.putNumber("Intake_Speed", 0);
+        SmartDashboard.putNumber("Outtake_Speed", 0);
     
     }
 
@@ -146,11 +148,11 @@ public class Scoring extends SubsystemBase {
     public Command setUserPositionDashboard() {
 
         return this.runOnce(() -> {
-            userSelectedPosition.elevatorPos = SmartDashboard.getNumber("Elevator", 0);
-            userSelectedPosition.clockArmPos = SmartDashboard.getNumber("Arm", 0);
-            userSelectedPosition.wristPos    = SmartDashboard.getNumber("Wrist", 0);
-            userSelectedPosition.outtakeSpeed = - 0.75;
-
+            userSelectedPosition.elevatorPos  = SmartDashboard.getNumber("Elevator", 0);
+            userSelectedPosition.clockArmPos  = SmartDashboard.getNumber("Arm", 0);
+            userSelectedPosition.wristPos     = SmartDashboard.getNumber("Wrist", 0);
+            userSelectedPosition.intakeSpeed  = SmartDashboard.getNumber("Intake_Speed", 0);
+            userSelectedPosition.outtakeSpeed = SmartDashboard.getNumber("Outtake_Speed", 0);
         });
     }
 
@@ -161,8 +163,15 @@ public class Scoring extends SubsystemBase {
     public Command applyUserPosition(){
         return this.runOnce(() -> {
             scoringTargetPosition = userSelectedPosition;
+
+            SmartDashboard.putNumber("Elevator", scoringTargetPosition.elevatorPos);
+            SmartDashboard.putNumber("Arm", scoringTargetPosition.clockArmPos);
+            SmartDashboard.putNumber("Wrist", scoringTargetPosition.wristPos);
+            SmartDashboard.putNumber("Intake_Speed", scoringTargetPosition.intakeSpeed);
+            SmartDashboard.putNumber("Outake_Speed", scoringTargetPosition.outtakeSpeed);
         });
     }
+
     /**
     * Accepts a scoring position and sets the target position to the given position.
     * @param position Position is a parameter that represents the desired position of the user.
