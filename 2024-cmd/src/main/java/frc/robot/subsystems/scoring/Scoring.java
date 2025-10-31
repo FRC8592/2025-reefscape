@@ -42,7 +42,7 @@ public class Scoring extends SubsystemBase {
         L1_RIPTIDE(14.4, 5, 175, -0.12, 0.75),
         L2_RIPTIDE(11.8, 0, 180, -0.2, 0.75),
         L3_RIPTIDE(0, 165, 195, -0.43, 0.75),
-        L4_RIPTIDE(19.5, 160, 200, -0.43, 0.75), 
+        L4_RIPTIDE(17.0, 160, 200, -0.43, 0.75), 
         GROUND_ALGAE_RIPTIDE(0, 0, 0, 0.5, -0.75),
         STOW_RIPTIDE(0, 0, 0, 0.5, 0.75),
         STOW_WITH_CORAL_RIPTIDE(0, 0, 20, 0.5, 0.75),
@@ -148,11 +148,11 @@ public class Scoring extends SubsystemBase {
     public Command setUserPositionDashboard() {
 
         return this.runOnce(() -> {
-            userSelectedPosition.elevatorPos  = SmartDashboard.getNumber("Elevator", 0);
-            userSelectedPosition.clockArmPos  = SmartDashboard.getNumber("Arm", 0);
-            userSelectedPosition.wristPos     = SmartDashboard.getNumber("Wrist", 0);
-            userSelectedPosition.intakeSpeed  = SmartDashboard.getNumber("Intake_Speed", 0);
-            userSelectedPosition.outtakeSpeed = SmartDashboard.getNumber("Outtake_Speed", 0);
+            scoringTargetPosition.elevatorPos  = SmartDashboard.getNumber("Elevator", 0);
+            scoringTargetPosition.clockArmPos  = SmartDashboard.getNumber("Arm", 0);
+            scoringTargetPosition.wristPos     = SmartDashboard.getNumber("Wrist", 0);
+            scoringTargetPosition.intakeSpeed  = SmartDashboard.getNumber("Intake_Speed", 0);
+            scoringTargetPosition.outtakeSpeed = SmartDashboard.getNumber("Outtake_Speed", 0);
         });
     }
 

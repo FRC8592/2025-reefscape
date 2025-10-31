@@ -69,7 +69,7 @@ public class RobotContainer {
     // Read scoring position from Smart Dashboard
     // BE CAREFUL WITH THIS!!  Some configurations will crash
     //
-    private final Trigger DASHBAORD = driverController.pov(0);
+    // private final Trigger DASHBOARD = driverController.rightBumper();
 
     private final Trigger ENABLED = new Trigger(() -> DriverStation.isEnabled()).and(()->DriverStation.isTeleop());
 
@@ -207,9 +207,9 @@ public class RobotContainer {
      */
     private void configureBindings() {
 
-        DASHBAORD.onTrue(
-            scoring.setUserPositionDashboard()
-        );
+        // DASHBOARD.onTrue(
+        //     scoring.setUserPositionDashboard()
+        // );
 
         ENABLED.onTrue(
             scoring.goToPosition(ElevatorPositions.stopped()).andThen(scoring.stopAllCommand()).andThen(deepclimb.stopDeepClimbCommand())
