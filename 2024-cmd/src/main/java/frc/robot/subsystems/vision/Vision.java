@@ -14,8 +14,7 @@ import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -51,6 +50,8 @@ public class Vision extends SubsystemBase{
     SimCameraProperties cameraBProperties;
     PhotonCameraSim cameraSim;
 
+    List<AprilTag> al = new ArrayList<>();
+
     public Vision(String camName, Transform3d camOffsets){
         camera = new PhotonCamera(camName);
         estimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camOffsets);
@@ -80,6 +81,31 @@ public class Vision extends SubsystemBase{
         cameraSim.enableProcessedStream(true);
 
         cameraSim.enableDrawWireframe(true);
+        
+        al.add(new AprilTag(1, new Pose3d(657.37, 25.80, 58.5, new Rotation3d(0, 0, Math.toRadians(126)))));
+        al.add(new AprilTag(2, new Pose3d(657.37, 291.2, 58.5, new Rotation3d(0, 0, Math.toRadians(234)))));
+        al.add(new AprilTag(3, new Pose3d(455.15, 317.15, 51.25, new Rotation3d(0, 0, Math.toRadians(270)))));
+        al.add(new AprilTag(4, new Pose3d(365.2, 241.64, 73.54, new Rotation3d(0, Math.toRadians(30), 0))));
+        al.add(new AprilTag(5, new Pose3d(365.2, 75.39, 73.54, new Rotation3d(0, Math.toRadians(30), 0))));
+        al.add(new AprilTag(6, new Pose3d(530.49, 130.17, 12.13, new Rotation3d(0, 0, Math.toRadians(300)))));
+        al.add(new AprilTag(7, new Pose3d(546.87, 158.5, 12.13, new Rotation3d(0, 0, 0))));
+        al.add(new AprilTag(8, new Pose3d(530.49, 186.83, 12.13, new Rotation3d(0, 0, Math.toRadians(60)))));
+        al.add(new AprilTag(9, new Pose3d(497.77, 186.83, 12.13, new Rotation3d(0, 0, Math.toRadians(120)))));
+        al.add(new AprilTag(10, new Pose3d(481.39, 158.5, 12.13, new Rotation3d(0, 0, Math.toRadians(180)))));
+        al.add(new AprilTag(11, new Pose3d(467.77, 130.17, 12.13, new Rotation3d(0, 0, Math.toRadians(240)))));
+        al.add(new AprilTag(12, new Pose3d(33.51, 25.8, 58.5, new Rotation3d(0, 0, Math.toRadians(54)))));
+        al.add(new AprilTag(13, new Pose3d(33.51, 291.2, 58.5, new Rotation3d(0, 0, Math.toRadians(306)))));
+        al.add(new AprilTag(14, new Pose3d(325.68, 241.64, 73.54, new Rotation3d(0, Math.toRadians(30), Math.toRadians(180)))));
+        al.add(new AprilTag(15, new Pose3d(325.68, 75.39, 73.54, new Rotation3d(0, Math.toRadians(30), Math.toRadians(180)))));
+        al.add(new AprilTag(16, new Pose3d(235.73, -0.15, 51.25, new Rotation3d(0, 0, Math.toRadians(90)))));
+        al.add(new AprilTag(17, new Pose3d(160.39, 130.17, 12.13, new Rotation3d(0, 0, Math.toRadians(240)))));
+        al.add(new AprilTag(18, new Pose3d(144, 158.5, 12.13, new Rotation3d(0, 0, Math.toRadians(180)))));
+        al.add(new AprilTag(19, new Pose3d(160.39, 186.83, 12.13, new Rotation3d(0, 0, Math.toRadians(120)))));
+        al.add(new AprilTag(20, new Pose3d(193.1, 186.83, 12.13, new Rotation3d(0, 0, Math.toRadians(60)))));
+        al.add(new AprilTag(21, new Pose3d(209.49, 158.5, 12.13, new Rotation3d(0, 0, 0))));
+        al.add(new AprilTag(22, new Pose3d(193.1, 130.17, 12.13, new Rotation3d(0, 0, Math.toRadians(300)))));
+
+        aprilTagFieldLayout = new AprilTagFieldLayout(al,26.4, 57.6); //check units
     }
 
     @Override
