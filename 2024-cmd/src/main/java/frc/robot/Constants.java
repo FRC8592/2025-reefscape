@@ -12,7 +12,7 @@ public final class Constants {
     public final class SHARED {
         public static final String LOG_FOLDER = "CustomLogs";
         public static final CurrentRobot CURRENT_ROBOT = CurrentRobot.PERRY;
-        public static final boolean IS_RIPTIDE = CURRENT_ROBOT == CurrentRobot.RIPTIDE;
+        public static final boolean IS_RIPTIDE = CURRENT_ROBOT == CurrentRobot.PERRY;
     }
 
     public final class MEASUREMENTS {
